@@ -1,0 +1,69 @@
+/* ===== Material Design Inspired Theme ===== */
+
+/* -------- Light Theme -------- */
+:root {
+  --primary: #00796B;
+  --on-primary: #FFFFFF;
+  --primary-container: #B2DFDB;
+  --on-primary-container: #004D40;
+
+  --secondary: #C62828;
+  --on-secondary: #FFFFFF;
+
+  --background: #FAFAFA;
+  --on-background: #212121;
+
+  --surface: #FFFFFF;
+  --on-surface: #212121;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #B71C1C;
+
+  --outline: #BDBDBD;
+  --surface-variant: #EEEEEE;
+  --on-surface-variant: #424242;
+
+  --accent-live: #FB8C00;
+  --accent-link: #1E88E5;
+  --accent-success: #43A047;
+  --accent-info: #4FC3F7;
+  --favorite-row: #2E7D32;
+  --hover-primary: #00695C;
+  --hover-link: #1565C0;
+}
+
+/* -------- Dark Theme -------- */
+[data-theme="dark"] {
+  --primary: #80CBC4;
+  --on-primary: #00332C;
+  --primary-container: #004D40;
+  --on-primary-container: #B2DFDB;
+
+  --secondary: #EF9A9A;
+  --on-secondary: #3C0404;
+
+  --background: #121212;
+  --on-background: #E0E0E0;
+
+  --surface: #1E1E1E;
+  --on-surface: #F5F5F5;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #424242;
+  --surface-variant: #2C2C2C;
+  --on-surface-variant: #DDDDDD;
+
+  --accent-live: #FFB74D;
+  --accent-link: #1565C0;
+  --accent-success: #66BB6A;
+  --accent-info: #81D4FA;
+  --favorite-row: #2E7D32;
+  --hover-primary: #00695C;
+  --hover-link: #64B5F6;
+}
