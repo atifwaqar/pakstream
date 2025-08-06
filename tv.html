@@ -232,10 +232,7 @@
 
     function loadPlayer(id) {
       const iframe = document.getElementById(`${id}-player`);
-      // Use getAttribute to detect an empty src attribute. The `iframe.src`
-      // property returns the page's URL even when `src=""`, which prevented
-      // the first channel from loading its `data-src`.
-      if (iframe.dataset.src && !iframe.getAttribute('src')) {
+      if (iframe.dataset.src && !iframe.src) {
         iframe.src = iframe.dataset.src;
       }
       players[iframe.id] = new YT.Player(iframe.id, {
