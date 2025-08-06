@@ -226,27 +226,38 @@
     };
     const urlParams = new URLSearchParams(window.location.search);
     const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || 'geo';
+    if (!urlParams.has('tvchannel')) {
+      history.replaceState(null, '', `${window.location.pathname}?tvchannel=${initialChannel}`);
+    }
 
-    function loadPlayer(id) {
+    function loadPlayer(id, muteOnStart = false) {
       const iframe = document.getElementById(`${id}-player`);
-      if (iframe.dataset.src && !iframe.src) {
+      // Use getAttribute to detect an empty src attribute. The `iframe.src`
+      // property returns the page's URL even when `src=""`, which prevented
+      // the first channel from loading its `data-src`.
+      if (iframe.dataset.src && !iframe.getAttribute('src')) {
         iframe.src = iframe.dataset.src;
       }
       players[iframe.id] = new YT.Player(iframe.id, {
         playerVars: { autoplay: 1 },
         events: {
-          onReady: event => event.target.playVideo()
+          onReady: event => {
+            if (muteOnStart) {
+              event.target.mute();
+            }
+            event.target.playVideo();
+          }
         }
       });
     }
 
-    function onYouTubeIframeAPIReady() {
+    window.onYouTubeIframeAPIReady = function() {
       const initialCard = document.querySelector(`.channel-card[onclick*="${initialChannel}"]`) ||
         document.querySelector('.channel-card');
-      showStream(initialChannel, initialCard);
-    }
+      showStream(initialChannel, initialCard, true);
+    };
 
-    function showStream(id, element) {
+    function showStream(id, element, muteOnLoad = false) {
       // Hide all video divs
       document.querySelectorAll('.live-player').forEach(div => div.style.display = 'none');
 
@@ -255,8 +266,8 @@
 
       // Pause all players
       for (const key in players) {
-        if (players[key].pauseVideo) {
-          players[key].pauseVideo();
+        if (players[key].stopVideo) {
+          players[key].stopVideo();
         }
       }
 
@@ -267,11 +278,14 @@
       // Load or play selected stream
       const playerId = `${id}-player`;
       if (players[playerId]) {
+        if (players[playerId].unMute) {
+          players[playerId].unMute();
+        }
         if (players[playerId].playVideo) {
           players[playerId].playVideo();
         }
       } else if (typeof YT !== 'undefined' && YT.Player) {
-        loadPlayer(id);
+        loadPlayer(id, muteOnLoad);
       }
 
       // Update URL without reloading
