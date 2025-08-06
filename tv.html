@@ -226,10 +226,16 @@
     };
     const urlParams = new URLSearchParams(window.location.search);
     const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || 'geo';
+    if (!urlParams.has('tvchannel')) {
+      history.replaceState(null, '', `${window.location.pathname}?tvchannel=${initialChannel}`);
+    }
 
     function loadPlayer(id) {
       const iframe = document.getElementById(`${id}-player`);
-      if (iframe.dataset.src && !iframe.src) {
+      // Use getAttribute to detect an empty src attribute. The `iframe.src`
+      // property returns the page's URL even when `src=""`, which prevented
+      // the first channel from loading its `data-src`.
+      if (iframe.dataset.src && !iframe.getAttribute('src')) {
         iframe.src = iframe.dataset.src;
       }
       players[iframe.id] = new YT.Player(iframe.id, {
@@ -240,11 +246,11 @@
       });
     }
 
-    function onYouTubeIframeAPIReady() {
+    window.onYouTubeIframeAPIReady = function() {
       const initialCard = document.querySelector(`.channel-card[onclick*="${initialChannel}"]`) ||
         document.querySelector('.channel-card');
       showStream(initialChannel, initialCard);
-    }
+    };
 
     function showStream(id, element) {
       // Hide all video divs
@@ -255,8 +261,8 @@
 
       // Pause all players
       for (const key in players) {
-        if (players[key].pauseVideo) {
-          players[key].pauseVideo();
+        if (players[key].stopVideo) {
+          players[key].stopVideo();
         }
       }
 
