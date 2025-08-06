@@ -106,7 +106,7 @@
     <div class="video-section">
       <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Channels</button>
       <div class="live-player">
-        <div id="playerFrame"></div>
+        <iframe id="playerFrame" src="" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
@@ -129,7 +129,6 @@
   </footer>
 
   <!-- JavaScript for dynamically loading latest videos from the selected channel -->
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const anchorMap = {
     ImranRiazKhan: "UCaszgR2TH3qNw_CxLHAd2SQ",
@@ -158,8 +157,7 @@
 
   const cards = document.querySelectorAll('.channel-card');
   const videoListEl = document.getElementById('videoList');
-  let player;
-  let pendingVideoId = null;
+  const playerFrame = document.getElementById('playerFrame');
 
   function setActiveCard(clickedCard) {
     cards.forEach(c => c.classList.remove('active'));
@@ -171,34 +169,9 @@
     clickedItem.classList.add('active');
   }
 
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('playerFrame', {
-      events: { 'onStateChange': onPlayerStateChange },
-      playerVars: { autoplay: 1, rel: 0 },
-      videoId: pendingVideoId
-    });
-  }
-
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      const active = document.querySelector('.channel-card.active');
-      let next = active ? active.nextElementSibling : null;
-      if (!next || !next.classList.contains('channel-card')) {
-        next = document.querySelector('.channel-card');
-      }
-      if (next) {
-        handleChannelClick(next);
-      }
-    }
-  }
-
   function loadVideo(videoId) {
     if (videoId) {
-      if (player && typeof player.loadVideoById === 'function') {
-        player.loadVideoById(videoId);
-      } else {
-        pendingVideoId = videoId;
-      }
+      playerFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     }
   }
 
