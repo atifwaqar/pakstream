@@ -1,0 +1,17 @@
+---
+layout: default
+title: PakStream Blog - News for Overseas Pakistanis
+description: Insightful blogs covering Pakistani media, culture, and diaspora life abroad.
+---
+<section class="blog-list">
+  <h1>Latest Blog Posts</h1>
+
+  <ul>
+    {% for post in site.posts %}
+      <li class="blog-post-item">
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Standard Meta -->
+  <title>PakStream Radio - Listen to Pakistani Radio Stations Online</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="title" content="PakStream Radio - Listen to Pakistani Radio Stations Online">
+  <meta name="description" content="Stream live Pakistani FM, talk, and news radio from anywhere in the world.">
+  <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani YouTubers, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
+  <meta name="author" content="PakStream by Chatdroid AB">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://neurolingo.cc/pakstream/radio.html" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://neurolingo.cc/pakstream/radio.html">
+  <meta property="og:title" content="PakStream Radio - Listen to Pakistani Radio Stations Online">
+  <meta property="og:description" content="Stream live Pakistani FM, talk, and news radio from anywhere in the world.">
+  <meta property="og:image" content="https://neurolingo.cc/assets/pakstream-banner.jpg">
+  <meta property="og:site_name" content="PakStream">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://neurolingo.cc/pakstream/radio.html">
+  <meta name="twitter:title" content="PakStream Radio - Listen to Pakistani Radio Stations Online">
+  <meta name="twitter:description" content="Stream live Pakistani FM, talk, and news radio from anywhere in the world.">
+  <meta name="twitter:image" content="https://neurolingo.cc/assets/pakstream-banner.jpg">
+  <meta name="twitter:site" content="@PakStream">
+  <meta name="twitter:creator" content="@PakStream">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "PakStream",
+    "url": "https://neurolingo.cc/",
+    "logo": "https://neurolingo.cc/assets/logo.png",
+    "sameAs": [
+      "https://facebook.com/PakStream",
+      "https://twitter.com/PakStream"
+    ]
+  }
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5427964157655690"
+     crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="radio-list">
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <div class="logo-title">
+      <h1>PakStream</h1>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/pakstream/youtube.html">YouTube</a></li>
+        <li><a href="/pakstream/tv.html">TV</a></li>
+        <li><a href="/pakstream/radio.html">Radio</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/pakstream/about.html">About</a></li>
+        <li><a href="/pakstream/contact.html">Contact</a></li>
+        <li><a href="/pakstream/privacy.html">Privacy</a></li>
+        <li><a href="/pakstream/terms.html">Terms</a></li>
+      </ul>
+    </nav>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+  <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
+
+  <!-- Radio station listing -->
+  <section>
+    <h2>Pakistani Radio Stations</h2>
+    <div id="player-container" class="radio-player">
+      <div class="station-info">
+        <img id="station-logo" src="/pakstream/images/default_radio.png" alt="Station logo" loading="lazy">
+        <h3 id="current-station" class="station-title">Select a station</h3>
+        <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
+        <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
+      </div>
+      <div class="controls">
+        <button id="favorite-btn" class="favorite-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
+        <button id="prev-btn" class="fav-nav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
+        <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
+          <span class="material-icons label">play_arrow</span>
+          <span class="spinner"></span>
+        </button>
+        <button id="next-btn" class="fav-nav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
+        <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
+        <audio id="radio-player" autoplay></audio>
+      </div>
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <th>Listen</th>
+          <th>Station</th>
+        </tr>
+<tr>
+          <td><audio id="audio35" preload="none" data-logo="/pakstream/images/stations/hum.png" src="https://server.mediacast4u.stream/8002/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Hum FM 106.2</td>
+        </tr>
+<tr>
+          <td><audio id="audio83" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Lahore MW</td>
+        </tr>
+<tr>
+          <td><audio id="audio100" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8078/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Mirpur</td>
+        </tr>
+<tr>
+          <td><audio id="audio95" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8070/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Peshawar</td>
+        </tr>
+<tr>
+          <td><audio id="audio20" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8050/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Larkana</td>
+        </tr>
+<tr>
+          <td><audio id="audio21" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8052/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Mithi</td>
+        </tr>
+<tr>
+          <td><audio id="audio32" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 94.4</td>
+        </tr>
+<tr>
+          <td><audio id="audio90" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7000/MW639khi?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">MW 639 Karachi</td>
+        </tr>
+<tr>
+          <td><audio id="audio42" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8034/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Multan MW</td>
+        </tr>
+<tr>
+          <td><audio id="audio96" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8072/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Peshawar MW</td>
+        </tr>
+<tr>
+          <td><audio id="audio93" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8060/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Quetta MW</td>
+        </tr>
+<tr>
+          <td><audio id="audio81" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8024/#?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Faisalabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio80" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8092/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Bahawalpur MW</td>
+        </tr>
+<tr>
+          <td><audio id="audio103" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Azad Kashmir Radio Mirpur</td>
+        </tr>
+<tr>
+          <td><audio id="audio89" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8054/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Khairpur</td>
+        </tr>
+<tr>
+          <td><audio id="audio94" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8062/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Khuzdar MW 567</td>
+        </tr>
+<tr>
+          <td><audio id="audio99" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7000/Dikhan?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">D.I. Khan MW 711</td>
+        </tr>
+<tr>
+          <td><audio id="audio79" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8020/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Bahawalpur</td>
+        </tr>
+<tr>
+          <td><audio id="audio67" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Saut-ul-Quran</td>
+        </tr>
+<tr>
+          <td><audio id="audio61" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">SOUTUL QURAN PBC FM 93.4 ISLAMABAD</td>
+        </tr>
+<tr>
+          <td><audio id="audio57" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Pakistan World Service</td>
+        </tr>
+<tr>
+          <td><audio id="audio58" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Pakistan WS</td>
+        </tr>
+<tr>
+          <td><audio id="audio69" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Islamabad Station</td>
+        </tr>
+<tr>
+          <td><audio id="audio31" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://s33.myradiostream.com:13872/listen.m4a"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 92</td>
+        </tr>
+<tr>
+          <td><audio id="audio30" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://n0e.radiojar.com/htnudfgugm8uv?rj-ttl=5&amp;rj-tok=AAABmGW6hMEAMlJqXcyhsglOrw"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">fm...</td>
+        </tr>
+<tr>
+          <td><audio id="audio87" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8042/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Hyderabad MW 1008KHz</td>
+        </tr>
+<tr>
+          <td><audio id="audio86" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8040/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Sargodha</td>
+        </tr>
+<tr>
+          <td><audio id="audio98" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8064/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Abbotabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio88" preload="none" data-logo="/pakstream/images/stations/hyderabad-fm.png" src="https://whmsonic.radio.gov.pk:8044/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Hyderabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio84" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Multan</td>
+        </tr>
+<tr>
+          <td><audio id="audio37" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://cdn.voscast.com/resources/?key=4e1e2d7ac97ea7ad9493c529df2ab16c&amp;c=wmp"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Insaf Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio39" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://stream-179.zeno.fm/f9h69cgbu68uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJmOWg2OWNnYnU2OHV2IiwiaG9zdCI6InN0cmVhbS0xNzkuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoidlJJYUZfdGRTemFUNEx4R3hkQTdqQSIsImlhdCI6MTc1NDAyMzc4NiwiZXhwIjoxNzU0MDIzODQ2fQ.UrOJY6xoG5HyvkZCUDw2v_CC9RiZWCNvgWbeAaH3MPs"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Love-Islam-Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio45" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Mirpur</td>
+        </tr>
+<tr>
+          <td><audio id="audio82" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7000/fm94lhr"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 94 Lahore</td>
+        </tr>
+<tr>
+          <td><audio id="audio6" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://stream-158.zeno.fm/bahhkuge5zhvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJiYWhoa3VnZTV6aHZ2IiwiaG9zdCI6InN0cmVhbS0xNTguemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoiYkhQcHBMQTVRYnlyNGpjdlc1V2NaZyIsImlhdCI6MTc1Mzk5OTI2NiwiZXhwIjoxNzUzOTk5MzI2fQ.HifeijiDD3rrC9SBwW0DkSH-PDSZNITtHh5jwUQlXCc"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">All4Masti</td>
+        </tr>
+<tr>
+          <td><audio id="audio68" preload="none" data-logo="/pakstream/images/stations/planet-87-6.png" src="https://whmsonic.radio.gov.pk:7042/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Planet FM 87.6</td>
+        </tr>
+<tr>
+          <td><audio id="audio36" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://stream-176.zeno.fm/7wre21u7xa0uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiI3d3JlMjF1N3hhMHV2IiwiaG9zdCI6InN0cmVhbS0xNzYuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoibGtRdkI4bkFUTzZGd1VvUjdqN2hHQSIsImlhdCI6MTc1NDAyNjY1MSwiZXhwIjoxNzU0MDI2NzExfQ.F9HyNOL8e9-ALqTf48RhmxMEmXy8QVhifUpD1nlsIqQ"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">ILM Radio Renala FM 92</td>
+        </tr>
+<tr>
+          <td><audio id="audio64" preload="none" data-logo="/pakstream/images/stations/pakistan-toronto.png" src="https://s3.radio.co/s3b10a57ef/listen"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Pakistan Toronto</td>
+        </tr>
+<tr>
+          <td><audio id="audio60" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://s97.radiolize.com:8040/radio.mp3"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Shopen Anime Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio70" preload="none" data-logo="/pakstream/images/stations/ncac.png" src="https://whmsonic.radio.gov.pk:7004/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">NCAC</td>
+        </tr>
+<tr>
+          <td><audio id="audio72" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7006/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">External Service</td>
+        </tr>
+<tr>
+          <td><audio id="audio75" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7008/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Chalte Chalte</td>
+        </tr>
+<tr>
+          <td><audio id="audio74" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8094/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Technology channel</td>
+        </tr>
+<tr>
+          <td><audio id="audio73" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7007/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Sports & Health Channel</td>
+        </tr>
+<tr>
+          <td><audio id="audio24" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7022/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Karachi</td>
+        </tr>
+<tr>
+          <td><audio id="audio25" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8088/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Lahore</td>
+        </tr>
+<tr>
+          <td><audio id="audio28" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8036/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Rawalpindi</td>
+        </tr>
+<tr>
+          <td><audio id="audio23" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8022/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Faisalabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio27" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Multan</td>
+        </tr>
+<tr>
+          <td><audio id="audio26" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8028/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Mianwali</td>
+        </tr>
+<tr>
+          <td><audio id="audio22" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8066/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 93 Chitral</td>
+        </tr>
+<tr>
+          <td><audio id="audio1" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://n13.radiojar.com/0tpy1h0kxtzuv?rj-ttl=5&amp;rj-tok=AAABmGWzgMEA_wJ70s6N_TYhlA"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">#radio quran</td>
+        </tr>
+<tr>
+          <td><audio id="audio97" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8068/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Kohat</td>
+        </tr>
+<tr>
+          <td><audio id="audio92" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8058/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Quetta</td>
+        </tr>
+<tr>
+          <td><audio id="audio85" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8038/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Sialkot</td>
+        </tr>
+<tr>
+          <td><audio id="audio65" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://samaapew107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">SAMAA FM Peshawar 107.4</td>
+        </tr>
+<tr>
+          <td><audio id="audio2001" preload="none" data-logo="/pakstream/images/stations/100-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">100 FM (Lahore)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2002" preload="none" data-logo="/pakstream/images/stations/101-fm-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">101 FM (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2003" preload="none" data-logo="/pakstream/images/stations/aladin.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Aladin Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio2004" preload="none" data-logo="/pakstream/images/stations/apna-107.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Apna</td>
+        </tr>
+<tr>
+          <td><audio id="audio2005" preload="none" data-logo="/pakstream/images/stations/apna-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Apna FM (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2006" preload="none" data-logo="/pakstream/images/stations/big.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Big FM</td>
+        </tr>
+<tr>
+          <td><audio id="audio2007" preload="none" data-logo="/pakstream/images/stations/city-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">City (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2008" preload="none" data-logo="/pakstream/images/stations/city-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">City (Lahore)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2009" preload="none" data-logo="/pakstream/images/stations/fm-100.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 100</td>
+        </tr>
+        <tr>
+          <td><audio id="audio2011" preload="none" data-logo="/pakstream/images/stations/radio-1.png" src="https://cc.vmakerhost.com/proxy/karachi?mp=/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 91 (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2012" preload="none" data-logo="/pakstream/images/stations/91-lahore.png" src="https://cc.vmakerhost.com/proxy/lahore?mp=/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 91 (Lahore)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2013" preload="none" data-logo="/pakstream/images/stations/karachi-fm-live.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM Karachi Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio2014" preload="none" data-logo="/pakstream/images/stations/fm-world.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM World</td>
+        </tr>
+<tr>
+          <td><audio id="audio2015" preload="none" data-logo="/pakstream/images/stations/funcafe.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FunCafe Web Radio</td>
+        </tr>
+<tr>
+          <td><audio id="audio2016" preload="none" data-logo="/pakstream/images/stations/hot-fm.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Hot FM</td>
+        </tr>
+<tr>
+          <td><audio id="audio2017" preload="none" data-logo="/pakstream/images/stations/hot-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Hot FM (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2018" preload="none" data-logo="/pakstream/images/stations/mast-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Mast (Karachi)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2019" preload="none" data-logo="/pakstream/images/stations/mast-fm.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Mast FM</td>
+        </tr>
+<tr>
+          <td><audio id="audio2020" preload="none" data-logo="/pakstream/images/stations/mast-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Mast FM (Lahore)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2022" preload="none" data-logo="/pakstream/images/stations/power-99.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Power FM 99</td>
+        </tr>
+<tr>
+          <td><audio id="audio2023" preload="none" data-logo="/pakstream/images/stations/awaz-106.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Awaz</td>
+        </tr>
+<tr>
+          <td><audio id="audio2024" preload="none" data-logo="/pakstream/images/stations/radio.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio FM</td>
+        </tr>
+<tr>
+          <td><audio id="audio2025" preload="none" data-logo="/pakstream/images/stations/jeevay.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Jeevay FM</td>
+        </tr>
+<tr>
+          <td><audio id="audio2027" preload="none" data-logo="/pakstream/images/stations/pak-filmi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Pak Filmi</td>
+        </tr>
+<tr>
+          <td><audio id="audio2028" preload="none" data-logo="/pakstream/images/stations/riphah.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Riphah FM (Islamabad)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2029" preload="none" data-logo="/pakstream/images/stations/spice-fm-107.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Spice</td>
+        </tr>
+<tr>
+          <td><audio id="audio2030" preload="none" data-logo="/pakstream/images/stations/suno-urdu-live.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Suno Urdu Live</td>
+        </tr>
+<tr>
+          <td><audio id="audio2031" preload="none" data-logo="/pakstream/images/stations/sunrise-hasan-abda.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Sunrise Radio FM (Hasan Abdal)</td>
+        </tr>
+<tr>
+          <td><audio id="audio2032" preload="none" data-logo="/pakstream/images/stations/voa-deewa.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">VOA Deewa</td>
+        </tr>
+<tr>
+          <td><audio id="audio8" preload="none" data-logo="/pakstream/images/stations/city-fm.png" src="https://radio.cityfm89.com/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">City FM 89</td>
+        </tr>
+<tr>
+          <td><audio id="audio18" preload="none" data-logo="/pakstream/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:7008/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Islamabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio19" preload="none" data-logo="/pakstream/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:8048/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">FM 101 Karachi</td>
+        </tr>
+<tr>
+          <td><audio id="audio51" preload="none" data-logo="/pakstream/images/stations/pbc-lahore.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">PBC (Lahore)</td>
+        </tr>
+<tr>
+          <td><audio id="audio50" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Pakistan Islamabad</td>
+        </tr>
+<tr>
+          <td><audio id="audio59" preload="none" data-logo="/pakstream/images/default_radio.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Samaa FM 107.4</td>
+        </tr>
+<tr>
+          <td><audio id="audio40" preload="none" data-logo="/pakstream/images/stations/mera-1074.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+          <td class="station-name">Radio Mera FM</td>
+        </tr>
+        <tr>
+  <td><audio id="audio104" preload="none" data-logo="/pakstream/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:8056/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
+  <td class="station-name">FM 101 Lahore</td>
+</tr>
+      </tbody>
+    </table>
+    <p class="source-note">Source data from the <a href="https://fi1.api.radio-browser.info/json/stations/bycountry/pakistan">Radio&nbsp;Browser API</a>, the community‑curated service <a href="https://streamurl.link">StreamURL.link</a>, and Radio&nbsp;Pakistan’s <a href="https://radio.gov.pk/live-streaming">live‑streaming page</a>. Streams may be subject to change by broadcasters.</p>
+  </section>
+
+
+  <!-- Placeholder for advertising or extra content -->
+  <div class="ad-container">
+    <!-- Google AdSense: Insert your ad code here -->
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <nav class="footer-nav">
+      <a href="/pakstream/about.html">About Us</a>
+      <a href="/pakstream/contact.html">Contact</a>
+      <a href="/pakstream/privacy.html">Privacy Policy</a>
+      <a href="/pakstream/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+  <script>
+// Central radio player with favorites and deep links
+document.addEventListener('DOMContentLoaded', function() {
+  const mainPlayer = document.getElementById('radio-player');
+  const currentLabel = document.getElementById('current-station');
+  const stationLogo = document.getElementById('station-logo');
+  const defaultLogo = '/pakstream/images/default_radio.png';
+  const liveBadge = document.getElementById('live-badge');
+  const notLiveBadge = document.getElementById('not-live-badge');
+  const playButtons = Array.from(document.querySelectorAll('.play-btn'));
+  const favBtn = document.getElementById('favorite-btn');
+  const prevBtn = document.getElementById('prev-btn');
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const playPauseLabel = playPauseBtn.querySelector('.label');
+  const nextBtn = document.getElementById('next-btn');
+  const muteBtn = document.getElementById('mute-btn');
+  const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
+
+  // Insert station logos into each row before the play button
+  document.querySelectorAll('audio[data-logo]').forEach(audio => {
+    const btn = audio.parentElement.querySelector('.play-btn');
+    if (!btn) return;
+    const img = document.createElement('img');
+    img.src = audio.dataset.logo || defaultLogo;
+    img.alt = '';
+    img.className = 'station-row-logo';
+    img.width = 40;
+    img.height = 40;
+    img.loading = 'lazy';
+    audio.parentElement.insertBefore(img, btn);
+  });
+  let currentBtn = null;
+  let pendingBtn = null;
+  let resumeHandler = null;
+  let currentAudio = null;
+
+  function updateFavoritesUI() {
+    const tbody = document.querySelector('table tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr')).slice(1); // skip header
+
+    rows.forEach(row => {
+      const audio = row.querySelector('audio');
+      const id = audio?.id;
+      if (!id) return;
+      const isFav = favorites.includes(id);
+      row.classList.toggle('favorite', isFav);
+    });
+
+    if (currentAudio) {
+      const isFav = favorites.includes(currentAudio.id);
+      favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
+      favBtn.classList.toggle('favorited', isFav);
+      favBtn.disabled = false;
+      playPauseBtn.disabled = false;
+      muteBtn.disabled = false;
+    } else {
+      favBtn.textContent = 'favorite_border';
+      favBtn.classList.remove('favorited');
+      favBtn.disabled = true;
+      playPauseBtn.disabled = true;
+      muteBtn.disabled = true;
+    }
+
+    const hasStations = playButtons.length > 0;
+    prevBtn.disabled = nextBtn.disabled = !hasStations;
+
+    playPauseLabel.textContent = mainPlayer.paused ? 'play_arrow' : 'pause';
+    playPauseBtn.setAttribute('aria-label', mainPlayer.paused ? 'Play' : 'Pause');
+    muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+
+    // Move favorite rows to the top while preserving event listeners
+    rows
+      .sort((a, b) => {
+        const favA = favorites.includes(a.querySelector('audio').id);
+        const favB = favorites.includes(b.querySelector('audio').id);
+        return favB - favA; // favorites first
+      })
+      .forEach(row => tbody.appendChild(row));
+  }
+
+  function resetButton(btn) {
+    if (!btn) return;
+    btn.classList.remove('loading');
+    const label = btn.querySelector('.label');
+    if (label) label.textContent = 'play_arrow';
+    btn.setAttribute('aria-label', 'Play');
+  }
+
+  function stopStation() {
+    mainPlayer.pause();
+    mainPlayer.removeAttribute('src');
+    mainPlayer.load();
+    currentLabel.textContent = 'Select a station';
+    stationLogo.onerror = null;
+    stationLogo.src = defaultLogo;
+    stationLogo.hidden = false;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    history.replaceState(null, '', window.location.pathname);
+    resetButton(currentBtn);
+    currentBtn = null;
+    pendingBtn = null;
+    currentAudio = null;
+    updateFavoritesUI();
+  }
+
+  function loadStation(audio, name, btn) {
+    // Clean up any previous resume handler
+    if (resumeHandler) {
+      document.removeEventListener('click', resumeHandler);
+      document.removeEventListener('touchstart', resumeHandler);
+      resumeHandler = null;
+    }
+    pendingBtn = btn;
+    btn.classList.add('loading');
+    playPauseBtn.classList.add('loading');
+    stationLogo.onerror = () => {
+      stationLogo.onerror = null;
+      stationLogo.src = defaultLogo;
+    };
+    const logoSrc = audio.dataset.logo || defaultLogo;
+    stationLogo.src = logoSrc;
+    stationLogo.hidden = false;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    mainPlayer.src = audio.src;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: name,
+        artwork: [{ src: logoSrc }]
+      });
+    }
+    mainPlayer.load();
+    const playPromise = mainPlayer.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay may be blocked on some devices (e.g. mobile).
+        // Reset the button state and wait for the first user interaction
+        // before trying to play again.
+        resetButton(btn);
+        playPauseBtn.classList.remove('loading');
+
+        resumeHandler = () => {
+          btn.classList.add('loading');
+          playPauseBtn.classList.add('loading');
+          const pp = mainPlayer.play();
+          if (pp !== undefined) {
+            pp.catch(() => {
+              resetButton(btn);
+              pendingBtn = null;
+            });
+          }
+          document.removeEventListener('click', resumeHandler);
+          document.removeEventListener('touchstart', resumeHandler);
+          resumeHandler = null;
+        };
+        document.addEventListener('click', resumeHandler, { once: true });
+        document.addEventListener('touchstart', resumeHandler, { once: true });
+      });
+    }
+    currentAudio = audio;
+    currentLabel.textContent = name;
+    const newUrl = `${window.location.pathname}?station=${audio.id}`;
+    history.replaceState(null, '', newUrl);
+    updateFavoritesUI();
+  }
+
+  playButtons.forEach(btn => {
+    const audio = btn.parentElement.querySelector('audio');
+    const name = btn.closest('tr').querySelector('.station-name').textContent;
+    btn.classList.remove('material-icons');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-label', 'Play');
+    btn.innerHTML = `<span class="material-icons label">play_arrow</span><span class="spinner"></span>`;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (btn === currentBtn) {
+        stopStation();
+      } else {
+        resetButton(currentBtn);
+        loadStation(audio, name, btn);
+      }
+    });
+
+    const row = btn.closest('tr');
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      btn.click();
+    });
+  });
+
+  favBtn.addEventListener('click', () => {
+    if (!currentAudio) return;
+    const id = currentAudio.id;
+    const idx = favorites.indexOf(id);
+    if (idx >= 0) favorites.splice(idx, 1);
+    else favorites.push(id);
+    localStorage.setItem('radioFavorites', JSON.stringify(favorites));
+    updateFavoritesUI();
+  });
+
+  function playStation(offset) {
+    const audios = Array.from(document.querySelectorAll('table tbody audio'));
+    if (audios.length === 0) return;
+    const currentId = currentAudio ? currentAudio.id : null;
+    let idx = currentId ? audios.findIndex(a => a.id === currentId) : -1;
+    if (idx === -1) {
+      idx = offset > 0 ? 0 : audios.length - 1;
+    } else {
+      idx = (idx + offset + audios.length) % audios.length;
+    }
+    const audio = audios[idx];
+    const name = audio.closest('tr').querySelector('.station-name').textContent;
+    const btn = audio.parentElement.querySelector('.play-btn');
+    resetButton(currentBtn);
+    loadStation(audio, name, btn);
+  }
+
+  prevBtn.addEventListener('click', () => playStation(-1));
+  nextBtn.addEventListener('click', () => playStation(1));
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('previoustrack', () => playStation(-1));
+    navigator.mediaSession.setActionHandler('nexttrack', () => playStation(1));
+  }
+
+  playPauseBtn.addEventListener('click', () => {
+    if (mainPlayer.paused) {
+      const label = currentBtn?.querySelector('.label');
+      if (label) label.textContent = 'stop';
+      currentBtn?.setAttribute('aria-label', 'Stop');
+      playPauseBtn.classList.add('loading');
+      currentBtn?.classList.add('loading');
+      mainPlayer.play();
+    } else {
+      mainPlayer.pause();
+    }
+  });
+
+  muteBtn.addEventListener('click', () => {
+    mainPlayer.muted = !mainPlayer.muted;
+    muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+  });
+
+  mainPlayer.addEventListener('playing', () => {
+    playPauseLabel.textContent = 'pause';
+    playPauseBtn.classList.remove('loading');
+    playPauseBtn.setAttribute('aria-label', 'Pause');
+    liveBadge.hidden = false;
+    notLiveBadge.hidden = true;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'playing';
+    }
+    if (pendingBtn) {
+      if (currentBtn && currentBtn !== pendingBtn) {
+        resetButton(currentBtn);
+      }
+      pendingBtn.classList.remove('loading');
+      pendingBtn.querySelector('.label').textContent = 'stop';
+      pendingBtn.setAttribute('aria-label', 'Stop');
+      currentBtn = pendingBtn;
+      pendingBtn = null;
+    } else if (currentBtn) {
+      currentBtn.classList.remove('loading');
+      currentBtn.querySelector('.label').textContent = 'stop';
+      currentBtn.setAttribute('aria-label', 'Stop');
+    }
+  });
+
+    mainPlayer.addEventListener('waiting', () => {
+      liveBadge.hidden = true;
+      notLiveBadge.hidden = false;
+      playPauseBtn.classList.add('loading');
+      const targetBtn = pendingBtn || currentBtn;
+      targetBtn?.classList.add('loading');
+    });
+
+  mainPlayer.addEventListener('pause', () => {
+    if (!mainPlayer.src) return;
+    resetButton(currentBtn);
+    playPauseLabel.textContent = 'play_arrow';
+    playPauseBtn.classList.remove('loading');
+    playPauseBtn.setAttribute('aria-label', 'Play');
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'paused';
+    }
+  });
+
+  mainPlayer.addEventListener('error', () => {
+    resetButton(pendingBtn || currentBtn);
+    playPauseBtn.classList.remove('loading');
+    playPauseLabel.textContent = 'play_arrow';
+    playPauseBtn.setAttribute('aria-label', 'Play');
+    currentBtn = null;
+    pendingBtn = null;
+    currentAudio = null;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    stationLogo.onerror = null;
+    stationLogo.src = defaultLogo;
+    stationLogo.hidden = false;
+    updateFavoritesUI();
+  });
+
+  updateFavoritesUI();
+
+  const params = new URLSearchParams(window.location.search);
+  const initial = params.get('station');
+  if (initial) {
+    const audio = document.getElementById(initial);
+    if (audio) {
+      const name = audio.closest('tr').querySelector('.station-name').textContent;
+      const btn = audio.parentElement.querySelector('.play-btn');
+      resetButton(currentBtn);
+      loadStation(audio, name, btn);
+    }
+  } else {
+    const rows = document.querySelectorAll('table tbody tr');
+    if (rows.length > 1) {
+      const firstRow = rows[1]; // first station after the header row
+      const audio = firstRow.querySelector('audio');
+      const btn = firstRow.querySelector('.play-btn');
+      const name = firstRow.querySelector('.station-name').textContent;
+      resetButton(currentBtn);
+      loadStation(audio, name, btn);
+    }
+  }
+});
+  </script>
+  <script src="/pakstream/js/menu.js"></script>
+  <script src="/pakstream/js/lazyload.js"></script>
+</body>
+</html>
+

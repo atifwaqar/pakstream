@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Standard Meta -->
+  <title>PakStream TV - Watch Pakistani TV Channels Live</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="title" content="PakStream TV - Watch Pakistani TV Channels Live" />
+  <meta name="description" content="Your source for live Pakistani news, entertainment, and drama channels abroad." />
+  <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani YouTubers, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows" />
+  <meta name="author" content="PakStream by Chatdroid AB" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://neurolingo.cc/pakstream/tv.html" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://neurolingo.cc/pakstream/tv.html" />
+  <meta property="og:title" content="PakStream TV - Watch Pakistani TV Channels Live" />
+  <meta property="og:description" content="Your source for live Pakistani news, entertainment, and drama channels abroad." />
+  <meta property="og:image" content="https://neurolingo.cc/assets/pakstream-banner.jpg" />
+  <meta property="og:site_name" content="PakStream" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://neurolingo.cc/pakstream/tv.html" />
+  <meta name="twitter:title" content="PakStream TV - Watch Pakistani TV Channels Live" />
+  <meta name="twitter:description" content="Your source for live Pakistani news, entertainment, and drama channels abroad." />
+  <meta name="twitter:image" content="https://neurolingo.cc/assets/pakstream-banner.jpg" />
+  <meta name="twitter:site" content="@PakStream" />
+  <meta name="twitter:creator" content="@PakStream" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "PakStream",
+    "url": "https://neurolingo.cc/",
+    "logo": "https://neurolingo.cc/assets/logo.png",
+    "sameAs": [
+      "https://facebook.com/PakStream",
+      "https://twitter.com/PakStream"
+    ]
+  }
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5427964157655690" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <div class="logo-title">
+      <h1>PakStream</h1>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/pakstream/youtube.html">YouTube</a></li>
+        <li><a href="/pakstream/tv.html">TV</a></li>
+        <li><a href="/pakstream/radio.html">Radio</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/pakstream/about.html">About</a></li>
+        <li><a href="/pakstream/contact.html">Contact</a></li>
+        <li><a href="/pakstream/privacy.html">Privacy</a></li>
+        <li><a href="/pakstream/terms.html">Terms</a></li>
+      </ul>
+    </nav>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+  <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
+
+
+  <!-- TV Livestream section -->
+  <section class="youtube-section">
+    <div class="channel-list">
+      <div class="channel-card" onclick="showStream('geo', this)">Geo News</div>
+      <div class="channel-card" onclick="showStream('ary', this)">ARY News</div>
+      <div class="channel-card" onclick="showStream('express', this)">Express News</div>
+      <div class="channel-card" onclick="showStream('bol', this)">BOL News</div>
+      <div class="channel-card" onclick="showStream('gnn', this)">GNN</div>
+      <div class="channel-card" onclick="showStream('sama', this)">SAMAA TV</div>
+      <div class="channel-card" onclick="showStream('24news', this)">24 News</div>
+      <div class="channel-card" onclick="showStream('ptv', this)">PTV News</div>
+      <div class="channel-card" onclick="showStream('hum', this)">HUM News</div>
+      <div class="channel-card" onclick="showStream('dunya', this)">Dunya News</div>
+      <div class="channel-card" onclick="showStream('92', this)">92 News</div>
+    </div>
+    <div class="video-section">
+      <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()">Channels</button>
+      <div id="geo" class="live-player">
+        <iframe
+          id="geo-player"
+          data-src="https://www.youtube.com/embed/O3DPVlynUM0?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="ary" class="live-player" style="display:none;">
+        <iframe
+          id="ary-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCMmpLL2ucRHAXbNHiCPyIyg&enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="express" class="live-player" style="display:none;">
+        <iframe
+          id="express-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCTur7oM6mLL0rM2k0znuZpQ&enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="bol" class="live-player" style="display:none;">
+        <iframe
+          id="bol-player"
+          data-src="https://www.youtube.com/embed/YirtbHvyaxY?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="gnn" class="live-player" style="display:none;">
+        <iframe
+          id="gnn-player"
+          data-src="https://www.youtube.com/embed/2bk3gVrO8aQ?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="sama" class="live-player" style="display:none;">
+        <iframe
+          id="sama-player"
+          data-src="https://www.youtube.com/embed/d9-ABo3E2sU?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="24news" class="live-player" style="display:none;">
+        <iframe
+          id="24news-player"
+          data-src="https://www.youtube.com/embed/tG2nE5C5TUk?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="ptv" class="live-player" style="display:none;">
+        <iframe
+          id="ptv-player"
+          data-src="https://www.youtube.com/embed/iGOhgkuN-Mc?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="hum" class="live-player" style="display:none;">
+        <iframe
+          id="hum-player"
+          data-src="https://www.youtube.com/embed/-6o5mV_5wGw?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="dunya" class="live-player" style="display:none;">
+        <iframe
+          id="dunya-player"
+          data-src="https://www.youtube.com/embed/GlHSFtTFfJE?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="92" class="live-player" style="display:none;">
+        <iframe
+          id="92-player"
+          data-src="https://www.youtube.com/embed/LnD0uWQ2MR0?enablejsapi=1&origin=https://neurolingo.cc"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-container">
+    <!-- AdSense area -->
+  </div>
+
+  <footer>
+    <nav class="footer-nav">
+      <a href="/pakstream/about.html">About Us</a>
+      <a href="/pakstream/contact.html">Contact</a>
+      <a href="/pakstream/privacy.html">Privacy Policy</a>
+      <a href="/pakstream/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+
+  <!-- Load YouTube Iframe API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    const players = {};
+    const tvAnchorMap = {
+      geo: 'geo',
+      ary: 'ary',
+      express: 'express',
+      bol: 'bol',
+      gnn: 'gnn',
+      sama: 'sama',
+      '24news': '24news',
+      ptv: 'ptv',
+      hum: 'hum',
+      dunya: 'dunya',
+      '92': '92'
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || 'geo';
+
+    function loadPlayer(id) {
+      const iframe = document.getElementById(`${id}-player`);
+      if (iframe.dataset.src && !iframe.src) {
+        iframe.src = iframe.dataset.src;
+      }
+      players[iframe.id] = new YT.Player(iframe.id, {
+        playerVars: { autoplay: 1 },
+        events: {
+          onReady: event => event.target.playVideo()
+        }
+      });
+    }
+
+    function onYouTubeIframeAPIReady() {
+      const initialCard = document.querySelector(`.channel-card[onclick*="${initialChannel}"]`) ||
+        document.querySelector('.channel-card');
+      showStream(initialChannel, initialCard);
+    }
+
+    function showStream(id, element) {
+      // Hide all video divs
+      document.querySelectorAll('.live-player').forEach(div => div.style.display = 'none');
+
+      // Remove active class
+      document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+
+      // Pause all players
+      for (const key in players) {
+        if (players[key].pauseVideo) {
+          players[key].pauseVideo();
+        }
+      }
+
+      // Show selected stream
+      document.getElementById(id).style.display = 'block';
+      if (element) element.classList.add('active');
+
+      // Load or play selected stream
+      const playerId = `${id}-player`;
+      if (players[playerId]) {
+        if (players[playerId].playVideo) {
+          players[playerId].playVideo();
+        }
+      } else if (typeof YT !== 'undefined' && YT.Player) {
+        loadPlayer(id);
+      }
+
+      // Update URL without reloading
+      const newUrl = `${window.location.pathname}?tvchannel=${id}`;
+      history.replaceState(null, '', newUrl);
+
+      // Close channel list on small screens
+      if (window.innerWidth <= 768) {
+        const list = document.querySelector('.channel-list');
+        list.classList.remove('open');
+        document.getElementById('toggle-channels').textContent = 'Channels';
+      }
+    }
+
+    function toggleChannelList() {
+      const list = document.querySelector('.channel-list');
+      const btn = document.getElementById('toggle-channels');
+      list.classList.toggle('open');
+      btn.textContent = list.classList.contains('open') ? 'Close Channels' : 'Channels';
+    }
+
+    document.addEventListener('click', function(e) {
+      const list = document.querySelector('.channel-list');
+      const btn = document.getElementById('toggle-channels');
+      if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
+        list.classList.remove('open');
+        btn.textContent = 'Channels';
+      }
+    });
+  </script>
+  <script src="/pakstream/js/menu.js"></script>
+  <script src="/pakstream/js/lazyload.js"></script>
+</body>
+</html>
