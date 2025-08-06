@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Standard Meta -->
+  <title>{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; YouTube' }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="title" content="{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; YouTube' }}">
+  <meta name="description" content="{{ page.description | default: 'Stream Pakistani TV channels, radio stations, and political YouTube talk shows—everything in one place. Stay connected wherever you are.' }}">
+  <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani YouTubers, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
+  <meta name="author" content="PakStream by Chatdroid AB">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ page.url | absolute_url }}" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; YouTube' }}">
+  <meta property="og:description" content="{{ page.description | default: 'Stream Pakistani TV channels, radio stations, and political YouTube talk shows—everything in one place. Stay connected wherever you are.' }}">
+  <meta property="og:image" content="https://pakstream.com/assets/pakstream-banner.jpg">
+  <meta property="og:site_name" content="PakStream">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="{{ page.url | absolute_url }}">
+  <meta name="twitter:title" content="{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; YouTube' }}">
+  <meta name="twitter:description" content="{{ page.description | default: 'Stream Pakistani TV channels, radio stations, and political YouTube talk shows—everything in one place. Stay connected wherever you are.' }}">
+  <meta name="twitter:image" content="https://pakstream.com/assets/pakstream-banner.jpg">
+  <meta name="twitter:site" content="@PakStream">
+  <meta name="twitter:creator" content="@PakStream">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "PakStream",
+    "url": "https://pakstream.com/",
+    "logo": "https://pakstream.com/assets/logo.png",
+    "sameAs": [
+      "https://facebook.com/PakStream",
+      "https://twitter.com/PakStream"
+    ]
+  }
+  </script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5427964157655690"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <div class="logo-title">
+      <h1>PakStream</h1>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/youtube.html">YouTube</a></li>
+        <li><a href="/tv.html">TV</a></li>
+        <li><a href="/radio.html">Radio</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+      </ul>
+    </nav>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+  <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
+
+  <main>
+    {{ content }}
+  </main>
+
+  <footer>
+    <nav class="footer-nav">
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+  <script src="/js/menu.js"></script>
+  <script src="/js/lazyload.js"></script>
+</body>
+</html>
