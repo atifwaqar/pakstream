@@ -77,28 +77,94 @@
   <!-- TV Livestream section -->
   <section class="youtube-section">
     <div class="channel-list">
-      <div class="channel-card" onclick="showStream('24news', this)">24 News</div>
-      <div class="channel-card" onclick="showStream('92', this)">92 News</div>
-      <div class="channel-card" onclick="showStream('abbtakk', this)">Abb Takk News</div>
-      <div class="channel-card" onclick="showStream('ary', this)">ARY News</div>
-      <div class="channel-card" onclick="showStream('bol', this)">BOL News</div>
-      <div class="channel-card" onclick="showStream('channel5', this)">Channel 5</div>
-      <div class="channel-card" onclick="showStream('dawn', this)">Dawn News</div>
-      <div class="channel-card" onclick="showStream('dunya', this)">Dunya News</div>
-      <div class="channel-card" onclick="showStream('express', this)">Express News</div>
-      <div class="channel-card" onclick="showStream('geo', this)">Geo News</div>
-      <div class="channel-card" onclick="showStream('gnn', this)">GNN</div>
-      <div class="channel-card" onclick="showStream('hum', this)">HUM News</div>
-      <div class="channel-card" onclick="showStream('khyber', this)">Khyber News</div>
-      <div class="channel-card" onclick="showStream('ktn', this)">KTN News</div>
-      <div class="channel-card" onclick="showStream('lahore', this)">Lahore News</div>
-      <div class="channel-card" onclick="showStream('ptv', this)">PTV News</div>
-      <div class="channel-card" onclick="showStream('public', this)">Public News</div>
-      <div class="channel-card" onclick="showStream('rohi', this)">Rohi</div>
-      <div class="channel-card" onclick="showStream('sama', this)">SAMAA TV</div>
-      <div class="channel-card" onclick="showStream('sindh', this)">Sindh TV</div>
-      <div class="channel-card" onclick="showStream('such', this)">Such TV</div>
-      <div class="channel-card" onclick="showStream('vsh', this)">VSH News</div>
+      <div class="channel-card" data-id="24news" onclick="showStream('24news', this)">
+        <span class="channel-name">24 News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, '24news')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="92" onclick="showStream('92', this)">
+        <span class="channel-name">92 News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, '92')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="abbtakk" onclick="showStream('abbtakk', this)">
+        <span class="channel-name">Abb Takk News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'abbtakk')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="ary" onclick="showStream('ary', this)">
+        <span class="channel-name">ARY News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'ary')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="bol" onclick="showStream('bol', this)">
+        <span class="channel-name">BOL News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'bol')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="channel5" onclick="showStream('channel5', this)">
+        <span class="channel-name">Channel 5</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'channel5')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="dawn" onclick="showStream('dawn', this)">
+        <span class="channel-name">Dawn News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'dawn')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="dunya" onclick="showStream('dunya', this)">
+        <span class="channel-name">Dunya News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'dunya')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="express" onclick="showStream('express', this)">
+        <span class="channel-name">Express News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'express')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="geo" onclick="showStream('geo', this)">
+        <span class="channel-name">Geo News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'geo')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="gnn" onclick="showStream('gnn', this)">
+        <span class="channel-name">GNN</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'gnn')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="hum" onclick="showStream('hum', this)">
+        <span class="channel-name">HUM News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'hum')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="khyber" onclick="showStream('khyber', this)">
+        <span class="channel-name">Khyber News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'khyber')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="ktn" onclick="showStream('ktn', this)">
+        <span class="channel-name">KTN News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'ktn')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="lahore" onclick="showStream('lahore', this)">
+        <span class="channel-name">Lahore News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'lahore')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="ptv" onclick="showStream('ptv', this)">
+        <span class="channel-name">PTV News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'ptv')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="public" onclick="showStream('public', this)">
+        <span class="channel-name">Public News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'public')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="rohi" onclick="showStream('rohi', this)">
+        <span class="channel-name">Rohi</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'rohi')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="sama" onclick="showStream('sama', this)">
+        <span class="channel-name">SAMAA TV</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'sama')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="sindh" onclick="showStream('sindh', this)">
+        <span class="channel-name">Sindh TV</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'sindh')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="such" onclick="showStream('such', this)">
+        <span class="channel-name">Such TV</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'such')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
+      <div class="channel-card" data-id="vsh" onclick="showStream('vsh', this)">
+        <span class="channel-name">VSH News</span>
+        <button class="fav-btn material-icons" onclick="toggleFavorite(event, 'vsh')" aria-label="Toggle favorite">favorite_border</button>
+      </div>
     </div>
     <div class="video-section">
       <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()">Channels</button>
@@ -321,6 +387,37 @@
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     const players = {};
+    const favorites = JSON.parse(localStorage.getItem('tvFavorites') || '[]');
+
+    function updateFavoritesUI() {
+      const list = document.querySelector('.channel-list');
+      const cards = Array.from(list.querySelectorAll('.channel-card'));
+      const favFragment = document.createDocumentFragment();
+      const otherFragment = document.createDocumentFragment();
+
+      cards.forEach(card => {
+        const id = card.dataset.id;
+        const btn = card.querySelector('.fav-btn');
+        const isFav = favorites.includes(id);
+        card.classList.toggle('favorite', isFav);
+        btn.textContent = isFav ? 'favorite' : 'favorite_border';
+        (isFav ? favFragment : otherFragment).appendChild(card);
+      });
+
+      list.appendChild(favFragment);
+      list.appendChild(otherFragment);
+    }
+
+    function toggleFavorite(event, id) {
+      event.stopPropagation();
+      const idx = favorites.indexOf(id);
+      if (idx >= 0) favorites.splice(idx, 1);
+      else favorites.push(id);
+      localStorage.setItem('tvFavorites', JSON.stringify(favorites));
+      updateFavoritesUI();
+    }
+
+    updateFavoritesUI();
     const tvAnchorMap = {
       '24news': '24news',
       '92': '92',
@@ -373,7 +470,7 @@
     }
 
     window.onYouTubeIframeAPIReady = function() {
-      const initialCard = document.querySelector(`.channel-card[onclick*="${initialChannel}"]`) ||
+      const initialCard = document.querySelector(`.channel-card[data-id="${initialChannel}"]`) ||
         document.querySelector('.channel-card');
       showStream(initialChannel, initialCard, true);
     };

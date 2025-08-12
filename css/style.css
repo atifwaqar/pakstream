@@ -249,6 +249,19 @@ section {
   cursor: pointer;
   transition: box-shadow 0.2s, background 0.2s;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.youtube-section .channel-card .fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  margin-left: 8px;
+  font-size: 20px;
 }
 
 .youtube-section .channel-card:hover {
@@ -257,6 +270,15 @@ section {
 
 .youtube-section .channel-card.active {
   background: var(--primary);
+  color: var(--on-primary);
+}
+
+.youtube-section .channel-card.favorite {
+  background: var(--favorite-row);
+  color: var(--on-primary);
+}
+
+.youtube-section .channel-card.favorite .fav-btn {
   color: var(--on-primary);
 }
 
