@@ -39,7 +39,7 @@ In this blog, I’ll be sharing:
 - Recommendations, radio stations, YouTubers, TV channels
 - Messages from users like you who share feedback and ideas
 
-If you're looking to [watch Pakistani TV channels live](/tv.html), check out our TV section where you can stream Urdu news and dramas online. We've also written about [popular Pakistani YouTubers that every expat should follow](/blog/2025/07/31/youtubers-for-news.html).
+If you're looking to [watch Pakistani TV channels live](/livetv.html), check out our TV section where you can stream Urdu news and dramas online. We've also written about [popular Pakistani YouTubers that every expat should follow](/blog/2025/07/31/youtubers-for-news.html).
 
 It’s also a space to **connect with like-minded Pakistanis abroad**. If you relate to any of this, drop a comment, say hello, or share a suggestion. I genuinely read them all, and many of the features on the site are inspired by conversations I’ve had with people just like you.
 
