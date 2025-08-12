@@ -1,5 +1,5 @@
 /* Refactored style.css with improved readability & polished UI/UX */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+/* Roboto font loaded asynchronously via HTML link tags */
 
 :focus-visible {
   outline: 2px dashed var(--accent-link);
