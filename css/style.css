@@ -684,6 +684,12 @@ table tbody tr.favorite {
     padding: 8px 0;
   }
 
+  .top-bar nav a:hover,
+  .top-bar nav a:focus,
+  .top-bar nav a.active {
+    color: var(--accent-link);
+  }
+
   .nav-overlay {
     position: fixed;
     top: 56px;
