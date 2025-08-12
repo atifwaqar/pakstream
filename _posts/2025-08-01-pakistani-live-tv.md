@@ -27,7 +27,7 @@ It’s frustrating, especially when all you want is to quickly catch up on what�
 
 Since I was already building [PakStream](https://www.pakstream.com) to stream Pakistani FM radio and curate reliable YouTube journalists, I figured, why not add **live TV channels** too?
 
-Just like the radio and YouTube sections, I wanted this to be:
+Just like the radio and Free Press sections, I wanted this to be:
 
 - **Clean**  
 - **One-click easy**  
@@ -55,7 +55,7 @@ Each one opens in a separate, mobile-friendly player, so whether you’re at wor
 👉 **Explore the TV section now:**
 [https://www.pakstream.com](https://www.pakstream.com)
 
-Looking for commentary beyond TV? Visit our [YouTube news section](/youtube.html) or read about [Pakistani YouTubers for news that every expat should follow](/blog/2025/07/31/youtubers-for-news.html).
+Looking for commentary beyond TV? Visit our [Free Press news section](/freepress.html) or read about [Pakistani YouTubers for news that every expat should follow](/blog/2025/07/31/youtubers-for-news.html).
 
 ## Built for People Like Us
 

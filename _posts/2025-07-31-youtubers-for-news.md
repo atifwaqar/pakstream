@@ -20,10 +20,10 @@ Like many Pakistanis, I’ve found myself turning more and more toward **indepen
 
 For example:
 
-- [Imran Riaz Khan](https://pakstream.com/youtube.html?newsanchor=ImranRiazKhan) talks about judiciary and civil-military issues with courage.  
-- [Sabir Shakir](https://pakstream.com/youtube.html?newsanchor=SabirShakir) often breaks political developments before they even make the headlines.  
-- [Sami Abraham](https://pakstream.com/youtube.html?newsanchor=SamiAbraham), [Mansoor Ali Khan](https://pakstream.com/youtube.html?newsanchor=MansoorAliKhan), [Moeed Pirzada](https://pakstream.com/youtube.html?newsanchor=MoeedPirzada), each of them brings their own style and credibility.  
-- And then there are rising voices like [Syed Ali Haider](https://pakstream.com/youtube.html?newsanchor=AliHaider), [Siddique Jaan](https://pakstream.com/youtube.html?newsanchor=SiddiqueJaan), and [Usama Ghazi](https://pakstream.com/youtube.html?newsanchor=UsamaGhazi), who cover ground realities that mainstream channels often ignore.
+- [Imran Riaz Khan](https://pakstream.com/freepress.html?newsanchor=ImranRiazKhan) talks about judiciary and civil-military issues with courage.  
+- [Sabir Shakir](https://pakstream.com/freepress.html?newsanchor=SabirShakir) often breaks political developments before they even make the headlines.  
+- [Sami Abraham](https://pakstream.com/freepress.html?newsanchor=SamiAbraham), [Mansoor Ali Khan](https://pakstream.com/freepress.html?newsanchor=MansoorAliKhan), [Moeed Pirzada](https://pakstream.com/freepress.html?newsanchor=MoeedPirzada), each of them brings their own style and credibility.  
+- And then there are rising voices like [Syed Ali Haider](https://pakstream.com/freepress.html?newsanchor=AliHaider), [Siddique Jaan](https://pakstream.com/freepress.html?newsanchor=SiddiqueJaan), and [Usama Ghazi](https://pakstream.com/freepress.html?newsanchor=UsamaGhazi), who cover ground realities that mainstream channels often ignore.
 
 These journalists are not just sources of information, they’ve become part of our daily lives.
 
@@ -42,37 +42,37 @@ I had already built PakStream to organize my favorite Pakistani radio stations. 
 So I created a new page on [PakStream](https://www.pakstream.com) where I can access all the YouTube channels I follow, all in one place. Just one clean interface with links to all the journalists I care about. No algorithm. No ads. No noise.
 
 You can access it here:  
-👉 [https://pakstream.com/youtube.html](https://pakstream.com/youtube.html)
+👉 [https://pakstream.com/freepress.html](https://pakstream.com/freepress.html)
 
 And if you want to jump straight to a specific journalist’s section, you can use a direct link like:  
-👉 [https://pakstream.com/youtube.html?newsanchor=ImranRiazKhan](https://pakstream.com/youtube.html?newsanchor=ImranRiazKhan)
+👉 [https://pakstream.com/freepress.html?newsanchor=ImranRiazKhan](https://pakstream.com/freepress.html?newsanchor=ImranRiazKhan)
 
 It’s super simple, fast, and organized.
 
 Here’s a list of some of the anchors and analysts featured, each one linked to their section:
 
-- [Imran Riaz Khan](https://pakstream.com/youtube.html?newsanchor=ImranRiazKhan)  
-- [Sabir Shakir](https://pakstream.com/youtube.html?newsanchor=SabirShakir)  
-- [Sami Abraham](https://pakstream.com/youtube.html?newsanchor=SamiAbraham)  
-- [Mansoor Ali Khan](https://pakstream.com/youtube.html?newsanchor=MansoorAliKhan)  
-- [Dr. Moeed Pirzada](https://pakstream.com/youtube.html?newsanchor=MoeedPirzada)  
-- [Mubasher Lucman](https://pakstream.com/youtube.html?newsanchor=MubasherLucman)  
-- [Faisal Warraich](https://pakstream.com/youtube.html?newsanchor=FaisalWarraich)  
-- [Abdul Qadir](https://pakstream.com/youtube.html?newsanchor=AbdulQadir)  
-- [Ansar Abbasi](https://pakstream.com/youtube.html?newsanchor=AnsarAbbasi)  
-- [Asma Shirazi](https://pakstream.com/youtube.html?newsanchor=AsmaShirazi)  
-- [Arshad Sharif](https://pakstream.com/youtube.html?newsanchor=ArshadSharif) (may Allah bless his soul)  
-- [Nasim Zehra](https://pakstream.com/youtube.html?newsanchor=NasimZehra)  
-- [Rauf Klasra](https://pakstream.com/youtube.html?newsanchor=RaufKlasra)  
-- [Syed Zaid Zaman Hamid](https://pakstream.com/youtube.html?newsanchor=ZaidHamid)  
-- [Taimur Rahman (Laal)](https://pakstream.com/youtube.html?newsanchor=TaimurRahman)  
-- [Syed Ali Haider](https://pakstream.com/youtube.html?newsanchor=AliHaider)  
-- [Siddique Jaan](https://pakstream.com/youtube.html?newsanchor=SiddiqueJaan)  
-- [Usama Ghazi](https://pakstream.com/youtube.html?newsanchor=UsamaGhazi)  
-- [Jameel Farooqui](https://pakstream.com/youtube.html?newsanchor=JameelFarooqui)  
-- [Waqar Malik](https://pakstream.com/youtube.html?newsanchor=WaqarMalik)  
-- [Syed Muzammil](https://pakstream.com/youtube.html?newsanchor=Muzammil)  
-- [Naya Daur TV](https://pakstream.com/youtube.html?newsanchor=NayaDaurTV)  
+- [Imran Riaz Khan](https://pakstream.com/freepress.html?newsanchor=ImranRiazKhan)  
+- [Sabir Shakir](https://pakstream.com/freepress.html?newsanchor=SabirShakir)  
+- [Sami Abraham](https://pakstream.com/freepress.html?newsanchor=SamiAbraham)  
+- [Mansoor Ali Khan](https://pakstream.com/freepress.html?newsanchor=MansoorAliKhan)  
+- [Dr. Moeed Pirzada](https://pakstream.com/freepress.html?newsanchor=MoeedPirzada)  
+- [Mubasher Lucman](https://pakstream.com/freepress.html?newsanchor=MubasherLucman)  
+- [Faisal Warraich](https://pakstream.com/freepress.html?newsanchor=FaisalWarraich)  
+- [Abdul Qadir](https://pakstream.com/freepress.html?newsanchor=AbdulQadir)  
+- [Ansar Abbasi](https://pakstream.com/freepress.html?newsanchor=AnsarAbbasi)  
+- [Asma Shirazi](https://pakstream.com/freepress.html?newsanchor=AsmaShirazi)  
+- [Arshad Sharif](https://pakstream.com/freepress.html?newsanchor=ArshadSharif) (may Allah bless his soul)  
+- [Nasim Zehra](https://pakstream.com/freepress.html?newsanchor=NasimZehra)  
+- [Rauf Klasra](https://pakstream.com/freepress.html?newsanchor=RaufKlasra)  
+- [Syed Zaid Zaman Hamid](https://pakstream.com/freepress.html?newsanchor=ZaidHamid)  
+- [Taimur Rahman (Laal)](https://pakstream.com/freepress.html?newsanchor=TaimurRahman)  
+- [Syed Ali Haider](https://pakstream.com/freepress.html?newsanchor=AliHaider)  
+- [Siddique Jaan](https://pakstream.com/freepress.html?newsanchor=SiddiqueJaan)  
+- [Usama Ghazi](https://pakstream.com/freepress.html?newsanchor=UsamaGhazi)  
+- [Jameel Farooqui](https://pakstream.com/freepress.html?newsanchor=JameelFarooqui)  
+- [Waqar Malik](https://pakstream.com/freepress.html?newsanchor=WaqarMalik)  
+- [Syed Muzammil](https://pakstream.com/freepress.html?newsanchor=Muzammil)  
+- [Naya Daur TV](https://pakstream.com/freepress.html?newsanchor=NayaDaurTV)  
 
 Each name links to the latest videos, so you can just open the page and watch what’s new, no searching, no subscriptions required.
 
@@ -94,9 +94,9 @@ PakStream isn’t backed by sponsors or companies. It’s a labor of love. A sma
 
 In a world full of misinformation and political noise, finding real, honest reporting is not easy. That’s why I made this tool, for myself and for every Pakistani living far from home but still deeply connected to it.
 
-Visit [PakStream](https://www.pakstream.com), explore the YouTube section, and see if it makes your daily news experience smoother and smarter. And if it does, share it with your friends abroad. Let’s help each other stay informed and connected.
+Visit [PakStream](https://www.pakstream.com), explore the Free Press section, and see if it makes your daily news experience smoother and smarter. And if it does, share it with your friends abroad. Let’s help each other stay informed and connected.
 
-If you're looking to [watch Pakistani TV channels live](/tv.html), check out our TV section where you can stream Urdu news and dramas online. We’ve also shared why we added [Pakistani live TV channels to PakStream](/blog/2025/08/01/pakistani-live-tv.html).
+If you're looking to [watch Pakistani TV channels live](/livetv.html), check out our TV section where you can stream Urdu news and dramas online. We’ve also shared why we added [Pakistani live TV channels to PakStream](/blog/2025/08/01/pakistani-live-tv.html).
 
 ---
 
