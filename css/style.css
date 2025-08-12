@@ -90,6 +90,13 @@ footer nav a:hover {
   text-decoration: underline;
 }
 
+.top-bar nav a:hover,
+.top-bar nav a:focus,
+.top-bar nav a.active {
+  color: var(--on-primary);
+  text-decoration: underline;
+}
+
 /* Keep existing styles untouched below here */
 /* The rest of the existing style.css remains the same... */
 
