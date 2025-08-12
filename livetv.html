@@ -443,8 +443,9 @@
       vsh: 'vsh'
     };
     const urlParams = new URLSearchParams(window.location.search);
-    const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || 'geo';
-    if (!urlParams.has('tvchannel')) {
+    const defaultChannel = document.querySelector('.channel-card')?.dataset.id;
+    const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || defaultChannel;
+    if (!urlParams.has('tvchannel') && initialChannel) {
       history.replaceState(null, '', `${window.location.pathname}?tvchannel=${initialChannel}`);
     }
 
@@ -472,7 +473,10 @@
     window.onYouTubeIframeAPIReady = function() {
       const initialCard = document.querySelector(`.channel-card[data-id="${initialChannel}"]`) ||
         document.querySelector('.channel-card');
-      showStream(initialChannel, initialCard, true);
+      const channelId = initialCard?.dataset.id;
+      if (channelId) {
+        showStream(channelId, initialCard, true);
+      }
     };
 
     function showStream(id, element, muteOnLoad = false) {
