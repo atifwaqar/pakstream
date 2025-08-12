@@ -519,7 +519,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function updateFavoritesUI() {
     const tbody = document.querySelector('table tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr')).slice(1); // skip header
+    // Grab all rows except the header so we can batch their reordering
+    const rows = Array.from(tbody.querySelectorAll('tr')).slice(1);
+    const favFragment = document.createDocumentFragment();
+    const otherFragment = document.createDocumentFragment();
 
     rows.forEach(row => {
       const audio = row.querySelector('audio');
@@ -527,7 +530,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!id) return;
       const isFav = favorites.includes(id);
       row.classList.toggle('favorite', isFav);
+      (isFav ? favFragment : otherFragment).appendChild(row);
     });
+
+    // Re-attach rows in a single pass to minimize layout reflows
+    tbody.appendChild(favFragment);
+    tbody.appendChild(otherFragment);
 
     if (currentAudio) {
       const isFav = favorites.includes(currentAudio.id);
@@ -550,15 +558,6 @@ document.addEventListener('DOMContentLoaded', function() {
     playPauseLabel.textContent = mainPlayer.paused ? 'play_arrow' : 'pause';
     playPauseBtn.setAttribute('aria-label', mainPlayer.paused ? 'Play' : 'Pause');
     muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
-
-    // Move favorite rows to the top while preserving event listeners
-    rows
-      .sort((a, b) => {
-        const favA = favorites.includes(a.querySelector('audio').id);
-        const favB = favorites.includes(b.querySelector('audio').id);
-        return favB - favA; // favorites first
-      })
-      .forEach(row => tbody.appendChild(row));
   }
 
   function resetButton(btn) {
