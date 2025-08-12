@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var label = document.querySelector('.nav-toggle-label');
   if (!navToggle || !nav || !label) return;
 
-  var currentPath = window.location.pathname.replace(/\/$/, '/index.html');
+  var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
   links.forEach(function (link) {
     if (link.getAttribute('href') === currentPath) {
@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   var topBar = document.querySelector('.top-bar');
-  var homePaths = ['/index.html', '/index.html'];
+  var homePaths = ['/', '/'];
   if (topBar && label && homePaths.indexOf(currentPath) === -1) {
     var backBtn = document.createElement('a');
-    backBtn.href = '/index.html';
+    backBtn.href = '/';
     backBtn.className = 'back-button';
     backBtn.textContent = '←';
     backBtn.addEventListener('click', function (e) {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = '/index.html';
+        window.location.href = '/';
       }
     });
     topBar.insertBefore(backBtn, label.nextSibling);
