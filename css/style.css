@@ -38,7 +38,7 @@ body {
   z-index: 1002;
 }
 
-.logo-title h1 {
+.logo-title {
   font-size: 1.25rem;
   margin: 0;
   line-height: 56px;
@@ -59,31 +59,22 @@ body {
   text-decoration: none;
 }
 
-nav {
+.top-bar nav {
   flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   transition: transform 0.4s ease-in-out;
 }
 
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-nav li {
-  margin-right: 16px;
-}
-
-nav a {
+.top-bar nav a {
   color: var(--on-primary);
   text-decoration: none;
   font-weight: 500;
 }
 
-nav a:hover,
-nav a.active,
+.top-bar nav a:hover,
+.top-bar nav a.active,
 .post-share a:hover,
 footer nav a:hover {
   color: var(--accent-link);
@@ -342,6 +333,9 @@ section {
     overflow-y: auto;
     padding: 16px 8px;
     z-index: 1001;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
   }
   .youtube-section .channel-list.open {
     transform: translateX(0);
@@ -640,7 +634,7 @@ table tbody tr.favorite {
     margin: 15px 0;
   }
 
-  nav {
+  .top-bar nav {
     position: fixed;
     top: 56px;
     left: 0;
@@ -653,22 +647,16 @@ table tbody tr.favorite {
     will-change: transform;
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
     z-index: 1001;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
   }
 
   #nav-toggle:checked ~ nav {
     transform: translateX(0);
   }
 
-  nav ul {
-    flex-direction: column;
-    padding: 16px;
-  }
-
-  nav li {
-    margin: 8px 0;
-  }
-
-  nav a {
+  .top-bar nav a {
     color: var(--on-surface);
     display: block;
     padding: 8px 0;
@@ -697,10 +685,8 @@ table tbody tr.favorite {
   .back-button {
     display: none;
   }
-  nav {
+  .top-bar nav {
     margin-left: auto;
-  }
-  nav ul {
     justify-content: flex-end;
     flex-wrap: nowrap;
   }
