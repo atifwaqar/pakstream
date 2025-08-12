@@ -88,6 +88,17 @@
       <div class="channel-card" onclick="showStream('hum', this)">HUM News</div>
       <div class="channel-card" onclick="showStream('dunya', this)">Dunya News</div>
       <div class="channel-card" onclick="showStream('92', this)">92 News</div>
+      <div class="channel-card" onclick="showStream('dawn', this)">Dawn News</div>
+      <div class="channel-card" onclick="showStream('abbtakk', this)">Abb Takk News</div>
+      <div class="channel-card" onclick="showStream('channel5', this)">Channel 5</div>
+      <div class="channel-card" onclick="showStream('ktn', this)">KTN News</div>
+      <div class="channel-card" onclick="showStream('khyber', this)">Khyber News</div>
+      <div class="channel-card" onclick="showStream('lahore', this)">Lahore News</div>
+      <div class="channel-card" onclick="showStream('public', this)">Public News</div>
+      <div class="channel-card" onclick="showStream('rohi', this)">Rohi</div>
+      <div class="channel-card" onclick="showStream('sindh', this)">Sindh TV</div>
+      <div class="channel-card" onclick="showStream('such', this)">Such TV</div>
+      <div class="channel-card" onclick="showStream('vsh', this)">VSH News</div>
     </div>
     <div class="video-section">
       <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()">Channels</button>
@@ -190,6 +201,105 @@
           allow="autoplay"
           allowfullscreen></iframe>
       </div>
+      <div id="dawn" class="live-player" style="display:none;">
+        <iframe
+          id="dawn-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCaxR-D8FjZ-2otbU0_Y2grg&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="abbtakk" class="live-player" style="display:none;">
+        <iframe
+          id="abbtakk-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCCrWQm7bYb28S2URcSsTk9g&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="channel5" class="live-player" style="display:none;">
+        <iframe
+          id="channel5-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UC_XJhq0u8AkMaCwLDH_PjxA&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="ktn" class="live-player" style="display:none;">
+        <iframe
+          id="ktn-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCRGzK5yQvhJD9-ZYGP436JQ&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="khyber" class="live-player" style="display:none;">
+        <iframe
+          id="khyber-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCCEMt2W7Y8qXkLSTkr082mw&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="lahore" class="live-player" style="display:none;">
+        <iframe
+          id="lahore-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UC0CbUVRC1d1RvunYbp3w2qQ&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="public" class="live-player" style="display:none;">
+        <iframe
+          id="public-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCElJZvY_RVra6qjD8WSQYog&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="rohi" class="live-player" style="display:none;">
+        <iframe
+          id="rohi-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCHlCp7kL8jC9HJrSVJuNJzA&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="sindh" class="live-player" style="display:none;">
+        <iframe
+          id="sindh-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCkFGjasXNw-1MlcIW8LSTVQ&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="such" class="live-player" style="display:none;">
+        <iframe
+          id="such-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UCyNUtOyKbLZaOgy3rhe_3lQ&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
+      <div id="vsh" class="live-player" style="display:none;">
+        <iframe
+          id="vsh-player"
+          data-src="https://www.youtube.com/embed/live_stream?channel=UC8Y2g1wCIU3zUB6WGnEwtYg&enablejsapi=1&origin=https://pakstream.com"
+          src=""
+          loading="lazy"
+          allow="autoplay"
+          allowfullscreen></iframe>
+      </div>
     </div>
   </section>
 
@@ -222,7 +332,18 @@
       ptv: 'ptv',
       hum: 'hum',
       dunya: 'dunya',
-      '92': '92'
+      '92': '92',
+      dawn: 'dawn',
+      abbtakk: 'abbtakk',
+      channel5: 'channel5',
+      ktn: 'ktn',
+      khyber: 'khyber',
+      lahore: 'lahore',
+      public: 'public',
+      rohi: 'rohi',
+      sindh: 'sindh',
+      such: 'such',
+      vsh: 'vsh'
     };
     const urlParams = new URLSearchParams(window.location.search);
     const initialChannel = tvAnchorMap[urlParams.get('tvchannel')] || 'geo';
