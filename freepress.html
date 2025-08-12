@@ -405,6 +405,23 @@
     }
   });
 
+  // Allow swipe left to close the channel list on touch devices
+  let touchStartX = null;
+  const channelList = document.querySelector('.channel-list');
+  channelList.addEventListener('touchstart', (e) => {
+    if (!channelList.classList.contains('open')) return;
+    touchStartX = e.touches[0].clientX;
+  });
+  channelList.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    if (touchStartX - touchEndX > 50) {
+      channelList.classList.remove('open');
+      document.getElementById('toggle-channels').textContent = 'Channels';
+    }
+    touchStartX = null;
+  });
+
   // Read anchor from URL
   const urlParams = new URLSearchParams(window.location.search);
   const anchorKey = urlParams.get('newsanchor');
