@@ -537,6 +537,23 @@
         btn.textContent = 'Channels';
       }
     });
+
+    // Allow swipe left to close the channel list on touch devices
+    let touchStartX = null;
+    const channelList = document.querySelector('.channel-list');
+    channelList.addEventListener('touchstart', (e) => {
+      if (!channelList.classList.contains('open')) return;
+      touchStartX = e.touches[0].clientX;
+    });
+    channelList.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      if (touchStartX - touchEndX > 50) {
+        channelList.classList.remove('open');
+        document.getElementById('toggle-channels').textContent = 'Channels';
+      }
+      touchStartX = null;
+    });
   </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
