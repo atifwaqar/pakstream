@@ -408,17 +408,18 @@
   // Read anchor from URL
   const urlParams = new URLSearchParams(window.location.search);
   const anchorKey = urlParams.get('newsanchor');
+  const defaultCard = document.querySelector('.channel-card');
 
   if (anchorKey && anchorMap[anchorKey]) {
     const targetId = anchorMap[anchorKey];
-    const matchedCard = Array.from(cards).find(card => card.dataset.channelId === targetId);
+    const matchedCard = document.querySelector(`.channel-card[data-channel-id="${targetId}"]`);
     if (matchedCard) {
       handleChannelClick(matchedCard);
-    } else {
-      handleChannelClick(cards[0]);
+    } else if (defaultCard) {
+      handleChannelClick(defaultCard);
     }
-  } else {
-  handleChannelClick(cards[0]);
+  } else if (defaultCard) {
+    handleChannelClick(defaultCard);
   }
 </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
