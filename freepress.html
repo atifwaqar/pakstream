@@ -422,23 +422,6 @@
     touchStartX = null;
   });
 
-  // Allow swipe right from the screen edge to open the channel list on touch devices
-  let openStartX = null;
-  document.addEventListener('touchstart', (e) => {
-    if (channelList.classList.contains('open')) return;
-    openStartX = e.touches[0].clientX;
-  });
-  document.addEventListener('touchend', (e) => {
-    if (channelList.classList.contains('open')) return;
-    if (openStartX === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    if (touchEndX - openStartX > 50 && openStartX < 50) {
-      channelList.classList.add('open');
-      document.getElementById('toggle-channels').textContent = 'Close Channels';
-    }
-    openStartX = null;
-  });
-
   // Read anchor from URL
   const urlParams = new URLSearchParams(window.location.search);
   const anchorKey = urlParams.get('newsanchor');
