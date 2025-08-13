@@ -298,29 +298,34 @@
             fetch(videosUrl)
               .then(res => res.json())
               .then(vData => {
-                ids.forEach(videoId => {
+                const entries = ids.map(videoId => {
                   const details = info[videoId];
                   const v = vData.items.find(i => i.id === videoId) || {};
-                  const viewers = v.liveStreamingDetails && v.liveStreamingDetails.concurrentViewers;
+                  const viewers = Number(v.liveStreamingDetails && v.liveStreamingDetails.concurrentViewers || 0);
+                  return { videoId, title: details.title, thumb: details.thumb, viewers };
+                });
 
+                entries.sort((a, b) => b.viewers - a.viewers);
+
+                entries.forEach(entry => {
                   const li = document.createElement('li');
                   li.className = 'stream-card';
                   const a = document.createElement('a');
                   a.href = '#';
 
                   const img = document.createElement('img');
-                  img.src = details.thumb;
-                  img.alt = details.title;
+                  img.src = entry.thumb;
+                  img.alt = entry.title;
                   a.appendChild(img);
 
                   const titleDiv = document.createElement('div');
                   titleDiv.className = 'stream-title';
-                  titleDiv.textContent = details.title;
+                  titleDiv.textContent = entry.title;
                   a.appendChild(titleDiv);
 
                   const viewerDiv = document.createElement('div');
                   viewerDiv.className = 'stream-viewers';
-                  viewerDiv.textContent = viewers ? `${Number(viewers).toLocaleString()} watching` : 'Live';
+                  viewerDiv.textContent = entry.viewers ? `${entry.viewers.toLocaleString()} watching` : 'Live';
                   a.appendChild(viewerDiv);
 
                   a.onclick = (e) => {
@@ -328,16 +333,28 @@
                     const playerId = `${id}-player`;
                     const player = players[playerId];
                     if (player && player.loadVideoById) {
-                      player.loadVideoById(videoId);
+                      player.loadVideoById(entry.videoId);
                     } else {
                       const iframe = document.getElementById(playerId);
-                      iframe.src = `https://www.youtube.com/embed/${videoId}?${YT_PARAMS}`;
+                      iframe.src = `https://www.youtube.com/embed/${entry.videoId}?${YT_PARAMS}`;
                     }
                   };
 
                   li.appendChild(a);
                   streamList.appendChild(li);
                 });
+
+                if (entries.length > 0) {
+                  const top = entries[0].videoId;
+                  const playerId = `${id}-player`;
+                  const player = players[playerId];
+                  if (player && player.loadVideoById) {
+                    player.loadVideoById(top);
+                  } else {
+                    const iframe = document.getElementById(playerId);
+                    iframe.src = `https://www.youtube.com/embed/${top}?${YT_PARAMS}`;
+                  }
+                }
               })
               .catch(() => {
                 const li = document.createElement('li');
