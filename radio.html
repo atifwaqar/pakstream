@@ -75,385 +75,212 @@
   </header>
 
   <!-- Radio station listing -->
-  <section>
-    <h2>Pakistani Radio Stations</h2>
-    <div id="player-container" class="radio-player">
-      <div class="station-info">
-        <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
-        <h3 id="current-station" class="station-title">Select a station</h3>
-        <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
-        <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
-      </div>
-      <div class="controls">
-        <button id="favorite-btn" class="favorite-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
-        <button id="prev-btn" class="fav-nav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
-        <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
-          <span class="material-icons label">play_arrow</span>
-          <span class="spinner"></span>
-        </button>
-        <button id="next-btn" class="fav-nav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
-        <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
-        <audio id="radio-player" autoplay></audio>
+  <section class="youtube-section">
+    <div class="channel-list">
+      
+        
+<div class="channel-card"><span class="station-name">Hum FM 106.2</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio35" preload="none" data-logo="/images/stations/hum.png" src="https://server.mediacast4u.stream/8002/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Lahore MW</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio83" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Mirpur</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio100" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8078/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Peshawar</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio95" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8070/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Mithi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio21" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8052/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 94.4</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio32" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">MW 639 Karachi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio90" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7000/MW639khi?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Multan MW</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio42" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8034/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Peshawar MW</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio96" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8072/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Quetta MW</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio93" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8060/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Azad Kashmir Radio Mirpur</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio103" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Khairpur</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio89" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8054/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Khuzdar MW 567</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio94" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8062/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Bahawalpur</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio79" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8020/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Saut-ul-Quran</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio67" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">SOUTUL QURAN PBC FM 93.4 ISLAMABAD</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio61" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Pakistan World Service</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio57" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Pakistan WS</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio58" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Islamabad Station</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio69" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 92</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio31" preload="none" data-logo="/images/default_radio.png" src="https://s33.myradiostream.com:13872/listen.m4a"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">fm...</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio30" preload="none" data-logo="/images/default_radio.png" src="https://n0e.radiojar.com/htnudfgugm8uv?rj-ttl=5&amp;rj-tok=AAABmGW6hMEAMlJqXcyhsglOrw"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Hyderabad MW 1008KHz</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio87" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8042/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Sargodha</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio86" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8040/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Abbotabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio98" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8064/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Hyderabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio88" preload="none" data-logo="/images/stations/hyderabad-fm.png" src="https://whmsonic.radio.gov.pk:8044/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Multan</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio84" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Love-Islam-Radio</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio39" preload="none" data-logo="/images/default_radio.png" src="https://stream-179.zeno.fm/f9h69cgbu68uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJmOWg2OWNnYnU2OHV2IiwiaG9zdCI6InN0cmVhbS0xNzkuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoidlJJYUZfdGRTemFUNEx4R3hkQTdqQSIsImlhdCI6MTc1NDAyMzc4NiwiZXhwIjoxNzU0MDIzODQ2fQ.UrOJY6xoG5HyvkZCUDw2v_CC9RiZWCNvgWbeAaH3MPs"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Mirpur</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio45" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">All4Masti</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio6" preload="none" data-logo="/images/default_radio.png" src="https://stream-158.zeno.fm/bahhkuge5zhvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJiYWhoa3VnZTV6aHZ2IiwiaG9zdCI6InN0cmVhbS0xNTguemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoiYkhQcHBMQTVRYnlyNGpjdlc1V2NaZyIsImlhdCI6MTc1Mzk5OTI2NiwiZXhwIjoxNzUzOTk5MzI2fQ.HifeijiDD3rrC9SBwW0DkSH-PDSZNITtHh5jwUQlXCc"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Planet FM 87.6</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio68" preload="none" data-logo="/images/stations/planet-87-6.png" src="https://whmsonic.radio.gov.pk:7042/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">ILM Radio Renala FM 92</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio36" preload="none" data-logo="/images/default_radio.png" src="https://stream-176.zeno.fm/7wre21u7xa0uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiI3d3JlMjF1N3hhMHV2IiwiaG9zdCI6InN0cmVhbS0xNzYuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoibGtRdkI4bkFUTzZGd1VvUjdqN2hHQSIsImlhdCI6MTc1NDAyNjY1MSwiZXhwIjoxNzU0MDI2NzExfQ.F9HyNOL8e9-ALqTf48RhmxMEmXy8QVhifUpD1nlsIqQ"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Pakistan Toronto</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio64" preload="none" data-logo="/images/stations/pakistan-toronto.png" src="https://s3.radio.co/s3b10a57ef/listen"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Shopen Anime Radio</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio60" preload="none" data-logo="/images/default_radio.png" src="https://s97.radiolize.com:8040/radio.mp3"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">NCAC</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio70" preload="none" data-logo="/images/stations/ncac.png" src="https://whmsonic.radio.gov.pk:7004/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">External Service</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio72" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7006/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Chalte Chalte</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio75" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7008/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Technology channel</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio74" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8094/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Sports & Health Channel</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio73" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7007/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Karachi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio24" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7022/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Lahore</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio25" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8088/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Rawalpindi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio28" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8036/relay"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Faisalabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio23" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8022/relay"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Multan</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio27" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Mianwali</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio26" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8028/relay"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 93 Chitral</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio22" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8066/relay"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">#radio quran</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio1" preload="none" data-logo="/images/default_radio.png" src="https://n13.radiojar.com/0tpy1h0kxtzuv?rj-ttl=5&amp;rj-tok=AAABmGWzgMEA_wJ70s6N_TYhlA"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Quetta</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio92" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8058/stream?type=http&amp;nocache=12"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Sialkot</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio85" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8038/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">SAMAA FM Peshawar 107.4</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio65" preload="none" data-logo="/images/default_radio.png" src="https://samaapew107-itelservices.radioca.st/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">100 FM (Lahore)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2001" preload="none" data-logo="/images/stations/100-lahore.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">101 FM (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2002" preload="none" data-logo="/images/stations/101-fm-karachi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Aladin Radio</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2003" preload="none" data-logo="/images/stations/aladin.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Apna</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2004" preload="none" data-logo="/images/stations/apna-107.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Apna FM (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2005" preload="none" data-logo="/images/stations/apna-karachi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Big FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2006" preload="none" data-logo="/images/stations/big.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">City (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2007" preload="none" data-logo="/images/stations/city-karachi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">City (Lahore)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2008" preload="none" data-logo="/images/stations/city-lahore.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 100</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2009" preload="none" data-logo="/images/stations/fm-100.png" src=""></audio>
+        </div>
+        <div class="channel-card"><span class="station-name">FM 91 (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2011" preload="none" data-logo="/images/stations/radio-1.png" src="https://cc.vmakerhost.com/proxy/karachi?mp=/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM Karachi Radio</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2013" preload="none" data-logo="/images/stations/karachi-fm-live.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM World</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2014" preload="none" data-logo="/images/stations/fm-world.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FunCafe Web Radio</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2015" preload="none" data-logo="/images/stations/funcafe.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Hot FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2016" preload="none" data-logo="/images/stations/hot-fm.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Hot FM (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2017" preload="none" data-logo="/images/stations/hot-karachi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Mast (Karachi)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2018" preload="none" data-logo="/images/stations/mast-karachi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Mast FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2019" preload="none" data-logo="/images/stations/mast-fm.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Mast FM (Lahore)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2020" preload="none" data-logo="/images/stations/mast-lahore.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Power FM 99</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2022" preload="none" data-logo="/images/stations/power-99.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Awaz</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2023" preload="none" data-logo="/images/stations/awaz-106.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2024" preload="none" data-logo="/images/stations/radio.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Jeevay FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2025" preload="none" data-logo="/images/stations/jeevay.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Pak Filmi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2027" preload="none" data-logo="/images/stations/pak-filmi.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Riphah FM (Islamabad)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2028" preload="none" data-logo="/images/stations/riphah.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Spice</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2029" preload="none" data-logo="/images/stations/spice-fm-107.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Suno Urdu Live</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2030" preload="none" data-logo="/images/stations/suno-urdu-live.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Sunrise Radio FM (Hasan Abdal)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2031" preload="none" data-logo="/images/stations/sunrise-hasan-abda.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">VOA Deewa</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio2032" preload="none" data-logo="/images/stations/voa-deewa.png" src=""></audio>
+        </div>
+<div class="channel-card"><span class="station-name">City FM 89</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio8" preload="none" data-logo="/images/stations/city-fm.png" src="https://radio.cityfm89.com/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Islamabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio18" preload="none" data-logo="/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:7008/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Karachi</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio19" preload="none" data-logo="/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:8048/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">PBC (Lahore)</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio51" preload="none" data-logo="/images/stations/pbc-lahore.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Pakistan Islamabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio50" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Samaa FM 107.4</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio59" preload="none" data-logo="/images/default_radio.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">Radio Mera FM</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio40" preload="none" data-logo="/images/stations/mera-1074.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">101 lahore</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio41" preload="none" data-logo="/images/default_radio.png" src="http://101.50.87.129:8004/101lahore"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Faisalabad</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio81" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8024/stream?type=http&nocache=14"></audio>
+        </div>
+<div class="channel-card"><span class="station-name">FM 101 Larkana</span><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button><audio id="audio20" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8050/stream"></audio>
+        </div>
+      
+    </div>
+    <div class="video-section">
+      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Stations</button>
+      <div class="live-player">
+        <div id="player-container" class="radio-player">
+          <div class="station-info">
+            <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
+            <h3 id="current-station" class="station-title">Select a station</h3>
+            <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
+            <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
+          </div>
+          <div class="controls">
+            <button id="favorite-btn" class="favorite-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
+            <button id="prev-btn" class="fav-nav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
+            <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
+              <span class="material-icons label">play_arrow</span>
+              <span class="spinner"></span>
+            </button>
+            <button id="next-btn" class="fav-nav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
+            <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
+            <audio id="radio-player" autoplay></audio>
+          </div>
+        </div>
       </div>
     </div>
-    <table>
-      <tbody>
-        <tr>
-          <th>Listen</th>
-          <th>Station</th>
-        </tr>
-<tr>
-          <td><audio id="audio35" preload="none" data-logo="/images/stations/hum.png" src="https://server.mediacast4u.stream/8002/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Hum FM 106.2</td>
-        </tr>
-<tr>
-          <td><audio id="audio83" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Lahore MW</td>
-        </tr>
-<tr>
-          <td><audio id="audio100" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8078/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Mirpur</td>
-        </tr>
-<tr>
-          <td><audio id="audio95" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8070/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Peshawar</td>
-        </tr>
-<tr>
-          <td><audio id="audio21" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8052/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Mithi</td>
-        </tr>
-<tr>
-          <td><audio id="audio32" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 94.4</td>
-        </tr>
-<tr>
-          <td><audio id="audio90" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7000/MW639khi?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">MW 639 Karachi</td>
-        </tr>
-<tr>
-          <td><audio id="audio42" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8034/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Multan MW</td>
-        </tr>
-<tr>
-          <td><audio id="audio96" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8072/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Peshawar MW</td>
-        </tr>
-<tr>
-          <td><audio id="audio93" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8060/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Quetta MW</td>
-        </tr>
-<tr>
-          <td><audio id="audio103" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Azad Kashmir Radio Mirpur</td>
-        </tr>
-<tr>
-          <td><audio id="audio89" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8054/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Khairpur</td>
-        </tr>
-<tr>
-          <td><audio id="audio94" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8062/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Khuzdar MW 567</td>
-        </tr>
-<tr>
-          <td><audio id="audio79" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8020/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Bahawalpur</td>
-        </tr>
-<tr>
-          <td><audio id="audio67" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Saut-ul-Quran</td>
-        </tr>
-<tr>
-          <td><audio id="audio61" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7002/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">SOUTUL QURAN PBC FM 93.4 ISLAMABAD</td>
-        </tr>
-<tr>
-          <td><audio id="audio57" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Pakistan World Service</td>
-        </tr>
-<tr>
-          <td><audio id="audio58" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7005/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Pakistan WS</td>
-        </tr>
-<tr>
-          <td><audio id="audio69" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Islamabad Station</td>
-        </tr>
-<tr>
-          <td><audio id="audio31" preload="none" data-logo="/images/default_radio.png" src="https://s33.myradiostream.com:13872/listen.m4a"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 92</td>
-        </tr>
-<tr>
-          <td><audio id="audio30" preload="none" data-logo="/images/default_radio.png" src="https://n0e.radiojar.com/htnudfgugm8uv?rj-ttl=5&amp;rj-tok=AAABmGW6hMEAMlJqXcyhsglOrw"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">fm...</td>
-        </tr>
-<tr>
-          <td><audio id="audio87" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8042/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Hyderabad MW 1008KHz</td>
-        </tr>
-<tr>
-          <td><audio id="audio86" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8040/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Sargodha</td>
-        </tr>
-<tr>
-          <td><audio id="audio98" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8064/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Abbotabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio88" preload="none" data-logo="/images/stations/hyderabad-fm.png" src="https://whmsonic.radio.gov.pk:8044/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Hyderabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio84" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Multan</td>
-        </tr>
-<tr>
-          <td><audio id="audio39" preload="none" data-logo="/images/default_radio.png" src="https://stream-179.zeno.fm/f9h69cgbu68uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJmOWg2OWNnYnU2OHV2IiwiaG9zdCI6InN0cmVhbS0xNzkuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoidlJJYUZfdGRTemFUNEx4R3hkQTdqQSIsImlhdCI6MTc1NDAyMzc4NiwiZXhwIjoxNzU0MDIzODQ2fQ.UrOJY6xoG5HyvkZCUDw2v_CC9RiZWCNvgWbeAaH3MPs"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Love-Islam-Radio</td>
-        </tr>
-<tr>
-          <td><audio id="audio45" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8074/?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Mirpur</td>
-        </tr>
-<tr>
-          <td><audio id="audio6" preload="none" data-logo="/images/default_radio.png" src="https://stream-158.zeno.fm/bahhkuge5zhvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJiYWhoa3VnZTV6aHZ2IiwiaG9zdCI6InN0cmVhbS0xNTguemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoiYkhQcHBMQTVRYnlyNGpjdlc1V2NaZyIsImlhdCI6MTc1Mzk5OTI2NiwiZXhwIjoxNzUzOTk5MzI2fQ.HifeijiDD3rrC9SBwW0DkSH-PDSZNITtHh5jwUQlXCc"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">All4Masti</td>
-        </tr>
-<tr>
-          <td><audio id="audio68" preload="none" data-logo="/images/stations/planet-87-6.png" src="https://whmsonic.radio.gov.pk:7042/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Planet FM 87.6</td>
-        </tr>
-<tr>
-          <td><audio id="audio36" preload="none" data-logo="/images/default_radio.png" src="https://stream-176.zeno.fm/7wre21u7xa0uv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiI3d3JlMjF1N3hhMHV2IiwiaG9zdCI6InN0cmVhbS0xNzYuemVuby5mbSIsInRtIjpmYWxzZSwicnR0bCI6NSwianRpIjoibGtRdkI4bkFUTzZGd1VvUjdqN2hHQSIsImlhdCI6MTc1NDAyNjY1MSwiZXhwIjoxNzU0MDI2NzExfQ.F9HyNOL8e9-ALqTf48RhmxMEmXy8QVhifUpD1nlsIqQ"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">ILM Radio Renala FM 92</td>
-        </tr>
-<tr>
-          <td><audio id="audio64" preload="none" data-logo="/images/stations/pakistan-toronto.png" src="https://s3.radio.co/s3b10a57ef/listen"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Pakistan Toronto</td>
-        </tr>
-<tr>
-          <td><audio id="audio60" preload="none" data-logo="/images/default_radio.png" src="https://s97.radiolize.com:8040/radio.mp3"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Shopen Anime Radio</td>
-        </tr>
-<tr>
-          <td><audio id="audio70" preload="none" data-logo="/images/stations/ncac.png" src="https://whmsonic.radio.gov.pk:7004/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">NCAC</td>
-        </tr>
-<tr>
-          <td><audio id="audio72" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7006/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">External Service</td>
-        </tr>
-<tr>
-          <td><audio id="audio75" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7008/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Chalte Chalte</td>
-        </tr>
-<tr>
-          <td><audio id="audio74" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8094/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Technology channel</td>
-        </tr>
-<tr>
-          <td><audio id="audio73" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7007/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Sports & Health Channel</td>
-        </tr>
-<tr>
-          <td><audio id="audio24" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7022/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Karachi</td>
-        </tr>
-<tr>
-          <td><audio id="audio25" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8088/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Lahore</td>
-        </tr>
-<tr>
-          <td><audio id="audio28" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8036/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Rawalpindi</td>
-        </tr>
-<tr>
-          <td><audio id="audio23" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8022/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Faisalabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio27" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8032/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Multan</td>
-        </tr>
-<tr>
-          <td><audio id="audio26" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8028/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Mianwali</td>
-        </tr>
-<tr>
-          <td><audio id="audio22" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8066/relay"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 93 Chitral</td>
-        </tr>
-<tr>
-          <td><audio id="audio1" preload="none" data-logo="/images/default_radio.png" src="https://n13.radiojar.com/0tpy1h0kxtzuv?rj-ttl=5&amp;rj-tok=AAABmGWzgMEA_wJ70s6N_TYhlA"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">#radio quran</td>
-        </tr>
-<tr>
-          <td><audio id="audio92" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8058/stream?type=http&amp;nocache=12"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Quetta</td>
-        </tr>
-<tr>
-          <td><audio id="audio85" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8038/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Sialkot</td>
-        </tr>
-<tr>
-          <td><audio id="audio65" preload="none" data-logo="/images/default_radio.png" src="https://samaapew107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">SAMAA FM Peshawar 107.4</td>
-        </tr>
-<tr>
-          <td><audio id="audio2001" preload="none" data-logo="/images/stations/100-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">100 FM (Lahore)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2002" preload="none" data-logo="/images/stations/101-fm-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">101 FM (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2003" preload="none" data-logo="/images/stations/aladin.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Aladin Radio</td>
-        </tr>
-<tr>
-          <td><audio id="audio2004" preload="none" data-logo="/images/stations/apna-107.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Apna</td>
-        </tr>
-<tr>
-          <td><audio id="audio2005" preload="none" data-logo="/images/stations/apna-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Apna FM (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2006" preload="none" data-logo="/images/stations/big.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Big FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio2007" preload="none" data-logo="/images/stations/city-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">City (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2008" preload="none" data-logo="/images/stations/city-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">City (Lahore)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2009" preload="none" data-logo="/images/stations/fm-100.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 100</td>
-        </tr>
-        <tr>
-          <td><audio id="audio2011" preload="none" data-logo="/images/stations/radio-1.png" src="https://cc.vmakerhost.com/proxy/karachi?mp=/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 91 (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2013" preload="none" data-logo="/images/stations/karachi-fm-live.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM Karachi Radio</td>
-        </tr>
-<tr>
-          <td><audio id="audio2014" preload="none" data-logo="/images/stations/fm-world.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM World</td>
-        </tr>
-<tr>
-          <td><audio id="audio2015" preload="none" data-logo="/images/stations/funcafe.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FunCafe Web Radio</td>
-        </tr>
-<tr>
-          <td><audio id="audio2016" preload="none" data-logo="/images/stations/hot-fm.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Hot FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio2017" preload="none" data-logo="/images/stations/hot-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Hot FM (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2018" preload="none" data-logo="/images/stations/mast-karachi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Mast (Karachi)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2019" preload="none" data-logo="/images/stations/mast-fm.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Mast FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio2020" preload="none" data-logo="/images/stations/mast-lahore.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Mast FM (Lahore)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2022" preload="none" data-logo="/images/stations/power-99.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Power FM 99</td>
-        </tr>
-<tr>
-          <td><audio id="audio2023" preload="none" data-logo="/images/stations/awaz-106.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Awaz</td>
-        </tr>
-<tr>
-          <td><audio id="audio2024" preload="none" data-logo="/images/stations/radio.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio2025" preload="none" data-logo="/images/stations/jeevay.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Jeevay FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio2027" preload="none" data-logo="/images/stations/pak-filmi.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Pak Filmi</td>
-        </tr>
-<tr>
-          <td><audio id="audio2028" preload="none" data-logo="/images/stations/riphah.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Riphah FM (Islamabad)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2029" preload="none" data-logo="/images/stations/spice-fm-107.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Spice</td>
-        </tr>
-<tr>
-          <td><audio id="audio2030" preload="none" data-logo="/images/stations/suno-urdu-live.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Suno Urdu Live</td>
-        </tr>
-<tr>
-          <td><audio id="audio2031" preload="none" data-logo="/images/stations/sunrise-hasan-abda.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Sunrise Radio FM (Hasan Abdal)</td>
-        </tr>
-<tr>
-          <td><audio id="audio2032" preload="none" data-logo="/images/stations/voa-deewa.png" src=""></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">VOA Deewa</td>
-        </tr>
-<tr>
-          <td><audio id="audio8" preload="none" data-logo="/images/stations/city-fm.png" src="https://radio.cityfm89.com/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">City FM 89</td>
-        </tr>
-<tr>
-          <td><audio id="audio18" preload="none" data-logo="/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:7008/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Islamabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio19" preload="none" data-logo="/images/stations/fm-101.png" src="https://whmsonic.radio.gov.pk:8048/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Karachi</td>
-        </tr>
-<tr>
-          <td><audio id="audio51" preload="none" data-logo="/images/stations/pbc-lahore.png" src="https://whmsonic.radio.gov.pk:8026/relay?type=http&amp;nocache=9"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">PBC (Lahore)</td>
-        </tr>
-<tr>
-          <td><audio id="audio50" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:7003/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Pakistan Islamabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio59" preload="none" data-logo="/images/default_radio.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Samaa FM 107.4</td>
-        </tr>
-<tr>
-          <td><audio id="audio40" preload="none" data-logo="/images/stations/mera-1074.png" src="https://samaakhi107-itelservices.radioca.st/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">Radio Mera FM</td>
-        </tr>
-<tr>
-          <td><audio id="audio41" preload="none" data-logo="/images/default_radio.png" src="http://101.50.87.129:8004/101lahore"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">101 lahore</td>
-        </tr>
-<tr>
-          <td><audio id="audio81" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8024/stream?type=http&nocache=14"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Faisalabad</td>
-        </tr>
-<tr>
-          <td><audio id="audio20" preload="none" data-logo="/images/default_radio.png" src="https://whmsonic.radio.gov.pk:8050/stream"></audio><button class="play-btn" aria-label="Play"><span class="material-icons">play_arrow</span></button></td>
-          <td class="station-name">FM 101 Larkana</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="source-note">Source data from the <a href="https://fi1.api.radio-browser.info/json/stations/bycountry/pakistan">Radio&nbsp;Browser API</a>, the community‑curated service <a href="https://streamurl.link">StreamURL.link</a>, and Radio&nbsp;Pakistan’s <a href="https://radio.gov.pk/live-streaming">live‑streaming page</a>. Streams may be subject to change by broadcasters.</p>
   </section>
+  <p class="source-note">Source data from the <a href="https://fi1.api.radio-browser.info/json/stations/bycountry/pakistan">Radio&nbsp;Browser API</a>, the community‑curated service <a href="https://streamurl.link">StreamURL.link</a>, and Radio&nbsp;Pakistan’s <a href="https://radio.gov.pk/live-streaming">live‑streaming page</a>. Streams may be subject to change by broadcasters.</p>
 
 
   <!-- Placeholder for advertising or extra content -->
@@ -488,44 +315,30 @@ document.addEventListener('DOMContentLoaded', function() {
   const nextBtn = document.getElementById('next-btn');
   const muteBtn = document.getElementById('mute-btn');
   const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
-
-  // Insert station logos into each row before the play button
-  document.querySelectorAll('audio[data-logo]').forEach(audio => {
-    const btn = audio.parentElement.querySelector('.play-btn');
-    if (!btn) return;
-    const img = document.createElement('img');
-    img.src = audio.dataset.logo || defaultLogo;
-    img.alt = '';
-    img.className = 'station-row-logo';
-    img.width = 40;
-    img.height = 40;
-    img.loading = 'lazy';
-    audio.parentElement.insertBefore(img, btn);
-  });
   let currentBtn = null;
   let pendingBtn = null;
   let resumeHandler = null;
   let currentAudio = null;
 
   function updateFavoritesUI() {
-    const tbody = document.querySelector('table tbody');
-    // Grab all rows except the header so we can batch their reordering
-    const rows = Array.from(tbody.querySelectorAll('tr')).slice(1);
+    const list = document.querySelector('.channel-list');
+    // Grab all cards so we can batch their reordering
+    const cards = Array.from(list.querySelectorAll('.channel-card'));
     const favFragment = document.createDocumentFragment();
     const otherFragment = document.createDocumentFragment();
 
-    rows.forEach(row => {
-      const audio = row.querySelector('audio');
+    cards.forEach(card => {
+      const audio = card.querySelector('audio');
       const id = audio?.id;
       if (!id) return;
       const isFav = favorites.includes(id);
-      row.classList.toggle('favorite', isFav);
-      (isFav ? favFragment : otherFragment).appendChild(row);
+      card.classList.toggle('favorite', isFav);
+      (isFav ? favFragment : otherFragment).appendChild(card);
     });
 
-    // Re-attach rows in a single pass to minimize layout reflows
-    tbody.appendChild(favFragment);
-    tbody.appendChild(otherFragment);
+    // Re-attach cards in a single pass to minimize layout reflows
+    list.appendChild(favFragment);
+    list.appendChild(otherFragment);
 
     if (currentAudio) {
       const isFav = favorites.includes(currentAudio.id);
@@ -573,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentBtn = null;
     pendingBtn = null;
     currentAudio = null;
+    document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
     updateFavoritesUI();
   }
 
@@ -584,6 +398,8 @@ document.addEventListener('DOMContentLoaded', function() {
       resumeHandler = null;
     }
     pendingBtn = btn;
+    document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+    btn.closest('.channel-card').classList.add('active');
     btn.classList.add('loading');
     playPauseBtn.classList.add('loading');
     stationLogo.onerror = () => {
@@ -639,7 +455,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   playButtons.forEach(btn => {
     const audio = btn.parentElement.querySelector('audio');
-    const name = btn.closest('tr').querySelector('.station-name').textContent;
+    const card = btn.closest('.channel-card');
+      const name = card.querySelector('.station-name').textContent;
     btn.classList.remove('material-icons');
     btn.setAttribute('type', 'button');
     btn.setAttribute('aria-label', 'Play');
@@ -654,8 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    const row = btn.closest('tr');
-    row.addEventListener('click', (e) => {
+    card.addEventListener('click', (e) => {
       if (e.target.closest('button')) return;
       btn.click();
     });
@@ -672,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function playStation(offset) {
-    const audios = Array.from(document.querySelectorAll('table tbody audio'));
+    const audios = Array.from(document.querySelectorAll('.channel-list audio'));
     if (audios.length === 0) return;
     const currentId = currentAudio ? currentAudio.id : null;
     let idx = currentId ? audios.findIndex(a => a.id === currentId) : -1;
@@ -682,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
       idx = (idx + offset + audios.length) % audios.length;
     }
     const audio = audios[idx];
-    const name = audio.closest('tr').querySelector('.station-name').textContent;
+    const name = audio.closest('.channel-card').querySelector('.station-name').textContent;
     const btn = audio.parentElement.querySelector('.play-btn');
     resetButton(currentBtn);
     loadStation(audio, name, btn);
@@ -783,22 +599,54 @@ document.addEventListener('DOMContentLoaded', function() {
   if (initial) {
     const audio = document.getElementById(initial);
     if (audio) {
-      const name = audio.closest('tr').querySelector('.station-name').textContent;
+      const name = audio.closest('.channel-card').querySelector('.station-name').textContent;
       const btn = audio.parentElement.querySelector('.play-btn');
       resetButton(currentBtn);
       loadStation(audio, name, btn);
     }
   } else {
-    const rows = document.querySelectorAll('table tbody tr');
-    if (rows.length > 1) {
-      const firstRow = rows[1]; // first station after the header row
-      const audio = firstRow.querySelector('audio');
-      const btn = firstRow.querySelector('.play-btn');
-      const name = firstRow.querySelector('.station-name').textContent;
+    const cards = document.querySelectorAll('.channel-list .channel-card');
+    if (cards.length > 0) {
+      const firstCard = cards[0];
+      const audio = firstCard.querySelector('audio');
+      const btn = firstCard.querySelector('.play-btn');
+      const name = firstCard.querySelector('.station-name').textContent;
       resetButton(currentBtn);
       loadStation(audio, name, btn);
     }
   }
+});
+
+function toggleChannelList() {
+  const list = document.querySelector('.channel-list');
+  const btn = document.getElementById('toggle-channels');
+  list.classList.toggle('open');
+  btn.textContent = list.classList.contains('open') ? 'Close Stations' : 'Stations';
+}
+
+document.addEventListener('click', function(e) {
+  const list = document.querySelector('.channel-list');
+  const btn = document.getElementById('toggle-channels');
+  if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
+    list.classList.remove('open');
+    btn.textContent = 'Stations';
+  }
+});
+
+let touchStartX = null;
+const channelList = document.querySelector('.channel-list');
+channelList.addEventListener('touchstart', (e) => {
+  if (!channelList.classList.contains('open')) return;
+  touchStartX = e.touches[0].clientX;
+});
+channelList.addEventListener('touchend', (e) => {
+  if (touchStartX === null) return;
+  const touchEndX = e.changedTouches[0].clientX;
+  if (touchStartX - touchEndX > 50) {
+    channelList.classList.remove('open');
+    document.getElementById('toggle-channels').textContent = 'Stations';
+  }
+  touchStartX = null;
 });
   </script>
   <script defer src="/js/main.js"></script>
