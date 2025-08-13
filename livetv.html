@@ -131,6 +131,7 @@
       }
 
       let initialChannel = null;
+      const YT_PARAMS = 'enablejsapi=1&origin=https://pakstream.com';
 
       fetch('/channels.json')
         .then(res => res.json())
@@ -165,7 +166,7 @@
 
             const iframe = document.createElement('iframe');
             iframe.id = `${ch.id}-player`;
-            iframe.dataset.src = ch.src;
+            iframe.dataset.src = ch.src + (ch.src.includes('?') ? '&' : '?') + YT_PARAMS;
             iframe.src = '';
             iframe.loading = 'lazy';
             iframe.allow = 'autoplay';
