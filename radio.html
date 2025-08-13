@@ -362,10 +362,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Insert station logos into each row before the play button
+  // Insert station logos into each row
   document.querySelectorAll('audio[data-logo]').forEach(audio => {
-    const btn = audio.parentElement.querySelector('.play-btn');
-    if (!btn) return;
+    const card = audio.closest('.channel-card');
+    const name = card.querySelector('.station-name');
     const img = document.createElement('img');
     img.src = audio.dataset.logo || defaultLogo;
     img.alt = '';
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
     img.width = 40;
     img.height = 40;
     img.loading = 'lazy';
-    audio.parentElement.insertBefore(img, btn);
+    card.insertBefore(img, name);
   });
   let currentBtn = null;
   let pendingBtn = null;

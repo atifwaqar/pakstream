@@ -251,7 +251,7 @@ section {
   user-select: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 }
 
 .youtube-section .channel-card .fav-btn {
@@ -405,25 +405,11 @@ button:hover,
 }
 
 .play-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--on-primary);
-  cursor: pointer;
+  display: none;
 }
 
 .play-pause-btn {
   position: relative;
-}
-
-.play-btn:hover {
-  background: var(--primary-container);
 }
 
 /* Radio player controls */
