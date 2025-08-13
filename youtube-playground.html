@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PakStream - YouTube Playground</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Experiment with YouTube channels to list current live streams.">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+</head>
+<body>
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <h1 class="logo-title">PakStream</h1>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/freepress.html">Free Press</a>
+      <a href="/livetv.html">Live TV</a>
+      <a href="/radio.html">Radio</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+    <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
+
+  <main class="container">
+    <h2>YouTube Playground</h2>
+    <p>Enter a YouTube channel ID to list its current live streams.</p>
+    <input type="text" id="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
+    <button id="fetch-streams">Fetch Live Streams</button>
+    <ul id="stream-list"></ul>
+  </main>
+
+  <footer>
+    <nav class="footer-nav">
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const CLIENT_ID = '613302182511-oeoej3pbmbp7cpt2qbc3cch1fpft5v64.apps.googleusercontent.com';
+    const CLIENT_SECRET = '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';
+    const API_KEY = CLIENT_SECRET;
+    document.getElementById('fetch-streams').addEventListener('click', async () => {
+      const channelId = document.getElementById('channel-id').value.trim();
+      const list = document.getElementById('stream-list');
+      list.innerHTML = '';
+      if (!channelId) return;
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(channelId)}&eventType=live&type=video&key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          data.items.forEach(item => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `https://www.youtube.com/watch?v=${item.id.videoId}`;
+            a.textContent = item.snippet.title;
+            a.target = '_blank';
+            li.appendChild(a);
+            list.appendChild(li);
+          });
+        } else {
+          const li = document.createElement('li');
+          li.textContent = 'No live streams found.';
+          list.appendChild(li);
+        }
+      } catch (err) {
+        const li = document.createElement('li');
+        li.textContent = 'Error fetching streams.';
+        list.appendChild(li);
+      }
+    });
+  </script>
+  <script defer src="/js/main.js"></script>
+</body>
+</html>
