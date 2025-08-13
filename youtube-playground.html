@@ -39,6 +39,7 @@
     <input type="text" id="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
     <button id="fetch-streams">Fetch Live Streams</button>
     <ul id="stream-list"></ul>
+    <pre id="json-output" style="white-space:pre-wrap;"></pre>
   </main>
 
   <footer>
@@ -58,12 +59,15 @@
     document.getElementById('fetch-streams').addEventListener('click', async () => {
       const channelId = document.getElementById('channel-id').value.trim();
       const list = document.getElementById('stream-list');
+      const jsonOutput = document.getElementById('json-output');
       list.innerHTML = '';
+      jsonOutput.textContent = '';
       if (!channelId) return;
       const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(channelId)}&eventType=live&type=video&key=${API_KEY}`;
       try {
         const response = await fetch(url);
         const data = await response.json();
+        jsonOutput.textContent = JSON.stringify(data, null, 2);
         if (data.items && data.items.length > 0) {
           data.items.forEach(item => {
             const li = document.createElement('li');
@@ -72,6 +76,31 @@
             a.textContent = item.snippet.title;
             a.target = '_blank';
             li.appendChild(a);
+
+            const details = document.createElement('div');
+            const desc = document.createElement('p');
+            desc.textContent = item.snippet.description;
+            details.appendChild(desc);
+
+            const channelInfo = document.createElement('p');
+            channelInfo.textContent = `Channel: ${item.snippet.channelTitle}`;
+            details.appendChild(channelInfo);
+
+            const publish = document.createElement('p');
+            publish.textContent = `Published at: ${item.snippet.publishTime}`;
+            details.appendChild(publish);
+
+            const thumbs = item.snippet.thumbnails || {};
+            Object.keys(thumbs).forEach(key => {
+              const img = document.createElement('img');
+              img.src = thumbs[key].url;
+              img.alt = `${key} thumbnail`;
+              img.width = thumbs[key].width;
+              img.height = thumbs[key].height;
+              details.appendChild(img);
+            });
+
+            li.appendChild(details);
             list.appendChild(li);
           });
         } else {
