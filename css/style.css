@@ -258,13 +258,18 @@ section {
   flex: 1;
 }
 
-.youtube-section .channel-card .fav-btn {
+.youtube-section .channel-card .fav-btn,
+.youtube-section .channel-card .play-btn {
   background: none;
   border: none;
   cursor: pointer;
   color: inherit;
   padding: 0;
   font-size: 20px;
+}
+
+.youtube-section .channel-card .play-btn {
+  position: relative;
 }
 
 .youtube-section .channel-card:hover {
@@ -405,10 +410,6 @@ button:hover,
   transform: scale(1.03);
   transition: transform 0.2s ease, background-color 0.2s ease;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.play-btn {
-  display: none;
 }
 
 .play-pause-btn {
