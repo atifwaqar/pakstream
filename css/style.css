@@ -254,13 +254,16 @@ section {
   gap: 8px;
 }
 
+.youtube-section .channel-card .channel-name {
+  flex: 1;
+}
+
 .youtube-section .channel-card .fav-btn {
   background: none;
   border: none;
   cursor: pointer;
   color: inherit;
   padding: 0;
-  margin-left: 8px;
   font-size: 20px;
 }
 
