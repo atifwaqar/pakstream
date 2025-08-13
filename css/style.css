@@ -800,3 +800,57 @@ footer nav a:hover {
   margin: 20px 0;
   text-align: center;
 }
+
+/* Radio page list styled like channel cards */
+.youtube-section .channel-list {
+  display: block;
+  width: 220px;
+}
+.youtube-section .channel-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.youtube-section .channel-list tbody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.youtube-section .channel-list tr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.youtube-section .channel-list tr:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.youtube-section .channel-list tr.active {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.youtube-section .channel-list tr.favorite {
+  background: var(--favorite-row);
+  color: var(--on-primary);
+}
+.youtube-section .channel-list td {
+  border: none;
+  padding: 0;
+}
+.youtube-section .channel-list td:first-child {
+  display: flex;
+  align-items: center;
+}
+.youtube-section .channel-list .station-row-logo {
+  margin-right: 8px;
+}
+.youtube-section .channel-list .station-name {
+  flex: 1;
+  margin-left: 8px;
+}
+.youtube-section .channel-list tr:first-child {
+  display: none;
+}

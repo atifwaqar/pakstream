@@ -75,29 +75,10 @@
   </header>
 
   <!-- Radio station listing -->
-  <section>
-    <h2>Pakistani Radio Stations</h2>
-    <div id="player-container" class="radio-player">
-      <div class="station-info">
-        <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
-        <h3 id="current-station" class="station-title">Select a station</h3>
-        <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
-        <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
-      </div>
-      <div class="controls">
-        <button id="favorite-btn" class="favorite-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
-        <button id="prev-btn" class="fav-nav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
-        <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
-          <span class="material-icons label">play_arrow</span>
-          <span class="spinner"></span>
-        </button>
-        <button id="next-btn" class="fav-nav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
-        <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
-        <audio id="radio-player" autoplay></audio>
-      </div>
-    </div>
-    <table>
-      <tbody>
+  <section class="youtube-section">
+    <div class="channel-list">
+      <table>
+        <tbody>
         <tr>
           <th>Listen</th>
           <th>Station</th>
@@ -451,9 +432,34 @@
           <td class="station-name">FM 101 Larkana</td>
         </tr>
       </tbody>
-    </table>
-    <p class="source-note">Source data from the <a href="https://fi1.api.radio-browser.info/json/stations/bycountry/pakistan">Radio&nbsp;Browser API</a>, the community‑curated service <a href="https://streamurl.link">StreamURL.link</a>, and Radio&nbsp;Pakistan’s <a href="https://radio.gov.pk/live-streaming">live‑streaming page</a>. Streams may be subject to change by broadcasters.</p>
+      </table>
+    </div>
+    <div class="video-section">
+      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Stations</button>
+      <div class="live-player">
+        <div id="player-container" class="radio-player">
+          <div class="station-info">
+            <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
+            <h3 id="current-station" class="station-title">Select a station</h3>
+            <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
+            <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
+          </div>
+          <div class="controls">
+            <button id="favorite-btn" class="favorite-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
+            <button id="prev-btn" class="fav-nav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
+            <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
+              <span class="material-icons label">play_arrow</span>
+              <span class="spinner"></span>
+            </button>
+            <button id="next-btn" class="fav-nav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
+            <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
+            <audio id="radio-player" autoplay></audio>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
+  <p class="source-note">Source data from the <a href="https://fi1.api.radio-browser.info/json/stations/bycountry/pakistan">Radio&nbsp;Browser API</a>, the community‑curated service <a href="https://streamurl.link">StreamURL.link</a>, and Radio&nbsp;Pakistan’s <a href="https://radio.gov.pk/live-streaming">live‑streaming page</a>. Streams may be subject to change by broadcasters.</p>
 
 
   <!-- Placeholder for advertising or extra content -->
@@ -573,6 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentBtn = null;
     pendingBtn = null;
     currentAudio = null;
+    document.querySelectorAll('table tbody tr').forEach(row => row.classList.remove('active'));
     updateFavoritesUI();
   }
 
@@ -584,6 +591,8 @@ document.addEventListener('DOMContentLoaded', function() {
       resumeHandler = null;
     }
     pendingBtn = btn;
+    document.querySelectorAll('table tbody tr').forEach(row => row.classList.remove('active'));
+    btn.closest('tr').classList.add('active');
     btn.classList.add('loading');
     playPauseBtn.classList.add('loading');
     stationLogo.onerror = () => {
@@ -799,6 +808,38 @@ document.addEventListener('DOMContentLoaded', function() {
       loadStation(audio, name, btn);
     }
   }
+});
+
+function toggleChannelList() {
+  const list = document.querySelector('.channel-list');
+  const btn = document.getElementById('toggle-channels');
+  list.classList.toggle('open');
+  btn.textContent = list.classList.contains('open') ? 'Close Stations' : 'Stations';
+}
+
+document.addEventListener('click', function(e) {
+  const list = document.querySelector('.channel-list');
+  const btn = document.getElementById('toggle-channels');
+  if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
+    list.classList.remove('open');
+    btn.textContent = 'Stations';
+  }
+});
+
+let touchStartX = null;
+const channelList = document.querySelector('.channel-list');
+channelList.addEventListener('touchstart', (e) => {
+  if (!channelList.classList.contains('open')) return;
+  touchStartX = e.touches[0].clientX;
+});
+channelList.addEventListener('touchend', (e) => {
+  if (touchStartX === null) return;
+  const touchEndX = e.changedTouches[0].clientX;
+  if (touchStartX - touchEndX > 50) {
+    channelList.classList.remove('open');
+    document.getElementById('toggle-channels').textContent = 'Stations';
+  }
+  touchStartX = null;
 });
   </script>
   <script defer src="/js/main.js"></script>
