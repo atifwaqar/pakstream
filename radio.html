@@ -315,6 +315,66 @@ document.addEventListener('DOMContentLoaded', function() {
   const nextBtn = document.getElementById('next-btn');
   const muteBtn = document.getElementById('mute-btn');
   const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
+
+  // Allow swipe gestures to toggle the channel list on touch devices
+  const channelList = document.querySelector('.channel-list');
+  if (channelList) {
+    // Swipe left to close the channel list
+    let touchStartX = null;
+    channelList.addEventListener('touchstart', (e) => {
+      if (!channelList.classList.contains('open')) return;
+      touchStartX = e.touches[0].clientX;
+    });
+    channelList.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      if (touchStartX - touchEndX > 50) {
+        channelList.classList.remove('open');
+        const btn = document.getElementById('toggle-channels');
+        if (btn) btn.textContent = 'Channels';
+      }
+      touchStartX = null;
+    });
+
+    // Swipe right from the screen edge to open the channel list
+    let openStartX = null;
+    document.addEventListener('touchstart', (e) => {
+      if (channelList.classList.contains('open')) return;
+      openStartX = e.touches[0].clientX;
+    });
+    document.addEventListener('touchmove', (e) => {
+      if (openStartX === null) return;
+      const currentX = e.touches[0].clientX;
+      if (openStartX < 50 && currentX - openStartX > 10) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    document.addEventListener('touchend', (e) => {
+      if (channelList.classList.contains('open')) return;
+      if (openStartX === null) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      if (touchEndX - openStartX > 50 && openStartX < 50) {
+        channelList.classList.add('open');
+        const btn = document.getElementById('toggle-channels');
+        if (btn) btn.textContent = 'Close Channels';
+      }
+      openStartX = null;
+    });
+  }
+
+  // Insert station logos into each row before the play button
+  document.querySelectorAll('audio[data-logo]').forEach(audio => {
+    const btn = audio.parentElement.querySelector('.play-btn');
+    if (!btn) return;
+    const img = document.createElement('img');
+    img.src = audio.dataset.logo || defaultLogo;
+    img.alt = '';
+    img.className = 'station-row-logo';
+    img.width = 40;
+    img.height = 40;
+    img.loading = 'lazy';
+    audio.parentElement.insertBefore(img, btn);
+  });
   let currentBtn = null;
   let pendingBtn = null;
   let resumeHandler = null;
