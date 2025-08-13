@@ -258,7 +258,8 @@ section {
   flex: 1;
 }
 
-.youtube-section .channel-card .fav-btn,
+
+.fav-btn,
 .youtube-section .channel-card .play-btn {
   background: none;
   border: none;
@@ -286,7 +287,7 @@ section {
   color: var(--on-primary);
 }
 
-.youtube-section .channel-card.favorite .fav-btn {
+.channel-card.favorite .fav-btn {
   color: var(--on-primary);
 }
 
