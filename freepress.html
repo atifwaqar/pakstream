@@ -259,8 +259,9 @@
     const playerFrame = document.getElementById('playerFrame');
 
   function setActiveCard(clickedCard) {
-    cards.forEach(c => c.classList.remove('active'));
+    cards.forEach(c => { c.classList.remove('active'); const icon = c.querySelector('.play-btn .material-icons'); if (icon) icon.textContent = 'play_arrow'; });
     clickedCard.classList.add('active');
+    const icon = clickedCard.querySelector('.play-btn .material-icons'); if (icon) icon.textContent = 'stop';
   }
 
   function setActiveVideo(clickedItem) {
@@ -389,6 +390,17 @@
     card.addEventListener('click', () => handleChannelClick(card));
   });
 
+  function toggleFreePress(card) {
+    if (card.classList.contains("active")) {
+      document.getElementById("playerFrame").src = "about:blank";
+      card.classList.remove("active");
+      const icon = card.querySelector(".play-btn .material-icons");
+      if (icon) icon.textContent = "play_arrow";
+    } else {
+      handleChannelClick(card);
+    }
+  }
+
   function toggleChannelList() {
     const list = document.querySelector('.channel-list');
     const btn = document.getElementById('toggle-channels');
@@ -464,6 +476,7 @@
   }
 </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script defer src="/js/channel-cards.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>

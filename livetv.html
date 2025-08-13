@@ -478,13 +478,25 @@
         showStream(channelId, initialCard, true);
       }
     };
+    function toggleChannel(id, btn) {
+      const card = btn.closest(".channel-card");
+      if (card.classList.contains("active")) {
+        const playerId = `${id}-player`;
+        if (players[playerId]?.stopVideo) players[playerId].stopVideo();
+        card.classList.remove("active");
+        btn.querySelector(".material-icons").textContent = "play_arrow";
+        document.getElementById(id).style.display = "none";
+      } else {
+        showStream(id, card);
+      }
+    }
 
     function showStream(id, element, muteOnLoad = false) {
       // Hide all video divs
       document.querySelectorAll('.live-player').forEach(div => div.style.display = 'none');
 
       // Remove active class
-      document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+      document.querySelectorAll('.channel-card').forEach(card => { card.classList.remove('active'); const icon = card.querySelector('.play-btn .material-icons'); if (icon) icon.textContent = 'play_arrow'; });
 
       // Pause all players
       for (const key in players) {
@@ -495,7 +507,7 @@
 
       // Show selected stream
       document.getElementById(id).style.display = 'block';
-      if (element) element.classList.add('active');
+      if (element) { element.classList.add('active'); const icon = element.querySelector('.play-btn .material-icons'); if (icon) icon.textContent = 'stop'; }
 
       // Load or play selected stream
       const playerId = `${id}-player`;
@@ -580,6 +592,7 @@
     });
   </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script defer src="/js/channel-cards.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>

@@ -392,7 +392,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const id = audio?.id;
       if (!id) return;
       const isFav = favorites.includes(id);
-      card.classList.toggle('favorite', isFav);
+    card.classList.toggle('favorite', isFav);
+      const favButton = card.querySelector('.fav-btn');
+      if (favButton) {
+        favButton.textContent = isFav ? 'favorite' : 'favorite_border';
+        favButton.classList.toggle('favorited', isFav);
+      }
       (isFav ? favFragment : otherFragment).appendChild(card);
     });
 
@@ -546,6 +551,16 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('radioFavorites', JSON.stringify(favorites));
     updateFavoritesUI();
   });
+  function toggleFavorite(event, id) {
+    event.stopPropagation();
+    const idx = favorites.indexOf(id);
+    if (idx >= 0) favorites.splice(idx, 1);
+    else favorites.push(id);
+    localStorage.setItem('radioFavorites', JSON.stringify(favorites));
+    updateFavoritesUI();
+  }
+  window.toggleFavorite = toggleFavorite;
+
 
   function playStation(offset) {
     const audios = Array.from(document.querySelectorAll('.channel-list audio'));
@@ -709,6 +724,7 @@ channelList.addEventListener('touchend', (e) => {
   touchStartX = null;
 });
   </script>
+  <script defer src="/js/channel-cards.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
