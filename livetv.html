@@ -101,6 +101,8 @@
   <script>
     const players = {};
     const favorites = JSON.parse(localStorage.getItem('tvFavorites') || '[]');
+    const channelMap = {};
+    const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
 
     function updateFavoritesUI() {
       const list = document.querySelector('.channel-list');
@@ -138,8 +140,8 @@
         .then(channels => {
           const list = document.querySelector('.channel-list');
           const videoSection = document.querySelector('.video-section');
-
           channels.forEach(ch => {
+            channelMap[ch.id] = ch;
             const card = document.createElement('div');
             card.className = 'channel-card';
             card.dataset.id = ch.id;
@@ -174,6 +176,9 @@
             div.appendChild(iframe);
             videoSection.appendChild(div);
           });
+          const streamList = document.createElement('ul');
+          streamList.id = 'stream-list';
+          videoSection.appendChild(streamList);
 
           updateFavoritesUI();
 
@@ -255,12 +260,62 @@
       const newUrl = `${window.location.pathname}?tvchannel=${id}`;
       history.replaceState(null, '', newUrl);
 
+      populateStreamList(id);
+
       // Close channel list on small screens
       if (window.innerWidth <= 768) {
         const list = document.querySelector('.channel-list');
         list.classList.remove('open');
         document.getElementById('toggle-channels').textContent = 'Channels';
       }
+    }
+
+    function populateStreamList(id) {
+      const streamList = document.getElementById('stream-list');
+      if (!streamList) return;
+      streamList.innerHTML = '';
+      const ch = channelMap[id];
+      if (!ch || !ch['channel-id']) {
+        const li = document.createElement('li');
+        li.textContent = 'No live streams available.';
+        streamList.appendChild(li);
+        return;
+      }
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${encodeURIComponent(ch['channel-id'])}&eventType=live&type=video&key=${API_KEY}`;
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+              const li = document.createElement('li');
+              const a = document.createElement('a');
+              a.href = '#';
+              a.textContent = item.snippet.title;
+              a.onclick = (e) => {
+                e.preventDefault();
+                const playerId = `${id}-player`;
+                const player = players[playerId];
+                if (player && player.loadVideoById) {
+                  player.loadVideoById(item.id.videoId);
+                } else {
+                  const iframe = document.getElementById(playerId);
+                  iframe.src = `https://www.youtube.com/embed/${item.id.videoId}?${YT_PARAMS}`;
+                }
+              };
+              li.appendChild(a);
+              streamList.appendChild(li);
+            });
+          } else {
+            const li = document.createElement('li');
+            li.textContent = 'No live streams found.';
+            streamList.appendChild(li);
+          }
+        })
+        .catch(() => {
+          const li = document.createElement('li');
+          li.textContent = 'Error fetching streams.';
+          streamList.appendChild(li);
+        });
     }
 
     function toggleChannelList() {
