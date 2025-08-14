@@ -271,9 +271,10 @@ section {
 .youtube-section .channel-card .channel-name {
   flex: 1;
   min-width: 0;
-  white-space: nowrap;
+  line-height: 1.2;
+  max-height: 2.4em;
   overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 
@@ -590,7 +591,7 @@ table tbody tr.favorite {
   width: 40px;
   height: 40px;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 

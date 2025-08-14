@@ -144,6 +144,16 @@
       list.appendChild(otherFragment);
     }
 
+    function fitText(el, maxLines = 2) {
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+      const maxHeight = lineHeight * maxLines;
+      let fontSize = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollHeight > maxHeight && fontSize > 10) {
+        fontSize -= 1;
+        el.style.fontSize = fontSize + 'px';
+      }
+    }
+
       function toggleFavorite(event, id) {
         event.stopPropagation();
         const idx = favorites.indexOf(id);
@@ -176,6 +186,12 @@
             span.className = 'channel-name';
             span.textContent = ch.name;
 
+            const playBtn = document.createElement('button');
+            playBtn.className = 'play-btn material-symbols-outlined';
+            playBtn.setAttribute('aria-label', 'Play');
+            playBtn.textContent = 'play_arrow';
+            playBtn.onclick = (e) => { e.stopPropagation(); showStream(ch.id, card); };
+
             const btn = document.createElement('button');
             btn.className = 'fav-btn material-symbols-outlined';
             btn.setAttribute('aria-label', 'Toggle favorite');
@@ -184,6 +200,7 @@
 
             card.appendChild(img);
             card.appendChild(span);
+            card.appendChild(playBtn);
             card.appendChild(btn);
             list.appendChild(card);
 
@@ -206,6 +223,7 @@
           streamList.id = 'stream-list';
           videoSection.appendChild(streamList);
 
+          document.querySelectorAll('.channel-name').forEach(el => fitText(el));
           updateFavoritesUI();
 
           const urlParams = new URLSearchParams(window.location.search);
@@ -255,8 +273,9 @@
       // Hide all video divs
       document.querySelectorAll('.live-player').forEach(div => div.style.display = 'none');
 
-      // Remove active class
+      // Remove active class and reset play icons
       document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+      document.querySelectorAll('.play-btn').forEach(btn => btn.textContent = 'play_arrow');
 
       // Pause all players
       for (const key in players) {
@@ -267,7 +286,11 @@
 
       // Show selected stream
       document.getElementById(id).style.display = 'block';
-      if (element) element.classList.add('active');
+      if (element) {
+        element.classList.add('active');
+        const pb = element.querySelector('.play-btn');
+        if (pb) pb.textContent = 'stop';
+      }
 
       // Load or play selected stream
       const playerId = `${id}-player`;
