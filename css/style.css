@@ -261,6 +261,13 @@ section {
   overflow: hidden;
 }
 
+.youtube-section .channel-card .channel-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .youtube-section .channel-card .channel-name {
   flex: 1;
   min-width: 0;
