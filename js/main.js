@@ -73,25 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
       el.removeAttribute('data-src');
     });
   }
-
-  var banner = document.querySelector('.hero-banner');
-  if (banner) {
-    var layers = banner.querySelectorAll('[data-depth]');
-    banner.addEventListener('mousemove', function (e) {
-      var rect = banner.getBoundingClientRect();
-      var x = e.clientX - rect.left - rect.width / 2;
-      var y = e.clientY - rect.top - rect.height / 2;
-      layers.forEach(function (layer) {
-        var depth = parseFloat(layer.dataset.depth) || 0;
-        layer.style.transform = 'translate(' + x * depth + 'px,' + y * depth + 'px)';
-      });
-    });
-    banner.addEventListener('mouseleave', function () {
-      layers.forEach(function (layer) {
-        layer.style.transform = '';
-      });
-    });
-  }
 });
 
 (function(){
