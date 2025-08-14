@@ -67,3 +67,6 @@
   --hover-primary: #00695C;
   --hover-link: #64B5F6;
 }
+
+/* Optional: disable all hero animations */
+.no-anim .pakstream-hero * { animation: none !important; }
