@@ -93,6 +93,25 @@ footer nav a:hover {
   background: color-mix(in oklab, var(--primary) 12%, transparent);
 }
 
+.search-form {
+  margin-left: 16px;
+}
+
+.search-form input {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--primary-container);
+}
+
+#search-results ul {
+  list-style: none;
+  padding: 0;
+}
+
+#search-results li {
+  margin: 8px 0;
+}
+
 /* Keep existing styles untouched below here */
 /* The rest of the existing style.css remains the same... */
 
