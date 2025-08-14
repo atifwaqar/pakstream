@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var navToggle = document.getElementById('nav-toggle');
   var nav = document.querySelector('nav');
   var label = document.querySelector('.nav-toggle-label');
+  var topBar = document.querySelector('.top-bar');
+  var themeToggle = document.getElementById('theme-toggle');
   if (!navToggle || !nav || !label) return;
 
   var currentPath = window.location.pathname;
@@ -13,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  var topBar = document.querySelector('.top-bar');
   var homePaths = ['/', '/'];
   if (topBar && label && homePaths.indexOf(currentPath) === -1) {
     var backBtn = document.createElement('a');
@@ -31,6 +32,69 @@ document.addEventListener('DOMContentLoaded', function () {
     topBar.insertBefore(backBtn, label.nextSibling);
   }
 
+  if (topBar) {
+    var themeBtn = themeToggle;
+    var searchForm = document.createElement('form');
+    searchForm.id = 'search-form';
+    searchForm.className = 'search-form';
+    var input = document.createElement('input');
+    input.type = 'search';
+    input.id = 'search-input';
+    input.placeholder = 'Search...';
+    input.setAttribute('aria-label', 'Search');
+    searchForm.appendChild(input);
+
+    var results = document.createElement('div');
+    results.id = 'search-results';
+    results.className = 'search-results';
+    searchForm.appendChild(results);
+
+    var searchData = [];
+    var loaded = false;
+    function loadData() {
+      if (loaded) return Promise.resolve(searchData);
+      var sources = [
+        { url: '/channels.json', map: c => ({ name: c.name, link: '/livetv.html?tvchannel=' + c.id }) },
+        { url: '/freepress_channels.json', map: c => ({ name: c.name, link: '/freepress.html?newsanchor=' + c.key }) },
+        { url: '/radio_channels.json', map: c => ({ name: c.name, link: '/radio.html?station=' + c.id }) }
+      ];
+      return Promise.all(
+        sources.map(s => fetch(s.url).then(r => r.json()).then(arr => arr.map(s.map)))
+      ).then(res => {
+        searchData = res.flat();
+        loaded = true;
+        return searchData;
+      });
+    }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase();
+      results.innerHTML = '';
+      if (!q) return;
+      loadData().then(function () {
+        var matches = searchData.filter(item => item.name.toLowerCase().includes(q));
+        matches.slice(0, 10).forEach(function (item) {
+          var a = document.createElement('a');
+          a.href = item.link;
+          a.textContent = item.name;
+          results.appendChild(a);
+        });
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!searchForm.contains(e.target)) {
+        results.innerHTML = '';
+      }
+    });
+
+    if (themeBtn) {
+      topBar.insertBefore(searchForm, themeBtn);
+    } else {
+      topBar.appendChild(searchForm);
+    }
+  }
+
   label.addEventListener('click', function (e) {
     e.preventDefault();
     navToggle.checked = !navToggle.checked;
@@ -42,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  var themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     var savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
