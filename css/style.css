@@ -71,10 +71,11 @@ body {
   color: var(--on-primary);
   text-decoration: none;
   font-weight: 500;
+  padding: 12px 14px;
+  border-radius: 10px;
 }
 
 .top-bar nav a:hover,
-.top-bar nav a.active,
 .post-share a:hover,
 footer nav a:hover {
   color: var(--accent-link);
@@ -82,10 +83,14 @@ footer nav a:hover {
 }
 
 .top-bar nav a:hover,
-.top-bar nav a:focus,
-.top-bar nav a.active {
+.top-bar nav a:focus {
   color: var(--on-primary);
   text-decoration: underline;
+}
+
+.top-bar nav a.active,
+.top-bar nav a[aria-current="page"] {
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
 }
 
 /* Keep existing styles untouched below here */
@@ -188,7 +193,7 @@ section {
   flex: 1 1 250px;
 }
 
-.feature-card .material-icons {
+.feature-card .material-symbols-outlined {
   font-size: 48px;
   color: var(--primary);
   margin-bottom: 10px;
@@ -683,12 +688,12 @@ table tbody tr.favorite {
   .top-bar nav a {
     color: var(--on-surface);
     display: block;
-    padding: 8px 0;
+    padding: 12px 14px;
+    border-radius: 10px;
   }
 
   .top-bar nav a:hover,
-  .top-bar nav a:focus,
-  .top-bar nav a.active {
+  .top-bar nav a:focus {
     color: var(--accent-link);
   }
 

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   links.forEach(function (link) {
     if (link.getAttribute('href') === currentPath) {
       link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
     }
   });
 
