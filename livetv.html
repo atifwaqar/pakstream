@@ -219,8 +219,9 @@
             div.appendChild(iframe);
             videoSection.appendChild(div);
           });
-          const streamList = document.createElement('ul');
+          const streamList = document.createElement('div');
           streamList.id = 'stream-list';
+          streamList.className = 'video-list';
           videoSection.appendChild(streamList);
 
           document.querySelectorAll('.channel-name').forEach(el => fitText(el));
@@ -319,15 +320,20 @@
       }
     }
 
+    function setActiveStream(el) {
+      document.querySelectorAll('#stream-list .video-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+
     function populateStreamList(id) {
       const streamList = document.getElementById('stream-list');
       if (!streamList) return;
       streamList.innerHTML = '';
       const ch = channelMap[id];
       if (!ch || !ch['channel-id']) {
-        const li = document.createElement('li');
-        li.textContent = 'No live streams available.';
-        streamList.appendChild(li);
+        const div = document.createElement('div');
+        div.textContent = 'No live streams available.';
+        streamList.appendChild(div);
         return;
       }
 
@@ -335,29 +341,17 @@
       const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
 
       const renderEntries = (entries) => {
-        entries.forEach(entry => {
-          const li = document.createElement('li');
-          li.className = 'stream-card';
-          const a = document.createElement('a');
-          a.href = '#';
-
-          const img = document.createElement('img');
-          img.src = entry.thumb;
-          img.alt = entry.title;
-          a.appendChild(img);
-
-          const titleDiv = document.createElement('div');
-          titleDiv.className = 'stream-title';
-          titleDiv.textContent = entry.title;
-          a.appendChild(titleDiv);
-
-          const viewerDiv = document.createElement('div');
-          viewerDiv.className = 'stream-viewers';
-          viewerDiv.textContent = entry.viewers ? `${entry.viewers.toLocaleString()} watching` : 'Live';
-          a.appendChild(viewerDiv);
-
-          a.onclick = (e) => {
-            e.preventDefault();
+        entries.forEach((entry, index) => {
+          const item = document.createElement('div');
+          item.className = 'video-item';
+          item.innerHTML = `
+            <img src="${entry.thumb}" alt="${entry.title}" loading="lazy">
+            <div class="video-details">
+              <div class="video-title">${entry.title}</div>
+              <div class="video-meta">${entry.viewers ? `${entry.viewers.toLocaleString()} watching` : 'Live'}</div>
+            </div>
+          `;
+          item.addEventListener('click', () => {
             const playerId = `${id}-player`;
             const player = players[playerId];
             if (player && player.loadVideoById) {
@@ -366,23 +360,21 @@
               const iframe = document.getElementById(playerId);
               iframe.src = `https://www.youtube.com/embed/${entry.videoId}?${YT_PARAMS}`;
             }
-          };
-
-          li.appendChild(a);
-          streamList.appendChild(li);
-        });
-
-        if (entries.length > 0) {
-          const top = entries[0].videoId;
-          const playerId = `${id}-player`;
-          const player = players[playerId];
-          if (player && player.loadVideoById) {
-            player.loadVideoById(top);
-          } else {
-            const iframe = document.getElementById(playerId);
-            iframe.src = `https://www.youtube.com/embed/${top}?${YT_PARAMS}`;
+            setActiveStream(item);
+          });
+          streamList.appendChild(item);
+          if (index === 0) {
+            const playerId = `${id}-player`;
+            const player = players[playerId];
+            if (player && player.loadVideoById) {
+              player.loadVideoById(entry.videoId);
+            } else {
+              const iframe = document.getElementById(playerId);
+              iframe.src = `https://www.youtube.com/embed/${entry.videoId}?${YT_PARAMS}`;
+            }
+            setActiveStream(item);
           }
-        }
+        });
       };
 
       if (cached && (Date.now() - cached.timestamp) < ONE_DAY_MS) {
@@ -419,20 +411,20 @@
                 renderEntries(entries);
               })
               .catch(() => {
-                const li = document.createElement('li');
-                li.textContent = 'Error fetching stream details.';
-                streamList.appendChild(li);
+                const div = document.createElement('div');
+                div.textContent = 'Error fetching stream details.';
+                streamList.appendChild(div);
               });
           } else {
-            const li = document.createElement('li');
-            li.textContent = 'No live streams found.';
-            streamList.appendChild(li);
+            const div = document.createElement('div');
+            div.textContent = 'No live streams found.';
+            streamList.appendChild(div);
           }
         })
         .catch(() => {
-          const li = document.createElement('li');
-          li.textContent = 'Error fetching streams.';
-          streamList.appendChild(li);
+          const div = document.createElement('div');
+          div.textContent = 'Error fetching streams.';
+          streamList.appendChild(div);
         });
     }
 
