@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');
   if (!navToggle || !nav || !label) return;
+  var touchStartX = null;
+  var touchStartY = null;
 
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
@@ -115,6 +117,25 @@ document.addEventListener('DOMContentLoaded', function () {
     if (navToggle.checked && !nav.contains(e.target) && !label.contains(e.target)) {
       navToggle.checked = false;
     }
+  });
+
+  document.addEventListener('touchstart', function (e) {
+    if (!navToggle.checked) return;
+    var t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+  });
+
+  document.addEventListener('touchend', function (e) {
+    if (!navToggle.checked || touchStartX === null) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - touchStartX;
+    var dy = Math.abs(t.clientY - touchStartY);
+    if (dx < -50 && dy < 30) {
+      navToggle.checked = false;
+    }
+    touchStartX = null;
+    touchStartY = null;
   });
 
   if (themeToggle) {
