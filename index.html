@@ -82,52 +82,20 @@
 
   <!-- Hero section with image and tagline -->
   <section class="hero-banner">
-    <svg viewBox="0 0 380 380" role="img" aria-label="Pakistani crescent and star with animated streams"
-         xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:16px;overflow:hidden">
-      <defs>
-        <mask id="avoid-motif">
-          <rect width="100%" height="100%" fill="#fff"/>
-          <circle cx="165" cy="190" r="90" fill="#000"/>
-          <circle cx="205" cy="165" r="80" fill="#fff"/>
-          <circle cx="280" cy="165" r="35" fill="#000"/>
-        </mask>
-        <style>
-          .stream { fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:.85; mix-blend-mode:overlay; }
-          .w1{ stroke-width:17 } .w2{ stroke-width:14 } .w3{ stroke-width:11 } .w4{ stroke-width:9 } .w5{ stroke-width:7 }
-          .c1{ stroke: var(--primary, #00796B) }
-          .c2{ stroke: var(--accent-link, #1E88E5) }
-          .c3{ stroke: var(--accent-success, #43A047) }
-          .c4{ stroke: var(--accent-info, #4FC3F7) }
-          .c5{ stroke: var(--accent-live, #FB8C00) }
-          .fast{ animation: driftF 10s linear infinite alternate; }
-          .med { animation: driftM 14s linear infinite alternate; }
-          .slow{ animation: driftS 20s linear infinite alternate; }
-          @keyframes driftF { from { transform: translateX(-5px) } to { transform: translateX(5px) } }
-          @keyframes driftM { from { transform: translateX(4px) }  to { transform: translateX(-4px) } }
-          @keyframes driftS { from { transform: translateX(-3px) } to { transform: translateX(3px) } }
-          svg:hover .left  { transform: translateY(-4px); transition: transform .45s ease; }
-          svg:hover .right { transform: translateY(4px); transition: transform .45s ease; }
-          @media (prefers-reduced-motion: reduce){
-            .fast,.med,.slow{ animation: none !important; }
-          }
-        </style>
-      </defs>
-      <image href="/images/pakistan-abstract-380.webp" x="0" y="0" width="380" height="380" preserveAspectRatio="xMidYMid slice"/>
-      <g mask="url(#avoid-motif)">
-        <g class="left">
-          <path class="stream c1 w2 fast" d="M -20,95 C 60,70 105,125 180,110" />
-          <path class="stream c2 w3 med" d="M -20,130 C 70,105 115,160 190,145" />
-          <path class="stream c3 w4 slow" d="M -20,165 C 75,145 130,190 200,175" />
-          <path class="stream c4 w5 med" d="M -20,205 C 80,185 140,225 210,215" />
-        </g>
-        <g class="right">
-          <path class="stream c2 w2 med" d="M 400,105 C 310,85 270,130 190,120" />
-          <path class="stream c3 w3 slow" d="M 400,140 C 305,120 260,160 180,152.5" />
-          <path class="stream c5 w4 fast" d="M 400,175 C 300,155 250,190 170,182.5" />
-          <path class="stream c4 w5 med" d="M 400,210 C 295,190 240,222.5 160,215" />
-        </g>
-      </g>
-    </svg>
+    <picture>
+      <source
+        type="image/webp"
+        srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
+        sizes="(max-width: 420px) 80vw, 380px" />
+      <img
+        src="/images/pakistan-abstract-380.webp"
+        width="380"
+        height="380"
+        alt="Abstract Pakistan crescent and star"
+        decoding="async"
+        fetchpriority="high"
+        style="aspect-ratio: 1 / 1; object-fit: cover;" />
+    </picture>
     <div class="hero-text">
       <h2>Your Gateway to Pakistani Media</h2>
       <p>Stay Connected to Pakistan — News, Radio &amp; More</p>
