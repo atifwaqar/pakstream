@@ -817,32 +817,7 @@ footer nav a:hover {
 }
 
 #stream-list {
-  list-style: none;
-  padding: 0;
+  /* Utilize existing video-list styles */
   margin: 0;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-}
-
-.stream-card a {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.stream-card img {
-  width: 100%;
-  border-radius: 8px;
-  display: block;
-}
-
-.stream-title {
-  font-weight: 500;
-  margin-top: 0.5rem;
-}
-
-.stream-viewers {
-  font-size: 0.875rem;
-  color: var(--on-surface-variant);
+  padding: 0;
 }
