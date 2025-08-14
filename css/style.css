@@ -96,12 +96,28 @@ footer nav a:hover {
 .search-form {
   margin-left: 16px;
   position: relative;
+  flex: 1;
+  max-width: 300px;
+  min-width: 0;
 }
 
 .search-form input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 6px 8px;
   border-radius: 4px;
   border: 1px solid var(--primary-container);
+}
+
+.search-form.active {
+  max-width: none;
+}
+
+@media (max-width: 600px) {
+  .search-form {
+    margin-left: 8px;
+    max-width: none;
+  }
 }
 
 .search-results {

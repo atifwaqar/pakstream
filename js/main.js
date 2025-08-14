@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (topBar) {
     var themeBtn = themeToggle;
+    var logoTitle = document.querySelector('.logo-title');
     var searchForm = document.createElement('form');
     searchForm.id = 'search-form';
     searchForm.className = 'search-form';
@@ -43,6 +44,16 @@ document.addEventListener('DOMContentLoaded', function () {
     input.placeholder = 'Search...';
     input.setAttribute('aria-label', 'Search');
     searchForm.appendChild(input);
+
+    input.addEventListener('focus', function () {
+      searchForm.classList.add('active');
+      if (logoTitle) logoTitle.setAttribute('hidden', '');
+    });
+
+    input.addEventListener('blur', function () {
+      searchForm.classList.remove('active');
+      if (logoTitle) logoTitle.removeAttribute('hidden');
+    });
 
     var results = document.createElement('div');
     results.id = 'search-results';
