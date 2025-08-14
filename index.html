@@ -13,7 +13,11 @@
   <link rel="canonical" href="https://pakstream.com/" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  
+  <link rel="preload" as="image"
+    href="/images/pakistan-abstract-380.webp"
+    imagesrcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
+    imagesizes="(max-width: 420px) 80vw, 380px"
+    fetchpriority="high">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -76,11 +80,27 @@
   <label for="nav-toggle" class="nav-overlay"></label>
   </header>
 
-    <section id="hero" class="hero">
-    <!-- PakStream Fun Streams Hero -->
-    <svg class="pakstream-hero" viewBox="0 0 760 760" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg"><title id="title">PakStream — Pakistani crescent and star with colorful streams</title><desc id="desc">Multiple colorful flowing streams surround a crescent and star, inspired by the Pakistani flag, with gentle animations.</desc><style>.pakstream-hero{width:100%;height:auto;display:block;shape-rendering:geometricPrecision;text-rendering:geometricPrecision}.stream-fast{animation:driftFast 10s linear infinite alternate}.stream-medium{animation:driftMed 14s linear infinite alternate}.stream-slow{animation:driftSlow 20s linear infinite alternate}@keyframes driftFast{from{transform:translateX(-8px)}to{transform:translateX(8px)}}@keyframes driftMed{from{transform:translateX(6px)}to{transform:translateX(-6px)}}@keyframes driftSlow{from{transform:translateX(-4px)}to{transform:translateX(4px)}}.scene:hover .layer-left{transform:translateY(-4px);transition:transform .5s ease}.scene:hover .layer-right{transform:translateY(4px);transition:transform .5s ease}.scene:hover .moon-star{transform:scale(1.02);transition:transform .4s ease}@media(prefers-reduced-motion:reduce){.stream-fast,.stream-medium,.stream-slow{animation:none!important}}.bg{fill:var(--primary-container)}.crescent,.star{fill:var(--on-primary);filter:drop-shadow(0 0 6px var(--accent-info))}.live{fill:var(--accent-live)}.link{fill:var(--accent-link)}.success{fill:var(--accent-success)}.info{fill:var(--accent-info)}.primary{fill:var(--primary)}</style><defs><mask id="moonStarMask"><rect width="100%" height="100%" fill="#fff"/><circle cx="300" cy="380" r="150" fill="#000"/><circle cx="380" cy="340" r="50" fill="#000"/></mask><mask id="crescentMask"><rect width="100%" height="100%" fill="#000"/><circle cx="300" cy="380" r="150" fill="#fff"/><circle cx="340" cy="360" r="130" fill="#000"/></mask></defs><g class="scene"><rect class="bg" width="760" height="760" rx="24" ry="24"/><g class="layer-left" mask="url(#moonStarMask)"><path class="live stream-fast" opacity=".9" d="M0,180C180,140 220,300 400,260"/><path class="link stream-medium" opacity=".8" d="M0,260C200,220 240,380 420,340"/><path class="success stream-slow" opacity=".7" d="M0,400C200,360 240,520 420,480"/><path class="info stream-fast" opacity=".6" d="M0,320C160,280 200,440 400,400"/></g><g class="layer-right" mask="url(#moonStarMask)"><path class="link stream-medium" opacity=".9" d="M760,200C580,160 540,300 360,260"/><path class="success stream-slow" opacity=".8" d="M760,280C560,240 520,400 340,360"/><path class="info stream-fast" opacity=".7" d="M760,420C560,380 520,520 340,480"/><path class="live stream-medium" opacity=".6" d="M760,340C600,300 540,460 360,420"/></g><g class="moon-star"><g mask="url(#crescentMask)"><circle class="crescent" cx="300" cy="380" r="150"/></g><polygon class="star" points="380,290 390,320 422,320 396,338 406,368 380,350 354,368 364,338 338,320 370,320"/></g></g></svg>
+  <!-- Hero section with image and tagline -->
+  <section class="hero-banner">
+    <picture>
+      <source
+        type="image/webp"
+        srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
+        sizes="(max-width: 420px) 80vw, 380px" />
+      <img
+        src="/images/pakistan-abstract-380.webp"
+        width="380"
+        height="380"
+        alt="Abstract Pakistan crescent and star"
+        decoding="async"
+        fetchpriority="high"
+        style="aspect-ratio: 1 / 1; object-fit: cover;" />
+    </picture>
+    <div class="hero-text">
+      <h2>Your Gateway to Pakistani Media</h2>
+      <p>Stay Connected to Pakistan — News, Radio &amp; More</p>
+    </div>
   </section>
-
 
   <!-- Featured cards -->
   <section class="feature-cards">
