@@ -107,6 +107,27 @@
 <script>
     const anchorMap = {};
     const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
+    const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
+    const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
+    function getChannelThumbnail(id) {
+      const cacheKey = `yt_thumb_${id}`;
+      const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+      if (cached && (Date.now() - cached.timestamp) < ONE_YEAR_MS) {
+        return Promise.resolve(cached.url);
+      }
+      const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
+      return fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const thumb = data.items?.[0]?.snippet?.thumbnails?.default?.url || '';
+          if (thumb) {
+            localStorage.setItem(cacheKey, JSON.stringify({ url: thumb, timestamp: Date.now() }));
+          }
+          return thumb;
+        })
+        .catch(() => '');
+    }
 
     function updateFavoritesUI() {
       const list = document.querySelector('.channel-list');
@@ -279,6 +300,10 @@
         card.className = 'channel-card';
         card.dataset.channelId = ch.id;
 
+        const img = document.createElement('img');
+        img.className = 'channel-thumb';
+        getChannelThumbnail(ch.id).then(url => { img.src = url; });
+
         const span = document.createElement('span');
         span.className = 'channel-name';
         span.textContent = ch.name;
@@ -289,6 +314,7 @@
         btn.textContent = 'favorite_border';
         btn.addEventListener('click', toggleFavorite);
 
+        card.appendChild(img);
         card.appendChild(span);
         card.appendChild(btn);
         list.appendChild(card);
