@@ -13,11 +13,7 @@
   <link rel="canonical" href="https://pakstream.com/" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <link rel="preload" as="image"
-    href="/images/pakistan-abstract-380.webp"
-    imagesrcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
-    imagesizes="(max-width: 420px) 80vw, 380px"
-    fetchpriority="high">
+  
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -80,26 +76,73 @@
   <label for="nav-toggle" class="nav-overlay"></label>
   </header>
 
-  <!-- Hero section with image and tagline -->
-  <section class="hero-banner">
-    <picture>
-      <source
-        type="image/webp"
-        srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
-        sizes="(max-width: 420px) 80vw, 380px" />
-      <img
-        src="/images/pakistan-abstract-380.webp"
-        width="380"
-        height="380"
-        alt="Abstract Pakistan crescent and star"
-        decoding="async"
-        fetchpriority="high"
-        style="aspect-ratio: 1 / 1; object-fit: cover;" />
-    </picture>
-    <div class="hero-text">
-      <h2>Your Gateway to Pakistani Media</h2>
-      <p>Stay Connected to Pakistan — News, Radio &amp; More</p>
-    </div>
+  <section id="hero" class="hero">
+    <!-- PakStream zero-request SVG hero -->
+    <svg class="pakstream-hero" viewBox="0 0 760 760" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="title">PakStream — Pakistan crescent and star</title>
+      <desc id="desc">Layered green waves with a glowing crescent and star. Subtle motion and hover parallax.</desc>
+      <style>
+        .pakstream-hero{width:100%;height:auto;display:block;shape-rendering:geometricPrecision;text-rendering:geometricPrecision}
+        .bg{fill:var(--primary-container)} .wave-1{fill:var(--primary);opacity:.9}
+        .wave-2{fill:var(--surface-variant);opacity:.55} .wave-3{fill:var(--primary);opacity:.3}
+        .wave-4{fill:var(--on-primary-container);opacity:.18} .crescent,.star{fill:var(--on-primary)}
+        .lit{filter:url(#glow)}
+        .wave-1{animation:driftA 16s ease-in-out infinite alternate}
+        .wave-2{animation:driftB 20s ease-in-out infinite alternate}
+        .wave-3{animation:driftC 24s ease-in-out infinite alternate}
+        .wave-4{animation:driftD 28s ease-in-out infinite alternate}
+        .crescent,.star{animation:pulse 4.5s ease-in-out infinite}
+        @keyframes driftA{from{transform:translateX(-6px)}to{transform:translateX(6px)}}
+        @keyframes driftB{from{transform:translateX(8px)}to{transform:translateX(-8px)}}
+        @keyframes driftC{from{transform:translateX(-10px)}to{transform:translateX(10px)}}
+        @keyframes driftD{from{transform:translateX(12px)}to{transform:translateX(-12px)}}
+        @keyframes pulse{0%,100%{filter:none}50%{filter:drop-shadow(0 0 10px var(--accent-info)) drop-shadow(0 0 18px var(--accent-link))}}
+        .scene:hover .layer-1{transform:translateY(-4px);transition:transform .5s ease}
+        .scene:hover .layer-2{transform:translateY(4px);transition:transform .6s ease}
+        .scene:hover .layer-3{transform:translateY(-6px);transition:transform .7s ease}
+        .scene:hover .lit{transform:translateY(2px);transition:transform .45s ease}
+        @media (prefers-reduced-motion:reduce){.wave-1,.wave-2,.wave-3,.wave-4,.crescent,.star{animation:none!important}}
+      </style>
+
+      <defs>
+        <!-- soft glow -->
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- crescent mask -->
+        <mask id="crescentMask">
+          <rect width="100%" height="100%" fill="#000"/>
+          <circle cx="330" cy="365" r="150" fill="#fff"/>
+          <circle cx="400" cy="330" r="140" fill="#000"/>
+        </mask>
+      </defs>
+
+      <g class="scene">
+        <rect class="bg" x="0" y="0" width="760" height="760" rx="24" ry="24"/>
+        <!-- waves -->
+        <g class="layer-1">
+          <path class="wave-1" d="M0,150 C120,120 170,220 300,200 C440,178 510,90 760,130 L760,0 L0,0 Z"/>
+          <path class="wave-1" d="M0,610 C160,590 200,720 360,690 C520,660 620,560 760,600 L760,760 L0,760 Z" opacity=".85"/>
+        </g>
+        <g class="layer-2">
+          <path class="wave-2" d="M0,300 C90,340 170,280 260,320 C350,360 460,430 560,410 C660,390 720,330 760,360 L760,180 L0,180 Z"/>
+          <path class="wave-2" d="M0,500 C120,470 200,560 300,540 C420,515 520,460 760,480 L760,350 L0,350 Z" opacity=".65"/>
+        </g>
+        <g class="layer-3">
+          <path class="wave-3" d="M0,90 C140,60 210,170 360,150 C520,126 670,40 760,70 L760,0 L0,0 Z"/>
+          <path class="wave-3" d="M0,720 C190,690 270,760 420,740 C590,715 670,650 760,670 L760,760 L0,760 Z"/>
+        </g>
+        <g class="layer-3">
+          <path class="wave-4" d="M0,420 C160,450 210,380 330,410 C460,445 530,520 660,510 C710,506 740,495 760,490 L760,380 L0,380 Z"/>
+        </g>
+        <!-- crescent & star -->
+        <g class="lit">
+          <g mask="url(#crescentMask)"><rect class="crescent" x="150" y="180" width="360" height="360"/></g>
+          <polygon class="star" points="540,290 553,328 594,328 561,351 573,388 540,365 507,388 519,351 486,328 527,328" transform="rotate(6 540 338)"/>
+        </g>
+      </g>
+    </svg>
   </section>
 
   <!-- Featured cards -->
