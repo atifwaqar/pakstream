@@ -138,6 +138,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const muteBtn = document.getElementById('mute-btn');
   const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
 
+  function fitText(el, maxLines = 2) {
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+    const maxHeight = lineHeight * maxLines;
+    let fontSize = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollHeight > maxHeight && fontSize > 10) {
+      fontSize -= 1;
+      el.style.fontSize = fontSize + 'px';
+    }
+  }
+
   // Allow swipe gestures to toggle the channel list on touch devices
   const channelList = document.querySelector('.channel-list');
   if (channelList) {
@@ -238,6 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
       img.loading = 'lazy';
       card.insertBefore(img, name);
     });
+
+    document.querySelectorAll('.channel-name').forEach(el => fitText(el));
 
     playButtons = Array.from(document.querySelectorAll('.play-btn'));
     playButtons.forEach(btn => {

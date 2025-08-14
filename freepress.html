@@ -159,13 +159,29 @@
       updateFavoritesUI();
     }
 
+    function fitText(el, maxLines = 2) {
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+      const maxHeight = lineHeight * maxLines;
+      let fontSize = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollHeight > maxHeight && fontSize > 10) {
+        fontSize -= 1;
+        el.style.fontSize = fontSize + 'px';
+      }
+    }
+
     let cards;
     const videoListEl = document.getElementById('videoList');
     const playerFrame = document.getElementById('playerFrame');
 
   function setActiveCard(clickedCard) {
-    cards.forEach(c => c.classList.remove('active'));
+    cards.forEach(c => {
+      c.classList.remove('active');
+      const pb = c.querySelector('.play-btn');
+      if (pb) pb.textContent = 'play_arrow';
+    });
     clickedCard.classList.add('active');
+    const pb = clickedCard.querySelector('.play-btn');
+    if (pb) pb.textContent = 'stop';
   }
 
   function setActiveVideo(clickedItem) {
@@ -308,6 +324,12 @@
         span.className = 'channel-name';
         span.textContent = ch.name;
 
+        const playBtn = document.createElement('button');
+        playBtn.className = 'play-btn material-symbols-outlined';
+        playBtn.setAttribute('aria-label', 'Play');
+        playBtn.textContent = 'play_arrow';
+        playBtn.addEventListener('click', (e) => { e.stopPropagation(); handleChannelClick(card); });
+
         const btn = document.createElement('button');
         btn.className = 'fav-btn material-symbols-outlined';
         btn.setAttribute('aria-label', 'Toggle favorite');
@@ -316,10 +338,12 @@
 
         card.appendChild(img);
         card.appendChild(span);
+        card.appendChild(playBtn);
         card.appendChild(btn);
         list.appendChild(card);
       });
 
+      document.querySelectorAll('.channel-name').forEach(el => fitText(el));
       updateFavoritesUI();
 
       cards = document.querySelectorAll('.channel-card');
