@@ -82,37 +82,20 @@
 
   <!-- Hero section with image and tagline -->
   <section class="hero-banner">
-    <svg
-      class="hero-flag"
-      viewBox="0 0 400 300"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Abstract Pakistan crescent and star">
-      <rect width="400" height="300" fill="var(--primary)" />
-      <g class="wave-layer" data-depth="0.02">
-        <path
-          class="wave wave1"
-          d="M0 200 Q100 180 200 200 T400 200 V300 H0Z"
-          fill="var(--primary-container)" />
-      </g>
-      <g class="wave-layer" data-depth="0.04">
-        <path
-          class="wave wave2"
-          d="M0 240 Q100 220 200 240 T400 240 V300 H0Z"
-          fill="var(--accent-success)"
-          opacity="0.3" />
-      </g>
-      <g class="emblem" transform="translate(260 140)" data-depth="0.08">
-        <path
-          class="crescent"
-          d="M0-50a50 50 0 1 0 0 100a35 35 0 1 1 0-100"
-          fill="var(--on-primary)" />
-        <polygon
-          class="star"
-          points="0,-15 4,-5 15,-5 6,2 9,12 0,6 -9,12 -6,2 -15,-5 -4,-5"
-          fill="var(--on-primary)" />
-      </g>
-    </svg>
+    <picture>
+      <source
+        type="image/webp"
+        srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
+        sizes="(max-width: 420px) 80vw, 380px" />
+      <img
+        src="/images/pakistan-abstract-380.webp"
+        width="380"
+        height="380"
+        alt="Abstract Pakistan crescent and star"
+        decoding="async"
+        fetchpriority="high"
+        style="aspect-ratio: 1 / 1; object-fit: cover;" />
+    </picture>
     <div class="hero-text">
       <h2>Your Gateway to Pakistani Media</h2>
       <p>Stay Connected to Pakistan — News, Radio &amp; More</p>
