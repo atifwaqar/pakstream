@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="title" content="PakStream Radio - Listen to Pakistani Radio Stations Online">
   <meta name="description" content="Stream live Pakistani FM, talk, and news radio from anywhere in the world.">
-  <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani YouTubers, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
+  <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani Free Press, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
   <meta name="author" content="PakStream by Chatdroid AB">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://pakstream.com/radio.html" />
@@ -50,7 +50,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
 </head>
@@ -88,14 +88,14 @@
             <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
           </div>
           <div class="controls">
-            <button id="favorite-btn" class="fav-btn material-icons" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
-            <button id="prev-btn" class="fav-btn material-icons" type="button" aria-label="Previous station" disabled>skip_previous</button>
+            <button id="favorite-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
+            <button id="prev-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Previous station" disabled>skip_previous</button>
             <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
-              <span class="material-icons label">play_arrow</span>
+              <span class="material-symbols-outlined label">play_arrow</span>
               <span class="spinner"></span>
             </button>
-            <button id="next-btn" class="fav-btn material-icons" type="button" aria-label="Next station" disabled>skip_next</button>
-            <button id="mute-btn" class="mute-btn material-icons" type="button" aria-label="Mute" disabled>volume_up</button>
+            <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
+            <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
             <audio id="radio-player" autoplay></audio>
           </div>
         </div>
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const btn = document.createElement('button');
       btn.className = 'play-btn';
       btn.setAttribute('aria-label', 'Play');
-      btn.innerHTML = '<span class="material-icons label">play_arrow</span><span class="spinner"></span>';
+      btn.innerHTML = '<span class="material-symbols-outlined label">play_arrow</span><span class="spinner"></span>';
 
       const audio = document.createElement('audio');
       audio.id = st.id;
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const audio = btn.parentElement.querySelector('audio');
       const card = btn.closest('.channel-card');
       const name = card.querySelector('.channel-name').textContent;
-      btn.classList.remove('material-icons');
+      btn.classList.remove('material-symbols-outlined');
       btn.setAttribute('type', 'button');
       btn.addEventListener('click', (e) => {
         e.preventDefault();
