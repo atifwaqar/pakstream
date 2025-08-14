@@ -205,8 +205,23 @@ document.addEventListener('DOMContentLoaded', function() {
       audio.dataset.logo = st.logo || defaultLogo;
       if (st.src) audio.src = st.src;
 
+      const favButton = document.createElement('button');
+      favButton.className = 'fav-btn material-symbols-outlined';
+      favButton.setAttribute('aria-label', 'Toggle favorite');
+      favButton.textContent = 'favorite_border';
+      favButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = audio.id;
+        const idx = favorites.indexOf(id);
+        if (idx >= 0) favorites.splice(idx, 1);
+        else favorites.push(id);
+        localStorage.setItem('radioFavorites', JSON.stringify(favorites));
+        updateFavoritesUI();
+      });
+
       card.appendChild(nameSpan);
       card.appendChild(btn);
+      card.appendChild(favButton);
       card.appendChild(audio);
       list.appendChild(card);
     });
