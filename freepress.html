@@ -89,11 +89,13 @@
     <!-- Video display area: a player for the selected video and a list of recent videos -->
     <div class="video-section">
       <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Channels</button>
+      <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()">Details</button>
       <div class="live-player">
         <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
+    <div class="details-list"></div>
   </section>
 
   <!-- Placeholder for advertising or extra content -->
@@ -316,7 +318,9 @@
   }
   fetch('/freepress_channels.json')
     .then(res => res.json())
-    .then(channels => {
+    .then(data => {
+      const channels = data.channels || [];
+      const details = data.details || [];
       const list = document.querySelector('.channel-list');
       channels.forEach(ch => {
         anchorMap[ch.key] = ch.id;
@@ -350,6 +354,14 @@
         card.appendChild(playBtn);
         card.appendChild(btn);
         list.appendChild(card);
+      });
+
+      const detailsList = document.querySelector('.details-list');
+      details.forEach(text => {
+        const item = document.createElement('div');
+        item.className = 'detail-item';
+        item.textContent = text;
+        detailsList.appendChild(item);
       });
 
       document.querySelectorAll('.channel-name').forEach(el => fitText(el));
@@ -432,6 +444,63 @@
       document.getElementById('toggle-channels').textContent = 'Close Channels';
     }
     openStartX = null;
+  });
+
+  function toggleDetailsList() {
+    const list = document.querySelector('.details-list');
+    const btn = document.getElementById('toggle-details');
+    list.classList.toggle('open');
+    btn.textContent = list.classList.contains('open') ? 'Close Details' : 'Details';
+  }
+
+  document.addEventListener('click', function(e) {
+    const list = document.querySelector('.details-list');
+    const btn = document.getElementById('toggle-details');
+    if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
+      list.classList.remove('open');
+      btn.textContent = 'Details';
+    }
+  });
+
+  // Allow swipe right to close the details list on touch devices
+  let detailsTouchStartX = null;
+  const detailsList = document.querySelector('.details-list');
+  detailsList.addEventListener('touchstart', (e) => {
+    if (!detailsList.classList.contains('open')) return;
+    detailsTouchStartX = e.touches[0].clientX;
+  });
+  detailsList.addEventListener('touchend', (e) => {
+    if (detailsTouchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    if (touchEndX - detailsTouchStartX > 50) {
+      detailsList.classList.remove('open');
+      document.getElementById('toggle-details').textContent = 'Details';
+    }
+    detailsTouchStartX = null;
+  });
+
+  // Allow swipe left from the screen edge to open the details list on touch devices
+  let detailsOpenStartX = null;
+  document.addEventListener('touchstart', (e) => {
+    if (detailsList.classList.contains('open')) return;
+    detailsOpenStartX = e.touches[0].clientX;
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (detailsOpenStartX === null) return;
+    const currentX = e.touches[0].clientX;
+    if (detailsOpenStartX > window.innerWidth - 50 && detailsOpenStartX - currentX > 10) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', (e) => {
+    if (detailsList.classList.contains('open')) return;
+    if (detailsOpenStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    if (detailsOpenStartX > window.innerWidth - 50 && detailsOpenStartX - touchEndX > 50) {
+      detailsList.classList.add('open');
+      document.getElementById('toggle-details').textContent = 'Close Details';
+    }
+    detailsOpenStartX = null;
   });
 </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>

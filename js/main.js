@@ -72,7 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
         { url: '/radio_channels.json', map: c => ({ name: c.name, link: '/radio.html?station=' + c.id }) }
       ];
       return Promise.all(
-        sources.map(s => fetch(s.url).then(r => r.json()).then(arr => arr.map(s.map)))
+        sources.map(s =>
+          fetch(s.url)
+            .then(r => r.json())
+            .then(data => (Array.isArray(data) ? data : data.channels || []).map(s.map))
+        )
       ).then(res => {
         searchData = res.flat();
         loaded = true;
