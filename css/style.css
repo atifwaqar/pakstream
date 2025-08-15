@@ -304,6 +304,10 @@ section {
   width: 300px;
 }
 
+.youtube-section .button-row {
+  display: none;
+}
+
 .youtube-section .channel-card,
 .youtube-section .detail-item {
   background: var(--surface);
@@ -471,19 +475,26 @@ section {
   .youtube-section .details-list.open {
     transform: translateX(0);
   }
-  .youtube-section .channel-toggle,
-  .youtube-section .details-toggle {
+  .youtube-section .channel-toggle {
     display: inline-block;
     margin-bottom: 8px;
   }
-  .youtube-section .details-toggle {
-    margin-left: 8px;
+  .youtube-section .button-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .youtube-section .button-row .channel-toggle {
+    margin-bottom: 0;
   }
 }
 
 @media (min-width: 769px) {
   .youtube-section .channel-toggle,
   .youtube-section .details-toggle {
+    display: none;
+  }
+  .youtube-section .button-row {
     display: none;
   }
   .youtube-section .channel-list,
