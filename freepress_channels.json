@@ -35,9 +35,8 @@
     {"key":"WajahatSKhan","name":"Wajahat Saeed Khan","id":"UCxaMbYDd4o_zVvfr9_wKAxQ"},
     {"key":"Zaeemleghari","name":"Zaeem leghari","id":"UCfTQGgFP5U53mcbbRRLl1yQ"}
   ],
-  "details": [
-    "PakStream curates independent Pakistani news voices.",
-    "Opinions belong to their creators.",
-    "Contact us at contact@pakstream.com"
-  ]
+  "details": {
+    "default": "<div class='detail-item'>PakStream curates independent Pakistani news voices.</div><div class='detail-item'>Opinions belong to their creators.</div><div class='detail-item'>Contact us at contact@pakstream.com</div>",
+    "ImranRiazKhan": "<div class='details-content'><h3>About</h3><p>Imran Riaz Khan is a Pakistani journalist and TV anchor. On 11 May 2023, Khan was reported to have been arrested by police while travelling in Pakistan. Media reports suggested that Imran's abduction may have been connected to him speaking out against the government and military. <a href='https://en.wikipedia.org/wiki/Imran_Riaz_Khan' target='_blank' rel='noopener'>Wikipedia</a></p><div class='meta'><div><strong>Born:</strong> August 14, 1975 (age 50 years), Faisalabad, Pakistan</div><div><strong>Nationality:</strong> Pakistani</div><div><strong>Channel:</strong> Imran Riaz Khan</div><div><strong>Views:</strong> 1.58 billion</div></div><h3>Profiles</h3><div class='profiles'><a class='profile' href='https://www.youtube.com/c/ImranRiazKhan' target='_blank' rel='noopener'><img src='https://img.icons8.com/color/48/000000/youtube-play.png' alt='YouTube'><span>YouTube</span></a><a class='profile' href='https://www.instagram.com/imrankhanjrnlist' target='_blank' rel='noopener'><img src='https://img.icons8.com/color/48/000000/instagram-new.png' alt='Instagram'><span>Instagram</span></a><a class='profile' href='https://twitter.com/ImranRiazKhan' target='_blank' rel='noopener'><img src='https://img.icons8.com/color/48/000000/twitter--v1.png' alt='X'><span>X (Twitter)</span></a><a class='profile' href='https://www.facebook.com/ImranRiazKhanOfficial' target='_blank' rel='noopener'><img src='https://img.icons8.com/color/48/000000/facebook-new.png' alt='Facebook'><span>Facebook</span></a></div></div>"
+  }
 }

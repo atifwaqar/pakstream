@@ -117,6 +117,7 @@
   <!-- JavaScript for dynamically loading latest videos from the selected channel -->
 <script>
     const anchorMap = {};
+    let detailsMap = {};
     const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
     const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
     const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
@@ -248,7 +249,11 @@
       const newUrl = `${window.location.pathname}?newsanchor=${anchorKey}`;
       history.replaceState(null, '', newUrl);
     }
-  
+    const detailsList = document.querySelector('.details-list');
+    if (detailsList) {
+      detailsList.innerHTML = (detailsMap[anchorKey] || detailsMap.default || '');
+    }
+
     setActiveCard(card);
     videoListEl.innerHTML = '<p>Loading videos…</p>';
 
@@ -320,7 +325,8 @@
     .then(res => res.json())
     .then(data => {
       const channels = data.channels || [];
-      const details = data.details || [];
+      const details = data.details || {};
+      detailsMap = details;
       const list = document.querySelector('.channel-list');
       channels.forEach(ch => {
         anchorMap[ch.key] = ch.id;
@@ -357,12 +363,7 @@
       });
 
       const detailsList = document.querySelector('.details-list');
-      details.forEach(text => {
-        const item = document.createElement('div');
-        item.className = 'detail-item';
-        item.textContent = text;
-        detailsList.appendChild(item);
-      });
+      detailsList.innerHTML = details.default || '';
 
       document.querySelectorAll('.channel-name').forEach(el => fitText(el));
       updateFavoritesUI();
