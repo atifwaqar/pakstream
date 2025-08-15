@@ -88,14 +88,16 @@
     <div class="channel-list"></div>
     <!-- Video display area: a player for the selected video and a list of recent videos -->
     <div class="video-section">
-      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Channels</button>
-      <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()">Details</button>
+      <div class="button-row">
+        <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Channels</button>
+        <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()" style="display: none;">About</button>
+      </div>
       <div class="live-player">
         <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
-    <div class="details-list"></div>
+    <div class="details-list" style="display: none;"></div>
   </section>
 
   <!-- Placeholder for advertising or extra content -->
@@ -250,8 +252,20 @@
       history.replaceState(null, '', newUrl);
     }
     const detailsList = document.querySelector('.details-list');
-    if (detailsList) {
-      detailsList.innerHTML = detailsMap[anchorKey] || '';
+    const detailsBtn = document.getElementById('toggle-details');
+    const aboutContent = detailsMap[anchorKey];
+    if (detailsList && detailsBtn) {
+      if (aboutContent) {
+        detailsList.innerHTML = aboutContent;
+        detailsList.style.display = '';
+        detailsBtn.style.display = '';
+        detailsBtn.textContent = 'About';
+      } else {
+        detailsList.classList.remove('open');
+        detailsList.innerHTML = '';
+        detailsList.style.display = 'none';
+        detailsBtn.style.display = 'none';
+      }
     }
 
     setActiveCard(card);
@@ -446,8 +460,9 @@
   function toggleDetailsList() {
     const list = document.querySelector('.details-list');
     const btn = document.getElementById('toggle-details');
+    if (btn.style.display === 'none') return;
     list.classList.toggle('open');
-    btn.textContent = list.classList.contains('open') ? 'Close Details' : 'Details';
+    btn.textContent = list.classList.contains('open') ? 'Close About' : 'About';
   }
 
   document.addEventListener('click', function(e) {
@@ -455,7 +470,7 @@
     const btn = document.getElementById('toggle-details');
     if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
       list.classList.remove('open');
-      btn.textContent = 'Details';
+      btn.textContent = 'About';
     }
   });
 
@@ -471,7 +486,7 @@
     const touchEndX = e.changedTouches[0].clientX;
     if (touchEndX - detailsTouchStartX > 50) {
       detailsList.classList.remove('open');
-      document.getElementById('toggle-details').textContent = 'Details';
+      document.getElementById('toggle-details').textContent = 'About';
     }
     detailsTouchStartX = null;
   });
@@ -480,10 +495,12 @@
   let detailsOpenStartX = null;
   document.addEventListener('touchstart', (e) => {
     if (detailsList.classList.contains('open')) return;
+    if (document.getElementById('toggle-details').style.display === 'none') return;
     detailsOpenStartX = e.touches[0].clientX;
   });
   document.addEventListener('touchmove', (e) => {
     if (detailsOpenStartX === null) return;
+    if (document.getElementById('toggle-details').style.display === 'none') return;
     const currentX = e.touches[0].clientX;
     if (detailsOpenStartX > window.innerWidth - 50 && detailsOpenStartX - currentX > 10) {
       e.preventDefault();
@@ -492,10 +509,11 @@
   document.addEventListener('touchend', (e) => {
     if (detailsList.classList.contains('open')) return;
     if (detailsOpenStartX === null) return;
+    if (document.getElementById('toggle-details').style.display === 'none') return;
     const touchEndX = e.changedTouches[0].clientX;
     if (detailsOpenStartX > window.innerWidth - 50 && detailsOpenStartX - touchEndX > 50) {
       detailsList.classList.add('open');
-      document.getElementById('toggle-details').textContent = 'Close Details';
+      document.getElementById('toggle-details').textContent = 'Close About';
     }
     detailsOpenStartX = null;
   });
