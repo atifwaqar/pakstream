@@ -251,7 +251,7 @@
     }
     const detailsList = document.querySelector('.details-list');
     if (detailsList) {
-      detailsList.innerHTML = (detailsMap[anchorKey] || detailsMap.default || '');
+      detailsList.innerHTML = detailsMap[anchorKey] || '';
     }
 
     setActiveCard(card);
@@ -325,11 +325,10 @@
     .then(res => res.json())
     .then(data => {
       const channels = data.channels || [];
-      const details = data.details || {};
-      detailsMap = details;
       const list = document.querySelector('.channel-list');
       channels.forEach(ch => {
         anchorMap[ch.key] = ch.id;
+        detailsMap[ch.key] = ch.about || '';
 
         const card = document.createElement('div');
         card.className = 'channel-card';
@@ -361,9 +360,6 @@
         card.appendChild(btn);
         list.appendChild(card);
       });
-
-      const detailsList = document.querySelector('.details-list');
-      detailsList.innerHTML = details.default || '';
 
       document.querySelectorAll('.channel-name').forEach(el => fitText(el));
       updateFavoritesUI();
