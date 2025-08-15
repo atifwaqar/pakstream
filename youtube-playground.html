@@ -46,11 +46,20 @@
 
   <main class="container">
     <h2>YouTube Playground</h2>
-    <p>Enter a YouTube channel ID to list its current live streams.</p>
-    <input type="text" id="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
-    <button id="fetch-streams">Fetch Live Streams</button>
-    <ul id="stream-list"></ul>
-    <pre id="json-output" style="white-space:pre-wrap;"></pre>
+    <section>
+      <h3>Find Channel ID</h3>
+      <p>Enter a channel handle (e.g. @ImranRiazKhan) to get its channel ID.</p>
+      <input type="text" id="channel-handle" placeholder="e.g. @ImranRiazKhan" style="width:100%;max-width:400px;">
+      <button id="fetch-channel-id">Get Channel ID</button>
+      <p id="channel-id-output"></p>
+    </section>
+    <section>
+      <p>Enter a YouTube channel ID to list its current live streams.</p>
+      <input type="text" id="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
+      <button id="fetch-streams">Fetch Live Streams</button>
+      <ul id="stream-list"></ul>
+      <pre id="json-output" style="white-space:pre-wrap;"></pre>
+    </section>
   </main>
 
   <footer>
@@ -67,6 +76,24 @@
     const CLIENT_ID = '613302182511-oeoej3pbmbp7cpt2qbc3cch1fpft5v64.apps.googleusercontent.com';
     const CLIENT_SECRET = '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';
     const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
+    document.getElementById('fetch-channel-id').addEventListener('click', async () => {
+      const handle = document.getElementById('channel-handle').value.trim();
+      const output = document.getElementById('channel-id-output');
+      output.textContent = '';
+      if (!handle) return;
+      const url = `https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(handle)}&key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          output.textContent = data.items[0].id;
+        } else {
+          output.textContent = 'Channel not found.';
+        }
+      } catch (err) {
+        output.textContent = 'Error fetching channel ID.';
+      }
+    });
     document.getElementById('fetch-streams').addEventListener('click', async () => {
       const channelId = document.getElementById('channel-id').value.trim();
       const list = document.getElementById('stream-list');
