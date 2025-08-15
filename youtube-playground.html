@@ -48,10 +48,11 @@
     <h2>YouTube Playground</h2>
     <section>
       <h3>Find Channel ID</h3>
-      <p>Enter a channel handle (e.g. @ImranRiazKhan) to get its channel ID.</p>
-      <input type="text" id="channel-handle" placeholder="e.g. @ImranRiazKhan" style="width:100%;max-width:400px;">
+      <p>Enter channel handle(s) separated by commas to get their channel IDs.</p>
+      <input type="text" id="channel-handles" placeholder="e.g. @ImranRiazKhan,@ARYNews" style="width:100%;max-width:400px;">
       <button id="fetch-channel-id">Get Channel ID</button>
-      <p id="channel-id-output"></p>
+      <button id="copy-channel-id-output" aria-label="Copy results" style="display:none;"><span class="material-symbols-outlined">content_copy</span></button>
+      <pre id="channel-id-output" style="white-space:pre-wrap;"></pre>
     </section>
     <section>
       <p>Enter a YouTube channel ID to list its current live streams.</p>
@@ -77,22 +78,38 @@
     const CLIENT_SECRET = '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';
     const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
     document.getElementById('fetch-channel-id').addEventListener('click', async () => {
-      const handle = document.getElementById('channel-handle').value.trim();
+      const input = document.getElementById('channel-handles').value.trim();
       const output = document.getElementById('channel-id-output');
+      const copyBtn = document.getElementById('copy-channel-id-output');
       output.textContent = '';
-      if (!handle) return;
-      const url = `https://www.googleapis.com/youtube/v3/channels?part=id&forHandle=${encodeURIComponent(handle)}&key=${API_KEY}`;
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.items && data.items.length > 0) {
-          output.textContent = data.items[0].id;
-        } else {
-          output.textContent = 'Channel not found.';
+      copyBtn.style.display = 'none';
+      if (!input) return;
+      const handles = input.split(',').map(h => h.trim()).filter(Boolean);
+      const results = [];
+      for (const handle of handles) {
+        const url = `https://www.googleapis.com/youtube/v3/channels?part=id,snippet&forHandle=${encodeURIComponent(handle)}&key=${API_KEY}`;
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data.items && data.items.length > 0) {
+            results.push({
+              key: handle,
+              name: data.items[0].snippet.title,
+              id: data.items[0].id
+            });
+          }
+        } catch (err) {
+          // ignore errors for individual handles
         }
-      } catch (err) {
-        output.textContent = 'Error fetching channel ID.';
       }
+      output.textContent = JSON.stringify(results, null, 2);
+      if (results.length > 0) {
+        copyBtn.style.display = 'inline-block';
+      }
+    });
+    document.getElementById('copy-channel-id-output').addEventListener('click', () => {
+      const text = document.getElementById('channel-id-output').textContent;
+      navigator.clipboard.writeText(text);
     });
     document.getElementById('fetch-streams').addEventListener('click', async () => {
       const channelId = document.getElementById('channel-id').value.trim();
