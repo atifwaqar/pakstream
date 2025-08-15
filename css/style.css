@@ -300,6 +300,9 @@ section {
   gap: 8px;
   width: 220px;
 }
+.youtube-section .details-list {
+  width: 300px;
+}
 
 .youtube-section .channel-card,
 .youtube-section .detail-item {
@@ -490,6 +493,41 @@ section {
     max-height: calc(100vh - 88px);
     overflow-y: auto;
   }
+}
+
+.details-content h3 {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.details-content p {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.details-content .meta div {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.details-content .profiles {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.details-content .profile {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.8rem;
+}
+
+.details-content .profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 4px;
 }
 
 /* Buttons */
