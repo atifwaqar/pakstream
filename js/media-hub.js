@@ -95,6 +95,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const card = document.createElement("div");
     card.className = "channel-card";
     card.dataset.key = it.key;
+    card.dataset.active = it.status?.active === false ? "false" : "true";
+    if (it.status?.active === false) card.classList.add("inactive");
 
     const img = document.createElement("img");
     img.className = "channel-thumb";
@@ -154,21 +156,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   function updateFavoritesUI() {
     if (!listEl) return;
     const cards = Array.from(listEl.querySelectorAll('.channel-card'));
-    const favFrag = document.createDocumentFragment();
-    const otherFrag = document.createDocumentFragment();
+    const activeFavFrag = document.createDocumentFragment();
+    const activeOtherFrag = document.createDocumentFragment();
+    const inactiveFavFrag = document.createDocumentFragment();
+    const inactiveOtherFrag = document.createDocumentFragment();
 
     cards.forEach(card => {
       const id = mode === 'radio' ? (card.querySelector('audio')?.id) : card.dataset.key;
       if (!id) return;
       const on = favorites.includes(id);
+      const inactive = card.dataset.active === 'false';
       card.classList.toggle('favorite', on);
       const btn = card.querySelector('.fav-btn');
       if (btn) btn.textContent = on ? 'favorite' : 'favorite_border';
-      (on ? favFrag : otherFrag).appendChild(card);
+      if (inactive) {
+        (on ? inactiveFavFrag : inactiveOtherFrag).appendChild(card);
+      } else {
+        (on ? activeFavFrag : activeOtherFrag).appendChild(card);
+      }
     });
 
-    listEl.appendChild(favFrag);
-    listEl.appendChild(otherFrag);
+    listEl.appendChild(activeFavFrag);
+    listEl.appendChild(activeOtherFrag);
+    listEl.appendChild(inactiveFavFrag);
+    listEl.appendChild(inactiveOtherFrag);
 
     if (mode === 'radio') {
       if (currentAudio && favBtn) {
@@ -219,13 +230,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // Sort favorites first, then by display name
+    // Sort favorites first, then active channels, then by display name
     arr.sort((a,b) => {
       const aid = m === "radio" ? (a.ids?.internal_id || a.key) : a.key;
       const bid = m === "radio" ? (b.ids?.internal_id || b.key) : b.key;
       const af = favorites.includes(aid) ? 0 : 1;
       const bf = favorites.includes(bid) ? 0 : 1;
       if (af !== bf) return af - bf;
+      const aInactive = a.status?.active === false ? 1 : 0;
+      const bInactive = b.status?.active === false ? 1 : 0;
+      if (aInactive !== bInactive) return aInactive - bInactive;
       return displayName(a).localeCompare(displayName(b));
     });
 
