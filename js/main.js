@@ -217,3 +217,11 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('mousemove', onUserInteraction, {once:true});
   window.addEventListener('touchstart', onUserInteraction, {once:true});
 })();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function (err) {
+      console.error('Service worker registration failed', err);
+    });
+  });
+}
