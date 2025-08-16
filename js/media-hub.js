@@ -80,7 +80,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       t.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
-    if (mode === "radio" || (mode === "favorites" && currentAudio)) {
+    const videoPlaying = playerIF && playerIF.src && playerIF.src !== "about:blank";
+    if (currentAudio || (!videoPlaying && mode === "radio")) {
       if (playerIF) playerIF.style.display = "none";
       if (audioWrap) audioWrap.style.display = "";
       if (details) details.style.display = "none";
@@ -359,7 +360,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
     } else {
-      if (playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && arr.length) {
+      if (playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && !currentAudio && arr.length) {
         let chosen = arr[0];
         if (initialKey) {
           const match = arr.find(it => it.key === initialKey);
