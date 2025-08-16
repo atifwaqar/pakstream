@@ -76,22 +76,21 @@ document.addEventListener('DOMContentLoaded', function () {
     var loaded = false;
     function loadData() {
       if (loaded) return Promise.resolve(searchData);
-      var sources = [
-        { url: '/channels.json', map: c => ({ name: c.name, link: '/livetv.html?tvchannel=' + c.id }) },
-        { url: '/freepress_channels.json', map: c => ({ name: c.name, link: '/freepress.html?newsanchor=' + c.key }) },
-        { url: '/radio_channels.json', map: c => ({ name: c.name, link: '/radio.html?station=' + c.id }) }
-      ];
-      return Promise.all(
-        sources.map(s =>
-          fetch(s.url)
-            .then(r => r.json())
-            .then(data => (Array.isArray(data) ? data : data.channels || []).map(s.map))
-        )
-      ).then(res => {
-        searchData = res.flat();
-        loaded = true;
-        return searchData;
-      });
+      return fetch('/all_streams.json')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var items = Array.isArray(data.items) ? data.items : [];
+          var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
+          searchData = items.map(function (it) {
+            var mode = typeToMode[it.type] || 'tv';
+            return {
+              name: it.name,
+              link: '/media-hub.html?c=' + encodeURIComponent(it.key) + '&m=' + mode
+            };
+          });
+          loaded = true;
+          return searchData;
+        });
     }
 
     input.addEventListener('input', function () {
