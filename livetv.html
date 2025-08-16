@@ -86,7 +86,7 @@
   <!-- TV Livestream section -->
   <section class="youtube-section">
     <div class="channel-list">
-      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelCollapse()" aria-label="Collapse channel list">chevron_left</button>
+      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelList()" aria-label="Collapse channel list">chevron_left</button>
     </div>
     <div class="video-section">
       <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()">Channels</button>
@@ -327,7 +327,7 @@
       if (window.innerWidth <= 768) {
         const list = document.querySelector('.channel-list');
         list.classList.remove('open');
-        document.getElementById('toggle-channels').textContent = 'Channels';
+        document.getElementById('toggle-channels').textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
     }
@@ -440,12 +440,25 @@
         });
     }
 
+    const channelToggleDefaultText = document.getElementById('toggle-channels')?.textContent || '';
+
     function toggleChannelList() {
       const list = document.querySelector('.channel-list');
-      const btn = document.getElementById('toggle-channels');
-      list.classList.toggle('open');
-      btn.textContent = list.classList.contains('open') ? 'Close Channels' : 'Channels';
-      if (typeof updateScrollLock === 'function') updateScrollLock();
+      const toggleBtn = document.getElementById('toggle-channels');
+      const collapseBtn = document.querySelector('.collapse-left');
+
+      if (window.innerWidth <= 768) {
+        list.classList.toggle('open');
+        if (toggleBtn) {
+          toggleBtn.textContent = list.classList.contains('open') ? `Close ${channelToggleDefaultText}` : channelToggleDefaultText;
+        }
+        if (typeof updateScrollLock === 'function') updateScrollLock();
+      } else {
+        list.classList.toggle('collapsed');
+        const collapsed = list.classList.contains('collapsed');
+        if (collapseBtn) collapseBtn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
+        localStorage.setItem('channelListCollapsed', collapsed);
+      }
     }
 
     document.addEventListener('click', function(e) {
@@ -453,7 +466,7 @@
       const btn = document.getElementById('toggle-channels');
       if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
         list.classList.remove('open');
-        btn.textContent = 'Channels';
+        btn.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
     });
@@ -470,7 +483,7 @@
       const touchEndX = e.changedTouches[0].clientX;
       if (touchStartX - touchEndX > 50) {
         channelList.classList.remove('open');
-        document.getElementById('toggle-channels').textContent = 'Channels';
+        document.getElementById('toggle-channels').textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       touchStartX = null;
@@ -495,20 +508,11 @@
       const touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - openStartX > 50 && openStartX < 50) {
         channelList.classList.add('open');
-        document.getElementById('toggle-channels').textContent = 'Close Channels';
+        document.getElementById('toggle-channels').textContent = `Close ${channelToggleDefaultText}`;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       openStartX = null;
     });
-
-    function toggleChannelCollapse() {
-      const list = document.querySelector('.channel-list');
-      const btn = document.querySelector('.collapse-left');
-      list.classList.toggle('collapsed');
-      const collapsed = list.classList.contains('collapsed');
-      btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
-      localStorage.setItem('channelListCollapsed', collapsed);
-    }
 
     // Apply saved collapse state on load
     (function() {
