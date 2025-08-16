@@ -1,0 +1,153 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
+  {% include google-analytics.html %}
+  <title>PakStream - Onboard YouTube Channel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generate JSON for adding a YouTube channel to all_streams.json.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://pakstream.com/onboard-channel.html" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+</head>
+<body>
+  {% include google-tag-manager-body.html %}
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <h1 class="logo-title">PakStream</h1>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/freepress.html">Free Press</a>
+      <a href="/livetv.html">Live TV</a>
+      <a href="/creators.html">Creators</a>
+      <a href="/radio.html">Radio</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+    <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
+
+  <main class="container">
+    <h2>Onboard YouTube Channel</h2>
+    <p>Enter a YouTube channel URL to generate a JSON snippet for <code>all_streams.json</code>.</p>
+    <label for="channel-url">Channel URL</label>
+    <input type="text" id="channel-url" name="channel-url" placeholder="https://www.youtube.com/@ImranRiazKhan1" style="width:100%;max-width:400px;">
+    <button id="fetch-info">Get Channel Info</button>
+    <button id="copy-json" aria-label="Copy results" style="display:none;"><span class="material-symbols-outlined">content_copy</span></button>
+    <pre id="json-output" style="white-space:pre-wrap;"></pre>
+  </main>
+
+  <footer>
+    <nav class="footer-nav">
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
+
+    function parseChannelUrl(url) {
+      try {
+        const u = new URL(url);
+        const path = u.pathname;
+        if (path.startsWith('/@')) {
+          return { type: 'handle', value: path.slice(2) };
+        }
+        const parts = path.split('/').filter(Boolean);
+        if (parts[0] === 'channel' && parts[1]) {
+          return { type: 'id', value: parts[1] };
+        }
+        if (parts[0]) {
+          return { type: 'custom', value: parts[0] };
+        }
+        return { type: null, value: null };
+      } catch (e) {
+        return { type: null, value: null };
+      }
+    }
+
+    document.getElementById('fetch-info').addEventListener('click', async () => {
+      const input = document.getElementById('channel-url').value.trim();
+      const output = document.getElementById('json-output');
+      const copyBtn = document.getElementById('copy-json');
+      output.textContent = '';
+      copyBtn.style.display = 'none';
+      if (!input) return;
+
+      const parsed = parseChannelUrl(input);
+      if (!parsed.value) {
+        output.textContent = 'Invalid channel URL';
+        return;
+      }
+
+      let apiUrl;
+      if (parsed.type === 'handle') {
+        apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id,snippet&forHandle=${encodeURIComponent(parsed.value)}&key=${API_KEY}`;
+      } else if (parsed.type === 'id') {
+        apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id,snippet&id=${encodeURIComponent(parsed.value)}&key=${API_KEY}`;
+      } else {
+        apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id,snippet&forUsername=${encodeURIComponent(parsed.value)}&key=${API_KEY}`;
+      }
+
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        if (!data.items || data.items.length === 0) {
+          output.textContent = 'Channel not found';
+          return;
+        }
+        const item = data.items[0];
+        const channelId = item.id;
+        const name = item.snippet.title;
+        const thumb = item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url || '';
+        const handle = item.snippet.customUrl ? item.snippet.customUrl.replace(/^@/, '') : parsed.value;
+        const key = handle.toLowerCase().replace(/[^a-z0-9]+/g, '');
+        const result = {
+          key: key,
+          name: name,
+          type: 'creator',
+          platform: 'youtube',
+          media: { thumbnail_url: thumb },
+          endpoints: [
+            { kind: 'embed', provider: 'youtube', url: `https://www.youtube.com/embed/live_stream?channel=${channelId}` },
+            { kind: 'channel', provider: 'youtube', url: input }
+          ],
+          ids: { youtube_channel_id: channelId },
+          status: { active: true }
+        };
+        output.textContent = JSON.stringify(result, null, 2);
+        copyBtn.style.display = 'inline-block';
+      } catch (err) {
+        output.textContent = 'Error fetching channel info';
+      }
+    });
+
+    document.getElementById('copy-json').addEventListener('click', () => {
+      const text = document.getElementById('json-output').textContent;
+      navigator.clipboard.writeText(text);
+    });
+  </script>
+  <script defer src="/js/main.js"></script>
+</body>
+</html>
