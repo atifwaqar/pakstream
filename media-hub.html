@@ -1,42 +1,47 @@
----
-layout: default
-title: PakStream Media Hub
-permalink: /media-hub.html
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include google-tag-manager-head.html %}
+  {% include google-analytics.html %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>PakStream Media Hub</title>
+  <meta name="description" content="PakStream Media Hub - Watch Live TV, listen to Radio, follow Free Press and Creators all in one place.">
+  <link rel="stylesheet" href="css/media-hub.css">
+  <link rel="stylesheet" href="css/style.css"> <!-- your existing main CSS -->
+</head>
+<body>
+  {% include nav.html %}
 
-{% include google-tag-manager-head.html %}
-
-<div class="mh-container">
-  <header class="mh-header">
-    {% include nav.html %}
-    <div class="mh-mode-switcher">
-      <button data-mode="tv">Live TV</button>
-      <button data-mode="freepress">Free Press</button>
-      <button data-mode="radio">Radio</button>
-      <button data-mode="creators">Creators</button>
-    </div>
-  </header>
-
-  <main class="mh-main">
-    <aside class="mh-left">
-      <div class="mh-search">
-        <input type="text" placeholder="Search…" id="mh-search-input">
+  <div class="mh-container">
+    <header class="mh-header">
+      <div class="mh-mode-switcher">
+        <button data-mode="tv">Live TV</button>
+        <button data-mode="freepress">Free Press</button>
+        <button data-mode="radio">Radio</button>
+        <button data-mode="creators">Creators</button>
       </div>
-      <ul id="mh-channel-list"></ul>
-    </aside>
+    </header>
 
-    <section class="mh-center">
-      <div id="mh-player-area"></div>
-      <div id="mh-upnext"></div>
-    </section>
+    <main class="mh-main">
+      <aside class="mh-left">
+        <div class="mh-search">
+          <input type="text" placeholder="Search…" id="mh-search-input">
+        </div>
+        <ul id="mh-channel-list"></ul>
+      </aside>
 
-    <aside class="mh-right" id="mh-about"></aside>
-  </main>
+      <section class="mh-center">
+        <div id="mh-player-area"></div>
+        <div id="mh-upnext"></div>
+      </section>
 
-  <footer class="mh-footer">
-    {% include footer.html %}
-  </footer>
-</div>
+      <aside class="mh-right" id="mh-about"></aside>
+    </main>
+  </div>
 
-<link rel="stylesheet" href="css/media-hub.css">
-<script src="js/media-hub.js"></script>
+  {% include footer.html %}
+
+  <script src="js/media-hub.js"></script>
+</body>
+</html>
