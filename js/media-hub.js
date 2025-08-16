@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let resumeHandler = null;
   let pendingBtn = null;
   let currentBtn = null;
+  let currentVideoKey = null;
 
   // Load data
   const res = await fetch("/all_streams.json");
@@ -439,8 +440,11 @@ async function renderLatestVideosRSS(channelId) {
 
   // ---- Selection for TV/FreePress/Creator ----
   function select(item, autoplay=false) {
+    const isSame = currentVideoKey === item.key;
     document.querySelectorAll(".channel-card").forEach(c => c.classList.toggle("active", c.dataset.key === item.key));
+    if (isSame) return;
 
+    currentVideoKey = item.key;
     params.set("m", mode);
     params.set("c", item.key);
     history.replaceState(null, "", "?" + params.toString());
@@ -502,6 +506,8 @@ async function renderLatestVideosRSS(channelId) {
 
   function playRadio(btn, audio, name, logoUrl) {
     if (!audio) return;
+
+    currentVideoKey = null;
 
     // stop previous
     if (currentAudio && currentAudio !== audio) {
