@@ -526,13 +526,13 @@ section {
   .youtube-section .channel-list {
     position: sticky;
     top: 72px;
-    max-height: calc(100vh - 88px);
+    height: calc(100vh - 120px);
     overflow-y: auto;
   }
   .youtube-section .details-container {
     position: sticky;
     top: 72px;
-    max-height: calc(100vh - 88px);
+    height: calc(100vh - 120px);
   }
   .youtube-section .details-container .details-list {
     overflow-y: auto;
