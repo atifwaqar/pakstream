@@ -1,0 +1,42 @@
+---
+layout: default
+title: PakStream Media Hub
+permalink: /media-hub.html
+---
+
+{% include google-tag-manager-head.html %}
+
+<div class="mh-container">
+  <header class="mh-header">
+    {% include nav.html %}
+    <div class="mh-mode-switcher">
+      <button data-mode="tv">Live TV</button>
+      <button data-mode="freepress">Free Press</button>
+      <button data-mode="radio">Radio</button>
+      <button data-mode="creators">Creators</button>
+    </div>
+  </header>
+
+  <main class="mh-main">
+    <aside class="mh-left">
+      <div class="mh-search">
+        <input type="text" placeholder="Search…" id="mh-search-input">
+      </div>
+      <ul id="mh-channel-list"></ul>
+    </aside>
+
+    <section class="mh-center">
+      <div id="mh-player-area"></div>
+      <div id="mh-upnext"></div>
+    </section>
+
+    <aside class="mh-right" id="mh-about"></aside>
+  </main>
+
+  <footer class="mh-footer">
+    {% include footer.html %}
+  </footer>
+</div>
+
+<link rel="stylesheet" href="css/media-hub.css">
+<script src="js/media-hub.js"></script>
