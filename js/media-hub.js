@@ -454,12 +454,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
       let xml = "";
       try {
-        const resp = await fetch(directFeed);
+        const proxyFeed = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
+        const resp = await fetch(proxyFeed);
         if (!resp.ok) throw new Error("Bad status");
         xml = await resp.text();
       } catch (_) {
-        const proxyFeed = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
-        xml = await fetch(proxyFeed).then(r => r.text());
+        const fallback = `https://r.jina.ai/https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+        xml = await fetch(fallback).then(r => r.text());
       }
       const doc = new DOMParser().parseFromString(xml, "text/xml");
       const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
