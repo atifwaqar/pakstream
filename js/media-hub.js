@@ -62,7 +62,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const shareBtn = document.getElementById("share-btn");
 
   const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
-  let favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
+  let favorites;
+  if (mode === "all") {
+    const tvFavs = JSON.parse(localStorage.getItem(favKeys.tv) || "[]");
+    const ytFavs = JSON.parse(localStorage.getItem(favKeys.freepress) || "[]");
+    const radioFavs = JSON.parse(localStorage.getItem(favKeys.radio) || "[]");
+    favorites = [...tvFavs, ...ytFavs, ...radioFavs];
+  } else {
+    favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
+  }
   const defaultLogo = "/images/default_radio.png";
 
   let currentAudio = null;
@@ -127,9 +135,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (toggleDetailsBtn) toggleDetailsBtn.style.display = hasDetails ? "" : "none";
     }
 
-    favorites = mode === 'favorites'
-      ? []
-      : JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
+    if (mode === 'favorites') {
+      favorites = [];
+    } else if (mode === 'all') {
+      const tvFavs = JSON.parse(localStorage.getItem(favKeys.tv) || '[]');
+      const ytFavs = JSON.parse(localStorage.getItem(favKeys.freepress) || '[]');
+      const radioFavs = JSON.parse(localStorage.getItem(favKeys.radio) || '[]');
+      favorites = [...tvFavs, ...ytFavs, ...radioFavs];
+    } else {
+      favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || '[]');
+    }
     updateFavoritesUI();
   }
 
@@ -246,7 +261,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inactiveOtherFrag = document.createDocumentFragment();
 
     cards.forEach(card => {
-      const id = mode === 'radio' ? (card.querySelector('audio')?.id) : card.dataset.key;
+      const cardMode = card.dataset.mode || mode;
+      const id = cardMode === 'radio' ? (card.querySelector('audio')?.id) : card.dataset.key;
       if (!id) return;
       const on = favorites.includes(id);
       const inactive = card.dataset.active === 'false';
@@ -265,9 +281,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     listEl.appendChild(inactiveFavFrag);
     listEl.appendChild(inactiveOtherFrag);
 
-    if (mode === 'radio') {
+    if (mode === 'radio' || currentAudio) {
       if (currentAudio && favBtn) {
-        const isFav = favorites.includes(currentAudio.id);
+        const radioFavs = JSON.parse(localStorage.getItem(favKeys['radio']) || '[]');
+        const isFav = radioFavs.includes(currentAudio.id);
         favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
         favBtn.classList.toggle('favorited', isFav);
         favBtn.disabled = false;
@@ -278,6 +295,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (playPauseBtn) playPauseBtn.disabled = false;
     } else if (muteBtn) {
       muteBtn.disabled = true;
+      if (playPauseBtn) playPauseBtn.disabled = true;
+      if (favBtn) favBtn.disabled = true;
     }
     const hasStations = listEl.querySelectorAll('.channel-card audio').length > 0;
     if (prevBtn && nextBtn) prevBtn.disabled = nextBtn.disabled = !hasStations;
@@ -290,7 +309,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const idx = favArr.indexOf(id);
       if (idx >= 0) favArr.splice(idx, 1); else favArr.push(id);
       localStorage.setItem(storeKey, JSON.stringify(favArr));
-      if (itemMode === mode) favorites = favArr;
+      if (mode === 'all') {
+        const tvFavs = JSON.parse(localStorage.getItem(favKeys.tv) || '[]');
+        const ytFavs = JSON.parse(localStorage.getItem(favKeys.freepress) || '[]');
+        const radioFavs = JSON.parse(localStorage.getItem(favKeys.radio) || '[]');
+        favorites = [...tvFavs, ...ytFavs, ...radioFavs];
+      } else if (itemMode === mode) {
+        favorites = favArr;
+      }
       if (mode === 'favorites') renderList(searchEl ? (searchEl.value || '') : '');
       else updateFavoritesUI();
     }
@@ -354,8 +380,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     } else {
       arr.sort((a,b) => {
-        const aid = m === "radio" ? (a.ids?.internal_id || a.key) : a.key;
-        const bid = m === "radio" ? (b.ids?.internal_id || b.key) : b.key;
+        const am = m === 'all' ? modeOfItem(a) : m;
+        const bm = m === 'all' ? modeOfItem(b) : m;
+        const aid = am === "radio" ? (a.ids?.internal_id || a.key) : a.key;
+        const bid = bm === "radio" ? (b.ids?.internal_id || b.key) : b.key;
         const af = favorites.includes(aid) ? 0 : 1;
         const bf = favorites.includes(bid) ? 0 : 1;
         if (af !== bf) return af - bf;
@@ -386,7 +414,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     listEl.querySelectorAll(".channel-card").forEach(el => el.remove());
     const frag = document.createDocumentFragment();
     arr.forEach(it => {
-      const im = mode === 'favorites' ? modeOfItem(it) : mode;
+      const im = (mode === 'favorites' || mode === 'all') ? modeOfItem(it) : mode;
       frag.appendChild(makeChannelCard(it, im));
     });
     listEl.appendChild(frag);
@@ -411,7 +439,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const match = arr.find(it => it.key === initialKey);
           if (match) chosen = match;
         }
-        if (!(mode === 'favorites' && modeOfItem(chosen) === 'radio')) {
+        if (!((mode === 'favorites' || mode === 'all') && modeOfItem(chosen) === 'radio')) {
           select(chosen, false);
         }
       } else if (initialKey) {
@@ -615,7 +643,7 @@ async function renderLatestVideosRSS(channelId) {
     currentAudio = audio;
     if (currentLabel) currentLabel.textContent = name;
 
-      params.set('m', mode === 'favorites' ? 'favorites' : 'radio');
+      params.set('m', mode === 'favorites' ? 'favorites' : mode);
     params.set('c', audio.id);
     history.replaceState(null, '', '?' + params.toString());
 
