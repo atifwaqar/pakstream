@@ -265,12 +265,17 @@
   }
 
   async function fetchLatestVideos(channelId) {
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10`;
     const resp = await fetch(apiUrl);
     const data = await resp.json();
-    if (data.status !== 'ok') throw new Error('Failed to load RSS feed');
-    return data.items;
+    if (!data.items) throw new Error('Failed to load videos');
+    return data.items.map(item => ({
+      title: item.snippet.title,
+      link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      guid: `yt:video:${item.id.videoId}`,
+      thumbnail: item.snippet.thumbnails?.medium?.url || '',
+      pubDate: item.snippet.publishedAt
+    }));
   }
 
   async function handleChannelClick(card) {
