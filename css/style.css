@@ -111,10 +111,42 @@ footer nav a:hover {
   text-decoration: underline;
 }
 
-.top-bar nav a.active,
-.top-bar nav a[aria-current="page"] {
-  background: color-mix(in oklab, var(--primary) 12%, transparent);
-}
+  .top-bar nav a.active,
+  .top-bar nav a[aria-current="page"] {
+    background: color-mix(in oklab, var(--primary) 12%, transparent);
+  }
+
+  .nav-links .dropdown {
+    position: relative;
+  }
+
+  .nav-links .dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--primary);
+    border: 1px solid var(--primary-container);
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    flex-direction: column;
+    padding: 4px 0;
+    z-index: 1003;
+  }
+
+  .nav-links .dropdown:hover .dropdown-content,
+  .nav-links .dropdown:focus-within .dropdown-content {
+    display: flex;
+  }
+
+  .nav-links .dropdown-content a {
+    padding: 8px 12px;
+    border-radius: 0;
+    white-space: nowrap;
+  }
+
+  .nav-links .dropdown-content a:hover {
+    background: color-mix(in oklab, var(--primary) 12%, transparent);
+  }
 
 .search-form {
   margin-left: 16px;
