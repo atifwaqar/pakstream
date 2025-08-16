@@ -455,7 +455,7 @@ section {
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
     overflow-y: auto;
     padding: 16px 8px;
-    z-index: 1001;
+    z-index: 1004;
     flex-direction: column;
     padding: 16px;
     gap: 8px;
@@ -476,7 +476,7 @@ section {
     box-shadow: -2px 0 5px rgba(0,0,0,0.3);
     overflow-y: auto;
     padding: 16px 8px;
-    z-index: 1001;
+    z-index: 1004;
     flex-direction: column;
     padding: 16px;
     gap: 8px;
@@ -899,7 +899,7 @@ table tbody tr.favorite {
     transition: transform 0.3s ease-in-out;
     will-change: transform;
     box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-    z-index: 1001;
+    z-index: 1004;
     flex-direction: column;
     padding: 16px;
     gap: 8px;
@@ -923,16 +923,16 @@ table tbody tr.favorite {
 
   .nav-overlay {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.4);
     display: none;
-    z-index: 1000;
+    z-index: 1003;
   }
 
-  #nav-toggle:checked ~ .nav-overlay {
+  .nav-overlay.active {
     display: block;
   }
 }
