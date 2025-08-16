@@ -433,18 +433,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
     } else {
-      if (playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && !currentAudio && arr.length) {
-        let chosen = arr[0];
-        if (initialKey) {
-          const match = arr.find(it => it.key === initialKey);
-          if (match) chosen = match;
+      let handled = false;
+      if (initialKey) {
+        const match = arr.find(it => (it.ids?.internal_id || it.key) === initialKey);
+        if (match) {
+          if ((mode === 'favorites' || mode === 'all') && modeOfItem(match) === 'radio') {
+            const card = listEl.querySelector(`.channel-card[data-key="${match.key}"]`);
+            const btn = card ? card.querySelector('.play-btn') : null;
+            const audio = card ? card.querySelector('audio') : null;
+            if (btn && audio) {
+              playRadio(btn, audio, displayName(match), thumbOf(match));
+              handled = true;
+            }
+          } else {
+            select(match, false);
+            handled = true;
+          }
         }
+      }
+      if (!handled && playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && !currentAudio && arr.length) {
+        const chosen = arr[0];
         if (!((mode === 'favorites' || mode === 'all') && modeOfItem(chosen) === 'radio')) {
           select(chosen, false);
         }
-      } else if (initialKey) {
-        const match = arr.find(it => it.key === initialKey);
-        if (match) select(match, false);
       }
     }
 
