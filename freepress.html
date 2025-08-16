@@ -495,25 +495,26 @@
   }
 
   // ----- Bootstrapping -----
-  fetch('/all_streams.json')
-    .then(res => res.json())
-    .then(data => {
-      const channels = (data.items || [])
-        .filter(item => item.type === 'freepress')
-        .map(item => ({
-          key: item.key,
-          id: item.ids?.youtube_channel_id,
-          name: item.name,
-          'thumbnail-url': item.media?.thumbnail_url,
-          about: item.about_html,
-          profiles: item.profiles || []
-        }));
-      const list = document.querySelector('.channel-list');
+    fetch('/all_streams.json')
+      .then(res => res.json())
+      .then(data => {
+        const channels = (data.items || [])
+          .filter(item => item.type === 'freepress')
+          .map(item => ({
+            key: item.key,
+            id: item.ids?.youtube_channel_id,
+            name: item.name,
+            'thumbnail-url': item.media?.thumbnail_url,
+            about: item.about || item.about_html,
+            profiles: item.profiles || []
+          }));
 
-      channels.forEach(ch => {
-        anchorMap[ch.key] = ch.id;
-        detailsMap[ch.key] = ch.about || '';
-        profilesMap[ch.key] = ch.profiles || [];
+        const list = document.querySelector('.channel-list');
+
+        channels.forEach(ch => {
+          anchorMap[ch.key] = ch.id;
+          detailsMap[ch.key] = ch.about || '';
+          profilesMap[ch.key] = ch.profiles || [];
 
         const card = document.createElement('div');
         card.className = 'channel-card';
