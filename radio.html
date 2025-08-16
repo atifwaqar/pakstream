@@ -106,6 +106,7 @@
             </button>
             <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
             <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
+            <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
             <audio id="radio-player" autoplay></audio>
           </div>
         </div>
@@ -146,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const playPauseLabel = playPauseBtn.querySelector('.label');
   const nextBtn = document.getElementById('next-btn');
   const muteBtn = document.getElementById('mute-btn');
+  const shareBtn = document.getElementById('share-btn');
   const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
 
   function fitText(el, maxLines = 2) {
@@ -513,6 +515,24 @@ document.addEventListener('DOMContentLoaded', function() {
   muteBtn.addEventListener('click', () => {
     mainPlayer.muted = !mainPlayer.muted;
     muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+  });
+
+  shareBtn.addEventListener('click', () => {
+    const shareData = {
+      title: document.title,
+      url: window.location.href
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(err => console.error('Share failed', err));
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareData.url).then(() => {
+        alert('Page URL copied to clipboard');
+      }, () => {
+        window.prompt('Copy this URL', shareData.url);
+      });
+    } else {
+      window.prompt('Copy this URL', shareData.url);
+    }
   });
 
   mainPlayer.addEventListener('playing', () => {
