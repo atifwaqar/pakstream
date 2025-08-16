@@ -86,7 +86,7 @@
   <!-- Free Press section with channel list and video player -->
   <section class="youtube-section">
     <div class="channel-list">
-      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelCollapse()" aria-label="Collapse channel list">chevron_left</button>
+      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelList()" aria-label="Collapse channel list">chevron_left</button>
     </div>
     <!-- Video display area: a player for the selected video and a list of recent videos -->
     <div class="video-section">
@@ -100,7 +100,7 @@
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
     <div class="details-container">
-      <button class="collapse-btn collapse-right material-symbols-outlined" onclick="toggleDetailsCollapse()" aria-label="Collapse details list">chevron_right</button>
+      <button class="collapse-btn collapse-right material-symbols-outlined" onclick="toggleDetailsList()" aria-label="Collapse details list">chevron_right</button>
       <div class="details-list" style="display: none;"></div>
     </div>
   </section>
@@ -316,7 +316,7 @@
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
-      document.getElementById('toggle-channels').textContent = 'Channels';
+      document.getElementById('toggle-channels').textContent = channelToggleDefaultText;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
   
@@ -443,12 +443,25 @@
       }
     });
 
+  const channelToggleDefaultText = document.getElementById('toggle-channels')?.textContent || '';
+
   function toggleChannelList() {
     const list = document.querySelector('.channel-list');
-    const btn = document.getElementById('toggle-channels');
-    list.classList.toggle('open');
-    btn.textContent = list.classList.contains('open') ? 'Close Channels' : 'Channels';
-    if (typeof updateScrollLock === 'function') updateScrollLock();
+    const toggleBtn = document.getElementById('toggle-channels');
+    const collapseBtn = document.querySelector('.collapse-left');
+
+    if (window.innerWidth <= 768) {
+      list.classList.toggle('open');
+      if (toggleBtn) {
+        toggleBtn.textContent = list.classList.contains('open') ? `Close ${channelToggleDefaultText}` : channelToggleDefaultText;
+      }
+      if (typeof updateScrollLock === 'function') updateScrollLock();
+    } else {
+      list.classList.toggle('collapsed');
+      const collapsed = list.classList.contains('collapsed');
+      if (collapseBtn) collapseBtn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
+      localStorage.setItem('channelListCollapsed', collapsed);
+    }
   }
 
   document.addEventListener('click', function(e) {
@@ -456,7 +469,7 @@
     const btn = document.getElementById('toggle-channels');
     if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
       list.classList.remove('open');
-      btn.textContent = 'Channels';
+      btn.textContent = channelToggleDefaultText;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
   });
@@ -473,7 +486,7 @@
     const touchEndX = e.changedTouches[0].clientX;
     if (touchStartX - touchEndX > 50) {
       channelList.classList.remove('open');
-      document.getElementById('toggle-channels').textContent = 'Channels';
+      document.getElementById('toggle-channels').textContent = channelToggleDefaultText;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
     touchStartX = null;
@@ -498,19 +511,33 @@
     const touchEndX = e.changedTouches[0].clientX;
     if (touchEndX - openStartX > 50 && openStartX < 50) {
       channelList.classList.add('open');
-      document.getElementById('toggle-channels').textContent = 'Close Channels';
+      document.getElementById('toggle-channels').textContent = `Close ${channelToggleDefaultText}`;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
     openStartX = null;
   });
 
+  const detailsToggleDefaultText = document.getElementById('toggle-details')?.textContent || 'About';
+
   function toggleDetailsList() {
+    const container = document.querySelector('.details-container');
     const list = document.querySelector('.details-list');
-    const btn = document.getElementById('toggle-details');
-    if (btn.style.display === 'none') return;
-    list.classList.toggle('open');
-    btn.textContent = list.classList.contains('open') ? 'Close About' : 'About';
-    if (typeof updateScrollLock === 'function') updateScrollLock();
+    const toggleBtn = document.getElementById('toggle-details');
+    const collapseBtn = document.querySelector('.collapse-right');
+
+    if (window.innerWidth <= 768) {
+      if (toggleBtn.style.display === 'none') return;
+      list.classList.toggle('open');
+      if (toggleBtn) {
+        toggleBtn.textContent = list.classList.contains('open') ? `Close ${detailsToggleDefaultText}` : detailsToggleDefaultText;
+      }
+      if (typeof updateScrollLock === 'function') updateScrollLock();
+    } else {
+      container.classList.toggle('collapsed');
+      const collapsed = container.classList.contains('collapsed');
+      if (collapseBtn) collapseBtn.textContent = collapsed ? 'chevron_left' : 'chevron_right';
+      localStorage.setItem('detailsListCollapsed', collapsed);
+    }
   }
 
   document.addEventListener('click', function(e) {
@@ -518,7 +545,7 @@
     const btn = document.getElementById('toggle-details');
     if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
       list.classList.remove('open');
-      btn.textContent = 'About';
+      btn.textContent = detailsToggleDefaultText;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
   });
@@ -535,7 +562,7 @@
     const touchEndX = e.changedTouches[0].clientX;
     if (touchEndX - detailsTouchStartX > 50) {
       detailsList.classList.remove('open');
-      document.getElementById('toggle-details').textContent = 'About';
+      document.getElementById('toggle-details').textContent = detailsToggleDefaultText;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
     detailsTouchStartX = null;
@@ -563,29 +590,11 @@
     const touchEndX = e.changedTouches[0].clientX;
     if (detailsOpenStartX > window.innerWidth - 50 && detailsOpenStartX - touchEndX > 50) {
       detailsList.classList.add('open');
-      document.getElementById('toggle-details').textContent = 'Close About';
+      document.getElementById('toggle-details').textContent = `Close ${detailsToggleDefaultText}`;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
     detailsOpenStartX = null;
   });
-
-  function toggleChannelCollapse() {
-    const list = document.querySelector('.channel-list');
-    const btn = document.querySelector('.collapse-left');
-    list.classList.toggle('collapsed');
-    const collapsed = list.classList.contains('collapsed');
-    btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
-    localStorage.setItem('channelListCollapsed', collapsed);
-  }
-
-  function toggleDetailsCollapse() {
-    const container = document.querySelector('.details-container');
-    const btn = document.querySelector('.collapse-right');
-    container.classList.toggle('collapsed');
-    const collapsed = container.classList.contains('collapsed');
-    btn.textContent = collapsed ? 'chevron_left' : 'chevron_right';
-    localStorage.setItem('detailsListCollapsed', collapsed);
-  }
 
   // Apply saved collapse state on load
   (function() {
