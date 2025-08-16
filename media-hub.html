@@ -1,13 +1,8 @@
----
----
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% include google-tag-manager-head.html %}
-  <!-- Start cookieyes banner -->
-  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
-  <!-- End cookieyes banner -->
-{% include google-analytics.html %}
+  {% include google-tag-manager-head.html %}
+  {% include google-analytics.html %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>PakStream Media Hub</title>
@@ -18,7 +13,7 @@
   <link rel="stylesheet" href="/css/media-hub.css" />
 </head>
 <body>
-  <!-- SAME TOP BAR AS OTHER PAGES -->
+  <!-- Top bar (same as site) -->
   <header class="top-bar">
     <input type="checkbox" id="nav-toggle">
     <label for="nav-toggle" class="nav-toggle-label">☰</label>
@@ -41,20 +36,26 @@
 
   <section class="youtube-section">
     <!-- LEFT RAIL -->
-    <div class="channel-list open"></div>
+    <div class="channel-list open" id="left-rail">
+      <!-- NEW: tabs + search at the very top of left menu -->
+      <div class="left-rail-header">
+        <div class="mode-tabs">
+          <button class="tab-btn" data-mode="tv">Live TV</button>
+          <button class="tab-btn" data-mode="freepress">Free Press</button>
+          <button class="tab-btn" data-mode="creator">Creators</button>
+          <button class="tab-btn" data-mode="radio">Radio</button>
+        </div>
+        <div class="search-wrap">
+          <input id="mh-search-input" type="text" placeholder="Search…" />
+        </div>
+      </div>
+      <!-- list gets injected here -->
+    </div>
 
     <!-- CENTER -->
     <div class="video-section">
       <div class="button-row">
-        <!-- Mode tabs -->
-        <div class="mode-tabs">
-          <button class="tab-btn" data-mode="tv">Live TV</button>
-          <button class="tab-btn" data-mode="freepress">Free Press</button>
-          <button class="tab-btn" data-mode="radio">Radio</button>
-          <button class="tab-btn" data-mode="creator">Creators</button>
-        </div>
         <div class="spacer"></div>
-        <!-- Toggle buttons (reuse existing behavior) -->
         <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
           <span class="material-symbols-outlined icon">chevron_left</span>
           <span class="label" data-default="Channels">Channels</span>
@@ -74,7 +75,8 @@
         <div id="audioWrap" class="audio-wrap" style="display:none;"></div>
       </div>
 
-      <div id="videoList" class="video-list"><p>Loading…</p></div>
+      <!-- NEW: real latest videos list for the selected channel -->
+      <div id="videoList" class="video-list"></div>
     </div>
 
     <!-- RIGHT RAIL -->
@@ -93,7 +95,7 @@
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
 
-  <!-- Order matches your other pages so swipe + scroll lock work -->
+  <!-- Keep order to preserve swipe/lock behavior from your site -->
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
