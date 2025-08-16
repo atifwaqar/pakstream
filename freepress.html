@@ -125,25 +125,56 @@
 
   // v3 only for thumbs + (now) primary for listing, with cache
   const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
-  const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
   const LIST_CACHE_MS = 30 * 60 * 1000; // 30 min
 
   // ----- Helpers -----
-  function getChannelThumbnail(id) {
+  function getChannelThumbnail(id, providedUrl) {
     const cacheKey = `yt_thumb_${id}`;
-    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (cached && (Date.now() - cached.timestamp) < ONE_YEAR_MS) {
-      return Promise.resolve(cached.url);
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      if (cached.startsWith('data:')) {
+        return Promise.resolve(cached);
+      }
+      try {
+        const parsed = JSON.parse(cached);
+        if (parsed && parsed.url) {
+          return fetchAndCache(parsed.url).catch(() => parsed.url);
+        }
+      } catch {}
+      return Promise.resolve(cached);
     }
-    const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
-    return fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const thumb = data.items?.[0]?.snippet?.thumbnails?.default?.url || '';
-        if (thumb) localStorage.setItem(cacheKey, JSON.stringify({ url: thumb, timestamp: Date.now() }));
-        return thumb;
-      })
-      .catch(() => '');
+
+    function fetchAndCache(url) {
+      return fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('Network response was not ok');
+          return res.blob();
+        })
+        .then(blob => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const dataUrl = reader.result;
+            try { localStorage.setItem(cacheKey, dataUrl); } catch {}
+            resolve(dataUrl);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }));
+    }
+
+    const fallback = () => {
+      const apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
+      return fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => data.items?.[0]?.snippet?.thumbnails?.default?.url || '')
+        .then(url => url ? fetchAndCache(url).catch(() => url) : '')
+        .catch(() => '');
+    };
+
+    if (providedUrl) {
+      return fetchAndCache(providedUrl).catch(fallback);
+    }
+    return fallback();
   }
 
   function renderProfiles(list) {
@@ -482,7 +513,7 @@
         const img = document.createElement('img');
         img.className = 'channel-thumb';
         img.alt = `${ch.name} thumbnail`;
-        getChannelThumbnail(ch.id).then(url => { img.src = url || '/assets/avatar-fallback.png'; });
+        getChannelThumbnail(ch.id, ch['thumbnail-url']).then(url => { img.src = url || '/assets/avatar-fallback.png'; });
 
         const span = document.createElement('span');
         span.className = 'channel-name';
