@@ -542,6 +542,14 @@ async function renderLatestVideosRSS(channelId) {
       }
     }
 
+    if (window.innerWidth <= 768) {
+      const list = document.querySelector('.channel-list');
+      if (list) list.classList.remove('open');
+      const label = document.querySelector('#toggle-channels .label');
+      if (label) label.textContent = label.dataset.default || label.textContent;
+      if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
+    }
+
     updateActiveUI();
   }
 
