@@ -504,8 +504,20 @@
       const list = document.querySelector('.channel-list');
       const btn = document.querySelector('.collapse-left');
       list.classList.toggle('collapsed');
-      btn.textContent = list.classList.contains('collapsed') ? 'chevron_right' : 'chevron_left';
+      const collapsed = list.classList.contains('collapsed');
+      btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
+      localStorage.setItem('channelListCollapsed', collapsed);
     }
+
+    // Apply saved collapse state on load
+    (function() {
+      const list = document.querySelector('.channel-list');
+      const btn = document.querySelector('.collapse-left');
+      if (localStorage.getItem('channelListCollapsed') === 'true') {
+        list.classList.add('collapsed');
+        if (btn) btn.textContent = 'chevron_right';
+      }
+    })();
   </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>

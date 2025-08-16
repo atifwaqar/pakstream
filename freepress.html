@@ -567,15 +567,35 @@
     const list = document.querySelector('.channel-list');
     const btn = document.querySelector('.collapse-left');
     list.classList.toggle('collapsed');
-    btn.textContent = list.classList.contains('collapsed') ? 'chevron_right' : 'chevron_left';
+    const collapsed = list.classList.contains('collapsed');
+    btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
+    localStorage.setItem('channelListCollapsed', collapsed);
   }
 
   function toggleDetailsCollapse() {
     const container = document.querySelector('.details-container');
     const btn = document.querySelector('.collapse-right');
     container.classList.toggle('collapsed');
-    btn.textContent = container.classList.contains('collapsed') ? 'chevron_left' : 'chevron_right';
+    const collapsed = container.classList.contains('collapsed');
+    btn.textContent = collapsed ? 'chevron_left' : 'chevron_right';
+    localStorage.setItem('detailsListCollapsed', collapsed);
   }
+
+  // Apply saved collapse state on load
+  (function() {
+    const list = document.querySelector('.channel-list');
+    const leftBtn = document.querySelector('.collapse-left');
+    if (localStorage.getItem('channelListCollapsed') === 'true') {
+      list.classList.add('collapsed');
+      if (leftBtn) leftBtn.textContent = 'chevron_right';
+    }
+    const container = document.querySelector('.details-container');
+    const rightBtn = document.querySelector('.collapse-right');
+    if (localStorage.getItem('detailsListCollapsed') === 'true') {
+      container.classList.add('collapsed');
+      if (rightBtn) rightBtn.textContent = 'chevron_left';
+    }
+  })();
 </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
