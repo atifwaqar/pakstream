@@ -211,7 +211,7 @@
         .then(res => res.json())
         .then(data => {
           const channels = (data.items || [])
-            .filter(item => item.type === 'tv')
+            .filter(item => item.type === 'livetv')
             .map(item => ({
               id: item.key,
               name: item.name,
