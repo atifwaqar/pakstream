@@ -1,32 +1,34 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // state
   const params = new URLSearchParams(location.search);
   let mode = params.get("m") || "tv";
-  const res = await fetch("all_streams.json");
+
+  // DOM
+  const listEl    = document.querySelector(".channel-list");
+  const playerIF  = document.getElementById("playerFrame");
+  const audioWrap = document.getElementById("audioWrap");
+  const videoList = document.getElementById("videoList");
+  const details   = document.querySelector(".details-list");
+  const tabs      = document.querySelectorAll(".tab-btn");
+  const toggleDetailsBtn = document.getElementById("toggle-details");
+
+  // Data
+  const res = await fetch("/all_streams.json");
   const data = await res.json();
   const items = data.items || [];
 
-  // dom
-  const tabs = document.querySelectorAll(".tab-btn");
-  const listEl = document.getElementById("mh-channel-list");
-  const playerEl = document.getElementById("mh-player-area");
-  const aboutEl  = document.getElementById("mh-about");
-  const upnextEl = document.getElementById("mh-upnext");
-  const searchEl = document.getElementById("mh-search-input");
-
-  // helpers
+  // Helpers
   const setActiveTab = () => tabs.forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
-  const ytUploadsFromChannel = (cid)=> cid?.startsWith("UC") ? "UU"+cid.slice(2) : null;
-  const thumbOf = (it)=> it.media?.thumbnail_url || it.media?.logo_url || "";
-  const radioEndpoint = (it)=> (it.endpoints||[]).find(e => (e.kind==="stream"||e.kind==="audio") && e.url);
-  const ytEmbed = (it)=> (it.endpoints||[]).find(e => e.kind==="embed" && e.provider==="youtube");
+  const thumbOf = it => it.media?.thumbnail_url || it.media?.logo_url || "/assets/avatar-fallback.png";
+  const ytEmbed = it => (it.endpoints||[]).find(e => e.kind === "embed" && e.provider === "youtube");
+  const radioEndpoint = it => (it.endpoints||[]).find(e => (e.kind==="stream"||e.kind==="audio") && e.url);
+  const uploadsId = cid => cid && cid.startsWith("UC") ? "UU" + cid.slice(2) : null;
 
   function renderList(filter="") {
     listEl.innerHTML = "";
     const q = filter.trim().toLowerCase();
-    const dataInMode = items.filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)));
+    const list = items.filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)));
 
-    dataInMode.forEach(it => {
+    list.forEach(it => {
       const card = document.createElement("div");
       card.className = "channel-card";
       card.dataset.key = it.key;
@@ -36,96 +38,113 @@ document.addEventListener("DOMContentLoaded", async () => {
       img.src = thumbOf(it);
       img.alt = "";
 
-      const name = document.createElement("span");
-      name.className = "channel-name";
-      name.textContent = it.name;
+      const span = document.createElement("span");
+      span.className = "channel-name";
+      span.textContent = it.name;
+
+      const playBtn = document.createElement("button");
+      playBtn.className = "play-btn material-symbols-outlined";
+      playBtn.setAttribute("aria-label","Play");
+      playBtn.textContent = "play_arrow";
+      playBtn.addEventListener("click", (e) => { e.stopPropagation(); select(it); });
 
       card.appendChild(img);
-      card.appendChild(name);
-      card.addEventListener("click", () => selectItem(it));
+      card.appendChild(span);
+      card.appendChild(playBtn);
+      card.addEventListener("click", () => select(it));
       listEl.appendChild(card);
     });
 
-    // auto-select (or deep link)
+    // Auto-select (or deep link)
     const key = params.get("c");
-    const pick = key ? dataInMode.find(x => x.key === key) : dataInMode[0];
-    if (pick) selectItem(pick);
+    const startItem = key ? list.find(x => x.key === key) : list[0];
+    if (startItem) select(startItem);
   }
 
-  function selectItem(item) {
-    // active highlight
+  function select(item) {
+    // Highlight
     document.querySelectorAll(".channel-card").forEach(c => c.classList.toggle("active", c.dataset.key === item.key));
 
     // URL
     params.set("m", mode);
     params.set("c", item.key);
-    history.replaceState(null, "", "?"+params.toString());
+    history.replaceState(null, "", "?" + params.toString());
 
-    // clear
-    playerEl.innerHTML = "";
-    upnextEl.innerHTML = "";
-    aboutEl.innerHTML = "";
+    // Reset
+    videoList.innerHTML = "";
+    details.innerHTML = "";
+    playerIF.style.display = "";
+    audioWrap.style.display = "none";
+    audioWrap.innerHTML = "";
 
     if (mode === "radio") {
       const ep = radioEndpoint(item);
       if (ep) {
-        const wrap = document.createElement("div");
-        wrap.className = "audio-wrap";
+        playerIF.src = "about:blank";
+        playerIF.style.display = "none";
         const audio = document.createElement("audio");
         audio.controls = true;
         audio.autoplay = true;
         audio.src = ep.url;
-        wrap.appendChild(audio);
-        playerEl.appendChild(wrap);
+        audioWrap.appendChild(audio);
+        audioWrap.style.display = "";
       } else {
-        playerEl.textContent = "No radio stream available.";
+        playerIF.src = "about:blank";
       }
     } else {
-      // YouTube: explicit embed > uploads playlist > live_stream
+      let src = "";
       const emb = ytEmbed(item);
-      let src = emb?.url || "";
-      if (!src && item.ids?.youtube_channel_id) {
-        const upl = ytUploadsFromChannel(item.ids.youtube_channel_id);
+      if (emb) {
+        src = emb.url;
+      } else if (item.ids?.youtube_channel_id) {
+        const upl = uploadsId(item.ids.youtube_channel_id);
         src = upl
           ? `https://www.youtube.com/embed/videoseries?list=${upl}`
           : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}`;
       }
-      if (src) {
-        const iframe = document.createElement("iframe");
-        iframe.width = "100%";
-        iframe.height = "560";
-        iframe.src = src;
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        iframe.allowFullscreen = true;
-        iframe.loading = "lazy";
-        iframe.referrerPolicy = "strict-origin-when-cross-origin";
-        playerEl.appendChild(iframe);
-      } else {
-        playerEl.textContent = "No video available.";
-      }
-      // (Optional) simple "Up next" placeholder from endpoints if present later
+      playerIF.src = src || "about:blank";
     }
 
-    // About / profiles
+    // About panel
     if (item.aboutHtml) {
-      // already sanitized markup you store
-      aboutEl.innerHTML = item.aboutHtml;
+      details.innerHTML = item.aboutHtml;
+      details.style.display = "";
+      if (toggleDetailsBtn) toggleDetailsBtn.style.display = "";
     } else {
-      aboutEl.innerHTML =
-        `<div class="detail-item">PakStream curates independent Pakistani voices.</div>
-         <div class="detail-item">Opinions belong to their creators.</div>`;
+      details.innerHTML = "";
+      details.style.display = "none";
+      if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
     }
+
+    // “Up Next”: other items in current mode
+    const others = items.filter(x => x.type === mode && x.key !== item.key).slice(0, 16);
+    others.forEach(o => {
+      const row = document.createElement("div");
+      row.className = "video-item";
+
+      const img = document.createElement("img");
+      img.className = "video-thumb";
+      img.src = thumbOf(o);
+      img.alt = "";
+
+      const meta = document.createElement("div");
+      meta.className = "video-meta";
+      meta.innerHTML = `<strong>${o.name}</strong>`;
+
+      row.appendChild(img);
+      row.appendChild(meta);
+      row.addEventListener("click", () => select(o));
+      videoList.appendChild(row);
+    });
   }
 
-  // events
+  // Tabs
   tabs.forEach(t => t.addEventListener("click", () => {
     mode = t.dataset.mode;
     setActiveTab();
-    renderList(searchEl.value || "");
+    renderList();
   }));
-  searchEl.addEventListener("input", e => renderList(e.target.value));
 
-  // init
   setActiveTab();
-  renderList(searchEl.value || "");
+  renderList();
 });
