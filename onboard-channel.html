@@ -49,6 +49,14 @@
     <p>Enter a YouTube channel URL to generate a JSON snippet for <code>all_streams.json</code>.</p>
     <label for="channel-url">Channel URL</label>
     <input type="text" id="channel-url" name="channel-url" placeholder="https://www.youtube.com/@ImranRiazKhan1" style="width:100%;max-width:400px;">
+    <label for="channel-type">Type</label>
+    <select id="channel-type" name="channel-type" style="width:100%;max-width:400px;">
+      <option value="creator" selected>Creator</option>
+      <option value="tv">TV</option>
+      <option value="radio">Radio</option>
+    </select>
+    <label for="channel-about">About</label>
+    <textarea id="channel-about" name="channel-about" placeholder="Short description" style="width:100%;max-width:400px;"></textarea>
     <button id="fetch-info">Get Channel Info</button>
     <button id="copy-json" aria-label="Copy results" style="display:none;"><span class="material-symbols-outlined">content_copy</span></button>
     <pre id="json-output" style="white-space:pre-wrap;"></pre>
@@ -89,6 +97,8 @@
 
     document.getElementById('fetch-info').addEventListener('click', async () => {
       const input = document.getElementById('channel-url').value.trim();
+      const type = document.getElementById('channel-type').value;
+      const about = document.getElementById('channel-about').value.trim();
       const output = document.getElementById('json-output');
       const copyBtn = document.getElementById('copy-json');
       output.textContent = '';
@@ -126,8 +136,9 @@
         const result = {
           key: key,
           name: name,
-          type: 'creator',
+          type: type,
           platform: 'youtube',
+          about: about,
           media: { thumbnail_url: thumb },
           endpoints: [
             { kind: 'embed', provider: 'youtube', url: `https://www.youtube.com/embed/live_stream?channel=${channelId}` },
