@@ -255,6 +255,7 @@
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
       document.getElementById('toggle-channels').textContent = 'Channels';
+      if (typeof updateScrollLock === 'function') updateScrollLock();
     }
   
     if (!channelId) {
