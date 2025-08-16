@@ -405,8 +405,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!listEl) return;
 
     // Get items; if none for current mode, auto-switch to an available mode
+    // Only auto-switch when not actively filtering to avoid jumping tabs during search
     let arr = filteredByMode(mode, filterText);
-    if (arr.length === 0 && mode !== 'favorites') {
+    if (!filterText && arr.length === 0 && mode !== 'favorites') {
       mode = detectAvailableMode();
       params.set("m", mode);
       history.replaceState(null, "", "?" + params.toString());
