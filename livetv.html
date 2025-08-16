@@ -328,7 +328,8 @@
       if (window.innerWidth <= 768) {
         const list = document.querySelector('.channel-list');
         list.classList.remove('open');
-        document.querySelector('#toggle-channels .label').textContent = channelToggleDefaultText;
+        const label = document.querySelector('#toggle-channels .label');
+        if (label) label.textContent = label.dataset.default || label.textContent;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
     }
@@ -441,91 +442,8 @@
         });
     }
 
-    const channelToggleDefaultText = document.querySelector('#toggle-channels .label')?.textContent || '';
-
-    function toggleChannelList() {
-      const list = document.querySelector('.channel-list');
-      const toggleBtn = document.getElementById('toggle-channels');
-      const icon = toggleBtn?.querySelector('.icon');
-      const label = toggleBtn?.querySelector('.label');
-
-      if (window.innerWidth <= 768) {
-        list.classList.toggle('open');
-        if (label) {
-          label.textContent = list.classList.contains('open') ? `Close ${channelToggleDefaultText}` : channelToggleDefaultText;
-        }
-        if (typeof updateScrollLock === 'function') updateScrollLock();
-      } else {
-        list.classList.toggle('collapsed');
-        const collapsed = list.classList.contains('collapsed');
-        if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
-        localStorage.setItem('channelListCollapsed', collapsed);
-      }
-    }
-
-    document.addEventListener('click', function(e) {
-      const list = document.querySelector('.channel-list');
-      const btn = document.getElementById('toggle-channels');
-      if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
-        list.classList.remove('open');
-        btn.querySelector('.label').textContent = channelToggleDefaultText;
-        if (typeof updateScrollLock === 'function') updateScrollLock();
-      }
-    });
-
-    // Allow swipe left to close the channel list on touch devices
-    let touchStartX = null;
-    const channelList = document.querySelector('.channel-list');
-    channelList.addEventListener('touchstart', (e) => {
-      if (!channelList.classList.contains('open')) return;
-      touchStartX = e.touches[0].clientX;
-    });
-    channelList.addEventListener('touchend', (e) => {
-      if (touchStartX === null) return;
-      const touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
-        channelList.classList.remove('open');
-        document.querySelector('#toggle-channels .label').textContent = channelToggleDefaultText;
-        if (typeof updateScrollLock === 'function') updateScrollLock();
-      }
-      touchStartX = null;
-    });
-
-    // Allow swipe right from the screen edge to open the channel list on touch devices
-    let openStartX = null;
-    document.addEventListener('touchstart', (e) => {
-      if (channelList.classList.contains('open')) return;
-      openStartX = e.touches[0].clientX;
-    });
-    document.addEventListener('touchmove', (e) => {
-      if (openStartX === null) return;
-      const currentX = e.touches[0].clientX;
-      if (openStartX < 50 && currentX - openStartX > 10) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-    document.addEventListener('touchend', (e) => {
-      if (channelList.classList.contains('open')) return;
-      if (openStartX === null) return;
-      const touchEndX = e.changedTouches[0].clientX;
-      if (touchEndX - openStartX > 50 && openStartX < 50) {
-        channelList.classList.add('open');
-        document.querySelector('#toggle-channels .label').textContent = `Close ${channelToggleDefaultText}`;
-        if (typeof updateScrollLock === 'function') updateScrollLock();
-      }
-      openStartX = null;
-    });
-
-    // Apply saved collapse state on load
-    (function() {
-      const list = document.querySelector('.channel-list');
-      const icon = document.querySelector('#toggle-channels .icon');
-      if (localStorage.getItem('channelListCollapsed') === 'true') {
-        list.classList.add('collapsed');
-        if (icon) icon.textContent = 'chevron_right';
-      }
-    })();
   </script>
+  <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
