@@ -215,9 +215,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         (i.endpoints||[]).some(e => e.provider === "youtube")
       );
     } else if (m === "freepress") {
-      arr = arr.filter(i => i.category === "freepress" || /freepress|journalist|news/i.test(i.tags || ""));
+      arr = arr.filter(i =>
+        i.category === "freepress" ||
+        i.type === "freepress" ||
+        /freepress|journalist|news/i.test(i.tags || "")
+      );
     } else if (m === "creator") {
-      arr = arr.filter(i => i.category === "creator" || /creator|vlog|podcast/i.test(i.tags || ""));
+      arr = arr.filter(i =>
+        i.category === "creator" ||
+        i.type === "creator" ||
+        /creator|vlog|podcast/i.test(i.tags || "")
+      );
     }
 
     // Search
