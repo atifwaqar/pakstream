@@ -118,6 +118,8 @@ footer nav a:hover {
 
   .nav-links .dropdown {
     position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .nav-links .dropdown-content {
