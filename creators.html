@@ -37,29 +37,12 @@
   <meta name="twitter:site" content="@PakStream">
   <meta name="twitter:creator" content="@PakStream">
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "NewsMediaOrganization",
-    "name": "PakStream",
-    "url": "https://pakstream.com/",
-    "logo": "https://pakstream.com/assets/logo.png",
-    "sameAs": [
-      "https://facebook.com/PakStream",
-      "https://twitter.com/PakStream"
-    ]
-  }
-  </script>
-
-
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-  
 </head>
 <body>
 {% include google-tag-manager-body.html %}
@@ -68,30 +51,31 @@
     <label for="nav-toggle" class="nav-toggle-label">☰</label>
     <h1 class="logo-title">PakStream</h1>
     <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/freepress.html">Free Press</a>
-        <a href="/livetv.html">Live TV</a>
-        <a href="/creators.html">Creators</a>
-        <a href="/radio.html">Radio</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-      </nav>
-  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
-  <label for="nav-toggle" class="nav-overlay"></label>
+      <a href="/">Home</a>
+      <a href="/freepress.html">Free Press</a>
+      <a href="/livetv.html">Live TV</a>
+      <a href="/creators.html">Creators</a>
+      <a href="/radio.html">Radio</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+    <label for="nav-toggle" class="nav-overlay"></label>
   </header>
 
   <!-- Creators section with channel list and video player -->
   <section class="youtube-section">
     <div class="channel-list"></div>
-    <!-- Video display area: a player for the selected video and a list of recent videos -->
+
     <div class="video-section">
       <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
         <span class="material-symbols-outlined icon">chevron_left</span>
-        <span class="label">Channels</span>
+        <span class="label" data-default="Channels">Channels</span>
       </button>
+
       <div class="live-player">
         <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
@@ -99,12 +83,8 @@
     </div>
   </section>
 
-  <!-- Placeholder for advertising or extra content -->
-  <div class="ad-container">
-    <!-- Google AdSense: Insert your ad code here -->
-  </div>
+  <div class="ad-container"></div>
 
-  <!-- Footer -->
   <footer>
     <nav class="footer-nav">
       <a href="/about.html">About Us</a>
@@ -115,75 +95,187 @@
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript for dynamically loading latest videos from the selected channel -->
 <script>
-    const anchorMap = {};
-    const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
-    const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
-    const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+  // ----- State -----
+  const anchorMap = {};                     // key -> channelId
+  const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
 
-    function getChannelThumbnail(id) {
-      const cacheKey = `yt_thumb_${id}`;
-      const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-      if (cached && (Date.now() - cached.timestamp) < ONE_YEAR_MS) {
-        return Promise.resolve(cached.url);
-      }
-      const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
-      return fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          const thumb = data.items?.[0]?.snippet?.thumbnails?.default?.url || '';
-          if (thumb) {
-            localStorage.setItem(cacheKey, JSON.stringify({ url: thumb, timestamp: Date.now() }));
-          }
-          return thumb;
-        })
-        .catch(() => '');
+  // v3 ONLY for thumbnails; use as primary for listing to avoid extension/CORS issues, with cache
+  const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
+  const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+  const LIST_CACHE_MS = 30 * 60 * 1000;    // 30 minutes
+
+  // ----- Helpers -----
+  function getChannelThumbnail(id) {
+    const cacheKey = `yt_thumb_${id}`;
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (cached && (Date.now() - cached.timestamp) < ONE_YEAR_MS) {
+      return Promise.resolve(cached.url);
     }
+    const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
+    return fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const thumb = data.items?.[0]?.snippet?.thumbnails?.default?.url || '';
+        if (thumb) localStorage.setItem(cacheKey, JSON.stringify({ url: thumb, timestamp: Date.now() }));
+        return thumb;
+      })
+      .catch(() => '');
+  }
 
-    function updateFavoritesUI() {
-      const list = document.querySelector('.channel-list');
-      const cards = Array.from(list.querySelectorAll('.channel-card'));
-      const favFragment = document.createDocumentFragment();
-      const otherFragment = document.createDocumentFragment();
+  function updateFavoritesUI() {
+    const list = document.querySelector('.channel-list');
+    const cards = Array.from(list.querySelectorAll('.channel-card'));
+    const favFragment = document.createDocumentFragment();
+    const otherFragment = document.createDocumentFragment();
 
-      cards.forEach(card => {
-        const id = card.dataset.channelId;
-        const btn = card.querySelector('.fav-btn');
-        const isFav = favorites.includes(id);
-        card.classList.toggle('favorite', isFav);
-        btn.textContent = isFav ? 'favorite' : 'favorite_border';
-        (isFav ? favFragment : otherFragment).appendChild(card);
-      });
-
-      list.appendChild(favFragment);
-      list.appendChild(otherFragment);
-    }
-
-    function toggleFavorite(event) {
-      event.stopPropagation();
-      const card = event.currentTarget.closest('.channel-card');
+    cards.forEach(card => {
       const id = card.dataset.channelId;
-      const idx = favorites.indexOf(id);
-      if (idx >= 0) favorites.splice(idx, 1);
-      else favorites.push(id);
-      localStorage.setItem('ytFavorites', JSON.stringify(favorites));
-      updateFavoritesUI();
+      const btn = card.querySelector('.fav-btn');
+      const isFav = favorites.includes(id);
+      card.classList.toggle('favorite', isFav);
+      btn.textContent = isFav ? 'favorite' : 'favorite_border';
+      (isFav ? favFragment : otherFragment).appendChild(card);
+    });
+
+    list.appendChild(favFragment);
+    list.appendChild(otherFragment);
+  }
+
+  function toggleFavorite(event) {
+    event.stopPropagation();
+    const card = event.currentTarget.closest('.channel-card');
+    const id = card.dataset.channelId;
+    const idx = favorites.indexOf(id);
+    if (idx >= 0) favorites.splice(idx, 1);
+    else favorites.push(id);
+    localStorage.setItem('ytFavorites', JSON.stringify(favorites));
+    updateFavoritesUI();
+  }
+
+  function fitText(el, maxLines = 2) {
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+    const maxHeight = lineHeight * maxLines;
+    let fontSize = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollHeight > maxHeight && fontSize > 10) {
+      fontSize -= 1;
+      el.style.fontSize = fontSize + 'px';
+    }
+  }
+
+  function timeAgo(dateString) {
+    const seconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
+    const intervals = [
+      { label: 'year', seconds: 31536000 },
+      { label: 'month', seconds: 2592000 },
+      { label: 'day', seconds: 86400 },
+      { label: 'hour', seconds: 3600 },
+      { label: 'minute', seconds: 60 }
+    ];
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count >= 1) return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+    }
+    return 'Just now';
+  }
+
+  async function fetchVideoDetails(videoId) {
+    const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
+    if (!resp.ok) throw new Error('Failed to load video details');
+    return resp.json();
+  }
+
+  // Primary: Data API v3 (cached). Fallbacks: RSS direct -> RSS via proxy.
+  async function fetchLatestVideos(channelId) {
+    const cacheKey = `yt_list_${channelId}`;
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (cached && (Date.now() - cached.timestamp) < LIST_CACHE_MS) {
+      return cached.items;
     }
 
-    function fitText(el, maxLines = 2) {
-      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
-      const maxHeight = lineHeight * maxLines;
-      let fontSize = parseFloat(getComputedStyle(el).fontSize);
-      while (el.scrollHeight > maxHeight && fontSize > 10) {
-        fontSize -= 1;
-        el.style.fontSize = fontSize + 'px';
+    // Try v3 first (filters fields to save quota)
+    try {
+      const apiUrl =
+        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}` +
+        `&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10` +
+        `&fields=items(id/videoId,snippet(title,publishedAt,thumbnails/medium/url))`;
+      const resp = await fetch(apiUrl);
+      if (resp.ok) {
+        const data = await resp.json();
+        const items = (data.items || []).map(item => {
+          const videoId = item.id?.videoId || '';
+          const title = item.snippet?.title || '';
+          const link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+          const pubDate = item.snippet?.publishedAt || '';
+          const thumbnail = item.snippet?.thumbnails?.medium?.url || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+          return { title, link, guid: `yt:video:${videoId}`, thumbnail, pubDate, videoId };
+        });
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
       }
-    }
+    } catch (_) { /* continue to RSS */ }
 
-    let cards;
-    const videoListEl = document.getElementById('videoList');
-    const playerFrame = document.getElementById('playerFrame');
+    // RSS (direct)
+    try {
+      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const resp = await fetch(directFeed);
+      if (resp.ok) {
+        const xmlText = await resp.text();
+        const items = parseRss(xmlText).slice(0, 10);
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
+      }
+    } catch (_) {}
+
+    // RSS (proxy)
+    try {
+      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
+      const resp = await fetch(proxyFeed);
+      if (resp.ok) {
+        const xmlText = await resp.text();
+        const items = parseRss(xmlText).slice(0, 10);
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
+      }
+    } catch (_) {}
+
+    throw new Error('Failed to load videos via all methods');
+  }
+
+  function parseRss(xmlText) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, 'application/xml');
+    const entries = Array.from(xml.getElementsByTagName('entry'));
+    const thumbNs = 'http://search.yahoo.com/mrss/';
+    return entries.map(entry => {
+      let videoId = '';
+      const guid = entry.getElementsByTagName('id')[0]?.textContent || '';
+      if (guid.startsWith('yt:video:')) videoId = guid.split(':').pop();
+      if (!videoId) {
+        const href = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
+        const m = href.match(/[?&]v=([^&]+)/);
+        if (m) videoId = m[1];
+      }
+      const title = entry.getElementsByTagName('title')[0]?.textContent || '';
+      const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : '');
+      const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
+      const thumbEl = entry.getElementsByTagNameNS(thumbNs, 'thumbnail')[0] || entry.querySelector('media\\:thumbnail');
+      const thumbnail = (thumbEl && thumbEl.getAttribute('url')) || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+      return { title, link, guid, thumbnail, pubDate, videoId };
+    });
+  }
+
+  // ----- UI wiring -----
+  let cards;
+  const videoListEl = document.getElementById('videoList');
+  const playerFrame = document.getElementById('playerFrame');
 
   function setActiveCard(clickedCard) {
     cards.forEach(c => {
@@ -207,100 +299,53 @@
     }
   }
 
-  function timeAgo(dateString) {
-    const seconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
-    const intervals = [
-      { label: 'year', seconds: 31536000 },
-      { label: 'month', seconds: 2592000 },
-      { label: 'day', seconds: 86400 },
-      { label: 'hour', seconds: 3600 },
-      { label: 'minute', seconds: 60 }
-    ];
-    for (const interval of intervals) {
-      const count = Math.floor(seconds / interval.seconds);
-      if (count >= 1) {
-        return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
-      }
+  function toggleChannelList() {
+    const list = document.querySelector('.channel-list');
+    const btn = document.getElementById('toggle-channels');
+    const label = btn?.querySelector('.label');
+    list.classList.toggle('open');
+    if (label) {
+      label.textContent = list.classList.contains('open') ? 'Hide' : (label.dataset.default || 'Channels');
     }
-    return 'Just now';
-  }
-
-  async function fetchVideoDetails(videoId) {
-    const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
-    if (!resp.ok) throw new Error('Failed to load video details');
-    return resp.json();
-  }
-
-  async function fetchLatestVideos(channelId) {
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const resp = await fetch(feedUrl);
-    if (!resp.ok) throw new Error('Failed to load videos');
-    const text = await resp.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'application/xml');
-    const entries = Array.from(xml.querySelectorAll('entry')).slice(0, 10);
-    return entries.map(entry => ({
-      title: entry.querySelector('title')?.textContent || '',
-      link: entry.querySelector('link')?.getAttribute('href') || '',
-      guid: entry.querySelector('id')?.textContent || '',
-      thumbnail: entry.querySelector('media\\:thumbnail')?.getAttribute('url') || '',
-      pubDate: entry.querySelector('published')?.textContent || ''
-    }));
   }
 
   async function handleChannelClick(card) {
     const channelId = card.dataset.channelId;
-  
-    // 👇 Update URL
+
+    // Update URL with creator key
     const anchorKey = Object.keys(anchorMap).find(key => anchorMap[key] === channelId);
     if (anchorKey) {
       const newUrl = `${window.location.pathname}?creator=${anchorKey}`;
       history.replaceState(null, '', newUrl);
     }
-  
+
     setActiveCard(card);
     videoListEl.innerHTML = '<p>Loading videos…</p>';
 
-    // Close channel list immediately on small screens
+    // Close channel list on small screens
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
       const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
-      if (typeof updateScrollLock === 'function') updateScrollLock();
+      if (label) label.textContent = label.dataset.default || 'Channels';
     }
-  
+
     if (!channelId) {
       videoListEl.innerHTML = '<p>No channel ID provided.</p>';
       return;
     }
-  
+
     try {
       const videos = await fetchLatestVideos(channelId);
       if (!videos || videos.length === 0) {
         videoListEl.innerHTML = '<p>No videos found for this channel.</p>';
         return;
       }
-  
-      videoListEl.innerHTML = '';
-      for (const [index, video] of videos.entries()) {
-        let videoId = '';
-        if (video.guid && video.guid.startsWith('yt:video:')) {
-          videoId = video.guid.split(':').pop();
-        } else if (video.link) {
-          const vMatch = video.link.match(/[?&]v=([^&]+)/);
-          if (vMatch) videoId = vMatch[1];
-        }
-        if (!videoId) continue;
 
-        let details = {};
-        try {
-          details = await fetchVideoDetails(videoId);
-        } catch (e) {
-          console.error(e);
-        }
-        const viewsText = details.view_count ? `${Number(details.view_count).toLocaleString()} views` : 'Views unavailable';
-        const ageText = timeAgo(video.pubDate);
+      videoListEl.innerHTML = '';
+      videos.forEach((video, index) => {
+        const videoId = video.videoId;
+        if (!videoId) return;
 
         const itemEl = document.createElement('div');
         itemEl.className = 'video-item';
@@ -308,7 +353,7 @@
           <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
           <div class="video-details">
             <div class="video-title">${video.title}</div>
-            <div class="video-meta">${viewsText} • ${ageText}</div>
+            <div class="video-meta">Loading views… • ${timeAgo(video.pubDate)}</div>
           </div>
         `;
         itemEl.addEventListener('click', () => {
@@ -316,21 +361,35 @@
           setActiveVideo(itemEl);
         });
         videoListEl.appendChild(itemEl);
+
         if (index === 0) {
           loadVideo(videoId);
           setActiveVideo(itemEl);
         }
-      }
+
+        // Non-blocking view count (best effort)
+        fetchVideoDetails(videoId).then(details => {
+          const meta = itemEl.querySelector('.video-meta');
+          const viewsText = details.view_count ? `${Number(details.view_count).toLocaleString()} views` : 'Views unavailable';
+          meta.textContent = `${viewsText} • ${timeAgo(video.pubDate)}`;
+        }).catch(() => {
+          const meta = itemEl.querySelector('.video-meta');
+          meta.textContent = `Views unavailable • ${timeAgo(video.pubDate)}`;
+        });
+      });
     } catch (err) {
       console.error(err);
-      videoListEl.innerHTML = '<p>Error loading videos.</p>';
+      videoListEl.innerHTML = '<p>Error loading videos (all methods failed).</p>';
     }
-
   }
+
+  // ----- Bootstrapping -----
   fetch('/creators_channels.json')
     .then(res => res.json())
-    .then(channels => {
+    .then(data => {
+      const channels = Array.isArray(data) ? data : (data.channels || []);
       const list = document.querySelector('.channel-list');
+
       channels.forEach(ch => {
         anchorMap[ch.key] = ch.id;
 
@@ -340,7 +399,8 @@
 
         const img = document.createElement('img');
         img.className = 'channel-thumb';
-        getChannelThumbnail(ch.id).then(url => { img.src = url; });
+        img.alt = `${ch.name} thumbnail`;
+        getChannelThumbnail(ch.id).then(url => { img.src = url || '/assets/avatar-fallback.png'; });
 
         const span = document.createElement('span');
         span.className = 'channel-name';
@@ -389,8 +449,8 @@
         handleChannelClick(defaultCard);
       }
     });
-
 </script>
+
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
