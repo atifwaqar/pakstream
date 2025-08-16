@@ -42,7 +42,7 @@
 /* Responsive keeps your existing behavior */
 
 
-.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+.mode-tabs { display:none; gap:8px; flex-wrap:wrap; }
 .tab-btn {
   padding:8px 14px;
   border:1px solid var(--surface-variant);
