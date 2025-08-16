@@ -193,6 +193,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         favBtn.disabled = false;
       }
       if (playPauseBtn) playPauseBtn.disabled = false;
+      const hasStations = listEl.querySelectorAll('.channel-card audio').length > 0;
+      if (prevBtn && nextBtn) prevBtn.disabled = nextBtn.disabled = !hasStations;
       return;
     }
 
@@ -230,6 +232,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       if (playPauseBtn) playPauseBtn.disabled = false;
     }
+    const hasStations = listEl.querySelectorAll('.channel-card audio').length > 0;
+    if (prevBtn && nextBtn) prevBtn.disabled = nextBtn.disabled = !hasStations;
   }
 
     function toggleFavorite(id, itemMode = mode) {
