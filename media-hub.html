@@ -1,64 +1,102 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
+{% include google-analytics.html %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>PakStream Media Hub</title>
   <meta name="description" content="PakStream Media Hub - Live TV, Free Press, Radio and Creators in one place." />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/media-hub.css" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/theme.css" />
+  <link rel="stylesheet" href="/css/media-hub.css" />
 </head>
 <body>
-  <div id="site-nav"></div>
+  <!-- SAME TOP BAR AS OTHER PAGES -->
+  <header class="top-bar">
+    <input type="checkbox" id="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">☰</label>
+    <h1 class="logo-title">PakStream</h1>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/freepress.html">Free Press</a>
+      <a href="/livetv.html">Live TV</a>
+      <a href="/creators.html">Creators</a>
+      <a href="/radio.html">Radio</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
+    <label for="nav-toggle" class="nav-overlay"></label>
+  </header>
 
-  <div class="page-wrap">
-    <div class="container">
-      <!-- Mode tabs -->
-      <div class="tabs-row">
-        <button class="tab-btn" data-mode="tv">Live TV</button>
-        <button class="tab-btn" data-mode="freepress">Free Press</button>
-        <button class="tab-btn" data-mode="radio">Radio</button>
-        <button class="tab-btn" data-mode="creator">Creators</button>
+  <section class="youtube-section">
+    <!-- LEFT RAIL -->
+    <div class="channel-list open"></div>
+
+    <!-- CENTER -->
+    <div class="video-section">
+      <div class="button-row">
+        <!-- Mode tabs -->
+        <div class="mode-tabs">
+          <button class="tab-btn" data-mode="tv">Live TV</button>
+          <button class="tab-btn" data-mode="freepress">Free Press</button>
+          <button class="tab-btn" data-mode="radio">Radio</button>
+          <button class="tab-btn" data-mode="creator">Creators</button>
+        </div>
+        <div class="spacer"></div>
+        <!-- Toggle buttons (reuse existing behavior) -->
+        <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
+          <span class="material-symbols-outlined icon">chevron_left</span>
+          <span class="label" data-default="Channels">Channels</span>
+        </button>
+        <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()" aria-label="Toggle details list" style="display:none;">
+          <span class="material-symbols-outlined icon">chevron_right</span>
+          <span class="label" data-default="About">About</span>
+        </button>
       </div>
 
-      <div class="content-grid">
-        <!-- LEFT: channel list (reuse existing classes) -->
-        <aside class="left-rail">
-          <div class="search-wrap">
-            <input id="mh-search-input" type="text" placeholder="Search…" />
-          </div>
-          <div id="mh-channel-list" class="channel-list open"></div>
-        </aside>
-
-        <!-- CENTER: player + up next -->
-        <main class="center-rail">
-          <div id="mh-player-area" class="player-container"></div>
-          <div id="mh-upnext" class="video-list"></div>
-        </main>
-
-        <!-- RIGHT: about -->
-        <aside class="right-rail">
-          <div id="mh-about" class="details-list"></div>
-        </aside>
+      <div class="live-player">
+        <iframe id="playerFrame" src="about:blank"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          title="Selected video player"></iframe>
+        <div id="audioWrap" class="audio-wrap" style="display:none;"></div>
       </div>
+
+      <div id="videoList" class="video-list"><p>Loading…</p></div>
     </div>
-  </div>
 
-  <div id="site-footer"></div>
+    <!-- RIGHT RAIL -->
+    <div class="details-container">
+      <div class="details-list" style="display:none;"></div>
+    </div>
+  </section>
 
-  <script>
-    // inject existing nav/footer so the page inherits site chrome + CSS
-    (async () => {
-      try {
-        const [nav, footer] = await Promise.all([
-          fetch("nav.html").then(r=>r.text()).catch(()=>""), 
-          fetch("footer.html").then(r=>r.text()).catch(()=>""), 
-        ]);
-        if (nav) document.getElementById("site-nav").innerHTML = nav;
-        if (footer) document.getElementById("site-footer").innerHTML = footer;
-      } catch (_) {}
-    })();
-  </script>
-  <script src="js/media-hub.js"></script>
+  <footer>
+    <nav class="footer-nav">
+      <a href="/about.html">About Us</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+    </nav>
+    <p>© 2025 PakStream. All rights reserved.</p>
+  </footer>
+
+  <!-- Order matches your other pages so swipe + scroll lock work -->
+  <script src="/js/media-hub.js"></script>
+  <script src="/js/leftmenu.js"></script>
+  <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>
