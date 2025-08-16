@@ -235,7 +235,7 @@
     return resp.json();
   }
 
-  // RSS fetch with 30-min cache + robust XML namespace handling
+  // --- Robust RSS fetch with fallbacks (RSS -> proxy -> v3 last resort) ---
   async function fetchLatestVideos(channelId) {
     const cacheKey = `rss_${channelId}`;
     const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
@@ -243,39 +243,73 @@
       return cached.items;
     }
 
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const resp = await fetch(feedUrl);
-    if (!resp.ok) throw new Error('Failed to load videos');
-    const text = await resp.text();
+    const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
 
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'application/xml');
-
-    const entries = Array.from(xml.getElementsByTagName('entry')).slice(0, 10);
-    const items = entries.map(entry => {
-      // videoId
-      let videoId = '';
-      const guid = entry.getElementsByTagName('id')[0]?.textContent || '';
-      if (guid.startsWith('yt:video:')) videoId = guid.split(':').pop();
-      if (!videoId) {
-        const href = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
-        const m = href.match(/[?&]v=([^&]+)/);
-        if (m) videoId = m[1];
+    // Try direct RSS, then proxy RSS
+    let xmlText = '';
+    for (const url of [directFeed, proxyFeed]) {
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) continue;
+        const text = await resp.text();
+        if (text && text.length > 50) { xmlText = text; break; }
+      } catch (e) {
+        // swallow and try next
       }
+    }
 
-      // title, link, pubDate
-      const title = entry.getElementsByTagName('title')[0]?.textContent || '';
-      const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : '');
-      const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
+    let items = [];
+    if (xmlText) {
+      try {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(xmlText, 'application/xml');
+        const entries = Array.from(xml.getElementsByTagName('entry')).slice(0, 10);
 
-      // thumbnail (try media:thumbnail, then fallback to i.ytimg.com)
-      const thumbNs = 'http://search.yahoo.com/mrss/';
-      const thumbEl = entry.getElementsByTagNameNS(thumbNs, 'thumbnail')[0]
-        || entry.querySelector('media\\:thumbnail');
-      const thumbnail = (thumbEl && thumbEl.getAttribute('url')) || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+        items = entries.map(entry => {
+          // videoId
+          let videoId = '';
+          const guid = entry.getElementsByTagName('id')[0]?.textContent || '';
+          if (guid.startsWith('yt:video:')) videoId = guid.split(':').pop();
+          if (!videoId) {
+            const href = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
+            const m = href.match(/[?&]v=([^&]+)/);
+            if (m) videoId = m[1];
+          }
 
-      return { title, link, guid, thumbnail, pubDate, videoId };
-    });
+          const title = entry.getElementsByTagName('title')[0]?.textContent || '';
+          const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : '');
+          const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
+
+          // thumbnail: media:thumbnail (namespace) -> fallback
+          const thumbNs = 'http://search.yahoo.com/mrss/';
+          const thumbEl = entry.getElementsByTagNameNS(thumbNs, 'thumbnail')[0]
+            || entry.querySelector('media\\:thumbnail');
+          const thumbnail = (thumbEl && thumbEl.getAttribute('url')) || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+
+          return { title, link, guid, thumbnail, pubDate, videoId };
+        });
+      } catch (e) {
+        // parsing failed -> items remains []
+      }
+    }
+
+    // Final fallback: Data API v3 (used only if RSS+proxy failed)
+    if (!items.length) {
+      console.warn('RSS fetch failed; falling back to YouTube Data API v3 search (quota use).');
+      const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10`;
+      const resp = await fetch(apiUrl);
+      if (!resp.ok) throw new Error('Failed to load videos via v3 fallback');
+      const data = await resp.json();
+      items = (data.items || []).map(item => {
+        const videoId = item.id?.videoId || '';
+        const title = item.snippet?.title || '';
+        const link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+        const pubDate = item.snippet?.publishedAt || '';
+        const thumbnail = item.snippet?.thumbnails?.medium?.url || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+        return { title, link, guid: `yt:video:${videoId}`, thumbnail, pubDate, videoId };
+      });
+    }
 
     localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
     return items;
@@ -423,7 +457,7 @@
       });
     } catch (err) {
       console.error(err);
-      videoListEl.innerHTML = '<p>Error loading videos (feed blocked or unavailable).</p>';
+      videoListEl.innerHTML = '<p>Error loading videos (feed and fallback failed).</p>';
     }
   }
 
