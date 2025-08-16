@@ -41,6 +41,16 @@
   });
 
   if (channelList) {
+    channelList.addEventListener('click', e => {
+      if (window.innerWidth > 768) return;
+      if (e.target.closest('.channel-card')) {
+        channelList.classList.remove('open');
+        const label = channelToggleBtn?.querySelector('.label');
+        if (label) label.textContent = channelToggleDefaultText;
+        if (typeof updateScrollLock === 'function') updateScrollLock();
+      }
+    });
+
     let touchStartX = null;
     channelList.addEventListener('touchstart', e => {
       if (!channelList.classList.contains('open')) return;
