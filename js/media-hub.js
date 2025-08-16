@@ -445,7 +445,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             const card = listEl.querySelector(`.channel-card[data-key="${match.key}"]`);
             const btn = card ? card.querySelector('.play-btn') : null;
             const audio = card ? card.querySelector('audio') : null;
-            if (btn && audio) {
+            const matchId = match.ids?.internal_id || match.key;
+            if (currentAudio && currentAudio.id === matchId) {
+              document.querySelectorAll('.channel-card').forEach(c => c.classList.toggle('active', c.dataset.key === match.key));
+              handled = true;
+            } else if (btn && audio) {
               playRadio(btn, audio, displayName(match), thumbOf(match));
               handled = true;
             }
