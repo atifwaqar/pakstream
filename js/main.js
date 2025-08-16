@@ -83,9 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
           var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
           searchData = items.map(function (it) {
             var mode = typeToMode[it.type] || 'tv';
+            var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
+              ? it.ids.internal_id
+              : it.key;
             return {
               name: it.name,
-              link: '/media-hub.html?c=' + encodeURIComponent(it.key) + '&m=' + mode
+              link: '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode
             };
           });
           loaded = true;
