@@ -340,12 +340,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     listEl.appendChild(frag);
 
-    // For non-radio: if player empty, select first
-    if (mode !== "radio" && playerIF && (playerIF.src === "" || playerIF.src === "about:blank") && arr.length) {
-      if (!(mode === 'favorites' && modeOfItem(arr[0]) === 'radio')) {
-        select(arr[0], false);
+    const initialKey = params.get('c');
+    if (mode === 'radio') {
+      if (!currentAudio && initialKey) {
+        const target = arr.find(it => (it.ids?.internal_id || it.key) === initialKey);
+        if (target) {
+          const card = listEl.querySelector(`.channel-card[data-key="${target.key}"]`);
+          const btn = card ? card.querySelector('.play-btn') : null;
+          const audio = card ? card.querySelector('audio') : null;
+          if (btn && audio) {
+            playRadio(btn, audio, displayName(target), thumbOf(target));
+          }
+        }
+      }
+    } else {
+      if (playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && arr.length) {
+        let chosen = arr[0];
+        if (initialKey) {
+          const match = arr.find(it => it.key === initialKey);
+          if (match) chosen = match;
+        }
+        if (!(mode === 'favorites' && modeOfItem(chosen) === 'radio')) {
+          select(chosen, false);
+        }
+      } else if (initialKey) {
+        const match = arr.find(it => it.key === initialKey);
+        if (match) select(match, false);
       }
     }
+
     updateFavoritesUI();
   }
 
