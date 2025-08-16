@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(location.search);
+  if (!params.has("m") && params.has("c")) {
+    params.set("m", "all");
+    history.replaceState(null, "", `${location.pathname}?${params}`);
+  }
   let mode = params.get("m") || "tv"; // default, will auto-correct based on data
 
   // DOM
