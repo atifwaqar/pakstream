@@ -88,7 +88,10 @@
     <div class="channel-list"></div>
     <!-- Video display area: a player for the selected video and a list of recent videos -->
     <div class="video-section">
-      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Channels</button>
+      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
+        <span class="material-symbols-outlined icon">chevron_left</span>
+        <span class="label">Channels</span>
+      </button>
       <div class="live-player">
         <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
@@ -259,7 +262,8 @@
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
-      document.getElementById('toggle-channels').textContent = 'Channels';
+      const label = document.querySelector('#toggle-channels .label');
+      if (label) label.textContent = label.dataset.default || label.textContent;
       if (typeof updateScrollLock === 'function') updateScrollLock();
     }
   
@@ -383,67 +387,8 @@
       }
     });
 
-  function toggleChannelList() {
-    const list = document.querySelector('.channel-list');
-    const btn = document.getElementById('toggle-channels');
-    list.classList.toggle('open');
-    btn.textContent = list.classList.contains('open') ? 'Close Channels' : 'Channels';
-    if (typeof updateScrollLock === 'function') updateScrollLock();
-  }
-
-  document.addEventListener('click', function(e) {
-    const list = document.querySelector('.channel-list');
-    const btn = document.getElementById('toggle-channels');
-    if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
-      list.classList.remove('open');
-      btn.textContent = 'Channels';
-      if (typeof updateScrollLock === 'function') updateScrollLock();
-    }
-  });
-
-  // Allow swipe left to close the channel list on touch devices
-  let touchStartX = null;
-  const channelList = document.querySelector('.channel-list');
-  channelList.addEventListener('touchstart', (e) => {
-    if (!channelList.classList.contains('open')) return;
-    touchStartX = e.touches[0].clientX;
-  });
-  channelList.addEventListener('touchend', (e) => {
-    if (touchStartX === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    if (touchStartX - touchEndX > 50) {
-      channelList.classList.remove('open');
-      document.getElementById('toggle-channels').textContent = 'Channels';
-      if (typeof updateScrollLock === 'function') updateScrollLock();
-    }
-    touchStartX = null;
-  });
-
-  // Allow swipe right from the screen edge to open the channel list on touch devices
-  let openStartX = null;
-  document.addEventListener('touchstart', (e) => {
-    if (channelList.classList.contains('open')) return;
-    openStartX = e.touches[0].clientX;
-  });
-  document.addEventListener('touchmove', (e) => {
-    if (openStartX === null) return;
-    const currentX = e.touches[0].clientX;
-    if (openStartX < 50 && currentX - openStartX > 10) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-  document.addEventListener('touchend', (e) => {
-    if (channelList.classList.contains('open')) return;
-    if (openStartX === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    if (touchEndX - openStartX > 50 && openStartX < 50) {
-      channelList.classList.add('open');
-      document.getElementById('toggle-channels').textContent = 'Close Channels';
-      if (typeof updateScrollLock === 'function') updateScrollLock();
-    }
-    openStartX = null;
-  });
 </script>
+  <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
