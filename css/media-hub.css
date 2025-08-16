@@ -1,3 +1,20 @@
+/* Left rail header with tabs + search */
+.left-rail-header { position: sticky; top: 0; background: var(--bg, #fff); z-index: 2; padding: 8px 8px 10px; }
+.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+.tab-btn { padding:8px 12px; border:1px solid var(--border-muted,#e1e5e7); background:#eef3f2; border-radius:8px; cursor:pointer; }
+.tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
+.search-wrap input { width:100%; padding:8px 10px; border:1px solid #e1e5e7; border-radius:8px; }
+
+/* Make video list look like cards */
+.video-list { margin-top:12px; }
+.video-item { display:flex; gap:10px; padding:8px 10px; border-radius:10px; background:#fff; margin-bottom:8px; cursor:pointer; }
+.video-item:hover { background:#f6f9f9; }
+.video-thumb { width:120px; height:68px; border-radius:8px; object-fit:cover; }
+.video-meta { display:flex; align-items:center; font-weight:600; }
+
+/* Responsive keeps your existing behavior */
+
+
 .mode-tabs { display:flex; gap:8px; flex-wrap:wrap; }
 .tab-btn { padding:8px 14px; border:1px solid var(--border-muted,#e1e5e7); background:#eef3f2; border-radius:8px; cursor:pointer; }
 .tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
