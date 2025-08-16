@@ -120,6 +120,7 @@
 <script>
     const anchorMap = {};
     let detailsMap = {};
+    let profilesMap = {};
     const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
     const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
     const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
@@ -141,6 +142,31 @@
           return thumb;
         })
         .catch(() => '');
+    }
+
+    function renderProfiles(list) {
+      if (!list.length) return '';
+      const icons = {
+        youtube: { url: 'https://img.icons8.com/color/48/000000/youtube-play.png', label: 'YouTube' },
+        instagram: { url: 'https://img.icons8.com/color/48/000000/instagram-new.png', label: 'Instagram' },
+        twitter: { url: 'https://img.icons8.com/color/48/000000/twitter--v1.png', label: 'X (Twitter)' },
+        facebook: { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
+        linkedin: { url: 'https://img.icons8.com/color/48/000000/linkedin.png', label: 'LinkedIn' },
+        tiktok: { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' }
+      };
+      const items = list.map(url => {
+        let type = 'website';
+        if (/youtu/.test(url)) type = 'youtube';
+        else if (/instagram/.test(url)) type = 'instagram';
+        else if (/twitter|x\.com/.test(url)) type = 'twitter';
+        else if (/facebook/.test(url)) type = 'facebook';
+        else if (/linkedin/.test(url)) type = 'linkedin';
+        else if (/tiktok/.test(url)) type = 'tiktok';
+        const { url: icon, label } = icons[type] || { url: '', label: type.charAt(0).toUpperCase() + type.slice(1) };
+        const img = icon ? `<img src='${icon}' alt='${label}'>` : '';
+        return `<a class='profile' href='${url}' target='_blank' rel='noopener'>${img}<span>${label}</span></a>`;
+      }).join('');
+      return `<h3>Profiles</h3><div class='profiles'>${items}</div>`;
     }
 
     function updateFavoritesUI() {
@@ -254,9 +280,14 @@
     const detailsList = document.querySelector('.details-list');
     const detailsBtn = document.getElementById('toggle-details');
     const aboutContent = detailsMap[anchorKey];
+    const profileUrls = profilesMap[anchorKey] || [];
     if (detailsList && detailsBtn) {
-      if (aboutContent) {
-        detailsList.innerHTML = aboutContent;
+      if (aboutContent || profileUrls.length) {
+        detailsList.innerHTML = aboutContent || '';
+        if (profileUrls.length) {
+          const container = detailsList.querySelector('.details-content') || detailsList;
+          container.insertAdjacentHTML('beforeend', renderProfiles(profileUrls));
+        }
         detailsList.style.display = '';
         detailsBtn.style.display = '';
         detailsBtn.textContent = 'About';
@@ -343,6 +374,7 @@
       channels.forEach(ch => {
         anchorMap[ch.key] = ch.id;
         detailsMap[ch.key] = ch.about || '';
+        profilesMap[ch.key] = ch.profiles || [];
 
         const card = document.createElement('div');
         card.className = 'channel-card';
