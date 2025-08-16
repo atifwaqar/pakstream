@@ -62,3 +62,11 @@
   .left-rail { order:1; }
   .center-rail { order:2; }
 }
+
+/* Make left menu cover full height on mobile */
+@media (max-width: 768px) {
+  .youtube-section .channel-list {
+    top: 0;
+    height: 100vh;
+  }
+}
