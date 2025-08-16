@@ -268,19 +268,16 @@
   }
 
   async function fetchLatestVideos(channelId) {
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const resp = await fetch(feedUrl);
-    if (!resp.ok) throw new Error('Failed to load videos');
-    const text = await resp.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'application/xml');
-    const entries = Array.from(xml.querySelectorAll('entry')).slice(0, 10);
-    return entries.map(entry => ({
-      title: entry.querySelector('title')?.textContent || '',
-      link: entry.querySelector('link')?.getAttribute('href') || '',
-      guid: entry.querySelector('id')?.textContent || '',
-      thumbnail: entry.querySelector('media\\:thumbnail')?.getAttribute('url') || '',
-      pubDate: entry.querySelector('published')?.textContent || ''
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10`;
+    const resp = await fetch(apiUrl);
+    const data = await resp.json();
+    if (!data.items) throw new Error('Failed to load videos');
+    return data.items.map(item => ({
+      title: item.snippet.title,
+      link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      guid: `yt:video:${item.id.videoId}`,
+      thumbnail: item.snippet.thumbnails?.medium?.url || '',
+      pubDate: item.snippet.publishedAt
     }));
   }
 
