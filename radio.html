@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         channelList.classList.remove('open');
         const btn = document.getElementById('toggle-channels');
         if (btn) btn.textContent = 'Channels';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       touchStartX = null;
     });
@@ -199,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         channelList.classList.add('open');
         const btn = document.getElementById('toggle-channels');
         if (btn) btn.textContent = 'Close Channels';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       openStartX = null;
     });
@@ -573,6 +575,7 @@ function toggleChannelList() {
   const btn = document.getElementById('toggle-channels');
   list.classList.toggle('open');
   btn.textContent = list.classList.contains('open') ? 'Close Stations' : 'Stations';
+  if (typeof updateScrollLock === 'function') updateScrollLock();
 }
 
 document.addEventListener('click', function(e) {
@@ -581,6 +584,7 @@ document.addEventListener('click', function(e) {
   if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
     list.classList.remove('open');
     btn.textContent = 'Stations';
+    if (typeof updateScrollLock === 'function') updateScrollLock();
   }
 });
 
@@ -596,6 +600,7 @@ channelList.addEventListener('touchend', (e) => {
   if (touchStartX - touchEndX > 50) {
     channelList.classList.remove('open');
     document.getElementById('toggle-channels').textContent = 'Stations';
+    if (typeof updateScrollLock === 'function') updateScrollLock();
   }
   touchStartX = null;
 });

@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var touchStartX = null;
   var touchStartY = null;
 
+  function updateScrollLock() {
+    var navOpen = navToggle && navToggle.checked;
+    var sideOpen = document.querySelector('.channel-list.open, .details-list.open');
+    document.body.classList.toggle('no-scroll', navOpen || !!sideOpen);
+  }
+  window.updateScrollLock = updateScrollLock;
+
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
   links.forEach(function (link) {
@@ -115,11 +122,13 @@ document.addEventListener('DOMContentLoaded', function () {
   label.addEventListener('click', function (e) {
     e.preventDefault();
     navToggle.checked = !navToggle.checked;
+    updateScrollLock();
   });
 
   document.addEventListener('click', function (e) {
     if (navToggle.checked && !nav.contains(e.target) && !label.contains(e.target)) {
       navToggle.checked = false;
+      updateScrollLock();
     }
   });
 
@@ -137,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var dy = Math.abs(t.clientY - touchStartY);
     if (dx < -50 && dy < 30) {
       navToggle.checked = false;
+      updateScrollLock();
     }
     touchStartX = null;
     touchStartY = null;
@@ -152,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('theme', next);
     });
   }
+
+  updateScrollLock();
 
   if ('IntersectionObserver' in window) {
     const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');

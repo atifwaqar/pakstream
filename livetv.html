@@ -444,6 +444,7 @@
       const btn = document.getElementById('toggle-channels');
       list.classList.toggle('open');
       btn.textContent = list.classList.contains('open') ? 'Close Channels' : 'Channels';
+      if (typeof updateScrollLock === 'function') updateScrollLock();
     }
 
     document.addEventListener('click', function(e) {
@@ -452,6 +453,7 @@
       if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
         list.classList.remove('open');
         btn.textContent = 'Channels';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
       }
     });
 
@@ -468,6 +470,7 @@
       if (touchStartX - touchEndX > 50) {
         channelList.classList.remove('open');
         document.getElementById('toggle-channels').textContent = 'Channels';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       touchStartX = null;
     });
@@ -492,6 +495,7 @@
       if (touchEndX - openStartX > 50 && openStartX < 50) {
         channelList.classList.add('open');
         document.getElementById('toggle-channels').textContent = 'Close Channels';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       openStartX = null;
     });
