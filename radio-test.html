@@ -150,6 +150,56 @@ document.addEventListener('DOMContentLoaded', function() {
   const muteBtn = document.getElementById('mute-btn');
   const shareBtn = document.getElementById('share-btn');
   const favorites = JSON.parse(localStorage.getItem('radioFavorites') || '[]');
+  const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
+
+  function getChannelThumbnail(id, providedUrl) {
+    const cacheKey = `yt_thumb_${id}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      if (cached.startsWith('data:')) {
+        return Promise.resolve(cached);
+      }
+      try {
+        const parsed = JSON.parse(cached);
+        if (parsed && parsed.url) {
+          return fetchAndCache(parsed.url).catch(() => parsed.url);
+        }
+      } catch {}
+      return Promise.resolve(cached);
+    }
+
+    function fetchAndCache(url) {
+      return fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('Network response was not ok');
+          return res.blob();
+        })
+        .then(blob => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const dataUrl = reader.result;
+            try { localStorage.setItem(cacheKey, dataUrl); } catch {}
+            resolve(dataUrl);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }));
+    }
+
+    const fallback = () => {
+      const apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
+      return fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => data.items?.[0]?.snippet?.thumbnails?.default?.url || '')
+        .then(url => url ? fetchAndCache(url).catch(() => url) : '')
+        .catch(() => '');
+    };
+
+    if (providedUrl) {
+      return fetchAndCache(providedUrl).catch(fallback);
+    }
+    return fallback();
+  }
 
   function fitText(el, maxLines = 2) {
     const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
@@ -167,6 +217,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const card = document.createElement('div');
       card.className = 'channel-card';
 
+      const img = document.createElement('img');
+      img.alt = '';
+      img.className = 'station-row-logo';
+      img.width = 40;
+      img.height = 40;
+      img.loading = 'lazy';
+      img.src = defaultLogo;
+
       const nameSpan = document.createElement('span');
       nameSpan.className = 'channel-name';
       nameSpan.textContent = st.name;
@@ -179,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const audio = document.createElement('audio');
       audio.id = st.id;
       audio.preload = 'none';
-      audio.dataset.logo = st.logo || defaultLogo;
+      audio.dataset.logo = defaultLogo;
       if (st.src) audio.src = st.src;
 
       const favButton = document.createElement('button');
@@ -196,24 +254,18 @@ document.addEventListener('DOMContentLoaded', function() {
         updateFavoritesUI();
       });
 
+      card.appendChild(img);
       card.appendChild(nameSpan);
       card.appendChild(btn);
       card.appendChild(favButton);
       card.appendChild(audio);
       list.appendChild(card);
-    });
 
-    document.querySelectorAll('audio[data-logo]').forEach(audio => {
-      const card = audio.closest('.channel-card');
-      const name = card.querySelector('.channel-name');
-      const img = document.createElement('img');
-      img.src = audio.dataset.logo || defaultLogo;
-      img.alt = '';
-      img.className = 'station-row-logo';
-      img.width = 40;
-      img.height = 40;
-      img.loading = 'lazy';
-      card.insertBefore(img, name);
+      getChannelThumbnail(st.id, st.logo).then(url => {
+        const finalLogo = url || defaultLogo;
+        img.src = finalLogo;
+        audio.dataset.logo = finalLogo;
+      });
     });
 
     document.querySelectorAll('.channel-name').forEach(el => fitText(el));
