@@ -141,7 +141,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
 
     const q = filter.trim().toLowerCase();
-    const list = items.filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)));
+    const list = items
+      .filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)))
+      .sort((a, b) => (b.status?.active ? 1 : 0) - (a.status?.active ? 1 : 0));
 
     list.forEach(it => listEl.appendChild(makeChannelCard(it)));
 
