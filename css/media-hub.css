@@ -126,5 +126,6 @@
   .youtube-section .channel-list {
     top: 0;
     height: 100vh;
+    padding-top: 0;
   }
 }
