@@ -9,9 +9,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const audioWrap = document.getElementById("audioWrap");
   const videoList = document.getElementById("videoList");
   const details   = document.querySelector(".details-list");
-  const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
+
+  function activateMode(newMode) {
+    mode = newMode;
+    params.set("m", mode);
+    history.replaceState(null, "", "?" + params.toString());
+    updateActiveUI();
+    renderList(searchEl ? (searchEl.value || "") : "");
+  }
 
   // Handle top navigation submenu on the media hub page
   const dropdown = document.querySelector('.nav-links .dropdown');
@@ -33,8 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (link.pathname === location.pathname) {
         e.preventDefault();
         const newMode = new URL(link.href, location.origin).searchParams.get('m');
-        const tab = Array.from(tabs).find(t => t.dataset.mode === newMode);
-        if (tab) tab.click();
+        activateMode(newMode);
       }
     });
   });
@@ -98,13 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "tv";
   }
 
-  // One place for UI updates (tabs, player visibility, details toggle, favorites cache)
+  // One place for UI updates (player visibility, details toggle, favorites cache)
   function updateActiveUI() {
-    tabs.forEach(t => {
-      const isActive = t.dataset.mode === mode;
-      t.classList.toggle("active", isActive);
-      t.setAttribute("aria-pressed", isActive ? "true" : "false");
-    });
 
     const videoPlaying = playerIF && playerIF.src && playerIF.src !== "about:blank";
     if (currentAudio || (!videoPlaying && mode === "radio")) {
@@ -714,14 +715,7 @@ async function renderLatestVideosRSS(channelId) {
     playRadio(card.querySelector('.play-btn'), audio, displayName(item), thumbOf(item));
   }
 
-  // Tabs + Search
-  tabs.forEach(t => t.addEventListener("click", () => {
-    mode = t.dataset.mode;
-    params.set("m", mode);
-    history.replaceState(null, "", "?" + params.toString());
-    updateActiveUI();
-    renderList(searchEl ? (searchEl.value || "") : "");
-  }));
+  // Search
   if (searchEl) {
     searchEl.addEventListener("input", e => renderList(e.target.value));
     searchEl.addEventListener("keydown", e => {
