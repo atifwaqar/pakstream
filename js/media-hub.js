@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
-  const listEl    = leftRail; // we append cards into the left rail (which contains .channel-list)
+  const listEl    = leftRail; // we append cards into .channel-list (left rail)
   const playerIF  = document.getElementById("playerFrame");
   const audioWrap = document.getElementById("audioWrap");
   const videoList = document.getElementById("videoList");
@@ -14,20 +14,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toggleDetailsBtn = document.getElementById("toggle-details");
 
   // Radio player elements
-  const radioPlayer = document.getElementById("radio-player");
+  const radioContainer = document.getElementById("player-container");
+  const mainPlayer = document.getElementById("radio-player");
   const currentLabel = document.getElementById("current-station");
-  const playPauseBtn = document.getElementById("play-pause-btn");
+  const stationLogo = document.getElementById("station-logo");
+  const liveBadge = document.getElementById("live-badge");
+  const notLiveBadge = document.getElementById("not-live-badge");
+  const favBtn = document.getElementById("favorite-btn");
   const prevBtn = document.getElementById("prev-btn");
+  const playPauseBtn = document.getElementById("play-pause-btn");
+  const playPauseLabel = playPauseBtn.querySelector(".label");
   const nextBtn = document.getElementById("next-btn");
   const muteBtn = document.getElementById("mute-btn");
   const shareBtn = document.getElementById("share-btn");
-
   const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
   let favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
   const defaultLogo = "/images/default_radio.png";
 
-  let currentAudio = null;
+  let playButtons = [];
+  let currentBtn = null;
+  let pendingBtn = null;
   let resumeHandler = null;
+  let currentAudio = null;
 
   // Data
   const res = await fetch("/all_streams.json");
@@ -35,55 +43,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const items = data.items || [];
 
   // Helpers
+  const setActiveTab = () => tabs.forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
   const thumbOf = it => it.media?.thumbnail_url || it.media?.logo_url || "/assets/avatar-fallback.png";
   const ytEmbed = it => (it.endpoints||[]).find(e => e.kind === "embed" && e.provider === "youtube");
   const radioEndpoint = it => (it.endpoints||[]).find(e => (e.kind==="stream"||e.kind==="audio") && e.url);
   const uploadsId = cid => cid && cid.startsWith("UC") ? "UU" + cid.slice(2) : null;
   const ytThumb = vid => `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
 
-  function escapeHtml(s) {
-    return String(s ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#39;");
-  }
-
-  // ---- UI state (single function, no duplicates) ----
-  function updateActiveUI() {
-    // Tabs visual + aria
-    tabs.forEach(t => {
-      const isActive = t.dataset.mode === mode;
-      t.classList.toggle("active", isActive);
-      t.setAttribute("aria-pressed", isActive ? "true" : "false");
-    });
-
-    // Player vs Radio controls
-    if (mode === "radio") {
-      if (playerIF) playerIF.style.display = "none";
-      if (audioWrap) audioWrap.style.display = "";
-      if (details) details.style.display = "none";
-      if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
-    } else {
-      if (playerIF) playerIF.style.display = "";
-      if (audioWrap) audioWrap.style.display = "none";
-      if (details) {
-        const hasDetails = details.innerHTML.trim().length > 0;
-        details.style.display = hasDetails ? "" : "none";
-      }
-      if (toggleDetailsBtn) {
-        const hasDetails = details && details.innerHTML.trim().length > 0;
-        toggleDetailsBtn.style.display = hasDetails ? "" : "none";
-      }
-    }
-
-    // Refresh favorites cache per mode
-    favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
-    updateFavoritesUI();
-  }
-
-  // ---- Channel card ----
+  // Build a single channel card (same visual style as your site)
   function makeChannelCard(it) {
     const card = document.createElement("div");
     card.className = "channel-card";
@@ -92,118 +59,395 @@ document.addEventListener("DOMContentLoaded", async () => {
     const img = document.createElement("img");
     img.className = "channel-thumb";
     img.src = thumbOf(it);
-    img.alt = it.title || "";
+    img.alt = "";
 
     const name = document.createElement("span");
     name.className = "channel-name";
-    name.textContent = it.title || it.key;
+    name.textContent = it.name;
 
     const playBtn = document.createElement("button");
     playBtn.className = "play-btn material-symbols-outlined";
-    playBtn.setAttribute("aria-label", "Play");
+    playBtn.setAttribute("aria-label","Play");
     playBtn.textContent = "play_arrow";
 
     card.appendChild(img);
     card.appendChild(name);
     card.appendChild(playBtn);
 
-    const favButton = document.createElement("button");
-    favButton.className = "fav-btn material-symbols-outlined";
-    favButton.setAttribute("aria-label","Toggle favorite");
-    favButton.textContent = "favorite_border";
-    favButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleFavorite(it.key);
-    });
-    card.appendChild(favButton);
-
     if (mode === "radio") {
-      const ep = radioEndpoint(it);
+      playBtn.innerHTML = '<span class="material-symbols-outlined label">play_arrow</span><span class="spinner"></span>';
+      playBtn.classList.remove("material-symbols-outlined");
+      playBtn.setAttribute("type","button");
+
+      const favButton = document.createElement("button");
+      favButton.className = "fav-btn material-symbols-outlined";
+      favButton.setAttribute("aria-label","Toggle favorite");
+      favButton.textContent = "favorite_border";
+
       const audio = document.createElement("audio");
+      audio.id = it.ids?.internal_id || it.key;
       audio.preload = "none";
-      if (ep) {
-        audio.src = ep.url;
-        audio.id = it.key;
-      }
-      playBtn.addEventListener("click", (e) => {
+      const ep = radioEndpoint(it);
+      if (ep) audio.src = ep.url;
+      audio.dataset.logo = thumbOf(it);
+
+      favButton.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (!ep) return;
-        selectRadio(audio, it.title || it.key, it.media?.logo_url || defaultLogo);
+        toggleFavorite(audio.id);
       });
+
+      playBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const nameText = it.name;
+        if (playBtn === currentBtn) {
+          stopStation();
+        } else {
+          resetButton(currentBtn);
+          loadStation(audio, nameText, playBtn);
+        }
+      });
+
       card.addEventListener("click", (e) => {
         if (e.target.closest("button")) return;
         playBtn.click();
       });
+
+      card.appendChild(favButton);
       card.appendChild(audio);
     } else {
-      playBtn.addEventListener("click", (e) => { e.stopPropagation(); select(it, true); });
-      card.addEventListener("click", () => select(it, true));
+      const favButton = document.createElement("button");
+      favButton.className = "fav-btn material-symbols-outlined";
+      favButton.setAttribute("aria-label","Toggle favorite");
+      favButton.textContent = "favorite_border";
+
+      favButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleFavorite(it.key);
+      });
+
+      playBtn.addEventListener("click", (e) => { e.stopPropagation(); select(it, /*autoplay*/true); });
+      card.addEventListener("click", () => select(it, /*autoplay*/true));
+
+      card.appendChild(favButton);
     }
 
     return card;
   }
 
-  function updateFavoritesUI() {
-    document.querySelectorAll(".channel-card").forEach(c => {
-      const key = c.dataset.key;
-      const btn = c.querySelector(".fav-btn");
-      if (!btn) return;
-      const on = favorites.includes(key);
-      btn.textContent = on ? "favorite" : "favorite_border";
-      c.classList.toggle("favorite", on);
-    });
+  function renderList(filter="") {
+    // Remove existing cards
+    [...listEl.querySelectorAll(".channel-card")].forEach(n => n.remove());
+
+    favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
+
+    const q = filter.trim().toLowerCase();
+    const list = items.filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)));
+
+    list.forEach(it => listEl.appendChild(makeChannelCard(it)));
+
+    if (mode === "radio") {
+      playerIF.style.display = "none";
+      audioWrap.style.display = "";
+      playButtons = Array.from(listEl.querySelectorAll(".play-btn"));
+      updateFavoritesUI();
+      const deepKey = params.get("c");
+      const initial = deepKey ? listEl.querySelector(`audio[id="${deepKey}"]`) : listEl.querySelector(".channel-card audio");
+      if (initial) {
+        const btn = initial.parentElement.querySelector(".play-btn");
+        const name = initial.closest(".channel-card").querySelector(".channel-name").textContent;
+        resetButton(currentBtn);
+        loadStation(initial, name, btn);
+      } else {
+        stopStation();
+      }
+    } else {
+      audioWrap.style.display = "none";
+      playerIF.style.display = "";
+      updateFavoritesUI();
+      const deepKey = params.get("c");
+      const startItem = deepKey ? list.find(x => x.key === deepKey) : list[0];
+      if (startItem) select(startItem, /*autoplay*/true);
+    }
   }
 
-  function toggleFavorite(key) {
-    const idx = favorites.indexOf(key);
-    if (idx >= 0) favorites.splice(idx, 1);
-    else favorites.push(key);
+  function updateFavoritesUI() {
+    const cards = Array.from(listEl.querySelectorAll('.channel-card'));
+    const favFragment = document.createDocumentFragment();
+    const otherFragment = document.createDocumentFragment();
+
+    cards.forEach(card => {
+      const id = mode === 'radio' ? card.querySelector('audio')?.id : card.dataset.key;
+      if (!id) return;
+      const isFav = favorites.includes(id);
+      card.classList.toggle('favorite', isFav);
+      const btn = card.querySelector('.fav-btn');
+      if (btn) btn.textContent = isFav ? 'favorite' : 'favorite_border';
+      (isFav ? favFragment : otherFragment).appendChild(card);
+    });
+
+    listEl.appendChild(favFragment);
+    listEl.appendChild(otherFragment);
+
+    if (mode === 'radio') {
+      if (currentAudio) {
+        const isFav = favorites.includes(currentAudio.id);
+        favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
+        favBtn.classList.toggle('favorited', isFav);
+        favBtn.disabled = false;
+        playPauseBtn.disabled = false;
+        muteBtn.disabled = false;
+      } else {
+        favBtn.textContent = 'favorite_border';
+        favBtn.classList.remove('favorited');
+        favBtn.disabled = true;
+        playPauseBtn.disabled = true;
+        muteBtn.disabled = true;
+      }
+
+      const hasStations = playButtons.length > 0;
+      prevBtn.disabled = nextBtn.disabled = !hasStations;
+
+      playPauseLabel.textContent = mainPlayer.paused ? 'play_arrow' : 'pause';
+      playPauseBtn.setAttribute('aria-label', mainPlayer.paused ? 'Play' : 'Pause');
+      muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+    }
+  }
+
+  function toggleFavorite(id) {
+    const idx = favorites.indexOf(id);
+    if (idx >= 0) favorites.splice(idx, 1); else favorites.push(id);
     localStorage.setItem(favKeys[mode], JSON.stringify(favorites));
     updateFavoritesUI();
   }
 
-  function renderList(filter="") {
-    if (!listEl) return;
-    // Remove existing cards
-    const existing = listEl.querySelectorAll(".channel-card");
-    existing.forEach(el => el.remove());
+  function resetButton(btn) {
+    if (!btn) return;
+    btn.classList.remove('loading');
+    const label = btn.querySelector('.label');
+    if (label) label.textContent = 'play_arrow';
+    btn.setAttribute('aria-label', 'Play');
+  }
 
-    // Filter by mode
-    let arr = items.filter(i => {
-      if (mode === "tv") return i.category === "tv";
-      if (mode === "freepress") return i.category === "freepress";
-      if (mode === "creator") return i.category === "creator";
-      if (mode === "radio") return i.category === "radio";
-      return false;
-    });
+  function stopStation() {
+    if (!mainPlayer.src) {
+      currentAudio = null;
+      currentBtn = null;
+      pendingBtn = null;
+      updateFavoritesUI();
+      return;
+    }
+    mainPlayer.pause();
+    mainPlayer.removeAttribute('src');
+    mainPlayer.load();
+    currentLabel.textContent = 'Select a station';
+    stationLogo.src = defaultLogo;
+    stationLogo.hidden = false;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    resetButton(currentBtn);
+    currentBtn = null;
+    pendingBtn = null;
+    currentAudio = null;
+    document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+    params.delete('c');
+    history.replaceState(null, '', '?' + params.toString());
+    updateFavoritesUI();
+  }
 
-    // Search
-    const q = (filter || "").toLowerCase().trim();
-    if (q) arr = arr.filter(i => (i.title||"").toLowerCase().includes(q) || (i.key||"").toLowerCase().includes(q));
+  function loadStation(audio, name, btn) {
+    if (resumeHandler) {
+      document.removeEventListener('click', resumeHandler);
+      document.removeEventListener('touchstart', resumeHandler);
+      resumeHandler = null;
+    }
+    pendingBtn = btn;
+    document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('active'));
+    btn.closest('.channel-card').classList.add('active');
+    btn.classList.add('loading');
+    playPauseBtn.classList.add('loading');
+    stationLogo.onerror = () => {
+      stationLogo.onerror = null;
+      stationLogo.src = defaultLogo;
+    };
+    stationLogo.src = audio.dataset.logo || defaultLogo;
+    stationLogo.hidden = false;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    mainPlayer.src = audio.src;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: name,
+        artwork: [{ src: stationLogo.src }]
+      });
+    }
+    mainPlayer.load();
+    const playPromise = mainPlayer.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        resetButton(btn);
+        playPauseBtn.classList.remove('loading');
+        resumeHandler = () => {
+          btn.classList.add('loading');
+          playPauseBtn.classList.add('loading');
+          const pp = mainPlayer.play();
+          if (pp !== undefined) {
+            pp.catch(() => {
+              resetButton(btn);
+              pendingBtn = null;
+            });
+          }
+          document.removeEventListener('click', resumeHandler);
+          document.removeEventListener('touchstart', resumeHandler);
+          resumeHandler = null;
+        };
+        document.addEventListener('click', resumeHandler, { once: true });
+        document.addEventListener('touchstart', resumeHandler, { once: true });
+      });
+    }
+    currentAudio = audio;
+    currentLabel.textContent = name;
+    params.set('m', 'radio');
+    params.set('c', audio.id);
+    history.replaceState(null, '', '?' + params.toString());
 
-    // Sort favorites first, then by title
-    arr.sort((a,b) => {
-      const af = favorites.includes(a.key) ? 0 : 1;
-      const bf = favorites.includes(b.key) ? 0 : 1;
-      if (af !== bf) return af - bf;
-      return (a.title||"").localeCompare(b.title||"");
-    });
-
-    // Render
-    const frag = document.createDocumentFragment();
-    arr.forEach(it => frag.appendChild(makeChannelCard(it)));
-    listEl.appendChild(frag);
-
-    // Auto-select first item for non-radio if player empty
-    if (mode !== "radio" && playerIF && (playerIF.src === "" || playerIF.src === "about:blank") && arr.length) {
-      select(arr[0], false);
+    if (window.innerWidth <= 768) {
+      const list = document.querySelector('.channel-list');
+      list.classList.remove('open');
+      const label = document.querySelector('#toggle-channels .label');
+      if (label) label.textContent = label.dataset.default || label.textContent;
+      if (typeof updateScrollLock === 'function') updateScrollLock();
     }
     updateFavoritesUI();
   }
 
-  // ---- CORS-safe RSS loader ----
+  function playStation(offset) {
+    const audios = Array.from(listEl.querySelectorAll('.channel-card audio'));
+    if (audios.length === 0) return;
+    const currentId = currentAudio ? currentAudio.id : null;
+    let idx = currentId ? audios.findIndex(a => a.id === currentId) : -1;
+    if (idx === -1) {
+      idx = offset > 0 ? 0 : audios.length - 1;
+    } else {
+      idx = (idx + offset + audios.length) % audios.length;
+    }
+    const audio = audios[idx];
+    const name = audio.closest('.channel-card').querySelector('.channel-name').textContent;
+    const btn = audio.parentElement.querySelector('.play-btn');
+    resetButton(currentBtn);
+    loadStation(audio, name, btn);
+  }
+
+  // Radio control events
+  favBtn.addEventListener('click', () => {
+    if (!currentAudio) return;
+    toggleFavorite(currentAudio.id);
+  });
+
+  prevBtn.addEventListener('click', () => playStation(-1));
+  nextBtn.addEventListener('click', () => playStation(1));
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('previoustrack', () => playStation(-1));
+    navigator.mediaSession.setActionHandler('nexttrack', () => playStation(1));
+  }
+
+  playPauseBtn.addEventListener('click', () => {
+    if (mainPlayer.paused) {
+      const label = currentBtn?.querySelector('.label');
+      if (label) label.textContent = 'stop';
+      currentBtn?.setAttribute('aria-label', 'Stop');
+      playPauseBtn.classList.add('loading');
+      currentBtn?.classList.add('loading');
+      mainPlayer.play();
+    } else {
+      mainPlayer.pause();
+    }
+  });
+
+  muteBtn.addEventListener('click', () => {
+    mainPlayer.muted = !mainPlayer.muted;
+    muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+  });
+
+  shareBtn.addEventListener('click', () => {
+    const shareData = {
+      title: document.title,
+      url: window.location.href
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(err => console.error('Share failed', err));
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareData.url).then(() => {
+        alert('Page URL copied to clipboard');
+      }, () => {
+        window.prompt('Copy this URL', shareData.url);
+      });
+    } else {
+      window.prompt('Copy this URL', shareData.url);
+    }
+  });
+
+  mainPlayer.addEventListener('playing', () => {
+    playPauseLabel.textContent = 'pause';
+    playPauseBtn.classList.remove('loading');
+    playPauseBtn.setAttribute('aria-label', 'Pause');
+    liveBadge.hidden = false;
+    notLiveBadge.hidden = true;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'playing';
+    }
+    if (pendingBtn) {
+      if (currentBtn && currentBtn !== pendingBtn) {
+        resetButton(currentBtn);
+      }
+      pendingBtn.classList.remove('loading');
+      pendingBtn.querySelector('.label').textContent = 'stop';
+      pendingBtn.setAttribute('aria-label', 'Stop');
+      currentBtn = pendingBtn;
+      pendingBtn = null;
+    } else if (currentBtn) {
+      currentBtn.classList.remove('loading');
+      currentBtn.querySelector('.label').textContent = 'stop';
+      currentBtn.setAttribute('aria-label', 'Stop');
+    }
+  });
+
+  mainPlayer.addEventListener('waiting', () => {
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    playPauseBtn.classList.add('loading');
+    const targetBtn = pendingBtn || currentBtn;
+    targetBtn?.classList.add('loading');
+  });
+
+  mainPlayer.addEventListener('pause', () => {
+    if (!mainPlayer.src) return;
+    resetButton(currentBtn);
+    playPauseLabel.textContent = 'play_arrow';
+    playPauseBtn.classList.remove('loading');
+    playPauseBtn.setAttribute('aria-label', 'Play');
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'paused';
+    }
+  });
+
+  mainPlayer.addEventListener('error', () => {
+    resetButton(pendingBtn || currentBtn);
+    playPauseBtn.classList.remove('loading');
+    playPauseLabel.textContent = 'play_arrow';
+    playPauseBtn.setAttribute('aria-label', 'Play');
+    currentBtn = null;
+    pendingBtn = null;
+    currentAudio = null;
+    liveBadge.hidden = true;
+    notLiveBadge.hidden = false;
+    stationLogo.src = defaultLogo;
+    updateFavoritesUI();
+  });
+
   async function renderLatestVideosRSS(channelId) {
-    if (!videoList) return;
     videoList.innerHTML = "";
     if (!channelId) return;
     try {
@@ -214,13 +458,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!resp.ok) throw new Error("Bad status");
         xml = await resp.text();
       } catch (_) {
-        try {
-          const proxyFeed = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
-          xml = await fetch(proxyFeed).then(r => r.text());
-        } catch {
-          const proxy2 = `https://r.jina.ai/http://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-          xml = await fetch(proxy2).then(r => r.text());
-        }
+        const proxyFeed = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
+        xml = await fetch(proxyFeed).then(r => r.text());
       }
       const doc = new DOMParser().parseFromString(xml, "text/xml");
       const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
@@ -246,24 +485,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         row.appendChild(img);
         row.appendChild(meta);
         row.addEventListener("click", () => {
-          if (playerIF) {
-            playerIF.style.display = "";
-            playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
-          }
-          if (audioWrap) audioWrap.style.display = "none";
-          if (details && toggleDetailsBtn) {
-            if (details.innerHTML.trim().length) toggleDetailsBtn.style.display = "";
-          }
+          playerIF.style.display = "";
+          audioWrap.style.display = "none";
+          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+          // lock details button visible
+          if (details.innerHTML.trim().length) toggleDetailsBtn.style.display = "";
         });
 
         videoList.appendChild(row);
       });
-    } catch {
-      // keep list empty silently
+    } catch (e) {
+      // If RSS fails (rare), keep list empty silently
     }
   }
 
-  // ---- Selection for TV/FreePress/Creator ----
   function select(item, autoplay=false) {
     // Highlight
     document.querySelectorAll(".channel-card").forEach(c => c.classList.toggle("active", c.dataset.key === item.key));
@@ -274,12 +509,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     history.replaceState(null, "", "?" + params.toString());
 
     // Reset
-    if (videoList) videoList.innerHTML = "";
-    if (details) details.innerHTML = "";
-    if (playerIF) playerIF.style.display = "";
-    if (audioWrap) audioWrap.style.display = "none";
+    videoList.innerHTML = "";
+    details.innerHTML = "";
+    playerIF.style.display = "";
+    audioWrap.style.display = "none";
 
-    // Prefer explicit YouTube embed; else uploads playlist; else live
+    // YouTube embed preference: explicit embed > uploads playlist > live
     const emb = ytEmbed(item);
     let src = "";
     if (emb) {
@@ -290,123 +525,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0`
         : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0`;
     }
-    if (playerIF) playerIF.src = src || "about:blank";
+    playerIF.src = src || "about:blank";
+    // Latest videos below via RSS:
+    renderLatestVideosRSS(item.ids?.youtube_channel_id || null);
 
-    // Latest videos under player
-    if (item.ids?.youtube_channel_id) {
-      renderLatestVideosRSS(item.ids.youtube_channel_id);
-    }
-
-    // Details
-    if (details) {
-      if (item.details_html) {
-        details.innerHTML = item.details_html;
-        details.style.display = "";
-        if (toggleDetailsBtn) toggleDetailsBtn.style.display = "";
-      } else {
-        details.innerHTML = "";
-        details.style.display = "none";
-        if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
-      }
-    }
-
-    updateActiveUI();
-  }
-
-  // ---- Radio selection ----
-  function selectRadio(audio, name, logoUrl) {
-    if (!audio) return;
-
-    if (currentAudio && currentAudio !== audio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-
-    if (playerIF) playerIF.style.display = "none";
-    if (audioWrap) audioWrap.style.display = "";
-
-    const stationLogo = document.getElementById("station-logo");
-    const liveBadge = document.getElementById("live-badge");
-    const notLiveBadge = document.getElementById("not-live-badge");
-
-    if (stationLogo) stationLogo.src = logoUrl || defaultLogo;
-    if (liveBadge) liveBadge.hidden = false;
-    if (notLiveBadge) notLiveBadge.hidden = true;
-
-    audio.play().catch(() => {
-      // mobile autoplay gate
-      resumeHandler = () => { audio.play().catch(()=>{}); };
-      document.addEventListener('touchstart', resumeHandler, { once: true });
-    });
-
-    currentAudio = audio;
-    if (currentLabel) currentLabel.textContent = name;
-
-    params.set('m', 'radio');
-    params.set('c', audio.id);
-    history.replaceState(null, '', '?' + params.toString());
-
-    // Close left menu on mobile if your code supports it
-    if (window.innerWidth <= 768) {
-      const list = document.querySelector('.channel-list');
-      if (list) list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
-      if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
-    }
-    updateFavoritesUI();
-    updateActiveUI();
-  }
-
-  function playStation(offset) {
-    const audios = Array.from(listEl.querySelectorAll('.channel-card audio'));
-    if (audios.length === 0) return;
-    const currentId = currentAudio ? currentAudio.id : null;
-    let idx = currentId ? audios.findIndex(a => a.id === currentId) : -1;
-    if (idx === -1) {
-      idx = offset > 0 ? 0 : audios.length - 1;
+    // About panel
+    if (item.aboutHtml) {
+      details.innerHTML = item.aboutHtml;
+      details.style.display = "";
+      toggleDetailsBtn.style.display = "";
     } else {
-      idx = (idx + offset + audios.length) % audios.length;
+      details.innerHTML = "";
+      details.style.display = "none";
+      toggleDetailsBtn.style.display = "none";
     }
-    const audio = audios[idx];
-    const card = audio.closest('.channel-card');
-    const key = card?.dataset.key;
-    const item = items.find(i => i.key === key);
-    if (!item) return;
-    selectRadio(audio, item.title || item.key, item.media?.logo_url || defaultLogo);
+
+    // Ensure rails swipe behavior & screen lock rely on your existing scripts
+    // (leftmenu.js/main.js handle open/close, body locking and tap outside)
   }
 
-  // ---- Radio UI buttons ----
-  if (playPauseBtn) {
-    playPauseBtn.addEventListener("click", () => {
-      if (!currentAudio) return;
-      if (currentAudio.paused) currentAudio.play().catch(()=>{});
-      else currentAudio.pause();
-    });
-  }
-  if (prevBtn) prevBtn.addEventListener("click", () => playStation(-1));
-  if (nextBtn) nextBtn.addEventListener("click", () => playStation(1));
-  if (muteBtn) muteBtn.addEventListener("click", () => {
-    if (!currentAudio) return;
-    currentAudio.muted = !currentAudio.muted;
-  });
-  if (shareBtn) shareBtn.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(location.href);
-      shareBtn.textContent = "check";
-      setTimeout(() => shareBtn.textContent = "share", 1200);
-    } catch {}
-  });
-
-  // ---- Tabs + Search ----
+  // Tabs + Search
   tabs.forEach(t => t.addEventListener("click", () => {
     mode = t.dataset.mode;
-    updateActiveUI();
-    renderList(searchEl ? (searchEl.value || "") : "");
+    setActiveTab();
+    renderList(searchEl.value || "");
   }));
-  if (searchEl) searchEl.addEventListener("input", e => renderList(e.target.value));
+  searchEl.addEventListener("input", e => renderList(e.target.value));
 
-  // ---- Init ----
-  updateActiveUI();
-  renderList(searchEl ? (searchEl.value || "") : "");
+  // Init
+  setActiveTab();
+  renderList(searchEl.value || "");
 });
