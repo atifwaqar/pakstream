@@ -49,14 +49,16 @@
     <section>
       <h3>Find Channel ID</h3>
       <p>Enter channel handle(s) separated by commas to get their channel IDs.</p>
-      <input type="text" id="channel-handles" placeholder="e.g. @ImranRiazKhan,@ARYNews" style="width:100%;max-width:400px;">
+        <label for="channel-handles">Channel handles</label>
+      <input type="text" id="channel-handles" name="channel-handles" placeholder="e.g. @ImranRiazKhan,@ARYNews" style="width:100%;max-width:400px;">
       <button id="fetch-channel-id">Get Channel ID</button>
       <button id="copy-channel-id-output" aria-label="Copy results" style="display:none;"><span class="material-symbols-outlined">content_copy</span></button>
       <pre id="channel-id-output" style="white-space:pre-wrap;"></pre>
     </section>
     <section>
       <p>Enter a YouTube channel ID to list its current live streams.</p>
-      <input type="text" id="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
+        <label for="channel-id">Channel ID</label>
+        <input type="text" id="channel-id" name="channel-id" placeholder="e.g. AbbTakkLiveStreaming" style="width:100%;max-width:400px;">
       <button id="fetch-streams">Fetch Live Streams</button>
       <ul id="stream-list"></ul>
       <pre id="json-output" style="white-space:pre-wrap;"></pre>
