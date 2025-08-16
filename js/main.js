@@ -50,11 +50,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var searchForm = document.createElement('form');
     searchForm.id = 'search-form';
     searchForm.className = 'search-form';
+    searchForm.setAttribute('autocomplete', 'off');
     var input = document.createElement('input');
     input.type = 'search';
     input.id = 'search-input';
     input.placeholder = 'Search...';
     input.setAttribute('aria-label', 'Search');
+    input.setAttribute('autocomplete', 'off');
     searchForm.appendChild(input);
 
     input.addEventListener('focus', function () {
