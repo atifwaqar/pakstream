@@ -265,10 +265,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       arr = arr.filter(i => i.category === "radio" || i.type === "radio" || /radio/i.test(i.platform || ""));
     } else if (m === "tv") {
       arr = arr.filter(i =>
-        i.category === "tv" ||
+        i.type === "livetv" ||
         i.type === "tv" ||
-        i.ids?.youtube_channel_id ||
-        (i.endpoints||[]).some(e => e.provider === "youtube")
+        i.category === "tv"
       );
     } else if (m === "freepress") {
       arr = arr.filter(i =>
