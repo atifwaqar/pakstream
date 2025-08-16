@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nextBtn = document.getElementById("next-btn");
   const muteBtn = document.getElementById("mute-btn");
   const shareBtn = document.getElementById("share-btn");
-  const favorites = JSON.parse(localStorage.getItem("radioFavorites") || "[]");
+  const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
+  let favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
   const defaultLogo = "/images/default_radio.png";
 
   let playButtons = [];
@@ -92,11 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       favButton.addEventListener("click", (e) => {
         e.stopPropagation();
-        const id = audio.id;
-        const idx = favorites.indexOf(id);
-        if (idx >= 0) favorites.splice(idx,1); else favorites.push(id);
-        localStorage.setItem("radioFavorites", JSON.stringify(favorites));
-        updateFavoritesUI();
+        toggleFavorite(audio.id);
       });
 
       playBtn.addEventListener("click", (e) => {
@@ -118,8 +115,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.appendChild(favButton);
       card.appendChild(audio);
     } else {
+      const favButton = document.createElement("button");
+      favButton.className = "fav-btn material-symbols-outlined";
+      favButton.setAttribute("aria-label","Toggle favorite");
+      favButton.textContent = "favorite_border";
+
+      favButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleFavorite(it.key);
+      });
+
       playBtn.addEventListener("click", (e) => { e.stopPropagation(); select(it, /*autoplay*/true); });
       card.addEventListener("click", () => select(it, /*autoplay*/true));
+
+      card.appendChild(favButton);
     }
 
     return card;
@@ -129,10 +138,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Remove existing cards
     [...listEl.querySelectorAll(".channel-card")].forEach(n => n.remove());
 
+    favorites = JSON.parse(localStorage.getItem(favKeys[mode]) || "[]");
+
     const q = filter.trim().toLowerCase();
     const list = items.filter(i => i.type === mode && (!q || i.name.toLowerCase().includes(q)));
 
-  list.forEach(it => listEl.appendChild(makeChannelCard(it)));
+    list.forEach(it => listEl.appendChild(makeChannelCard(it)));
 
     if (mode === "radio") {
       playerIF.style.display = "none";
@@ -152,6 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       audioWrap.style.display = "none";
       playerIF.style.display = "";
+      updateFavoritesUI();
       const deepKey = params.get("c");
       const startItem = deepKey ? list.find(x => x.key === deepKey) : list[0];
       if (startItem) select(startItem, /*autoplay*/true);
@@ -164,8 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const otherFragment = document.createDocumentFragment();
 
     cards.forEach(card => {
-      const audio = card.querySelector('audio');
-      const id = audio?.id;
+      const id = mode === 'radio' ? card.querySelector('audio')?.id : card.dataset.key;
       if (!id) return;
       const isFav = favorites.includes(id);
       card.classList.toggle('favorite', isFav);
@@ -177,27 +188,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     listEl.appendChild(favFragment);
     listEl.appendChild(otherFragment);
 
-    if (currentAudio) {
-      const isFav = favorites.includes(currentAudio.id);
-      favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
-      favBtn.classList.toggle('favorited', isFav);
-      favBtn.disabled = false;
-      playPauseBtn.disabled = false;
-      muteBtn.disabled = false;
-    } else {
-      favBtn.textContent = 'favorite_border';
-      favBtn.classList.remove('favorited');
-      favBtn.disabled = true;
-      playPauseBtn.disabled = true;
-      muteBtn.disabled = true;
+    if (mode === 'radio') {
+      if (currentAudio) {
+        const isFav = favorites.includes(currentAudio.id);
+        favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
+        favBtn.classList.toggle('favorited', isFav);
+        favBtn.disabled = false;
+        playPauseBtn.disabled = false;
+        muteBtn.disabled = false;
+      } else {
+        favBtn.textContent = 'favorite_border';
+        favBtn.classList.remove('favorited');
+        favBtn.disabled = true;
+        playPauseBtn.disabled = true;
+        muteBtn.disabled = true;
+      }
+
+      const hasStations = playButtons.length > 0;
+      prevBtn.disabled = nextBtn.disabled = !hasStations;
+
+      playPauseLabel.textContent = mainPlayer.paused ? 'play_arrow' : 'pause';
+      playPauseBtn.setAttribute('aria-label', mainPlayer.paused ? 'Play' : 'Pause');
+      muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
     }
+  }
 
-    const hasStations = playButtons.length > 0;
-    prevBtn.disabled = nextBtn.disabled = !hasStations;
-
-    playPauseLabel.textContent = mainPlayer.paused ? 'play_arrow' : 'pause';
-    playPauseBtn.setAttribute('aria-label', mainPlayer.paused ? 'Play' : 'Pause');
-    muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+  function toggleFavorite(id) {
+    const idx = favorites.indexOf(id);
+    if (idx >= 0) favorites.splice(idx, 1); else favorites.push(id);
+    localStorage.setItem(favKeys[mode], JSON.stringify(favorites));
+    updateFavoritesUI();
   }
 
   function resetButton(btn) {
@@ -320,11 +340,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Radio control events
   favBtn.addEventListener('click', () => {
     if (!currentAudio) return;
-    const id = currentAudio.id;
-    const idx = favorites.indexOf(id);
-    if (idx >= 0) favorites.splice(idx, 1); else favorites.push(id);
-    localStorage.setItem('radioFavorites', JSON.stringify(favorites));
-    updateFavoritesUI();
+    toggleFavorite(currentAudio.id);
   });
 
   prevBtn.addEventListener('click', () => playStation(-1));
