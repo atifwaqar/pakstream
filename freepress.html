@@ -497,7 +497,7 @@
   // ----- Bootstrapping -----
     fetch('/all_streams.json')
       .then(res => res.json())
-      .then(data => {
+      .then(async data => {
         const channels = (data.items || [])
           .filter(item => item.type === 'freepress')
           .map(item => ({
@@ -516,58 +516,67 @@
           detailsMap[ch.key] = ch.about || '';
           profilesMap[ch.key] = ch.profiles || [];
 
-        const card = document.createElement('div');
-        card.className = 'channel-card';
-        card.dataset.channelId = ch.id;
+          const card = document.createElement('div');
+          card.className = 'channel-card';
+          card.dataset.channelId = ch.id;
 
-        const img = document.createElement('img');
-        img.className = 'channel-thumb';
-        img.alt = `${ch.name} thumbnail`;
-        getChannelThumbnail(ch.id, ch['thumbnail-url']).then(url => { img.src = url || '/assets/avatar-fallback.png'; });
+          const img = document.createElement('img');
+          img.className = 'channel-thumb';
+          img.alt = `${ch.name} thumbnail`;
+          getChannelThumbnail(ch.id, ch['thumbnail-url']).then(url => { img.src = url || '/assets/avatar-fallback.png'; });
 
-        const span = document.createElement('span');
-        span.className = 'channel-name';
-        span.textContent = ch.name;
+          const span = document.createElement('span');
+          span.className = 'channel-name';
+          span.textContent = ch.name;
 
-        const playBtn = document.createElement('button');
-        playBtn.className = 'play-btn material-symbols-outlined';
-        playBtn.setAttribute('aria-label', 'Play');
-        playBtn.textContent = 'play_arrow';
-        playBtn.addEventListener('click', (e) => { e.stopPropagation(); handleChannelClick(card); });
+          const playBtn = document.createElement('button');
+          playBtn.className = 'play-btn material-symbols-outlined';
+          playBtn.setAttribute('aria-label', 'Play');
+          playBtn.textContent = 'play_arrow';
+          playBtn.addEventListener('click', (e) => { e.stopPropagation(); handleChannelClick(card); });
 
-        const btn = document.createElement('button');
-        btn.className = 'fav-btn material-symbols-outlined';
-        btn.setAttribute('aria-label', 'Toggle favorite');
-        btn.textContent = 'favorite_border';
-        btn.addEventListener('click', toggleFavorite);
+          const btn = document.createElement('button');
+          btn.className = 'fav-btn material-symbols-outlined';
+          btn.setAttribute('aria-label', 'Toggle favorite');
+          btn.textContent = 'favorite_border';
+          btn.addEventListener('click', toggleFavorite);
 
-        card.appendChild(img);
-        card.appendChild(span);
-        card.appendChild(playBtn);
-        card.appendChild(btn);
-        list.appendChild(card);
-      });
+          card.appendChild(img);
+          card.appendChild(span);
+          card.appendChild(playBtn);
+          card.appendChild(btn);
+          list.appendChild(card);
+        });
 
-      document.querySelectorAll('.channel-name').forEach(el => fitText(el));
-      updateFavoritesUI();
+        document.querySelectorAll('.channel-name').forEach(el => fitText(el));
+        updateFavoritesUI();
 
-      cards = document.querySelectorAll('.channel-card');
-      cards.forEach(card => card.addEventListener('click', () => handleChannelClick(card)));
+        cards = document.querySelectorAll('.channel-card');
+        cards.forEach(card => card.addEventListener('click', () => handleChannelClick(card)));
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const anchorKey = urlParams.get('newsanchor');
-      const defaultCard = document.querySelector('.channel-card');
+        // Fallback: load detailed info if missing in unified source
+        try {
+          const legacy = await fetch('/freepress_channels.json').then(r => r.json());
+          (legacy.channels || []).forEach(ch => {
+            if (!detailsMap[ch.key]) detailsMap[ch.key] = ch.about || '';
+            if (!profilesMap[ch.key]) profilesMap[ch.key] = ch.profiles || [];
+          });
+        } catch (_) {}
 
-      if (anchorKey && anchorMap[anchorKey]) {
-        const targetId = anchorMap[anchorKey];
-        const matchedCard = document.querySelector(`.channel-card[data-channel-id="${targetId}"]`);
-        if (matchedCard) {
-          handleChannelClick(matchedCard);
-          return;
+        const urlParams = new URLSearchParams(window.location.search);
+        const anchorKey = urlParams.get('newsanchor');
+        const defaultCard = document.querySelector('.channel-card');
+
+        if (anchorKey && anchorMap[anchorKey]) {
+          const targetId = anchorMap[anchorKey];
+          const matchedCard = document.querySelector(`.channel-card[data-channel-id="${targetId}"]`);
+          if (matchedCard) {
+            handleChannelClick(matchedCard);
+            return;
+          }
         }
-      }
-      if (defaultCard) handleChannelClick(defaultCard);
-    });
+        if (defaultCard) handleChannelClick(defaultCard);
+      });
 </script>
 
   <script src="/js/leftmenu.js"></script>
