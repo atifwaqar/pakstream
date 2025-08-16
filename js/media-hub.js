@@ -80,9 +80,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       playBtn.setAttribute("type","button");
 
       const favButton = document.createElement("button");
-      favButton.className = "fav-btn material-symbols-outlined";
+      favButton.className = "fav-btn";
       favButton.setAttribute("aria-label","Toggle favorite");
-      favButton.textContent = "favorite_border";
+      const favIcon = document.createElement("span");
+      favIcon.className = "material-symbols-outlined";
+      favIcon.textContent = "favorite_border";
+      favButton.appendChild(favIcon);
 
       const audio = document.createElement("audio");
       audio.id = it.ids?.internal_id || it.key;
@@ -116,9 +119,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.appendChild(audio);
     } else {
       const favButton = document.createElement("button");
-      favButton.className = "fav-btn material-symbols-outlined";
+      favButton.className = "fav-btn";
       favButton.setAttribute("aria-label","Toggle favorite");
-      favButton.textContent = "favorite_border";
+      const favIcon = document.createElement("span");
+      favIcon.className = "material-symbols-outlined";
+      favIcon.textContent = "favorite_border";
+      favButton.appendChild(favIcon);
 
       favButton.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -181,7 +187,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isFav = favorites.includes(id);
       card.classList.toggle('favorite', isFav);
       const btn = card.querySelector('.fav-btn');
-      if (btn) btn.textContent = isFav ? 'favorite' : 'favorite_border';
+      if (btn) {
+        const icon = btn.querySelector('.material-symbols-outlined') || btn;
+        icon.textContent = isFav ? 'favorite' : 'favorite_border';
+      }
       (isFav ? favFragment : otherFragment).appendChild(card);
     });
 
@@ -191,13 +200,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (mode === 'radio') {
       if (currentAudio) {
         const isFav = favorites.includes(currentAudio.id);
-        favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
+        const favIconEl = favBtn.querySelector('.material-symbols-outlined') || favBtn;
+        favIconEl.textContent = isFav ? 'favorite' : 'favorite_border';
         favBtn.classList.toggle('favorited', isFav);
         favBtn.disabled = false;
         playPauseBtn.disabled = false;
         muteBtn.disabled = false;
       } else {
-        favBtn.textContent = 'favorite_border';
+        const favIconEl = favBtn.querySelector('.material-symbols-outlined') || favBtn;
+        favIconEl.textContent = 'favorite_border';
         favBtn.classList.remove('favorited');
         favBtn.disabled = true;
         playPauseBtn.disabled = true;
