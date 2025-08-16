@@ -442,12 +442,21 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('touchstart', resumeHandler, { once: true });
       });
     }
-    currentAudio = audio;
-    currentLabel.textContent = name;
-    const newUrl = `${window.location.pathname}?station=${audio.id}`;
-    history.replaceState(null, '', newUrl);
-    updateFavoritesUI();
-  }
+      currentAudio = audio;
+      currentLabel.textContent = name;
+      const newUrl = `${window.location.pathname}?station=${audio.id}`;
+      history.replaceState(null, '', newUrl);
+
+      if (window.innerWidth <= 768) {
+        const list = document.querySelector('.channel-list');
+        list.classList.remove('open');
+        const btn = document.getElementById('toggle-channels');
+        if (btn) btn.textContent = 'Stations';
+        if (typeof updateScrollLock === 'function') updateScrollLock();
+      }
+
+      updateFavoritesUI();
+    }
 
   fetch('/radio_channels.json')
     .then(res => res.json())
