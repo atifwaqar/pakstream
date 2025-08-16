@@ -52,20 +52,24 @@
     });
 
     let touchStartX = null;
+    let touchFromModeTabs = false;
     channelList.addEventListener('touchstart', e => {
       if (!channelList.classList.contains('open')) return;
       touchStartX = e.touches[0].clientX;
+      // If the gesture started inside the horizontal mode tabs, ignore it for closing
+      touchFromModeTabs = e.target.closest('.mode-tabs') !== null;
     });
     channelList.addEventListener('touchend', e => {
       if (touchStartX === null) return;
       const touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 50) {
+      if (!touchFromModeTabs && touchStartX - touchEndX > 50) {
         channelList.classList.remove('open');
         const label = channelToggleBtn?.querySelector('.label');
         if (label) label.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       touchStartX = null;
+      touchFromModeTabs = false;
     });
 
     let openStartX = null;
