@@ -696,7 +696,17 @@ async function renderLatestVideosRSS(channelId) {
     updateActiveUI();
     renderList(searchEl ? (searchEl.value || "") : "");
   }));
-  if (searchEl) searchEl.addEventListener("input", e => renderList(e.target.value));
+  if (searchEl) {
+    searchEl.addEventListener("input", e => renderList(e.target.value));
+    searchEl.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        renderList(searchEl.value);
+        const firstCard = listEl.querySelector('.channel-card');
+        if (firstCard) firstCard.click();
+      }
+    });
+  }
 
   // ===== Init =====
   // If current mode has no items, switch to first available
