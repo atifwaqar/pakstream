@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var label = document.querySelector('.nav-toggle-label');
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');
+  var overlay = document.querySelector('.nav-overlay');
   if (!navToggle || !nav || !label) return;
   var touchStartX = null;
   var touchStartY = null;
@@ -11,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateScrollLock() {
     var navOpen = navToggle && navToggle.checked;
     var sideOpen = document.querySelector('.channel-list.open, .details-list.open');
-    document.body.classList.toggle('no-scroll', navOpen || !!sideOpen);
+    var anyOpen = navOpen || !!sideOpen;
+    document.body.classList.toggle('no-scroll', anyOpen);
+    if (overlay) overlay.classList.toggle('active', anyOpen);
   }
   window.updateScrollLock = updateScrollLock;
 
@@ -131,6 +134,14 @@ document.addEventListener('DOMContentLoaded', function () {
       updateScrollLock();
     }
   });
+
+  if (overlay) {
+    overlay.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (navToggle) navToggle.checked = false;
+      updateScrollLock();
+    });
+  }
 
   document.addEventListener('touchstart', function (e) {
     if (!navToggle.checked) return;
