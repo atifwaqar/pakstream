@@ -553,8 +553,8 @@ section {
   .youtube-section .channel-list.collapsed .channel-card {
     padding: 8px;
     justify-content: center;
-    width: var(--collapsed-size, 56px);
-    height: var(--collapsed-size, 56px);
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     box-sizing: border-box;
   }
