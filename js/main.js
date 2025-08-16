@@ -113,6 +113,18 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
+    searchForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = input.value.trim().toLowerCase();
+      if (!q) return;
+      loadData().then(function () {
+        var matches = searchData.filter(item => item.name.toLowerCase().includes(q));
+        if (matches.length > 0) {
+          window.location.href = matches[0].link;
+        }
+      });
+    });
+
     document.addEventListener('click', function (e) {
       if (!searchForm.contains(e.target)) {
         results.innerHTML = '';
