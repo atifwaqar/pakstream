@@ -24,6 +24,10 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
 /* Top app bar */
 .top-bar {
   background: var(--primary);
