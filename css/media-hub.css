@@ -8,7 +8,7 @@
   padding: 8px 8px 10px;
   border-bottom: 1px solid var(--outline);
 }
-.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+.mode-tabs { display:none; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
 .tab-btn {
   padding:8px 12px;
   border:1px solid var(--surface-variant);
