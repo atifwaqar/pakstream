@@ -85,7 +85,9 @@
 
   <!-- Free Press section with channel list and video player -->
   <section class="youtube-section">
-    <div class="channel-list"></div>
+    <div class="channel-list">
+      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelCollapse()" aria-label="Collapse channel list">chevron_left</button>
+    </div>
     <!-- Video display area: a player for the selected video and a list of recent videos -->
     <div class="video-section">
       <div class="button-row">
@@ -97,7 +99,10 @@
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
-    <div class="details-list" style="display: none;"></div>
+    <div class="details-container">
+      <button class="collapse-btn collapse-right material-symbols-outlined" onclick="toggleDetailsCollapse()" aria-label="Collapse details list">chevron_right</button>
+      <div class="details-list" style="display: none;"></div>
+    </div>
   </section>
 
   <!-- Placeholder for advertising or extra content -->
@@ -549,6 +554,20 @@
     }
     detailsOpenStartX = null;
   });
+
+  function toggleChannelCollapse() {
+    const list = document.querySelector('.channel-list');
+    const btn = document.querySelector('.collapse-left');
+    list.classList.toggle('collapsed');
+    btn.textContent = list.classList.contains('collapsed') ? 'chevron_right' : 'chevron_left';
+  }
+
+  function toggleDetailsCollapse() {
+    const container = document.querySelector('.details-container');
+    const btn = document.querySelector('.collapse-right');
+    container.classList.toggle('collapsed');
+    btn.textContent = container.classList.contains('collapsed') ? 'chevron_left' : 'chevron_right';
+  }
 </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
