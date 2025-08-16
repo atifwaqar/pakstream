@@ -294,14 +294,19 @@ section {
 }
 
 .youtube-section .channel-list,
-.youtube-section .details-list {
+.youtube-section .details-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 220px;
 }
-.youtube-section .details-list {
+.youtube-section .details-container {
   width: 300px;
+}
+.youtube-section .details-container .details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .youtube-section .button-row {
@@ -451,6 +456,9 @@ section {
     padding: 16px;
     gap: 8px;
   }
+  .youtube-section .details-container {
+    width: auto;
+  }
   .youtube-section .details-list {
     position: fixed;
     top: 56px;
@@ -489,6 +497,24 @@ section {
   }
 }
 
+/* Collapse buttons */
+.collapse-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 20px;
+  align-self: flex-end;
+}
+.channel-list .collapse-left {
+  align-self: flex-start;
+}
+@media (max-width: 768px) {
+  .collapse-btn {
+    display: none;
+  }
+}
+
 @media (min-width: 769px) {
   .youtube-section .channel-toggle,
   .youtube-section .details-toggle {
@@ -497,12 +523,38 @@ section {
   .youtube-section .button-row {
     display: none;
   }
-  .youtube-section .channel-list,
-  .youtube-section .details-list {
+  .youtube-section .channel-list {
     position: sticky;
     top: 72px;
     max-height: calc(100vh - 88px);
     overflow-y: auto;
+  }
+  .youtube-section .details-container {
+    position: sticky;
+    top: 72px;
+    max-height: calc(100vh - 88px);
+  }
+  .youtube-section .details-container .details-list {
+    overflow-y: auto;
+    flex: 1;
+  }
+  .youtube-section .channel-list.collapsed {
+    width: 72px;
+  }
+  .youtube-section .channel-list.collapsed .channel-card {
+    padding: 8px;
+    justify-content: center;
+  }
+  .youtube-section .channel-list.collapsed .channel-name,
+  .youtube-section .channel-list.collapsed .play-btn,
+  .youtube-section .channel-list.collapsed .fav-btn {
+    display: none;
+  }
+  .youtube-section .details-container.collapsed {
+    width: 24px;
+  }
+  .youtube-section .details-container.collapsed .details-list {
+    display: none;
   }
 }
 

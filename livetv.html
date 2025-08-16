@@ -85,7 +85,9 @@
 
   <!-- TV Livestream section -->
   <section class="youtube-section">
-    <div class="channel-list"></div>
+    <div class="channel-list">
+      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelCollapse()" aria-label="Collapse channel list">chevron_left</button>
+    </div>
     <div class="video-section">
       <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()">Channels</button>
     </div>
@@ -493,6 +495,13 @@
       }
       openStartX = null;
     });
+
+    function toggleChannelCollapse() {
+      const list = document.querySelector('.channel-list');
+      const btn = document.querySelector('.collapse-left');
+      list.classList.toggle('collapsed');
+      btn.textContent = list.classList.contains('collapsed') ? 'chevron_right' : 'chevron_left';
+    }
   </script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
