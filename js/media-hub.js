@@ -168,6 +168,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!listEl) return;
     const cards = Array.from(listEl.querySelectorAll('.channel-card'));
 
+    if (muteBtn) {
+      muteBtn.textContent = mainPlayer && mainPlayer.muted ? 'volume_off' : 'volume_up';
+    }
+
     if (mode === 'favorites') {
       const activeFavFrag = document.createDocumentFragment();
       const inactiveFavFrag = document.createDocumentFragment();
@@ -193,6 +197,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
         favBtn.classList.toggle('favorited', isFav);
         favBtn.disabled = false;
+        if (muteBtn) muteBtn.disabled = false;
+      } else if (muteBtn) {
+        muteBtn.disabled = true;
       }
       if (playPauseBtn) playPauseBtn.disabled = false;
       const hasStations = listEl.querySelectorAll('.channel-card audio').length > 0;
@@ -231,8 +238,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
         favBtn.classList.toggle('favorited', isFav);
         favBtn.disabled = false;
+        if (muteBtn) muteBtn.disabled = false;
+      } else if (muteBtn) {
+        muteBtn.disabled = true;
       }
       if (playPauseBtn) playPauseBtn.disabled = false;
+    } else if (muteBtn) {
+      muteBtn.disabled = true;
     }
     const hasStations = listEl.querySelectorAll('.channel-card audio').length > 0;
     if (prevBtn && nextBtn) prevBtn.disabled = nextBtn.disabled = !hasStations;
@@ -640,7 +652,11 @@ async function renderLatestVideosRSS(channelId) {
   }
   if (prevBtn) prevBtn.addEventListener("click", () => stepStation(-1));
   if (nextBtn) nextBtn.addEventListener("click", () => stepStation(1));
-  if (muteBtn) muteBtn.addEventListener("click", () => { if (mainPlayer) mainPlayer.muted = !mainPlayer.muted; });
+  if (muteBtn) muteBtn.addEventListener("click", () => {
+    if (!mainPlayer) return;
+    mainPlayer.muted = !mainPlayer.muted;
+    muteBtn.textContent = mainPlayer.muted ? 'volume_off' : 'volume_up';
+  });
   if (shareBtn) shareBtn.addEventListener("click", async () => {
     const shareData = {
       title: 'PakStream Radio',
