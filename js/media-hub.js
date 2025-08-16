@@ -428,6 +428,16 @@ async function renderLatestVideosRSS(channelId) {
     if (playerIF) playerIF.style.display = "";
     if (audioWrap) audioWrap.style.display = "none";
 
+    // stop any radio that might be playing
+    if (mainPlayer) {
+      mainPlayer.pause();
+      mainPlayer.currentTime = 0;
+      mainPlayer.src = "";
+    }
+    if (currentAudio) currentAudio = null;
+    if (pendingBtn) { const b = pendingBtn; pendingBtn = null; resetButton(b); }
+    if (currentBtn) { const b = currentBtn; currentBtn = null; resetButton(b); }
+
     const emb = ytEmbed(item);
     let src = "";
     if (emb) {
@@ -477,7 +487,10 @@ async function renderLatestVideosRSS(channelId) {
       currentAudio.currentTime = 0;
     }
 
-    if (playerIF) playerIF.style.display = "none";
+    if (playerIF) {
+      playerIF.src = "about:blank";
+      playerIF.style.display = "none";
+    }
     if (audioWrap) audioWrap.style.display = "";
 
     if (stationLogo) stationLogo.src = logoUrl || defaultLogo;
