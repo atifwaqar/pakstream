@@ -130,21 +130,20 @@
     let detailsMap = {};
     let profilesMap = {};
     const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
+    const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
     const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
-    
     function getChannelThumbnail(id) {
       const cacheKey = `yt_thumb_${id}`;
       const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
       if (cached && (Date.now() - cached.timestamp) < ONE_YEAR_MS) {
         return Promise.resolve(cached.url);
       }
-      const url = `https://r.jina.ai/https://www.youtube.com/channel/${id}`;
+      const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${id}&fields=items(snippet/thumbnails/default/url)&key=${API_KEY}`;
       return fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const match = html.match(/<meta property="og:image" content="([^"]+)"/);
-          const thumb = match ? match[1] : '';
+        .then(res => res.json())
+        .then(data => {
+          const thumb = data.items?.[0]?.snippet?.thumbnails?.default?.url || '';
           if (thumb) {
             localStorage.setItem(cacheKey, JSON.stringify({ url: thumb, timestamp: Date.now() }));
           }
@@ -268,24 +267,18 @@
     return resp.json();
   }
 
-  
   async function fetchLatestVideos(channelId) {
-    const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const resp = await fetch(feedUrl);
-    if (!resp.ok) throw new Error('Failed to load videos');
-    const text = await resp.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'application/xml');
-    const entries = Array.from(xml.getElementsByTagName('entry')).slice(0, 10);
-    return entries.map(entry => {
-      const title = entry.getElementsByTagName('title')[0]?.textContent || '';
-      const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
-      const videoId = entry.getElementsByTagName('yt:videoId')[0]?.textContent || '';
-      const guid = videoId ? `yt:video:${videoId}` : '';
-      const thumbnail = entry.getElementsByTagName('media:thumbnail')[0]?.getAttribute('url') || '';
-      const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
-      return { title, link, guid, thumbnail, pubDate };
-    });
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10`;
+    const resp = await fetch(apiUrl);
+    const data = await resp.json();
+    if (!data.items) throw new Error('Failed to load videos');
+    return data.items.map(item => ({
+      title: item.snippet.title,
+      link: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      guid: `yt:video:${item.id.videoId}`,
+      thumbnail: item.snippet.thumbnails?.medium?.url || '',
+      pubDate: item.snippet.publishedAt
+    }));
   }
 
   async function handleChannelClick(card) {
