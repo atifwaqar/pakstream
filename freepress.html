@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +81,6 @@
     <label for="nav-toggle" class="nav-overlay"></label>
   </header>
 
-  <!-- Free Press section with channel list and video player -->
   <section class="youtube-section">
     <div class="channel-list"></div>
     <div class="video-section">
@@ -103,10 +104,7 @@
     </div>
   </section>
 
-  <!-- Placeholder for advertising or extra content -->
-  <div class="ad-container">
-    <!-- Google AdSense: Insert your ad code here -->
-  </div>
+  <div class="ad-container"></div>
 
   <footer>
     <nav class="footer-nav">
@@ -120,15 +118,15 @@
 
 <script>
   // ----- State -----
-  const anchorMap = {};   // { key -> channelId }
-  let detailsMap = {};    // { key -> about HTML }
-  let profilesMap = {};   // { key -> [profile URLs] }
+  const anchorMap = {};
+  let detailsMap = {};
+  let profilesMap = {};
   const favorites = JSON.parse(localStorage.getItem('ytFavorites') || '[]');
 
-  // Keep v3 ONLY for thumbnails
+  // v3 only for thumbs + (now) primary for listing, with cache
   const API_KEY = 'AIzaSyDYVIpMttgcSxeadCGKBSj1HOt-foiHgOM';
   const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
-  const RSS_CACHE_MS = 30 * 60 * 1000; // 30 minutes
+  const LIST_CACHE_MS = 30 * 60 * 1000; // 30 min
 
   // ----- Helpers -----
   function getChannelThumbnail(id) {
@@ -235,84 +233,93 @@
     return resp.json();
   }
 
-  // --- Robust RSS fetch with fallbacks (RSS -> proxy -> v3 last resort) ---
+  // Primary: Data API v3 (cached). Fallbacks: RSS direct -> RSS via proxy.
   async function fetchLatestVideos(channelId) {
-    const cacheKey = `rss_${channelId}`;
+    const cacheKey = `yt_list_${channelId}`;
     const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (cached && (Date.now() - cached.timestamp) < RSS_CACHE_MS) {
+    if (cached && (Date.now() - cached.timestamp) < LIST_CACHE_MS) {
       return cached.items;
     }
 
-    const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
-
-    // Try direct RSS, then proxy RSS
-    let xmlText = '';
-    for (const url of [directFeed, proxyFeed]) {
-      try {
-        const resp = await fetch(url);
-        if (!resp.ok) continue;
-        const text = await resp.text();
-        if (text && text.length > 50) { xmlText = text; break; }
-      } catch (e) {
-        // swallow and try next
-      }
-    }
-
-    let items = [];
-    if (xmlText) {
-      try {
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(xmlText, 'application/xml');
-        const entries = Array.from(xml.getElementsByTagName('entry')).slice(0, 10);
-
-        items = entries.map(entry => {
-          // videoId
-          let videoId = '';
-          const guid = entry.getElementsByTagName('id')[0]?.textContent || '';
-          if (guid.startsWith('yt:video:')) videoId = guid.split(':').pop();
-          if (!videoId) {
-            const href = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
-            const m = href.match(/[?&]v=([^&]+)/);
-            if (m) videoId = m[1];
-          }
-
-          const title = entry.getElementsByTagName('title')[0]?.textContent || '';
-          const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : '');
-          const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
-
-          // thumbnail: media:thumbnail (namespace) -> fallback
-          const thumbNs = 'http://search.yahoo.com/mrss/';
-          const thumbEl = entry.getElementsByTagNameNS(thumbNs, 'thumbnail')[0]
-            || entry.querySelector('media\\:thumbnail');
-          const thumbnail = (thumbEl && thumbEl.getAttribute('url')) || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
-
-          return { title, link, guid, thumbnail, pubDate, videoId };
-        });
-      } catch (e) {
-        // parsing failed -> items remains []
-      }
-    }
-
-    // Final fallback: Data API v3 (used only if RSS+proxy failed)
-    if (!items.length) {
-      console.warn('RSS fetch failed; falling back to YouTube Data API v3 search (quota use).');
-      const apiUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10`;
+    // Try v3 first (usually not blocked by extensions)
+    try {
+      const apiUrl =
+        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}` +
+        `&channelId=${channelId}&part=snippet,id&order=date&type=video&maxResults=10` +
+        `&fields=items(id/videoId,snippet(title,publishedAt,thumbnails/medium/url))`;
       const resp = await fetch(apiUrl);
-      if (!resp.ok) throw new Error('Failed to load videos via v3 fallback');
-      const data = await resp.json();
-      items = (data.items || []).map(item => {
-        const videoId = item.id?.videoId || '';
-        const title = item.snippet?.title || '';
-        const link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
-        const pubDate = item.snippet?.publishedAt || '';
-        const thumbnail = item.snippet?.thumbnails?.medium?.url || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
-        return { title, link, guid: `yt:video:${videoId}`, thumbnail, pubDate, videoId };
-      });
+      if (resp.ok) {
+        const data = await resp.json();
+        const items = (data.items || []).map(item => {
+          const videoId = item.id?.videoId || '';
+          const title = item.snippet?.title || '';
+          const link = videoId ? `https://www.youtube.com/watch?v=${videoId}` : '';
+          const pubDate = item.snippet?.publishedAt || '';
+          const thumbnail = item.snippet?.thumbnails?.medium?.url || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+          return { title, link, guid: `yt:video:${videoId}`, thumbnail, pubDate, videoId };
+        });
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
+      }
+    } catch (_) {
+      // continue to RSS fallbacks
     }
 
-    localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
-    return items;
+    // RSS (direct)
+    try {
+      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const resp = await fetch(directFeed);
+      if (resp.ok) {
+        const xmlText = await resp.text();
+        const items = parseRss(xmlText).slice(0, 10);
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
+      }
+    } catch (_) {}
+
+    // RSS (proxy)
+    try {
+      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+      const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
+      const resp = await fetch(proxyFeed);
+      if (resp.ok) {
+        const xmlText = await resp.text();
+        const items = parseRss(xmlText).slice(0, 10);
+        if (items.length) {
+          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+          return items;
+        }
+      }
+    } catch (_) {}
+
+    throw new Error('Failed to load videos via all methods');
+  }
+
+  function parseRss(xmlText) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, 'application/xml');
+    const entries = Array.from(xml.getElementsByTagName('entry'));
+    const thumbNs = 'http://search.yahoo.com/mrss/';
+    return entries.map(entry => {
+      let videoId = '';
+      const guid = entry.getElementsByTagName('id')[0]?.textContent || '';
+      if (guid.startsWith('yt:video:')) videoId = guid.split(':').pop();
+      if (!videoId) {
+        const href = entry.getElementsByTagName('link')[0]?.getAttribute('href') || '';
+        const m = href.match(/[?&]v=([^&]+)/);
+        if (m) videoId = m[1];
+      }
+      const title = entry.getElementsByTagName('title')[0]?.textContent || '';
+      const link = entry.getElementsByTagName('link')[0]?.getAttribute('href') || (videoId ? `https://www.youtube.com/watch?v=${videoId}` : '');
+      const pubDate = entry.getElementsByTagName('published')[0]?.textContent || '';
+      const thumbEl = entry.getElementsByTagNameNS(thumbNs, 'thumbnail')[0] || entry.querySelector('media\\:thumbnail');
+      const thumbnail = (thumbEl && thumbEl.getAttribute('url')) || (videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '');
+      return { title, link, guid, thumbnail, pubDate, videoId };
+    });
   }
 
   // ----- UI wiring -----
@@ -366,14 +373,12 @@
   async function handleChannelClick(card) {
     const channelId = card.dataset.channelId;
 
-    // Update URL param with anchor key
     const anchorKey = Object.keys(anchorMap).find(key => anchorMap[key] === channelId);
     if (anchorKey) {
       const newUrl = `${window.location.pathname}?newsanchor=${anchorKey}`;
       history.replaceState(null, '', newUrl);
     }
 
-    // About/profiles panel
     const detailsList = document.querySelector('.details-list');
     const detailsBtn = document.getElementById('toggle-details');
     const aboutContent = detailsMap[anchorKey];
@@ -399,7 +404,6 @@
     setActiveCard(card);
     videoListEl.innerHTML = '<p>Loading videos…</p>';
 
-    // Close channel list on small screens
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
@@ -439,13 +443,11 @@
         });
         videoListEl.appendChild(itemEl);
 
-        // Load first video immediately
         if (index === 0) {
           loadVideo(videoId);
           setActiveVideo(itemEl);
         }
 
-        // Fetch light details (noembed) for views; non-blocking
         fetchVideoDetails(videoId).then(details => {
           const meta = itemEl.querySelector('.video-meta');
           const viewsText = details.view_count ? `${Number(details.view_count).toLocaleString()} views` : 'Views unavailable';
@@ -457,7 +459,7 @@
       });
     } catch (err) {
       console.error(err);
-      videoListEl.innerHTML = '<p>Error loading videos (feed and fallback failed).</p>';
+      videoListEl.innerHTML = '<p>Error loading videos (all methods failed).</p>';
     }
   }
 
@@ -527,7 +529,6 @@
     });
 </script>
 
-  <!-- Optional extra scripts (kept from your original) -->
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
