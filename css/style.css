@@ -528,17 +528,28 @@ section {
 }
 
 .details-content .profile {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-decoration: none;
   color: inherit;
   font-size: 0.8rem;
 }
 
-.details-content .profile img {
-  width: 40px;
-  height: 40px;
+.details-content .profile-icon {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  background: var(--surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 4px;
+}
+
+.details-content .profile-icon img {
+  width: 24px;
+  height: 24px;
 }
 
 /* Buttons */
