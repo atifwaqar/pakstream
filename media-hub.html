@@ -1,87 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google Tag Manager -->
-  <script id="gtm-script">
-    // paste the same GTM snippet you use in radio.html/livetv.html
-  </script>
-  <!-- End Google Tag Manager -->
-
-  <!-- Google Analytics -->
-  <script id="ga-script">
-    // paste your google-analytics.html content here
-  </script>
-  <!-- End Google Analytics -->
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>PakStream Media Hub</title>
-  <meta name="description" content="PakStream Media Hub - Watch Live TV, listen to Radio, follow Free Press and Creators all in one place.">
+  <meta name="description" content="PakStream Media Hub - Live TV, Free Press, Radio, and Creators in one place." />
 
-  <!-- Your existing site styles -->
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Media Hub styles -->
-  <link rel="stylesheet" href="css/media-hub.css">
+  <!-- Your site styles first -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Hub-only scoped styles -->
+  <link rel="stylesheet" href="css/media-hub.css" />
 </head>
 <body>
-  <!-- Top Navigation Bar -->
-  <header>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-logo">PakStream</a>
-        <ul class="nav-menu">
-          <li><a href="freepress.html">Free Press</a></li>
-          <li><a href="livetv.html">Live TV</a></li>
-          <li><a href="creators.html">Creators</a></li>
-          <li><a href="radio.html">Radio</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="privacy.html">Privacy</a></li>
-          <li><a href="terms.html">Terms</a></li>
-        </ul>
-      </div>
-    </nav>
-  </header>
+  <!-- Inject existing nav and footer so styling matches the rest of the site -->
+  <div id="site-nav"></div>
 
-  <!-- Media Hub Layout -->
   <div class="mh-container">
-    <div class="mh-mode-switcher">
-      <button data-mode="tv">Live TV</button>
-      <button data-mode="freepress">Free Press</button>
-      <button data-mode="radio">Radio</button>
-      <button data-mode="creator">Creators</button>
-    </div>
+    <header class="mh-header">
+      <div class="mh-mode-switcher">
+        <button data-mode="tv"        class="mh-tab">Live TV</button>
+        <button data-mode="freepress" class="mh-tab">Free Press</button>
+        <button data-mode="radio"     class="mh-tab">Radio</button>
+        <button data-mode="creator"   class="mh-tab">Creators</button>
+      </div>
+    </header>
 
     <main class="mh-main">
       <aside class="mh-left">
         <div class="mh-search">
-          <input type="text" placeholder="Search…" id="mh-search-input">
+          <input type="text" placeholder="Search…" id="mh-search-input" />
         </div>
-        <ul id="mh-channel-list"></ul>
+        <ul id="mh-channel-list" class="mh-list"></ul>
       </aside>
 
       <section class="mh-center">
-        <div id="mh-player-area"></div>
-        <div id="mh-upnext"></div>
+        <div id="mh-player-area" class="mh-player"></div>
+        <div id="mh-upnext" class="mh-upnext"></div>
       </section>
 
       <aside class="mh-right" id="mh-about"></aside>
     </main>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <a href="about.html">About Us</a> ·
-      <a href="contact.html">Contact</a> ·
-      <a href="privacy.html">Privacy Policy</a> ·
-      <a href="terms.html">Terms</a>
-      <p>© 2025 PakStream. All rights reserved.</p>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
-  <!-- Scripts -->
+  <script>
+    // Load existing header/footer HTML so page matches the site styling (no Jekyll needed)
+    (async function injectIncludes() {
+      try {
+        const [nav, footer] = await Promise.all([
+          fetch("nav.html").then(r => r.text()).catch(() => ""),
+          fetch("footer.html").then(r => r.text()).catch(() => "")
+        ]);
+        if (nav) document.getElementById("site-nav").innerHTML = nav;
+        if (footer) document.getElementById("site-footer").innerHTML = footer;
+      } catch (_) {}
+    })();
+  </script>
   <script src="js/media-hub.js"></script>
 </body>
 </html>
