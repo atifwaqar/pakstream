@@ -5,6 +5,21 @@
   const detailsContainer = document.querySelector('.details-container');
   const detailsToggleBtn = document.getElementById('toggle-details');
 
+  const favoritesTab = document.querySelector('.tab-btn[data-mode="favorites"]');
+  const favoritesTabDefault = favoritesTab?.textContent.trim() || '';
+
+  function updateFavoritesTab() {
+    if (!favoritesTab) return;
+    const collapsed = channelList?.classList.contains('collapsed');
+    if (collapsed) {
+      favoritesTab.classList.add('fav-btn', 'material-symbols-outlined');
+      favoritesTab.textContent = 'favorite';
+    } else {
+      favoritesTab.classList.remove('fav-btn', 'material-symbols-outlined');
+      favoritesTab.textContent = favoritesTabDefault;
+    }
+  }
+
   const channelLabelEl = channelToggleBtn?.querySelector('.label');
   const channelToggleDefaultText = channelLabelEl?.textContent || channelToggleBtn?.textContent || '';
   if (channelLabelEl) channelLabelEl.dataset.default = channelToggleDefaultText;
@@ -28,6 +43,7 @@
       if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
       localStorage.setItem('channelListCollapsed', collapsed);
     }
+    updateFavoritesTab();
   }
   window.toggleChannelList = toggleChannelList;
 
@@ -182,6 +198,7 @@
         channelList.classList.add('collapsed');
         if (icon) icon.textContent = 'chevron_right';
       }
+      updateFavoritesTab();
     }
     if (detailsContainer && detailsToggleBtn) {
       const icon = detailsToggleBtn.querySelector('.icon');
