@@ -1,4 +1,4 @@
-/* Left rail header with search */
+/* Left rail header with tabs + search */
 .left-rail-header {
   position: sticky;
   top: 0;
@@ -7,6 +7,29 @@
   z-index: 2;
   padding: 8px 8px 10px;
   border-bottom: 1px solid var(--outline);
+}
+.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+.tab-btn {
+  padding:8px 12px;
+  border:1px solid var(--surface-variant);
+  background:var(--surface-variant);
+  color:var(--on-surface);
+  border-radius:8px;
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
+.search-wrap input {
+  width:100%;
+  padding:8px 10px;
+  border:1px solid var(--outline);
+  background:var(--surface);
+  color:var(--on-surface);
+  border-radius:8px;
+  box-sizing:border-box;
 }
 
 /* Make video list look like cards */
@@ -19,10 +42,38 @@
 /* Responsive keeps your existing behavior */
 
 
+.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+.tab-btn {
+  padding:8px 14px;
+  border:1px solid var(--surface-variant);
+  background:var(--surface-variant);
+  color:var(--on-surface);
+  border-radius:8px;
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
 .live-player .audio-wrap { background:#fff; border-radius:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); padding:12px; }
 
 /* layout that mirrors your existing pages */
 .page-wrap { padding-top: 12px; }
+.tabs-row { display:flex; gap:8px; margin:8px 0 12px; }
+.tab-btn {
+  background:var(--surface-variant);
+  border:1px solid var(--surface-variant);
+  border-radius:8px;
+  padding:8px 14px;
+  color:var(--on-surface);
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
 .content-grid { display:grid; gap:16px; grid-template-columns: 320px 1fr 340px; }
 .left-rail { min-width:280px; }
 .center-rail { min-width:0; }
