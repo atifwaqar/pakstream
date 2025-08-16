@@ -13,6 +13,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
 
+  // Handle top navigation submenu links without reloading
+  const topLinks = document.querySelectorAll('.dropdown-content a[href*="media-hub.html"]');
+  topLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (link.pathname === location.pathname) {
+        e.preventDefault();
+        const newMode = new URL(link.href, location.origin).searchParams.get('m');
+        const tab = Array.from(tabs).find(t => t.dataset.mode === newMode);
+        if (tab) tab.click();
+      }
+    });
+  });
+
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
   const mainPlayer = document.getElementById("radio-player");
