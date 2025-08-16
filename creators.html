@@ -248,32 +248,23 @@
       }
     } catch (_) { /* continue to RSS */ }
 
-    // RSS (direct)
-    try {
-      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-      const resp = await fetch(directFeed);
-      if (resp.ok) {
-        const xmlText = await resp.text();
-        const items = parseRss(xmlText).slice(0, 10);
-        if (items.length) {
-          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
-          return items;
-        }
-      }
-    } catch (_) {}
-
     // RSS (proxy)
     try {
       const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-      const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
-      const resp = await fetch(proxyFeed);
-      if (resp.ok) {
-        const xmlText = await resp.text();
-        const items = parseRss(xmlText).slice(0, 10);
-        if (items.length) {
-          localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
-          return items;
-        }
+      let xmlText = "";
+      try {
+        const proxyFeed  = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
+        const resp = await fetch(proxyFeed);
+        if (!resp.ok) throw new Error("Bad status");
+        xmlText = await resp.text();
+      } catch (_) {
+        const fallback = `https://r.jina.ai/https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+        xmlText = await fetch(fallback).then(r => r.text());
+      }
+      const items = parseRss(xmlText).slice(0, 10);
+      if (items.length) {
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), items }));
+        return items;
       }
     } catch (_) {}
 
