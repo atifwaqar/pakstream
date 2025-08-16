@@ -729,7 +729,11 @@ async function renderLatestVideosRSS(channelId) {
         e.preventDefault();
         renderList(searchEl.value);
         const firstCard = listEl.querySelector('.channel-card');
-        if (firstCard) firstCard.click();
+        if (firstCard) {
+          firstCard.click();
+          searchEl.value = '';
+          renderList('');
+        }
       }
     });
   }
