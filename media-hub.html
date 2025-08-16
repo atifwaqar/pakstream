@@ -72,7 +72,28 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           title="Selected video player"></iframe>
-        <div id="audioWrap" class="audio-wrap" style="display:none;"></div>
+        <div id="audioWrap" class="audio-wrap" style="display:none;">
+          <div id="player-container" class="radio-player">
+            <div class="station-info">
+              <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
+              <h3 id="current-station" class="station-title">Select a station</h3>
+              <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
+              <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
+            </div>
+            <div class="controls">
+              <button id="favorite-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
+              <button id="prev-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Previous station" disabled>skip_previous</button>
+              <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
+                <span class="material-symbols-outlined label">play_arrow</span>
+                <span class="spinner"></span>
+              </button>
+              <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
+              <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
+              <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
+              <audio id="radio-player" autoplay></audio>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- NEW: real latest videos list for the selected channel -->
