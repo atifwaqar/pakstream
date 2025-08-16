@@ -29,6 +29,7 @@
   background:var(--surface);
   color:var(--on-surface);
   border-radius:8px;
+  box-sizing:border-box;
 }
 
 /* Make video list look like cards */
@@ -85,6 +86,7 @@
   background:var(--surface);
   color:var(--on-surface);
   border-radius:8px;
+  box-sizing:border-box;
 }
 
 /* reuse your card list visuals */
