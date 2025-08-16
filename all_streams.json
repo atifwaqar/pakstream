@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_utc": "2025-08-16T13:40:51.093782Z",
+  "generated_utc": "2025-08-16T14:02:28.554247Z",
   "source_urls": {
     "radio_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/radio_channels.json",
     "freepress_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/freepress_channels.json",
     "channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/channels.json",
     "creators_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/creators_channels.json"
   },
-  "notes": "This build currently includes radio, tv, and creators. freepress not included in this file.",
+  "notes": "Includes radio, tv, creators, and a minimal mapping for freepress (about_html/profiles omitted in this build).",
   "items": [
     {
       "key": "hum-fm-1062",
@@ -2360,7 +2360,9 @@
       "name": "Zeeshan Usmani",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/idSwNKeNEgcVkt0jjSvBZOwKqsY8ZRR4oAd0upTw9Vw_wO1FGCkOjtkBmOFZPGUdU8PUQZyu=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2380,7 +2382,9 @@
       "name": "Danish Hasan",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/ytc/AIdro_nEVhBhbUq2H1qBu7IoGwAJZ3UliwsYvymYQXdabnmRJa0=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2400,7 +2404,9 @@
       "name": "Taimoor Salahuddin",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/ytc/AIdro_nrLaDstd7PfSojpvZz5yj_NPPOEKoiicVcCZQBNnpDKg=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2420,7 +2426,9 @@
       "name": "Junaid Akram",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/ytc/AIdro_k0lTiuCcKwUewQuW65gfpR_a1AbZsWwjiLOUrdVOT38HQ=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2440,7 +2448,9 @@
       "name": "Raftar",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/yNp5itNlxDv7xfzi0ie5sMHaDxti0GbJxmVj9t5BtRT7qOZM-ubwmZfpNs22xphNTI-XNHRuHqQ=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2460,7 +2470,9 @@
       "name": "PakWheels.com",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/EokkqmAkPhBghSDbiNzhDDZttfyc7yXWQqpEBdO5NXYrLBHb-WlApS_t7MPZtm9roHltoTihwQ=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2480,7 +2492,9 @@
       "name": "Nadir Ali",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/f8xyrwngoxVruTiZmEwrr5X5SxZemETKlgkZwOxnJyd6_yzTEmeSNW9RlV2s8nhu1DhqyFnZ=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2500,7 +2514,9 @@
       "name": "ARY Digital HD",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/novQdgUbaooTsGKpOuC5t3ZoZNu984i9jazJj8RNjRl8-_bBEdia1tLNBk-vlkr6MvSiwTgK=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2520,7 +2536,9 @@
       "name": "BOL Network",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/UnAwSp-XsUpjn2_ZpWpu_USNm0uZhG6qufrWHT7V0-OaCMJk2b4qsCqS22-iktLQG_R2sxhjhRM=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2540,7 +2558,9 @@
       "name": "Bekaar Films",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/ytc/AIdro_lQoy7epuW2O4QoCjS8PHHtkIQOpLMTBxDJrPq0scw9Og=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2560,7 +2580,9 @@
       "name": "Daniyal Sheikh",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/MZHk9Hyci6noZw9tNfn6MS6_p7qht9lE7Df2FnqM3JZvnEZNGNIzzOqstYMpAdVU0XWvoO1c=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2580,7 +2602,9 @@
       "name": "ARY Zindagi",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/Q8R6iHca0aGyrT71lYW15XBEKo3xeOTmxnaXXHbAmBLg83PFLITs-5k_sT-Jb4uwguVZm3D7o4c=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2600,7 +2624,9 @@
       "name": "Metatainment",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/70tO5Ews9mYmdMEF0D2LudbU208fk-ui1PNJ6ez5gTpqyH9xEPLrp_gaNfrUX6reEkWEp3WomQ=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2620,7 +2646,9 @@
       "name": "Fast Studio",
       "type": "creator",
       "platform": "youtube",
-      "media": {},
+      "media": {
+        "thumbnail_url": "https://yt3.googleusercontent.com/ytc/AIdro_kyUfMCSEZm4jqVBGW1oiyPQe9wIcie7oS7u_2vS8hq5w=s180-c-k-c0x00ffffff-no-rj"
+      },
       "endpoints": [
         {
           "kind": "channel",
@@ -2630,6 +2658,644 @@
       ],
       "ids": {
         "youtube_channel_id": "UC8sMlaie4OdVmLuhuNpmLSQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "imranriazkhan",
+      "name": "Imran Riaz Khan",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/KrrtRyGDP6h2wWObxzqPBFqtgxri00qVBYeYrzHQ550S7NJ5Cluy9JkPb2fOD03mqpRdNqP-5Q=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/c/ImranRiazKhan"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCaszgR2TH3qNw_CxLHAd2SQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "sabirshakir",
+      "name": "Sabir Shakir",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/e7jRNJkVKQUhRr7BPQ7M4nQ5s7-aUBb733tSMLqMbAJPLHrIdX4mXJ2UAnw59dZLfY3yVU1KLA=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCY7eFg5TEMsk_aTqM0pVB4w"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCY7eFg5TEMsk_aTqM0pVB4w"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "samiabraham",
+      "name": "Sami Abraham",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/GtRq2c80q7o1bbY-F3SZgHgEgCtOLWdwIFAvd2tcQHi3ReHmmWu233jBbUP2koZndpPJmBNaaQs=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCFCzDl-XQq1TCo_fvBzCoyw"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCFCzDl-XQq1TCo_fvBzCoyw"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "mansooralikhank",
+      "name": "Mansoor Ali Khan",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/tNQ2RgaQmLGkOFNgIMhmIibmH43-KniIHoqAnQoe0ozm3V_wDRI7iXBQUGP9wX7FkzE0TaBr=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UClDtMswg3muouH60XTKlVEw"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UClDtMswg3muouH60XTKlVEw"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "moeedpirzada",
+      "name": "Dr Moeed Pirzada",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_kHa4AuV85mqcYiJ9GZ29OFz4dQcwq0i6CITAOlzCfCnw=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/@DrMoeedPirzadaOfficial"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCnkYymEbl1qZ0VhGrzH9guw"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "mubasherlucman",
+      "name": "Mubasher Lucman",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/WMEbrdihVnjNTBXL34g6YlW04ZIdd4Tl7NyPUdsav0qq6cVz1yIsxnPwfm1qu6QROVgmaLaN9Wc=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCslugpmYWJiZK5rbvtcaV7Q"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCslugpmYWJiZK5rbvtcaV7Q"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "faisalwarraich",
+      "name": "Faisal Warraich",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_nK04W9TprQISmcZjN6JqYHzLH4vtEuTVI5t05r9wjhITE=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/@Faisal.Warraich"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UChOzmkBxTHbZNZdiiYolWoA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "abdulqadir",
+      "name": "Abdul Qadir",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/cZh2XMtAe7POZmuYfukVA9rye0LEwgxOVhBg7RFe058N5PM0KXeKfqBVtTGycNx8imTe24fG=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCYdLgIyZnHVwlDkF3Y0G_cQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCYdLgIyZnHVwlDkF3Y0G_cQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "ansarabbasi",
+      "name": "Ansar Abbasi",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/DSUfx3HIkonsRpCWwzQvxVC_WoQBaXfDwXfPMwGZ8qZAxarKpvi6vBNkhDpAnJSp-esN_-VgJag=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/@InvestigativeJournalist"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCw6Gt_4bm-n4yLNUaqon_qA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "asmashirazi",
+      "name": "Asma Shirazi",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/uANc7ZEG4o_vhhgCMYfAxM3GazngSKFjdG0yfvaawJJncqZ4L4_Ntkva8VhHvEp6MDh8SU2ra5g=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCYAIiV0G2ups3CyiFcPeBlg"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCYAIiV0G2ups3CyiFcPeBlg"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "arshadsharif",
+      "name": "Arshad Sharif",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_mMaJMsuV2JNccxRnKo38pAU5AFl285EbogJ6xYybmAyw=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/ArshadSharifOfficial"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UC0UiDwKaevYAOTmVzXkrHSQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "nasimzehra",
+      "name": "Nasim Zehra",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/2KO1jzjykbnjRxjbzAPITuWVWkdl_je_6w9nRDVeDYrJDBW3jG-E__vycUshA88YQRILvOCbAw=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/@NasimZehraOfficial"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCKtRaClqV6naRHzuxrsDPnA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "raufklasra",
+      "name": "Rauf Klasra",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/BCrJ9JZsJkNY9YJPOX2qCL_apUWrhAQZvVCWISHEDBaANTZ2gG6SBHR6exEXW0zgQDelWBBTSg=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCreAj2r67xRSmf3EQxM5KuQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCreAj2r67xRSmf3EQxM5KuQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "zaidzamanhamid",
+      "name": "Syed Zaid Zaman Hamid",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/DOAd8k2ux5tpziEEny6Hgeg0I108w7rb_cgPQJZ83M7pKnfLVAUAkjpYhsQ5JZ0T-PX54r1j=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCpjldgul1pMZJpiL09j8JxA"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCpjldgul1pMZJpiL09j8JxA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "taimurrahman",
+      "name": "Taimur Rahman (laal)",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/qP1rzkyBk5cDcLsYR-TIqTkmeb1hqsn5kpYghK6cbdVmyKdrnXlCEDsWx262V-cep9mmUJP7EWU=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCIyAy8lIQwnj-2CGt9e-N3g"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCIyAy8lIQwnj-2CGt9e-N3g"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "syedalihaider",
+      "name": "Syed Ali Haider",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/BGTLwiSqMZ7C8ga3UWNTbqIjessi-pFVHOyJazpTIQXuP4B01jRW6NbNaxh6ekErKX28Hz--=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCep38ldld-DjkOJt9Oh0gOA"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCep38ldld-DjkOJt9Oh0gOA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "siddiquejaan",
+      "name": "Siddique Jaan",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/czXpMFEl_J73p8BX2eLXRqeMtCMca9NH5H_KltmoBn9lcJUaUgrrKzY4ucrKwZmbo9ynx8Zk=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UC-PoCqWxInxzN-9r9FxXJGg"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UC-PoCqWxInxzN-9r9FxXJGg"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "usamaghazi",
+      "name": "Usama Ghazi",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_mG2Al5JNl9qE-tiUE682eFs7AfZIx1Ry83_8bGSYaHm8s=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCAO1utA5OhesHBHWjXd1wMw"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCAO1utA5OhesHBHWjXd1wMw"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "jameelfarooqui",
+      "name": "Jameel Farooqui",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/RWqMyUymDCZai4_heRWIgNd4WNoUcRk-F7p_U5veUj8KBG_l2mUr2JkYY-XZT_qOG3U6j3tO4A=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCeqdeoG3nRSkkbBKT9u3wQQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCeqdeoG3nRSkkbBKT9u3wQQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "waqarmalik",
+      "name": "Waqar Malik",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_nPvgBfC0dR4LZbVdDs2f31uI8Q3FYDwJGdRpXlECOdsVo=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCFqjOGv7tON3rY9kHPLa-OQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCFqjOGv7tON3rY9kHPLa-OQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "syedmuzammil",
+      "name": "Syed Muzammil",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/PLAEfi0GB8ML4jmwh5BxTaOt8_a8BqjOiy7DwJSGQiRYh6MIdvZKZi3jHzkGv4k4Qo53uoJo_ZQ=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCAyd8kYxON-KM0UuRuK_sIg"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCAyd8kYxON-KM0UuRuK_sIg"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "nayadaurtv",
+      "name": "Naya Daur TV",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/1RUwCHGzrcJIYoDKOHyO9xLKvVlHayOnZj-t3_N8kHdmsvOakvoeMQ5DblfI8zt7RkCNec6ydDs=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCzVdIJeAwQfBZbG_8AOXgBw"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCzVdIJeAwQfBZbG_8AOXgBw"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "asadaliToor",
+      "name": "Asad Ali Toor",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_nwNkoQ5onNJmdzYi7tfe4SL5x3J6l8ErQKXc6FY7kkltY=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCXORDenrw6IHFUvg0PH-3hg"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCXORDenrw6IHFUvg0PH-3hg"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "matiullahjan",
+      "name": "Matiullah Jan",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/Wz2WXBXATQrAkc-flMCfJ799RU2Y8sRGRCpQdQXSZakx_ZAYgfbxPSlQuivHVIWu31mRLaVV=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UC-hJ0cobUiWlBFTHgLwt8sQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UC-hJ0cobUiWlBFTHgLwt8sQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "aftabiqbal",
+      "name": "Aftab Iqbal",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/rbV_343RadRrYtZRYXfKaIuuiansUVW2ZY1FmKhLtJJbamr7qsjGcUOtL5FTiNWUhBw2UWcCBw=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCFqEO3bSGcp5I8HVgXYdYRQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCFqEO3bSGcp5I8HVgXYdYRQ"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "aminhafeez",
+      "name": "Amin Hafeez",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_nbFAspS2eKEFWvaSUjEM2ffHy5Q6Bzh8pqZFthfRlYck0=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCfL1eqnP_EYuE5gt9OrFHuA"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCfL1eqnP_EYuE5gt9OrFHuA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "muneebfarooq",
+      "name": "Muneeb Farooq",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/9CxJNIXBLRFoaAtQJCCuecxGBIZa3G4el7XL762OxEBhwg79AuAJ2lsDHfMCa1ZC1ipnHEM=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UC57P3Cnt2Lq2W310oJxe7sA"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UC57P3Cnt2Lq2W310oJxe7sA"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "ahmadnoorani",
+      "name": "Ahmad Noorani",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/zajwc2g94lYQxT50KnV3siL9koykSDzeIkcaHlM1Hj3d_scJ3aDU6USvoIyQ08v6XMbY6yL_=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCokfj4SqQZsdjRoG4mUci4A"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCokfj4SqQZsdjRoG4mUci4A"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "independenturdu",
+      "name": "Independent Urdu",
+      "type": "freepress",
+      "platform": "youtube",
+      "media": {
+        "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_kLhY9qA_VrH2se6ERolZ4Br0fQCuxvTmr32W8F0nxDXg=s88-c-k-c0x00ffffff-no-rj"
+      },
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCAvhohWtYwPdpKVGiMkkKOQ"
+        }
+      ],
+      "ids": {
+        "youtube_channel_id": "UCAvhohWtYwPdpKVGiMkkKOQ"
       },
       "status": {
         "active": true
