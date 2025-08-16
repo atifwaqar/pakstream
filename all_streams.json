@@ -1764,7 +1764,7 @@
     {
       "key": "24news",
       "name": "24 News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/85BoRJ9uzPi3sV8cHNC6u-APNVwFYBjD1XEjYpOR7GkQcmiadrtwL72tUKf99Vy1DgGCxmN6yw=s88-c-k-c0x00ffffff-no-rj"
@@ -1791,7 +1791,7 @@
     {
       "key": "92",
       "name": "92 News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/jGqFTJc_v_f5_SLY8sgk197nkCpV8IXUQBjbkGClZmKQ355JBbdD0JfWbRDogIhN78i2pVYn8j8=s88-c-k-c0x00ffffff-no-rj"
@@ -1818,7 +1818,7 @@
     {
       "key": "abbtakk",
       "name": "Abb Takk News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/AyAEkBMFCwb-Uv-ZBuAuoQq2_BX8shXez6fK6za9NXbvgRKyIZvsUwHWJ92IcH0FgUtpMljbKQ=s88-c-k-c0x00ffffff-no-rj"
@@ -1845,7 +1845,7 @@
     {
       "key": "ary",
       "name": "ARY News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/-MrSn7wmfUXudiWBLrVdt3V4rvSxqElVZTE2sJV9yYRFN3yGCuqIyFaeFjD_JMr0axD21QMH_A=s88-c-k-c0x00ffffff-no-rj"
@@ -1872,7 +1872,7 @@
     {
       "key": "bol",
       "name": "BOL News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/E0ON7kC9AImxXYGXFUHZEwhPKYwDIZTPiBpyBBSH2MbT5CO3fSMw4qWlqHaHdF7QTrR0SOfilQ=s88-c-k-c0x00ffffff-no-rj"
@@ -1899,7 +1899,7 @@
     {
       "key": "channel5",
       "name": "Channel 5",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/N-6otlsa_5pNto4kiBUmry0JTH9ly6CPpWGrF_8oFJtnxjTRrxd0kRBGUx0K_c5xxiDpl0jt=s88-c-k-c0x00ffffff-no-rj"
@@ -1926,7 +1926,7 @@
     {
       "key": "dawn",
       "name": "Dawn News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/sSMOAB17Jk-K3M4hX2oU7lvsIQfmPWUxmMoG7yzGa-qMNLKkG6o6eB94crdGAdOr7d9VkAwE=s88-c-k-c0x00ffffff-no-rj"
@@ -1953,7 +1953,7 @@
     {
       "key": "dunya",
       "name": "Dunya News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/GuczA0Ugz344gmkaWM0H1i7KKlczL_nEZhXZRxqsdmxmGZFrE9XZbMYl5k90VnIbX45nSdkDQw=s88-c-k-c0x00ffffff-no-rj"
@@ -1980,7 +1980,7 @@
     {
       "key": "express",
       "name": "Express News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/jwGXGUJX8vHZo9fBnfsI1RFQj_Vs4BMRSEHTx_RxvOv3uXxPjBgEggF0sX-4fUiPQfwXR7UMNiA=s88-c-k-c0x00ffffff-no-rj"
@@ -2007,7 +2007,7 @@
     {
       "key": "geo",
       "name": "Geo News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/RjIeM3s0zlRaSbmdZnnAUDzcRVTY9z9nvwMB46PQ_jWO281cLvkXIVXpk3zkOw48OK5LBQdDvWM=s88-c-k-c0x00ffffff-no-rj"
@@ -2034,7 +2034,7 @@
     {
       "key": "gnn",
       "name": "GNN",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/N9IFBcBu18cte8mCYnwBBASjTqJhM1flnKmyVKt1tOklbzd9hWhGM5H1lHcPQ2FW7dWmYARxRg=s88-c-k-c0x00ffffff-no-rj"
@@ -2061,7 +2061,7 @@
     {
       "key": "hum",
       "name": "HUM News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/vWX8AOFpGu5CnChzKxfkGhz7zTi3NOcBH1B56fgRhcZBZFGePGGfZtAmsRekdIjuODRRcLm2=s88-c-k-c0x00ffffff-no-rj"
@@ -2088,7 +2088,7 @@
     {
       "key": "khyber",
       "name": "Khyber News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/ijZCtRXP-8JDBTY_fXatvo-HSCnL37gHzufmaVMMcvV9cn8S_V-rzrmqRAYjhgOcLBm3OOvK=s88-c-k-c0x00ffffff-no-rj"
@@ -2115,7 +2115,7 @@
     {
       "key": "ktn",
       "name": "KTN News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/WmXeAQXYgUlIXhxyLeGst0Xz7pZAGBNgohSPc3xeh8aQPmnDlWeC_gHW2-v_84IrC1wviJuLIA=s88-c-k-c0x00ffffff-no-rj"
@@ -2142,7 +2142,7 @@
     {
       "key": "lahore",
       "name": "Lahore News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/ytc/AIdro_l_OtL7hx23HAh4sLCulRWKXd0VdYHhCV7Ov-eCRL_vKd4=s88-c-k-c0x00ffffff-no-rj"
@@ -2169,7 +2169,7 @@
     {
       "key": "ptv",
       "name": "PTV News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/tWMXk0kOcJoT504i9Nw72mNoIpBXvMN7LSDmpxOg2ggsg6JRD-1fGgry3yV4V20eq4bFVXXdgQ=s88-c-k-c0x00ffffff-no-rj"
@@ -2196,7 +2196,7 @@
     {
       "key": "public",
       "name": "Public News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/I0rRWnohHx4TSJgLIfUOUU_yl2QrodBoRyvaTFovwi3v54AhKzya9_CdFw5fvA-mEfn6UHim=s88-c-k-c0x00ffffff-no-rj"
@@ -2223,7 +2223,7 @@
     {
       "key": "rohi",
       "name": "Rohi",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/xui7rzE5-OXV9mHjTqN0XQtkvbMZCNAGi65NVV8GW3UQpfVqdnfzBeuQiGpIu9cdahUvem_O7g=s88-c-k-c0x00ffffff-no-rj"
@@ -2250,7 +2250,7 @@
     {
       "key": "sama",
       "name": "SAMAA TV",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/4ZibP-Wm9iU154_fgR-Mn0TmBZ10PkJH27UmSczINygQqKwyuOoaLrvUSESYd97p7g7a4wzK=s88-c-k-c0x00ffffff-no-rj"
@@ -2277,7 +2277,7 @@
     {
       "key": "sindh",
       "name": "Sindh TV",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/I9_6aOHy0tPWE5iLdLMsrYzQuJi6zL8c1bG3mHterGHou94fa7NwxaSaI1zRv_dQsbXPPtypGAQ=s88-c-k-c0x00ffffff-no-rj"
@@ -2304,7 +2304,7 @@
     {
       "key": "such",
       "name": "Such TV",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/ywkjqFzUtIcj3RS3ab-BCBoZkUyc8PGeiXBqxxCwBCwyRVGyxK5FTXuV_-FHrk9hJIQrbPO5Mw=s88-c-k-c0x00ffffff-no-rj"
@@ -2331,7 +2331,7 @@
     {
       "key": "vsh",
       "name": "VSH News",
-      "type": "tv",
+      "type": "livetv",
       "platform": "youtube",
       "media": {
         "thumbnail_url": "https://yt3.ggpht.com/L-PvlXYeQ1HWejIKiOITiQbX-7SywKkd7RIcP4boI_kyne_f1OuqYfbk0pb_McXDAVEyW2uH=s88-c-k-c0x00ffffff-no-rj"
