@@ -259,64 +259,69 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ---- CORS-safe RSS loader ----
-  async function renderLatestVideosRSS(channelId) {
-    if (!videoList) return;
-    videoList.innerHTML = "";
-    if (!channelId) return;
+// Quiet, proxy-only RSS loader (no direct YouTube fetch → no CORS error)
+async function renderLatestVideosRSS(channelId) {
+  if (!videoList) return;
+  videoList.innerHTML = "";
+  if (!channelId) return;
+
+  try {
+    const feed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    // Primary proxy (fast, generous CORS)
+    const proxy1 = `https://r.jina.ai/http://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    // Secondary proxy (fallback)
+    const proxy2 = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed)}`;
+
+    let xml = "";
     try {
-      const directFeed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-      let xml = "";
-      try {
-        const resp = await fetch(directFeed);
-        if (!resp.ok) throw new Error("Bad status");
-        xml = await resp.text();
-      } catch (_) {
-        try {
-          const proxyFeed = `https://api.allorigins.win/raw?url=${encodeURIComponent(directFeed)}`;
-          xml = await fetch(proxyFeed).then(r => r.text());
-        } catch {
-          const proxy2 = `https://r.jina.ai/http://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-          xml = await fetch(proxy2).then(r => r.text());
-        }
-      }
-      const doc = new DOMParser().parseFromString(xml, "text/xml");
-      const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
-      if (!entries.length) return;
-
-      entries.forEach(en => {
-        const vid = en.querySelector("yt\\:videoId, videoId")?.textContent;
-        const title = en.querySelector("title")?.textContent || "Video";
-        if (!vid) return;
-
-        const row = document.createElement("div");
-        row.className = "video-item";
-
-        const img = document.createElement("img");
-        img.className = "video-thumb";
-        img.src = ytThumb(vid);
-        img.alt = "";
-
-        const meta = document.createElement("div");
-        meta.className = "video-meta";
-        meta.textContent = title;
-
-        row.appendChild(img);
-        row.appendChild(meta);
-        row.addEventListener("click", () => {
-          if (playerIF) {
-            playerIF.style.display = "";
-            playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
-          }
-          if (audioWrap) audioWrap.style.display = "none";
-          if (details && toggleDetailsBtn && details.innerHTML.trim().length) toggleDetailsBtn.style.display = "";
-        });
-
-        videoList.appendChild(row);
-      });
+      xml = await fetch(proxy1, { cache: "no-store" }).then(r => r.text());
+      // r.jina.ai sometimes returns JSON for non-200; cheap sanity check:
+      if (!xml || xml[0] === "{") throw new Error("Proxy1 bad shape");
     } catch {
-      // keep list empty silently
+      xml = await fetch(proxy2, { cache: "no-store" }).then(r => r.text());
     }
+
+    const doc = new DOMParser().parseFromString(xml, "text/xml");
+    const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
+    if (!entries.length) return;
+
+    entries.forEach(en => {
+      const vid = en.querySelector("yt\\:videoId, videoId")?.textContent;
+      const title = en.querySelector("title")?.textContent || "Video";
+      if (!vid) return;
+
+      const row = document.createElement("div");
+      row.className = "video-item";
+
+      const img = document.createElement("img");
+      img.className = "video-thumb";
+      img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+      img.alt = "";
+
+      const meta = document.createElement("div");
+      meta.className = "video-meta";
+      meta.textContent = title;
+
+      row.appendChild(img);
+      row.appendChild(meta);
+      row.addEventListener("click", () => {
+        if (playerIF) {
+          playerIF.style.display = "";
+          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+        }
+        if (audioWrap) audioWrap.style.display = "none";
+        if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
+          toggleDetailsBtn.style.display = "";
+        }
+      });
+
+      videoList.appendChild(row);
+    });
+  } catch (e) {
+    // Keep list empty if proxies fail; no console noise
   }
+}
+
 
   // ---- Selection for TV/FreePress/Creator ----
   function select(item, autoplay=false) {
