@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>PakStream Media Hub</title>
+  <meta name="description" content="PakStream Media Hub - Live TV, Free Press, Radio, and Creators in one place." />
+
+  <!-- Your site styles first -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Hub-only scoped styles -->
+  <link rel="stylesheet" href="css/media-hub.css" />
+</head>
+<body>
+  <!-- Inject existing nav and footer so styling matches the rest of the site -->
+  <div id="site-nav"></div>
+
+  <div class="mh-container">
+    <header class="mh-header">
+      <div class="mh-mode-switcher">
+        <button data-mode="tv"        class="mh-tab">Live TV</button>
+        <button data-mode="freepress" class="mh-tab">Free Press</button>
+        <button data-mode="radio"     class="mh-tab">Radio</button>
+        <button data-mode="creator"   class="mh-tab">Creators</button>
+      </div>
+    </header>
+
+    <main class="mh-main">
+      <aside class="mh-left">
+        <div class="mh-search">
+          <input type="text" placeholder="Search…" id="mh-search-input" />
+        </div>
+        <ul id="mh-channel-list" class="mh-list"></ul>
+      </aside>
+
+      <section class="mh-center">
+        <div id="mh-player-area" class="mh-player"></div>
+        <div id="mh-upnext" class="mh-upnext"></div>
+      </section>
+
+      <aside class="mh-right" id="mh-about"></aside>
+    </main>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // Load existing header/footer HTML so page matches the site styling (no Jekyll needed)
+    (async function injectIncludes() {
+      try {
+        const [nav, footer] = await Promise.all([
+          fetch("nav.html").then(r => r.text()).catch(() => ""),
+          fetch("footer.html").then(r => r.text()).catch(() => "")
+        ]);
+        if (nav) document.getElementById("site-nav").innerHTML = nav;
+        if (footer) document.getElementById("site-footer").innerHTML = footer;
+      } catch (_) {}
+    })();
+  </script>
+  <script src="js/media-hub.js"></script>
+</body>
+</html>
