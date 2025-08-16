@@ -84,11 +84,12 @@
 
   <!-- Radio station listing -->
   <section class="youtube-section">
-    <div class="channel-list">
-      <button class="collapse-btn collapse-left material-symbols-outlined" onclick="toggleChannelCollapse()" aria-label="Collapse channel list">chevron_left</button>
-    </div>
+    <div class="channel-list"></div>
     <div class="video-section">
-      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()">Stations</button>
+      <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle station list">
+        <span class="material-symbols-outlined icon">chevron_left</span>
+        <span class="label">Stations</span>
+      </button>
       <div class="live-player">
         <div id="player-container" class="radio-player">
           <div class="station-info">
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (touchStartX - touchEndX > 50) {
         channelList.classList.remove('open');
         const btn = document.getElementById('toggle-channels');
-        if (btn) btn.textContent = 'Channels';
+        if (btn) btn.querySelector('.label').textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       touchStartX = null;
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (touchEndX - openStartX > 50 && openStartX < 50) {
         channelList.classList.add('open');
         const btn = document.getElementById('toggle-channels');
-        if (btn) btn.textContent = 'Close Channels';
+        if (btn) btn.querySelector('.label').textContent = `Close ${channelToggleDefaultText}`;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
       openStartX = null;
@@ -453,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const list = document.querySelector('.channel-list');
         list.classList.remove('open');
         const btn = document.getElementById('toggle-channels');
-        if (btn) btn.textContent = 'Stations';
+        if (btn) btn.querySelector('.label').textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
 
@@ -599,12 +600,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+const channelToggleDefaultText = document.querySelector('#toggle-channels .label')?.textContent || '';
+
 function toggleChannelList() {
   const list = document.querySelector('.channel-list');
-  const btn = document.getElementById('toggle-channels');
-  list.classList.toggle('open');
-  btn.textContent = list.classList.contains('open') ? 'Close Stations' : 'Stations';
-  if (typeof updateScrollLock === 'function') updateScrollLock();
+  const toggleBtn = document.getElementById('toggle-channels');
+  const icon = toggleBtn?.querySelector('.icon');
+  const label = toggleBtn?.querySelector('.label');
+
+  if (window.innerWidth <= 768) {
+    list.classList.toggle('open');
+    if (label) {
+      label.textContent = list.classList.contains('open') ? `Close ${channelToggleDefaultText}` : channelToggleDefaultText;
+    }
+    if (typeof updateScrollLock === 'function') updateScrollLock();
+  } else {
+    list.classList.toggle('collapsed');
+    const collapsed = list.classList.contains('collapsed');
+    if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
+    localStorage.setItem('channelListCollapsed', collapsed);
+  }
 }
 
 document.addEventListener('click', function(e) {
@@ -612,7 +627,7 @@ document.addEventListener('click', function(e) {
   const btn = document.getElementById('toggle-channels');
   if (list.classList.contains('open') && !list.contains(e.target) && !btn.contains(e.target)) {
     list.classList.remove('open');
-    btn.textContent = 'Stations';
+    btn.querySelector('.label').textContent = channelToggleDefaultText;
     if (typeof updateScrollLock === 'function') updateScrollLock();
   }
 });
@@ -628,28 +643,19 @@ channelList.addEventListener('touchend', (e) => {
   const touchEndX = e.changedTouches[0].clientX;
   if (touchStartX - touchEndX > 50) {
     channelList.classList.remove('open');
-    document.getElementById('toggle-channels').textContent = 'Stations';
+    document.querySelector('#toggle-channels .label').textContent = channelToggleDefaultText;
     if (typeof updateScrollLock === 'function') updateScrollLock();
   }
   touchStartX = null;
 });
 
-function toggleChannelCollapse() {
-  const list = document.querySelector('.channel-list');
-  const btn = document.querySelector('.collapse-left');
-  list.classList.toggle('collapsed');
-  const collapsed = list.classList.contains('collapsed');
-  btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
-  localStorage.setItem('channelListCollapsed', collapsed);
-}
-
 // Apply saved collapse state on load
 (function() {
   const list = document.querySelector('.channel-list');
-  const btn = document.querySelector('.collapse-left');
+  const icon = document.querySelector('#toggle-channels .icon');
   if (localStorage.getItem('channelListCollapsed') === 'true') {
     list.classList.add('collapsed');
-    if (btn) btn.textContent = 'chevron_right';
+    if (icon) icon.textContent = 'chevron_right';
   }
 })();
   </script>
