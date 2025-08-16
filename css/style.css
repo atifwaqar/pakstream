@@ -314,7 +314,9 @@ section {
 }
 
 .youtube-section .button-row {
-  display: none;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .youtube-section .channel-card,
@@ -487,51 +489,10 @@ section {
   .youtube-section .details-list.open {
     transform: translateX(0);
   }
-  .youtube-section .channel-toggle {
-    display: inline-block;
-    margin-bottom: 8px;
-  }
-  .youtube-section .button-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .youtube-section .button-row .channel-toggle {
-    margin-bottom: 0;
-  }
 }
 
-/* Collapse buttons */
-.collapse-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  font-size: 20px;
-  align-self: flex-end;
-  color: var(--primary);
-}
-.collapse-btn:hover,
-.collapse-btn:focus {
-  color: var(--hover-primary);
-}
-.channel-list .collapse-left {
-  align-self: flex-start;
-}
-@media (max-width: 768px) {
-  .collapse-btn {
-    display: none;
-  }
-}
 
 @media (min-width: 769px) {
-  .youtube-section .channel-toggle,
-  .youtube-section .details-toggle {
-    display: none;
-  }
-  .youtube-section .button-row {
-    display: none;
-  }
   .youtube-section .channel-list {
     position: sticky;
     top: 72px;
@@ -637,6 +598,41 @@ button:hover,
 .channel-toggle:hover,
 .details-toggle:hover {
   background: var(--primary-container);
+}
+
+.channel-toggle .icon,
+.details-toggle .icon {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .channel-toggle,
+  .details-toggle {
+    background: none;
+    color: var(--primary);
+    border: none;
+    padding: 4px;
+    border-radius: 0;
+    font-size: 20px;
+  }
+
+  .channel-toggle .label,
+  .details-toggle .label {
+    display: none;
+  }
+
+  .channel-toggle .icon,
+  .details-toggle .icon {
+    display: inline-block;
+  }
+
+  .channel-toggle:hover,
+  .channel-toggle:focus,
+  .details-toggle:hover,
+  .details-toggle:focus {
+    background: none;
+    color: var(--hover-primary);
+  }
 }
 
 .feature-card:hover,
