@@ -32,6 +32,8 @@
   --favorite-row: #00796B;
   --hover-primary: #00695C;
   --hover-link: #1565C0;
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: var(--outline);
 }
 
 /* -------- Dark Theme -------- */
@@ -66,4 +68,6 @@
   --favorite-row: #00796B;
   --hover-primary: #00695C;
   --hover-link: #64B5F6;
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: var(--outline);
 }
