@@ -35,6 +35,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const newMode = new URL(link.href, location.origin).searchParams.get('m');
         const tab = Array.from(tabs).find(t => t.dataset.mode === newMode);
         if (tab) tab.click();
+
+        if (window.innerWidth <= 768) {
+          const list = document.querySelector('.channel-list');
+          if (list && !list.classList.contains('open') && typeof window.toggleChannelList === 'function') {
+            window.toggleChannelList();
+          }
+        }
       }
     });
   });
