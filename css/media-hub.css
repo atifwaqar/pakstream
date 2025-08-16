@@ -1,3 +1,8 @@
+.mode-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+.tab-btn { padding:8px 14px; border:1px solid var(--border-muted,#e1e5e7); background:#eef3f2; border-radius:8px; cursor:pointer; }
+.tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
+.live-player .audio-wrap { background:#fff; border-radius:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); padding:12px; }
+
 /* layout that mirrors your existing pages */
 .page-wrap { padding-top: 12px; }
 .tabs-row { display:flex; gap:8px; margin:8px 0 12px; }
