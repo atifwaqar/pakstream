@@ -503,16 +503,6 @@
     function toggleChannelCollapse() {
       const list = document.querySelector('.channel-list');
       const btn = document.querySelector('.collapse-left');
-      const cards = list.querySelectorAll('.channel-card');
-      if (!list.classList.contains('collapsed')) {
-        cards.forEach(card => {
-          card.style.setProperty('--collapsed-size', card.offsetHeight + 'px');
-        });
-      } else {
-        cards.forEach(card => {
-          card.style.removeProperty('--collapsed-size');
-        });
-      }
       list.classList.toggle('collapsed');
       const collapsed = list.classList.contains('collapsed');
       btn.textContent = collapsed ? 'chevron_right' : 'chevron_left';
