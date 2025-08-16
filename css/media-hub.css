@@ -1,9 +1,35 @@
 /* Left rail header with tabs + search */
-.left-rail-header { position: sticky; top: 0; background: var(--bg, #fff); z-index: 2; padding: 8px 8px 10px; }
+.left-rail-header {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  color: var(--on-surface);
+  z-index: 2;
+  padding: 8px 8px 10px;
+  border-bottom: 1px solid var(--outline);
+}
 .mode-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-.tab-btn { padding:8px 12px; border:1px solid var(--border-muted,#e1e5e7); background:#eef3f2; border-radius:8px; cursor:pointer; }
-.tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
-.search-wrap input { width:100%; padding:8px 10px; border:1px solid #e1e5e7; border-radius:8px; }
+.tab-btn {
+  padding:8px 12px;
+  border:1px solid var(--surface-variant);
+  background:var(--surface-variant);
+  color:var(--on-surface);
+  border-radius:8px;
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
+.search-wrap input {
+  width:100%;
+  padding:8px 10px;
+  border:1px solid var(--outline);
+  background:var(--surface);
+  color:var(--on-surface);
+  border-radius:8px;
+}
 
 /* Make video list look like cards */
 .video-list { margin-top:12px; }
@@ -16,21 +42,50 @@
 
 
 .mode-tabs { display:flex; gap:8px; flex-wrap:wrap; }
-.tab-btn { padding:8px 14px; border:1px solid var(--border-muted,#e1e5e7); background:#eef3f2; border-radius:8px; cursor:pointer; }
-.tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
+.tab-btn {
+  padding:8px 14px;
+  border:1px solid var(--surface-variant);
+  background:var(--surface-variant);
+  color:var(--on-surface);
+  border-radius:8px;
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
 .live-player .audio-wrap { background:#fff; border-radius:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); padding:12px; }
 
 /* layout that mirrors your existing pages */
 .page-wrap { padding-top: 12px; }
 .tabs-row { display:flex; gap:8px; margin:8px 0 12px; }
-.tab-btn { background:#eef3f2; border:1px solid #dbe7e4; border-radius:8px; padding:8px 14px; cursor:pointer; }
-.tab-btn.active { background:#e2f2ee; border-color:#c7e3db; }
+.tab-btn {
+  background:var(--surface-variant);
+  border:1px solid var(--surface-variant);
+  border-radius:8px;
+  padding:8px 14px;
+  color:var(--on-surface);
+  cursor:pointer;
+}
+.tab-btn.active {
+  background:var(--primary-container);
+  border-color:var(--primary);
+  color:var(--on-primary-container);
+}
 .content-grid { display:grid; gap:16px; grid-template-columns: 320px 1fr 340px; }
 .left-rail { min-width:280px; }
 .center-rail { min-width:0; }
 .right-rail { min-width:300px; }
 .search-wrap { margin:6px 0 10px; }
-.search-wrap input { width:100%; padding:8px 10px; border:1px solid #e1e5e7; border-radius:8px; }
+.search-wrap input {
+  width:100%;
+  padding:8px 10px;
+  border:1px solid var(--outline);
+  background:var(--surface);
+  color:var(--on-surface);
+  border-radius:8px;
+}
 
 /* reuse your card list visuals */
 /* Match height with Free Press channel list */
