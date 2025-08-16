@@ -13,10 +13,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
 
-  // Handle top navigation submenu links without reloading
-  const topLinks = document.querySelectorAll('.dropdown-content a[href*="media-hub.html"]');
+  // Handle top navigation submenu on the media hub page
+  const dropdown = document.querySelector('.nav-links .dropdown');
+  const topLink = dropdown ? dropdown.querySelector('a[href*="media-hub.html"]') : null;
+  if (topLink && topLink.pathname === location.pathname) {
+    topLink.addEventListener('click', (e) => {
+      // Only toggle the submenu, don't navigate
+      e.preventDefault();
+      dropdown.classList.toggle('open');
+    });
+  }
+
+  const topLinks = dropdown ? dropdown.querySelectorAll('.dropdown-content a[href*="media-hub.html"]') : [];
   topLinks.forEach(link => {
     link.addEventListener('click', (e) => {
+      // Always close the submenu first
+      dropdown.classList.remove('open');
+
       if (link.pathname === location.pathname) {
         e.preventDefault();
         const newMode = new URL(link.href, location.origin).searchParams.get('m');
