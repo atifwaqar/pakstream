@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(location.search);
-  if (!params.has("m") && params.has("c")) {
+  if (!params.has("m")) {
     params.set("m", "all");
     history.replaceState(null, "", `${location.pathname}?${params}`);
   }
-  let mode = params.get("m") || "tv"; // default, will auto-correct based on data
+  let mode = params.get("m") || "all"; // default, will auto-correct based on data
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
