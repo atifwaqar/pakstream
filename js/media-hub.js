@@ -116,6 +116,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "tv";
   };
 
+  function timeAgo(dateString) {
+    const seconds = (Date.now() - new Date(dateString)) / 1000;
+    const intervals = [
+      { label: 'year', seconds: 31536000 },
+      { label: 'month', seconds: 2592000 },
+      { label: 'day', seconds: 86400 },
+      { label: 'hour', seconds: 3600 },
+      { label: 'minute', seconds: 60 }
+    ];
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count >= 1) return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+    }
+    return 'Just now';
+  }
+
+  async function fetchVideoDetails(videoId) {
+    const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
+    if (!resp.ok) throw new Error('Failed to load video details');
+    return resp.json();
+  }
+
   // Determine which modes are available based on current data
   function modeHasItems(m) {
     const list = filteredByMode(m, "");
@@ -516,6 +538,7 @@ async function renderLatestVideosRSS(channelId) {
     entries.forEach(en => {
       const vid = en.querySelector("yt\\:videoId, videoId")?.textContent;
       const title = en.querySelector("title")?.textContent || "Video";
+      const published = en.querySelector("published")?.textContent || "";
       if (!vid) return;
 
       const row = document.createElement("div");
@@ -526,12 +549,22 @@ async function renderLatestVideosRSS(channelId) {
       img.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
       img.alt = "";
 
+      const detailsWrap = document.createElement("div");
+      detailsWrap.className = "video-details";
+
+      const titleEl = document.createElement("div");
+      titleEl.className = "video-title";
+      titleEl.textContent = title;
+
       const meta = document.createElement("div");
       meta.className = "video-meta";
-      meta.textContent = title;
+      meta.textContent = `Loading views…${published ? " • " + timeAgo(published) : ""}`;
+
+      detailsWrap.appendChild(titleEl);
+      detailsWrap.appendChild(meta);
 
       row.appendChild(img);
-      row.appendChild(meta);
+      row.appendChild(detailsWrap);
       row.addEventListener("click", () => {
         if (playerIF) {
           playerIF.style.display = "";
@@ -544,6 +577,13 @@ async function renderLatestVideosRSS(channelId) {
       });
 
       videoList.appendChild(row);
+
+      fetchVideoDetails(vid).then(info => {
+        const viewsText = info.view_count ? `${Number(info.view_count).toLocaleString()} views` : 'Views unavailable';
+        meta.textContent = `${viewsText}${published ? " • " + timeAgo(published) : ""}`;
+      }).catch(() => {
+        meta.textContent = `Views unavailable${published ? " • " + timeAgo(published) : ""}`;
+      });
     });
   } catch (e) {
     // Keep list empty if proxies fail; no console noise
