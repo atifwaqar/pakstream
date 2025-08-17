@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
     topBar.insertBefore(backBtn, label.nextSibling);
   }
 
-  if (topBar) {
+  // The media hub has its own search in the left menu, so skip the top-bar search there.
+  if (topBar && currentPath !== '/media-hub.html') {
     var themeBtn = themeToggle;
     var logoTitle = document.querySelector('.logo-title');
     var searchForm = document.createElement('form');
