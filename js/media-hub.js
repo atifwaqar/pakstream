@@ -615,6 +615,11 @@ async function renderLatestVideosRSS(channelId) {
 
     currentVideoKey = null;
 
+    // Ensure any previously displayed video list is cleared when
+    // switching to a radio stream, since radio channels don't have
+    // associated video playlists.
+    if (videoList) videoList.innerHTML = "";
+
     // stop previous
     if (currentAudio && currentAudio !== audio) {
       currentAudio.pause();
