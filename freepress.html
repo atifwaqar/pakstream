@@ -555,14 +555,6 @@
         cards.forEach(card => card.addEventListener('click', () => handleChannelClick(card)));
 
         // Fallback: load detailed info if missing in unified source
-        try {
-          const legacy = await fetch('/freepress_channels.json').then(r => r.json());
-          (legacy.channels || []).forEach(ch => {
-            if (!detailsMap[ch.key]) detailsMap[ch.key] = ch.about || '';
-            if (!profilesMap[ch.key]) profilesMap[ch.key] = ch.profiles || [];
-          });
-        } catch (_) {}
-
         const urlParams = new URLSearchParams(window.location.search);
         const anchorKey = urlParams.get('newsanchor');
         const defaultCard = document.querySelector('.channel-card');
