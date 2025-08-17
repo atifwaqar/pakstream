@@ -1001,7 +1001,7 @@
     },
     {
       "key": "radio-quran",
-      "name": "#radio quran",
+      "name": "radio quran",
       "type": "radio",
       "platform": "audio",
       "media": {
