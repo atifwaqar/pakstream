@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "generated_utc": "2025-08-16T14:02:28.554247Z",
+  "generated_utc": "2025-08-17T00:53:05Z",
   "source_urls": {
-    "radio_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/radio_channels.json",
-    "freepress_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/freepress_channels.json",
-    "channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/channels.json",
-    "creators_channels": "https://raw.githubusercontent.com/atifwaqar/pakstream/refs/heads/main/creators_channels.json"
+    "radio_channels": "uploaded_zip/radio_channels.json",
+    "freepress_channels": "uploaded_zip/freepress_channels.json",
+    "channels": "uploaded_zip/channels.json",
+    "creators_channels": "uploaded_zip/creators_channels.json"
   },
-  "notes": "Includes radio, tv, creators, and a minimal mapping for freepress (about_html/profiles omitted in this build).",
+  "notes": "Merged from uploaded files; normalized to PakStream schema (radio/tv/creators/freepress).",
   "items": [
     {
       "key": "hum-fm-1062",
@@ -2867,6 +2867,540 @@
       },
       "status": {
         "active": true
+      }
+    },
+    {
+      "key": "radio-quran",
+      "name": "radio quran",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [
+        {
+          "kind": "stream",
+          "provider": "n13.radiojar.com",
+          "url": "https://n13.radiojar.com/0tpy1h0kxtzuv?rj-ttl=5&rj-tok=AAABmGWzgMEA_wJ70s6N_TYhlA"
+        }
+      ],
+      "ids": {
+        "internal_id": "audio1"
+      },
+      "status": {
+        "active": true
+      }
+    },
+    {
+      "key": "100-fm-lahore",
+      "name": "100 FM (Lahore)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/100-lahore.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2001"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "101-fm-karachi",
+      "name": "101 FM (Karachi)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/101-fm-karachi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2002"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "aladin-radio",
+      "name": "Aladin Radio",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/aladin.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2003"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "apna",
+      "name": "Apna",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/apna-107.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2004"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "apna-fm-karachi",
+      "name": "Apna FM (Karachi)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/apna-karachi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2005"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "big-fm",
+      "name": "Big FM",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/big.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2006"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "city-karachi",
+      "name": "City (Karachi)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/city-karachi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2007"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "city-lahore",
+      "name": "City (Lahore)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/city-lahore.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2008"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "fm-100",
+      "name": "FM 100",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/fm-100.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2009"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "fm-karachi-radio",
+      "name": "FM Karachi Radio",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/karachi-fm-live.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2013"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "fm-world",
+      "name": "FM World",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/fm-world.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2014"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "funcafe-web-radio",
+      "name": "FunCafe Web Radio",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/funcafe.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2015"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "hot-fm",
+      "name": "Hot FM",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/hot-fm.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2016"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "hot-fm-karachi",
+      "name": "Hot FM (Karachi)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/hot-karachi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2017"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "mast-karachi",
+      "name": "Mast (Karachi)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/mast-karachi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2018"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "mast-fm",
+      "name": "Mast FM",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/mast-fm.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2019"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "mast-fm-lahore",
+      "name": "Mast FM (Lahore)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/mast-lahore.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2020"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "power-fm-99",
+      "name": "Power FM 99",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/power-99.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2022"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "radio-awaz",
+      "name": "Radio Awaz",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/awaz-106.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2023"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "radio-fm",
+      "name": "Radio FM",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2024"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "radio-jeevay-fm",
+      "name": "Radio Jeevay FM",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/jeevay.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2025"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "radio-pak-filmi",
+      "name": "Radio Pak Filmi",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/pak-filmi.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2027"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "riphah-fm-islamabad",
+      "name": "Riphah FM (Islamabad)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/riphah.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2028"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "spice",
+      "name": "Spice",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/spice-fm-107.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2029"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "suno-urdu-live",
+      "name": "Suno Urdu Live",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/suno-urdu-live.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2030"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "sunrise-radio-fm-hasan-abdal",
+      "name": "Sunrise Radio FM (Hasan Abdal)",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/sunrise-hasan-abda.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2031"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "voa-deewa",
+      "name": "VOA Deewa",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/stations/voa-deewa.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "audio2032"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "hamid-mir",
+      "name": "Hamid Mir",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "UC5N0MlMQopPTGMLUxHISfDg"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "habib-akram",
+      "name": "Habib Akram",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "UC5kUxR5q8SKtGB-9z7Rr1Iw"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "asad-toor",
+      "name": "Asad Toor",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "UCXORDenrw6IHFUvg0PH-3hg"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "wajahat-saeed-khan",
+      "name": "Wajahat Saeed Khan",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "UCxaMbYDd4o_zVvfr9_wKAxQ"
+      },
+      "status": {
+        "active": false
+      }
+    },
+    {
+      "key": "zaeem-leghari",
+      "name": "Zaeem leghari",
+      "type": "radio",
+      "platform": "audio",
+      "media": {
+        "logo_url": "/images/default_radio.png"
+      },
+      "endpoints": [],
+      "ids": {
+        "internal_id": "UCfTQGgFP5U53mcbbRRLl1yQ"
+      },
+      "status": {
+        "active": false
       }
     }
   ]
