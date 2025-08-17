@@ -488,8 +488,8 @@ async function renderLatestVideosRSS(channelId) {
     let xml = "";
     try {
       xml = await fetch(proxy1, { cache: "no-store" }).then(r => r.text());
-      // r.jina.ai sometimes returns JSON for non-200; cheap sanity check:
-      if (!xml || xml[0] === "{") throw new Error("Proxy1 bad shape");
+      // r.jina.ai may return non-XML (markdown/JSON); ensure we have XML, otherwise fallback
+      if (!xml || !xml.trim().startsWith("<")) throw new Error("Proxy1 bad shape");
     } catch {
       xml = await fetch(proxy2, { cache: "no-store" }).then(r => r.text());
     }
