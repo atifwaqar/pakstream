@@ -32,13 +32,6 @@
   box-sizing:border-box;
 }
 
-/* Make video list look like cards */
-.video-list { margin-top:12px; }
-.video-item { display:flex; gap:10px; padding:8px 10px; border-radius:10px; background:#fff; margin-bottom:8px; cursor:pointer; }
-.video-item:hover { background:#f6f9f9; }
-.video-thumb { width:120px; height:68px; border-radius:8px; object-fit:cover; }
-.video-meta { display:flex; align-items:center; font-weight:600; }
-
 /* Responsive keeps your existing behavior */
 
 
@@ -100,12 +93,9 @@
 .channel-thumb { width:40px; height:40px; border-radius:8px; object-fit:cover; }
 .youtube-section .channel-card .play-btn { display:none; }
 
+
 .player-container iframe, .player-container .audio-wrap { width:100%; border:0; border-radius:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
 .player-container .audio-wrap { padding:14px; background:#fff; }
-
-.video-list { margin-top:12px; }
-.video-item { display:flex; gap:10px; padding:8px 10px; border-radius:10px; background:#fff; margin-bottom:8px; }
-.video-thumb { width:120px; height:68px; border-radius:8px; object-fit:cover; }
 
 .details-list { background:#fff; border-radius:14px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
 .detail-item { margin-bottom:6px; }
