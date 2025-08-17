@@ -405,8 +405,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!listEl) return;
 
     // Get items; if none for current mode, auto-switch to an available mode
+    // Only auto-switch when not actively filtering to avoid jumping tabs during search
     let arr = filteredByMode(mode, filterText);
-    if (arr.length === 0 && mode !== 'favorites') {
+    if (!filterText && arr.length === 0 && mode !== 'favorites') {
       mode = detectAvailableMode();
       params.set("m", mode);
       history.replaceState(null, "", "?" + params.toString());
@@ -445,7 +446,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             const card = listEl.querySelector(`.channel-card[data-key="${match.key}"]`);
             const btn = card ? card.querySelector('.play-btn') : null;
             const audio = card ? card.querySelector('audio') : null;
-            if (btn && audio) {
+            const matchId = match.ids?.internal_id || match.key;
+            if (currentAudio && currentAudio.id === matchId) {
+              document.querySelectorAll('.channel-card').forEach(c => c.classList.toggle('active', c.dataset.key === match.key));
+              handled = true;
+            } else if (btn && audio) {
               playRadio(btn, audio, displayName(match), thumbOf(match));
               handled = true;
             }
