@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let pendingBtn = null;
   let currentBtn = null;
   let currentVideoKey = null;
+  let currentVideoChannelId = null;
 
   // Load data
   const res = await fetch("/all_streams.json");
@@ -476,6 +477,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function renderLatestVideosRSS(channelId) {
   if (!videoList) return;
   videoList.innerHTML = "";
+  currentVideoChannelId = channelId;
   if (!channelId) return;
 
   try {
@@ -496,7 +498,7 @@ async function renderLatestVideosRSS(channelId) {
 
     const doc = new DOMParser().parseFromString(xml, "text/xml");
     const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
-    if (!entries.length) return;
+    if (currentVideoChannelId !== channelId || !entries.length) return;
 
     entries.forEach(en => {
       const vid = en.querySelector("yt\\:videoId, videoId")?.textContent;
@@ -548,6 +550,7 @@ async function renderLatestVideosRSS(channelId) {
     history.replaceState(null, "", "?" + params.toString());
 
     if (videoList) videoList.innerHTML = "";
+    currentVideoChannelId = null;
     if (details) details.innerHTML = "";
     if (playerIF) playerIF.style.display = "";
     if (audioWrap) audioWrap.style.display = "none";
@@ -614,6 +617,12 @@ async function renderLatestVideosRSS(channelId) {
     if (!audio) return;
 
     currentVideoKey = null;
+
+    // Ensure any previously displayed video list is cleared when
+    // switching to a radio stream, since radio channels don't have
+    // associated video playlists.
+    if (videoList) videoList.innerHTML = "";
+    currentVideoChannelId = null;
 
     // stop previous
     if (currentAudio && currentAudio !== audio) {
