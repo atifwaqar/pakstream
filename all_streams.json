@@ -3398,7 +3398,7 @@
       "type": "freepress",
       "platform": "youtube",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "https://yt3.ggpht.com/t2HBS8LUfMyss8aFeuGY-9UH28AipjLpCtw4z0PqMHvwXHTogmwQ31Cn7VNYay053k9cCWVv=s800-c-k-c0x00ffffff-no-rj"
       },
       "endpoints": [
         {
