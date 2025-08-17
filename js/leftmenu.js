@@ -5,19 +5,28 @@
   const detailsContainer = document.querySelector('.details-container');
   const detailsToggleBtn = document.getElementById('toggle-details');
 
-  const favoritesTab = document.querySelector('.tab-btn[data-mode="favorites"]');
-  const favoritesTabDefault = favoritesTab?.textContent.trim() || '';
+  const modeTabs = [
+    { el: document.querySelector('.tab-btn[data-mode="favorites"]'), icon: 'favorite' },
+    { el: document.querySelector('.tab-btn[data-mode="tv"]'), icon: 'live_tv' },
+    { el: document.querySelector('.tab-btn[data-mode="radio"]'), icon: 'radio' }
+  ];
 
-  function updateFavoritesTab() {
-    if (!favoritesTab) return;
+  modeTabs.forEach(tab => {
+    tab.default = tab.el?.textContent.trim() || '';
+  });
+
+  function updateModeTabs() {
     const collapsed = channelList?.classList.contains('collapsed');
-    if (collapsed) {
-      favoritesTab.classList.add('fav-btn', 'material-symbols-outlined');
-      favoritesTab.textContent = 'favorite';
-    } else {
-      favoritesTab.classList.remove('fav-btn', 'material-symbols-outlined');
-      favoritesTab.textContent = favoritesTabDefault;
-    }
+    modeTabs.forEach(tab => {
+      if (!tab.el) return;
+      if (collapsed) {
+        tab.el.classList.add('fav-btn', 'material-symbols-outlined');
+        tab.el.textContent = tab.icon;
+      } else {
+        tab.el.classList.remove('fav-btn', 'material-symbols-outlined');
+        tab.el.textContent = tab.default;
+      }
+    });
   }
 
   const channelLabelEl = channelToggleBtn?.querySelector('.label');
@@ -43,7 +52,7 @@
       if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
       localStorage.setItem('channelListCollapsed', collapsed);
     }
-    updateFavoritesTab();
+    updateModeTabs();
   }
   window.toggleChannelList = toggleChannelList;
 
@@ -198,7 +207,7 @@
         channelList.classList.add('collapsed');
         if (icon) icon.textContent = 'chevron_right';
       }
-      updateFavoritesTab();
+      updateModeTabs();
     }
     if (detailsContainer && detailsToggleBtn) {
       const icon = detailsToggleBtn.querySelector('.icon');
