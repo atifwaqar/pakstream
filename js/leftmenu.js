@@ -5,6 +5,30 @@
   const detailsContainer = document.querySelector('.details-container');
   const detailsToggleBtn = document.getElementById('toggle-details');
 
+  const modeTabs = [
+    { el: document.querySelector('.tab-btn[data-mode="favorites"]'), icon: 'favorite' },
+    { el: document.querySelector('.tab-btn[data-mode="tv"]'), icon: 'live_tv' },
+    { el: document.querySelector('.tab-btn[data-mode="radio"]'), icon: 'radio' }
+  ];
+
+  modeTabs.forEach(tab => {
+    tab.default = tab.el?.textContent.trim() || '';
+  });
+
+  function updateModeTabs() {
+    const collapsed = channelList?.classList.contains('collapsed');
+    modeTabs.forEach(tab => {
+      if (!tab.el) return;
+      if (collapsed) {
+        tab.el.classList.add('fav-btn', 'material-symbols-outlined');
+        tab.el.textContent = tab.icon;
+      } else {
+        tab.el.classList.remove('fav-btn', 'material-symbols-outlined');
+        tab.el.textContent = tab.default;
+      }
+    });
+  }
+
   const channelLabelEl = channelToggleBtn?.querySelector('.label');
   const channelToggleDefaultText = channelLabelEl?.textContent || channelToggleBtn?.textContent || '';
   if (channelLabelEl) channelLabelEl.dataset.default = channelToggleDefaultText;
@@ -28,6 +52,7 @@
       if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
       localStorage.setItem('channelListCollapsed', collapsed);
     }
+    updateModeTabs();
   }
   window.toggleChannelList = toggleChannelList;
 
@@ -182,6 +207,7 @@
         channelList.classList.add('collapsed');
         if (icon) icon.textContent = 'chevron_right';
       }
+      updateModeTabs();
     }
     if (detailsContainer && detailsToggleBtn) {
       const icon = detailsToggleBtn.querySelector('.icon');

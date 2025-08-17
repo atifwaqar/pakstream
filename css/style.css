@@ -581,9 +581,9 @@ section {
     border-radius: 50%;
     object-fit: cover;
   }
-  .youtube-section .channel-list.collapsed .channel-name,
-  .youtube-section .channel-list.collapsed .play-btn,
-  .youtube-section .channel-list.collapsed .fav-btn {
+  .youtube-section .channel-list.collapsed .channel-card .channel-name,
+  .youtube-section .channel-list.collapsed .channel-card .play-btn,
+  .youtube-section .channel-list.collapsed .channel-card .fav-btn {
     display: none;
   }
   .youtube-section .details-container.collapsed {
