@@ -22,9 +22,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   const topLink = dropdown ? dropdown.querySelector('a[href*="media-hub.html"]') : null;
   if (topLink && topLink.pathname === location.pathname) {
     topLink.addEventListener('click', (e) => {
-      // Only toggle the submenu, don't navigate
-      e.preventDefault();
-      dropdown.classList.toggle('open');
+      if (window.innerWidth <= 768) {
+        // On small screens, go directly to the main Media Hub with the
+        // "All" tab selected and the channel list visible.
+        e.preventDefault();
+        const allTab = document.querySelector('.tab-btn[data-mode="all"]');
+        if (allTab) allTab.click();
+        const list = document.querySelector('.channel-list');
+        if (list && !list.classList.contains('open') && typeof window.toggleChannelList === 'function') {
+          window.toggleChannelList();
+        }
+        dropdown.classList.remove('open');
+      } else {
+        // Only toggle the submenu, don't navigate
+        e.preventDefault();
+        dropdown.classList.toggle('open');
+      }
     });
   }
 
