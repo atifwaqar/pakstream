@@ -155,6 +155,17 @@ footer nav a:hover {
     background: color-mix(in oklab, var(--primary) 12%, transparent);
   }
 
+@media (max-width: 768px) {
+  /* On small screens hide the Media Hub dropdown menu */
+  .nav-links .dropdown-content {
+    display: none !important;
+    position: static;
+    border: 0;
+    background: none;
+    padding: 0;
+  }
+}
+
 .search-form {
   margin-left: 16px;
   position: relative;
