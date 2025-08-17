@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_utc": "2025-08-17T00:53:05Z",
+  "generated_utc": "2025-08-17T00:58:32Z",
   "source_urls": {
     "radio_channels": "uploaded_zip/radio_channels.json",
     "freepress_channels": "uploaded_zip/freepress_channels.json",
@@ -3326,14 +3326,21 @@
     {
       "key": "hamid-mir",
       "name": "Hamid Mir",
-      "type": "radio",
-      "platform": "audio",
+      "type": "freepress",
+      "platform": "youtube",
       "media": {
         "logo_url": "/images/default_radio.png"
       },
-      "endpoints": [],
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UC5N0MlMQopPTGMLUxHISfDg"
+        }
+      ],
       "ids": {
-        "internal_id": "UC5N0MlMQopPTGMLUxHISfDg"
+        "internal_id": "UC5N0MlMQopPTGMLUxHISfDg",
+        "youtube_channel_id": "UC5N0MlMQopPTGMLUxHISfDg"
       },
       "status": {
         "active": false
@@ -3342,14 +3349,21 @@
     {
       "key": "habib-akram",
       "name": "Habib Akram",
-      "type": "radio",
-      "platform": "audio",
+      "type": "freepress",
+      "platform": "youtube",
       "media": {
         "logo_url": "/images/default_radio.png"
       },
-      "endpoints": [],
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UC5kUxR5q8SKtGB-9z7Rr1Iw"
+        }
+      ],
       "ids": {
-        "internal_id": "UC5kUxR5q8SKtGB-9z7Rr1Iw"
+        "internal_id": "UC5kUxR5q8SKtGB-9z7Rr1Iw",
+        "youtube_channel_id": "UC5kUxR5q8SKtGB-9z7Rr1Iw"
       },
       "status": {
         "active": false
@@ -3358,14 +3372,21 @@
     {
       "key": "asad-toor",
       "name": "Asad Toor",
-      "type": "radio",
-      "platform": "audio",
+      "type": "freepress",
+      "platform": "youtube",
       "media": {
         "logo_url": "/images/default_radio.png"
       },
-      "endpoints": [],
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCXORDenrw6IHFUvg0PH-3hg"
+        }
+      ],
       "ids": {
-        "internal_id": "UCXORDenrw6IHFUvg0PH-3hg"
+        "internal_id": "UCXORDenrw6IHFUvg0PH-3hg",
+        "youtube_channel_id": "UCXORDenrw6IHFUvg0PH-3hg"
       },
       "status": {
         "active": false
@@ -3374,14 +3395,21 @@
     {
       "key": "wajahat-saeed-khan",
       "name": "Wajahat Saeed Khan",
-      "type": "radio",
-      "platform": "audio",
+      "type": "freepress",
+      "platform": "youtube",
       "media": {
         "logo_url": "/images/default_radio.png"
       },
-      "endpoints": [],
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCxaMbYDd4o_zVvfr9_wKAxQ"
+        }
+      ],
       "ids": {
-        "internal_id": "UCxaMbYDd4o_zVvfr9_wKAxQ"
+        "internal_id": "UCxaMbYDd4o_zVvfr9_wKAxQ",
+        "youtube_channel_id": "UCxaMbYDd4o_zVvfr9_wKAxQ"
       },
       "status": {
         "active": false
@@ -3390,14 +3418,21 @@
     {
       "key": "zaeem-leghari",
       "name": "Zaeem leghari",
-      "type": "radio",
-      "platform": "audio",
+      "type": "freepress",
+      "platform": "youtube",
       "media": {
         "logo_url": "/images/default_radio.png"
       },
-      "endpoints": [],
+      "endpoints": [
+        {
+          "kind": "channel",
+          "provider": "youtube",
+          "url": "https://www.youtube.com/channel/UCfTQGgFP5U53mcbbRRLl1yQ"
+        }
+      ],
       "ids": {
-        "internal_id": "UCfTQGgFP5U53mcbbRRLl1yQ"
+        "internal_id": "UCfTQGgFP5U53mcbbRRLl1yQ",
+        "youtube_channel_id": "UCfTQGgFP5U53mcbbRRLl1yQ"
       },
       "status": {
         "active": false
