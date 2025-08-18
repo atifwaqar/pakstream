@@ -89,8 +89,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
         '*'
       );
+      if (!muted) {
+        playerIF.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+          '*'
+        );
+      }
     }
   };
+
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'media-hub-set-muted') {
+      window.setMuted(!!event.data.muted);
+    }
+  });
 
   const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
   let favorites;
