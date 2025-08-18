@@ -530,6 +530,15 @@ section {
   flex-direction: column;
 }
 
+.video-list .video-item .video-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
 .video-list .video-item .video-meta {
   font-size: 0.875rem;
   color: var(--on-surface-variant);
