@@ -400,14 +400,16 @@
         }
 
         // Non-blocking view count (best effort)
-        fetchVideoDetails(videoId).then(details => {
-          const meta = itemEl.querySelector('.video-meta');
-          const viewsText = details.view_count ? `${Number(details.view_count).toLocaleString()} views` : 'Views unavailable';
-          meta.textContent = `${viewsText} • ${timeAgo(video.pubDate)}`;
-        }).catch(() => {
-          const meta = itemEl.querySelector('.video-meta');
-          meta.textContent = `Views unavailable • ${timeAgo(video.pubDate)}`;
-        });
+          fetchVideoDetails(videoId).then(details => {
+            const meta = itemEl.querySelector('.video-meta');
+            const viewsText = details.view_count ? `${Number(details.view_count).toLocaleString()} views` : null;
+            meta.textContent = viewsText
+              ? `${viewsText} • ${timeAgo(video.pubDate)}`
+              : `${timeAgo(video.pubDate)}`;
+          }).catch(() => {
+            const meta = itemEl.querySelector('.video-meta');
+            meta.textContent = `${timeAgo(video.pubDate)}`;
+          });
       });
     } catch (err) {
       console.error(err);
