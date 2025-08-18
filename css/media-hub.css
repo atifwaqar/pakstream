@@ -13,6 +13,14 @@
 .media-hub-section .video-section { grid-area: center; }
 .media-hub-section .details-container { grid-area: right; }
 
+/* Hide right rail when there are no details to show */
+.media-hub-section.no-details {
+  grid-template-columns: 220px 1fr;
+}
+.media-hub-section.no-details .details-container {
+  display: none;
+}
+
 @media (max-width: 1080px) {
   .media-hub-section {
     grid-template-columns: 220px 1fr;
