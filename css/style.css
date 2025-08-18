@@ -403,7 +403,6 @@ section {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
-  min-height: var(--button-row-min, 0px);
 }
 
 .youtube-section .channel-card,
@@ -492,7 +491,6 @@ section {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 120px);
-  min-height: var(--video-section-min, 315px);
 }
 
 .video-section iframe {
@@ -502,21 +500,9 @@ section {
   border-radius: 4px;
 }
 
-.live-player {
-  min-height: 315px;
-}
-
-.youtube-section.media-hub-section {
-  --button-row-min: 56px;
-  --video-list-min: 100px;
-  --video-section-min: calc(315px + var(--button-row-min) + var(--video-list-min));
-  min-height: var(--video-section-min);
-}
-
 .video-section .video-list {
   flex: 1 1 auto;
   overflow-y: auto;
-  min-height: var(--video-list-min, 0px);
 }
 
 .video-list .video-item {
