@@ -1,3 +1,34 @@
+/* Layout: mode tabs on top, channel list and video section below */
+.media-hub-section {
+  display: grid;
+  grid-template-columns: 220px 1fr 300px;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  grid-template-areas:
+    "tabs tabs tabs"
+    "left center right";
+}
+.media-hub-section .mode-tabs { grid-area: tabs; }
+.media-hub-section #left-rail { grid-area: left; }
+.media-hub-section .video-section { grid-area: center; }
+.media-hub-section .details-container { grid-area: right; }
+
+@media (max-width: 1080px) {
+  .media-hub-section {
+    grid-template-columns: 220px 1fr;
+    grid-template-areas:
+      "tabs tabs"
+      "left center";
+  }
+  .media-hub-section .details-container { display: none; }
+}
+
+@media (max-width: 768px) {
+  .media-hub-section {
+    display: block;
+  }
+}
+
 /* Left rail header with tabs + search */
 .left-rail-header {
   position: sticky;
