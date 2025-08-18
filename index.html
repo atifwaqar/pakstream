@@ -118,7 +118,7 @@
       <h3>Free Press</h3>
       <p>Stay updated with the latest new from Independent Voices.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=imranriazkhan" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=imranriazkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
     </div>
     <div class="feature-card">
@@ -126,7 +126,7 @@
       <h3>Popular Radio Stations</h3>
       <p>Listen to trending Pakistani radio.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
     </div>
     <div class="feature-card">
@@ -134,7 +134,7 @@
       <h3>Live TV Channels</h3>
       <p>Watch the most viewed live TV streams.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=tv" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=tv&muted=1" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
     </div>
   </section>
@@ -206,6 +206,24 @@
     </nav>
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.feature-card').forEach(function (card) {
+        var iframe = card.querySelector('.media-hub-embed');
+        if (!iframe) return;
+        card.addEventListener('mouseenter', function () {
+          if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+            iframe.contentWindow.setMuted(false);
+          }
+        });
+        card.addEventListener('mouseleave', function () {
+          if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+            iframe.contentWindow.setMuted(true);
+          }
+        });
+      });
+    });
+  </script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
