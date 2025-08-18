@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     history.replaceState(null, "", `${location.pathname}?${params}`);
   }
   let mode = params.get("m") || "all"; // default, will auto-correct based on data
+  const isMuted = params.get("muted") === "1";
+  const muteParam = isMuted ? "&mute=1" : "";
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
@@ -66,6 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
   const mainPlayer = document.getElementById("radio-player");
+  if (mainPlayer && isMuted) mainPlayer.muted = true;
   const currentLabel = document.getElementById("current-station");
   const stationLogo = document.getElementById("station-logo");
   const liveBadge = document.getElementById("live-badge");
@@ -568,7 +571,7 @@ async function renderLatestVideosRSS(channelId) {
       row.addEventListener("click", () => {
         if (playerIF) {
           playerIF.style.display = "";
-          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0${muteParam}`;
         }
         if (audioWrap) audioWrap.style.display = "none";
         if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
@@ -621,12 +624,12 @@ async function renderLatestVideosRSS(channelId) {
     const emb = ytEmbed(item);
     let src = "";
     if (emb) {
-      src = emb.url.includes("?") ? `${emb.url}&autoplay=1` : `${emb.url}?autoplay=1`;
+      src = emb.url.includes("?") ? `${emb.url}&autoplay=1${muteParam}` : `${emb.url}?autoplay=1${muteParam}`;
     } else if (item.ids?.youtube_channel_id) {
       const upl = uploadsId(item.ids.youtube_channel_id);
       src = upl
-        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0`
-        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0`;
+        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0${muteParam}`
+        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0${muteParam}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
 
