@@ -211,7 +211,8 @@
     }
     if (detailsContainer && detailsToggleBtn) {
       const icon = detailsToggleBtn.querySelector('.icon');
-      if (localStorage.getItem('detailsListCollapsed') === 'true') {
+      const collapsedPref = localStorage.getItem('detailsListCollapsed');
+      if (collapsedPref === null || collapsedPref === 'true') {
         detailsContainer.classList.add('collapsed');
         if (icon) icon.textContent = 'chevron_left';
       }
