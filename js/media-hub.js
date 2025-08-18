@@ -176,6 +176,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const hasDetails = details && details.innerHTML.trim().length > 0;
       if (details) details.style.display = hasDetails ? "" : "none";
       if (toggleDetailsBtn) toggleDetailsBtn.style.display = hasDetails ? "" : "none";
+      if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
 
     if (mode === 'favorites') {
@@ -572,6 +573,7 @@ async function renderLatestVideosRSS(channelId) {
         if (playerIF) {
           playerIF.style.display = "";
           playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0${muteParam}`;
+          if (window.resizeLivePlayers) window.resizeLivePlayers();
         }
         if (audioWrap) audioWrap.style.display = "none";
         if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
@@ -632,6 +634,7 @@ async function renderLatestVideosRSS(channelId) {
         : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0${muteParam}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
+    if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
 
     if (item.ids?.youtube_channel_id) {
       renderLatestVideosRSS(item.ids.youtube_channel_id);

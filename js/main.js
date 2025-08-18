@@ -193,6 +193,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateScrollLock();
 
+  // Maintain 16:9 aspect ratio for any live-player iframes
+  function resizeLivePlayers() {
+    document.querySelectorAll('.live-player iframe').forEach(function (iframe) {
+      var w = iframe.clientWidth;
+      if (w > 0) iframe.style.height = (w * 9 / 16) + 'px';
+    });
+  }
+  window.addEventListener('resize', resizeLivePlayers);
+  window.resizeLivePlayers = resizeLivePlayers;
+  resizeLivePlayers();
+
   if ('IntersectionObserver' in window) {
     const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');
     const observer = new IntersectionObserver((entries, obs) => {
