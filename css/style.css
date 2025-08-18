@@ -301,6 +301,41 @@ section {
   color: var(--on-primary-container);
 }
 
+.station-scroller {
+  overflow: hidden;
+  margin: 20px auto;
+  max-width: 960px;
+}
+
+.station-scroller .scroller-track {
+  display: flex;
+  width: max-content;
+  animation: station-scroll 80s linear infinite;
+}
+
+.station-scroller:hover .scroller-track {
+  animation-play-state: paused;
+}
+
+.station-scroller .scroller-track a {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.station-scroller .channel-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+@keyframes station-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* Featured card layout */
 .feature-cards {
   display: flex;

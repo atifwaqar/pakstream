@@ -204,6 +204,37 @@ document.addEventListener('DOMContentLoaded', function () {
   window.resizeLivePlayers = resizeLivePlayers;
   resizeLivePlayers();
 
+  var scroller = document.querySelector('.station-scroller .scroller-track');
+  if (scroller) {
+    fetch('/all_streams.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var items = Array.isArray(data.items) ? data.items : [];
+        var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
+        items.forEach(function (it) {
+          if (it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
+            var mode = typeToMode[it.type] || 'tv';
+            var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
+              ? it.ids.internal_id
+              : it.key;
+            var a = document.createElement('a');
+            a.href = '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode;
+            a.title = it.name || '';
+            var img = document.createElement('img');
+            img.src = it.media.logo_url;
+            img.alt = it.name || '';
+            img.className = 'channel-thumb';
+            a.appendChild(img);
+            scroller.appendChild(a);
+          }
+        });
+        scroller.innerHTML += scroller.innerHTML;
+      })
+      .catch(function (err) {
+        console.error('Failed to load station logos', err);
+      });
+  }
+
   if ('IntersectionObserver' in window) {
     const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');
     const observer = new IntersectionObserver((entries, obs) => {
