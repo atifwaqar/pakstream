@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     history.replaceState(null, "", `${location.pathname}?${params}`);
   }
   let mode = params.get("m") || "all"; // default, will auto-correct based on data
-  const isMuted = params.get("muted") === "1";
-  const muteParam = isMuted ? "&mute=1" : "";
+  let isMuted = params.get("muted") === "1";
+  let muteParam = isMuted ? "&mute=1" : "";
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
@@ -83,6 +83,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const shareBtn = document.getElementById("share-btn");
 
   window.setMuted = function(muted) {
+    isMuted = muted;
+    muteParam = muted ? '&mute=1' : '';
     if (mainPlayer) mainPlayer.muted = muted;
     // Update mute icon to reflect the current state when muting is triggered
     if (muteBtn) {
