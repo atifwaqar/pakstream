@@ -204,27 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.resizeLivePlayers = resizeLivePlayers;
   resizeLivePlayers();
 
-  var scroller = document.querySelector('.station-scroller .scroller-track');
-  if (scroller) {
-    fetch('/all_streams.json')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var items = Array.isArray(data.items) ? data.items : [];
-        items.forEach(function (it) {
-          if (it.media && it.media.logo_url) {
-            var img = document.createElement('img');
-            img.src = it.media.logo_url;
-            img.alt = '';
-            scroller.appendChild(img);
-          }
-        });
-        scroller.innerHTML += scroller.innerHTML;
-      })
-      .catch(function (err) {
-        console.error('Failed to load station logos', err);
-      });
-  }
-
   if ('IntersectionObserver' in window) {
     const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');
     const observer = new IntersectionObserver((entries, obs) => {
