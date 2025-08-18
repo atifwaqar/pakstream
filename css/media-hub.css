@@ -91,7 +91,8 @@
 .channel-card { display:flex; align-items:center; gap:10px; padding:10px 12px; background:#fff; border-radius:14px; margin-bottom:10px; box-shadow:var(--card-shadow,0 1px 3px rgba(0,0,0,.06)); }
 .channel-card.active { outline:2px solid #0f7d73; }
 .channel-thumb { width:40px; height:40px; border-radius:8px; object-fit:cover; }
-.youtube-section .channel-card .play-btn { display:none; }
+.youtube-section .channel-card .play-btn,
+.media-hub-section .channel-card .play-btn { display:none; }
 
 
 .player-container iframe, .player-container .audio-wrap { width:100%; border:0; border-radius:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
@@ -113,7 +114,8 @@
 
 /* Make left menu cover full height on mobile */
 @media (max-width: 768px) {
-  .youtube-section .channel-list {
+  .youtube-section .channel-list,
+  .media-hub-section .channel-list {
     top: 0;
     height: 100vh;
     padding-top: 0;

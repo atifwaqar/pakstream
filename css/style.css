@@ -361,35 +361,43 @@ section {
 }
 
 /* Channel navigation layout */
-.youtube-section {
+.youtube-section,
+.media-hub-section {
   display: flex;
   gap: 16px;
 }
 
 .youtube-section .channel-list,
-.youtube-section .details-container {
+.youtube-section .details-container,
+.media-hub-section .channel-list,
+.media-hub-section .details-container {
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: 220px;
 }
-.youtube-section .details-container {
+.youtube-section .details-container,
+.media-hub-section .details-container {
   width: 300px;
 }
-.youtube-section .details-container .details-list {
+.youtube-section .details-container .details-list,
+.media-hub-section .details-container .details-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.youtube-section .button-row {
+.youtube-section .button-row,
+.media-hub-section .button-row {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
 
 .youtube-section .channel-card,
-.youtube-section .detail-item {
+.media-hub-section .channel-card,
+.youtube-section .detail-item,
+.media-hub-section .detail-item {
   background: var(--surface);
   padding: 8px 16px;
   min-height: 56px;
@@ -404,14 +412,16 @@ section {
   overflow: hidden;
 }
 
-.youtube-section .channel-card .channel-thumb {
+.youtube-section .channel-card .channel-thumb,
+.media-hub-section .channel-card .channel-thumb {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.youtube-section .channel-card .channel-name {
+.youtube-section .channel-card .channel-name,
+.media-hub-section .channel-card .channel-name {
   flex: 1;
   min-width: 0;
   line-height: 1.2;
@@ -422,7 +432,8 @@ section {
 
 
 .fav-btn,
-.youtube-section .channel-card .play-btn {
+.youtube-section .channel-card .play-btn,
+.media-hub-section .channel-card .play-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -432,20 +443,24 @@ section {
   flex-shrink: 0;
 }
 
-.youtube-section .channel-card .play-btn {
+.youtube-section .channel-card .play-btn,
+.media-hub-section .channel-card .play-btn {
   position: relative;
 }
 
-.youtube-section .channel-card:hover {
+.youtube-section .channel-card:hover,
+.media-hub-section .channel-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-.youtube-section .channel-card.active {
+.youtube-section .channel-card.active,
+.media-hub-section .channel-card.active {
   background: var(--primary);
   color: var(--on-primary);
 }
 
-.youtube-section .channel-card.favorite {
+.youtube-section .channel-card.favorite,
+.media-hub-section .channel-card.favorite {
   background: var(--favorite-row);
   color: var(--on-primary);
 }
@@ -458,7 +473,8 @@ section {
   margin-top: 16px;
 }
 
-.youtube-section .video-section {
+.youtube-section .video-section,
+.media-hub-section .video-section {
   flex: 1;
   margin-top: 0;
   display: flex;
@@ -510,10 +526,12 @@ section {
 
 /* Responsive behaviour for channel list */
 @media (max-width: 768px) {
-  .youtube-section {
+  .youtube-section,
+  .media-hub-section {
     display: block;
   }
-  .youtube-section .channel-list {
+  .youtube-section .channel-list,
+  .media-hub-section .channel-list {
     position: fixed;
     top: 56px;
     left: 0;
@@ -531,10 +549,12 @@ section {
     padding: 16px;
     gap: 8px;
   }
-  .youtube-section .details-container {
+  .youtube-section .details-container,
+  .media-hub-section .details-container {
     width: auto;
   }
-  .youtube-section .details-list {
+  .youtube-section .details-list,
+  .media-hub-section .details-list {
     position: fixed;
     top: 56px;
     right: 0;
@@ -552,55 +572,68 @@ section {
     padding: 16px;
     gap: 8px;
   }
-  .youtube-section .channel-list.open {
+  .youtube-section .channel-list.open,
+  .media-hub-section .channel-list.open {
     transform: translateX(0);
   }
-  .youtube-section .details-list.open {
+  .youtube-section .details-list.open,
+  .media-hub-section .details-list.open {
     transform: translateX(0);
   }
 }
 
 
 @media (min-width: 769px) {
-  .youtube-section .channel-list {
+  .youtube-section .channel-list,
+  .media-hub-section .channel-list {
     position: sticky;
     top: 72px;
     height: calc(100vh - 120px);
     overflow-y: auto;
   }
-  .youtube-section .details-container {
+  .youtube-section .details-container,
+  .media-hub-section .details-container {
     position: sticky;
     top: 72px;
     height: calc(100vh - 120px);
   }
-  .youtube-section .details-container .details-list {
+  .youtube-section .details-container .details-list,
+  .media-hub-section .details-container .details-list {
     overflow-y: auto;
     flex: 1;
   }
-  .youtube-section .channel-list.collapsed {
+  .youtube-section .channel-list.collapsed,
+  .media-hub-section .channel-list.collapsed {
     width: 72px;
   }
-  .youtube-section .channel-list.collapsed .channel-card {
+  .youtube-section .channel-list.collapsed .channel-card,
+  .media-hub-section .channel-list.collapsed .channel-card {
     padding: 8px;
     justify-content: center;
     border-radius: 50%;
     box-sizing: border-box;
   }
-  .youtube-section .channel-list.collapsed .channel-card .channel-thumb {
+  .youtube-section .channel-list.collapsed .channel-card .channel-thumb,
+  .media-hub-section .channel-list.collapsed .channel-card .channel-thumb {
     width: 100%;
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
   }
   .youtube-section .channel-list.collapsed .channel-card .channel-name,
+  .media-hub-section .channel-list.collapsed .channel-card .channel-name,
   .youtube-section .channel-list.collapsed .channel-card .play-btn,
-  .youtube-section .channel-list.collapsed .channel-card .fav-btn {
+  .media-hub-section .channel-list.collapsed .channel-card .play-btn,
+  .youtube-section .channel-list.collapsed .channel-card .fav-btn,
+  .media-hub-section .channel-list.collapsed .channel-card .fav-btn {
     display: none;
   }
-  .youtube-section .details-container.collapsed {
+  .youtube-section .details-container.collapsed,
+  .media-hub-section .details-container.collapsed {
     width: 24px;
   }
-  .youtube-section .details-container.collapsed .details-list {
+  .youtube-section .details-container.collapsed .details-list,
+  .media-hub-section .details-container.collapsed .details-list {
     display: none;
   }
 }
