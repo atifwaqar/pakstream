@@ -301,6 +301,29 @@ section {
   color: var(--on-primary-container);
 }
 
+.station-scroller {
+  overflow: hidden;
+  margin: 20px auto;
+  max-width: 960px;
+}
+
+.station-scroller .scroller-track {
+  display: flex;
+  width: max-content;
+  animation: station-scroll 40s linear infinite;
+}
+
+.station-scroller img {
+  height: 60px;
+  width: auto;
+  margin-right: 16px;
+}
+
+@keyframes station-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* Featured card layout */
 .feature-cards {
   display: flex;
