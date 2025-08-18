@@ -81,6 +81,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const muteBtn = document.getElementById("mute-btn");
   const shareBtn = document.getElementById("share-btn");
 
+  window.setMuted = function(muted) {
+    if (mainPlayer) mainPlayer.muted = muted;
+    if (playerIF && playerIF.contentWindow) {
+      playerIF.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
+        '*'
+      );
+    }
+  };
+
   const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
   let favorites;
   if (mode === "all") {
@@ -572,7 +582,7 @@ async function renderLatestVideosRSS(channelId) {
       row.addEventListener("click", () => {
         if (playerIF) {
           playerIF.style.display = "";
-          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0${muteParam}`;
+          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&enablejsapi=1${muteParam}`;
           if (window.resizeLivePlayers) window.resizeLivePlayers();
         }
         if (audioWrap) audioWrap.style.display = "none";
@@ -626,12 +636,14 @@ async function renderLatestVideosRSS(channelId) {
     const emb = ytEmbed(item);
     let src = "";
     if (emb) {
-      src = emb.url.includes("?") ? `${emb.url}&autoplay=1${muteParam}` : `${emb.url}?autoplay=1${muteParam}`;
+      src = emb.url.includes("?")
+        ? `${emb.url}&autoplay=1&enablejsapi=1${muteParam}`
+        : `${emb.url}?autoplay=1&enablejsapi=1${muteParam}`;
     } else if (item.ids?.youtube_channel_id) {
       const upl = uploadsId(item.ids.youtube_channel_id);
       src = upl
-        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0${muteParam}`
-        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0${muteParam}`;
+        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0&enablejsapi=1${muteParam}`
+        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0&enablejsapi=1${muteParam}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
     if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
