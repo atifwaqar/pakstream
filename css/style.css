@@ -832,6 +832,7 @@ button:hover,
 
 .controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-top: 12px;
@@ -845,7 +846,7 @@ button:hover,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 4px;
+  margin: 4px;
   background: var(--primary);
   color: var(--on-primary);
   cursor: pointer;
