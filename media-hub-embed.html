@@ -66,7 +66,18 @@
       <div id="videoList" class="video-list"></div>
     </div>
   </section>
-
+  <script>
+    function postHeight() {
+      var h = document.documentElement.scrollHeight;
+      parent.postMessage({ type: 'media-hub-height', height: h }, '*');
+    }
+    window.addEventListener('load', function () {
+      postHeight();
+      if (window.ResizeObserver) {
+        new ResizeObserver(postHeight).observe(document.body);
+      }
+    });
+  </script>
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
