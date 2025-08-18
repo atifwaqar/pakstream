@@ -209,46 +209,35 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const cards = document.querySelectorAll('.feature-card');
-      const sendMuteMessage = (iframe, muted) => {
-        if (iframe.contentWindow) {
-          iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
-        }
-      };
-
-      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
+      const canHover = window.matchMedia('(hover: hover)').matches || window.innerWidth > 768;
       if (canHover) {
         cards.forEach(card => {
           const iframe = card.querySelector('iframe');
           if (!iframe) return;
           card.addEventListener('mouseenter', () => {
-            sendMuteMessage(iframe, false);
+            if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+              iframe.contentWindow.setMuted(false);
+            }
           });
           card.addEventListener('mouseleave', () => {
-            sendMuteMessage(iframe, true);
+            if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+              iframe.contentWindow.setMuted(true);
+            }
           });
         });
       } else if ('IntersectionObserver' in window) {
-        cards.forEach(card => {
-          const iframe = card.querySelector('iframe');
-          if (!iframe) return;
-
-          let inView = false;
-          const applyMuteState = () => {
-            sendMuteMessage(iframe, !inView);
-          };
-
-          const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-              if (entry.target !== card) return;
-              inView = entry.isIntersecting;
-              applyMuteState();
-            });
-          }, { threshold: 0.5 });
-
-          observer.observe(card);
-
-          iframe.addEventListener('load', applyMuteState);
-        });
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            const iframe = entry.target.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow || typeof iframe.contentWindow.setMuted !== 'function') return;
+            if (entry.isIntersecting) {
+              iframe.contentWindow.setMuted(false);
+            } else {
+              iframe.contentWindow.setMuted(true);
+            }
+          });
+        }, { threshold: 0.5 });
+        cards.forEach(card => observer.observe(card));
       }
     });
   </script>
