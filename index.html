@@ -226,29 +226,18 @@
           });
         });
       } else if ('IntersectionObserver' in window) {
-        cards.forEach(card => {
-          const iframe = card.querySelector('iframe');
-          if (!iframe) return;
-
-          let inView = false;
-          const applyMuteState = () => {
-            if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
-              iframe.contentWindow.setMuted(!inView);
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            const iframe = entry.target.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow || typeof iframe.contentWindow.setMuted !== 'function') return;
+            if (entry.isIntersecting) {
+              iframe.contentWindow.setMuted(false);
+            } else {
+              iframe.contentWindow.setMuted(true);
             }
-          };
-
-          const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-              if (entry.target !== card) return;
-              inView = entry.isIntersecting;
-              applyMuteState();
-            });
-          }, { threshold: 0.5 });
-
-          observer.observe(card);
-
-          iframe.addEventListener('load', applyMuteState);
-        });
+          });
+        }, { threshold: 0.5 });
+        cards.forEach(card => observer.observe(card));
       }
     });
   </script>
