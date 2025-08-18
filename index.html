@@ -113,7 +113,7 @@
 
   <!-- Featured cards -->
   <section class="feature-cards">
-    <div class="feature-card">
+    <div class="feature-card" data-m="freepress" data-c="wajahatsaeedkhan">
       <span class="material-symbols-outlined">article</span>
       <h3>Free Press</h3>
       <p>Stay updated with the latest new from Independent Voices.</p>
@@ -121,7 +121,7 @@
         <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
     </div>
-    <div class="feature-card">
+    <div class="feature-card" data-m="radio" data-c="audio35">
       <span class="material-symbols-outlined">radio</span>
       <h3>Popular Radio Stations</h3>
       <p>Listen to trending Pakistani radio.</p>
@@ -129,7 +129,7 @@
         <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
     </div>
-    <div class="feature-card">
+    <div class="feature-card" data-m="tv" data-c="24news">
       <span class="material-symbols-outlined">live_tv</span>
       <h3>Live TV Channels</h3>
       <p>Watch the most viewed live TV streams.</p>
@@ -209,6 +209,18 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const cards = document.querySelectorAll('.feature-card');
+      cards.forEach(card => {
+        const mode = card.dataset.m;
+        const channel = card.dataset.c;
+        card.addEventListener('click', () => {
+          if (!mode) return;
+          let url = `/media-hub.html?m=${encodeURIComponent(mode)}`;
+          if (channel) {
+            url += `&c=${encodeURIComponent(channel)}`;
+          }
+          window.location.href = url;
+        });
+      });
       const sendMuteMessage = (iframe, muted) => {
         if (iframe.contentWindow) {
           iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
