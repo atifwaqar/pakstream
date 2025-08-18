@@ -206,24 +206,6 @@
     </nav>
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.feature-card').forEach(function (card) {
-        var iframe = card.querySelector('.media-hub-embed');
-        if (!iframe) return;
-        card.addEventListener('mouseenter', function () {
-          if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
-            iframe.contentWindow.setMuted(false);
-          }
-        });
-        card.addEventListener('mouseleave', function () {
-          if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
-            iframe.contentWindow.setMuted(true);
-          }
-        });
-      });
-    });
-  </script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
