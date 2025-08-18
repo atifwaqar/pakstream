@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let mode = params.get("m") || "all"; // default, will auto-correct based on data
   const isMuted = params.get("muted") === "1";
   const muteParam = isMuted ? "&mute=1" : "";
+  const embedParams = `${muteParam}&enablejsapi=1`;
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
@@ -80,6 +81,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nextBtn = document.getElementById("next-btn");
   const muteBtn = document.getElementById("mute-btn");
   const shareBtn = document.getElementById("share-btn");
+
+  // Allow parent pages to toggle mute state
+  window.setMuted = function(muted) {
+    if (mainPlayer) {
+      mainPlayer.muted = muted;
+      if (muteBtn) muteBtn.textContent = muted ? 'volume_off' : 'volume_up';
+    }
+    if (playerIF && playerIF.contentWindow) {
+      playerIF.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
+        '*'
+      );
+    }
+  };
 
   const favKeys = { tv: "tvFavorites", freepress: "ytFavorites", creator: "ytFavorites", radio: "radioFavorites" };
   let favorites;
@@ -571,7 +586,7 @@ async function renderLatestVideosRSS(channelId) {
       row.addEventListener("click", () => {
         if (playerIF) {
           playerIF.style.display = "";
-          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0${muteParam}`;
+          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0${embedParams}`;
         }
         if (audioWrap) audioWrap.style.display = "none";
         if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
@@ -624,12 +639,12 @@ async function renderLatestVideosRSS(channelId) {
     const emb = ytEmbed(item);
     let src = "";
     if (emb) {
-      src = emb.url.includes("?") ? `${emb.url}&autoplay=1${muteParam}` : `${emb.url}?autoplay=1${muteParam}`;
+      src = emb.url.includes("?") ? `${emb.url}&autoplay=1${embedParams}` : `${emb.url}?autoplay=1${embedParams}`;
     } else if (item.ids?.youtube_channel_id) {
       const upl = uploadsId(item.ids.youtube_channel_id);
       src = upl
-        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0${muteParam}`
-        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0${muteParam}`;
+        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0${embedParams}`
+        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0${embedParams}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
 
