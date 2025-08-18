@@ -479,14 +479,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const initialKey = params.get('c');
     if (mode === 'radio') {
-      if (!currentAudio && initialKey) {
-        const target = arr.find(it => (it.ids?.internal_id || it.key) === initialKey);
-        if (target) {
-          const card = listEl.querySelector(`.channel-card[data-key="${target.key}"]`);
+      if (!currentAudio) {
+        if (initialKey) {
+          const target = arr.find(it => (it.ids?.internal_id || it.key) === initialKey);
+          if (target) {
+            const card = listEl.querySelector(`.channel-card[data-key="${target.key}"]`);
+            const btn = card ? card.querySelector('.play-btn') : null;
+            const audio = card ? card.querySelector('audio') : null;
+            if (btn && audio) {
+              playRadio(btn, audio, displayName(target), thumbOf(target));
+            }
+          }
+        } else if (arr.length) {
+          const first = arr[0];
+          const card = listEl.querySelector(`.channel-card[data-key="${first.key}"]`);
           const btn = card ? card.querySelector('.play-btn') : null;
           const audio = card ? card.querySelector('audio') : null;
           if (btn && audio) {
-            playRadio(btn, audio, displayName(target), thumbOf(target));
+            playRadio(btn, audio, displayName(first), thumbOf(first));
           }
         }
       }
