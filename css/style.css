@@ -487,6 +487,7 @@ section {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 120px);
+  min-height: 315px;
 }
 
 .video-section iframe {
@@ -494,6 +495,14 @@ section {
   height: 315px;
   border: none;
   border-radius: 4px;
+}
+
+.live-player {
+  min-height: 315px;
+}
+
+.youtube-section.media-hub-section {
+  min-height: 315px;
 }
 
 .video-section .video-list {
