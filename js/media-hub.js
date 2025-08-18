@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
+  const mediaHubSection = document.querySelector(".media-hub-section");
 
   // Handle top navigation submenu on the media hub page
   const dropdown = document.querySelector('.nav-links .dropdown');
@@ -180,12 +181,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (audioWrap) audioWrap.style.display = "";
       if (details) details.style.display = "none";
       if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
+      if (mediaHubSection) mediaHubSection.classList.add("no-details");
     } else {
       if (playerIF) playerIF.style.display = "";
       if (audioWrap) audioWrap.style.display = "none";
       const hasDetails = details && details.innerHTML.trim().length > 0;
       if (details) details.style.display = hasDetails ? "" : "none";
       if (toggleDetailsBtn) toggleDetailsBtn.style.display = hasDetails ? "" : "none";
+       if (mediaHubSection) mediaHubSection.classList.toggle("no-details", !hasDetails);
       if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
 
