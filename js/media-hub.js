@@ -84,6 +84,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   window.setMuted = function(muted) {
     if (mainPlayer) mainPlayer.muted = muted;
+    // Update mute icon to reflect the current state when muting is triggered
+    if (muteBtn) {
+      muteBtn.textContent = muted ? 'volume_off' : 'volume_up';
+    }
     if (playerIF && playerIF.contentWindow) {
       playerIF.contentWindow.postMessage(
         JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
