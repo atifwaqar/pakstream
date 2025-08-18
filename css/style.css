@@ -326,6 +326,10 @@ section {
   margin-bottom: 10px;
 }
 
+.feature-card p {
+  min-height: 3rem;
+}
+
 .feature-card .media-hub-embed {
   width: 100%;
   height: 360px;
