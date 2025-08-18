@@ -232,12 +232,31 @@
       };
 
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
+      const isLaptop = canHover && window.matchMedia('(min-width: 1024px)').matches;
+
       if (canHover) {
-        cards.forEach(card => {
+        if (isLaptop) {
+          const freepressCard = document.querySelector('.feature-card[data-m="freepress"]');
+          if (freepressCard) {
+            const fpIframe = freepressCard.querySelector('iframe');
+            if (fpIframe) {
+              const unmute = () => sendMuteMessage(fpIframe, false);
+              fpIframe.addEventListener('load', unmute);
+              unmute();
+            }
+          }
+        }
+
+        const cardArray = Array.from(cards);
+        cardArray.forEach(card => {
           const iframe = card.querySelector('iframe');
           if (!iframe) return;
           card.addEventListener('mouseenter', () => {
-            sendMuteMessage(iframe, false);
+            cardArray.forEach(c => {
+              const ifr = c.querySelector('iframe');
+              if (!ifr) return;
+              sendMuteMessage(ifr, c !== card);
+            });
           });
           card.addEventListener('mouseleave', () => {
             sendMuteMessage(iframe, true);
