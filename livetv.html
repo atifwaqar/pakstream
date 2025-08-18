@@ -338,6 +338,7 @@
 
       // Show selected stream
       document.getElementById(id).style.display = 'block';
+      if (window.resizeLivePlayers) window.resizeLivePlayers();
       if (element) {
         element.classList.add('active');
         const pb = element.querySelector('.play-btn');

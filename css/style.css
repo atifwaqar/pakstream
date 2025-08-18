@@ -760,6 +760,15 @@ button:hover,
   position: relative;
 }
 
+/* Ensure embedded videos keep a 16:9 aspect ratio */
+.live-player iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  display: block;
+  border: 0;
+}
+
 /* Radio player controls */
 .radio-player {
   background: linear-gradient(180deg, var(--surface), var(--surface-variant));
