@@ -206,6 +206,41 @@
     </nav>
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cards = document.querySelectorAll('.feature-card');
+      const canHover = window.matchMedia('(hover: hover)').matches || window.innerWidth > 768;
+      if (canHover) {
+        cards.forEach(card => {
+          const iframe = card.querySelector('iframe');
+          if (!iframe) return;
+          card.addEventListener('mouseenter', () => {
+            if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+              iframe.contentWindow.setMuted(false);
+            }
+          });
+          card.addEventListener('mouseleave', () => {
+            if (iframe.contentWindow && typeof iframe.contentWindow.setMuted === 'function') {
+              iframe.contentWindow.setMuted(true);
+            }
+          });
+        });
+      } else if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            const iframe = entry.target.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow || typeof iframe.contentWindow.setMuted !== 'function') return;
+            if (entry.isIntersecting) {
+              iframe.contentWindow.setMuted(false);
+            } else {
+              iframe.contentWindow.setMuted(true);
+            }
+          });
+        }, { threshold: 0.5 });
+        cards.forEach(card => observer.observe(card));
+      }
+    });
+  </script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
