@@ -607,10 +607,12 @@ async function renderLatestVideosRSS(channelId) {
       videoList.appendChild(row);
 
       fetchVideoDetails(vid).then(info => {
-        const viewsText = info.view_count ? `${Number(info.view_count).toLocaleString()} views` : 'Views unavailable';
-        meta.textContent = `${viewsText}${published ? " • " + timeAgo(published) : ""}`;
+        const viewsText = info.view_count ? `${Number(info.view_count).toLocaleString()} views` : null;
+        meta.textContent = viewsText
+          ? `${viewsText}${published ? " • " + timeAgo(published) : ""}`
+          : `${published ? timeAgo(published) : ""}`;
       }).catch(() => {
-        meta.textContent = `Views unavailable${published ? " • " + timeAgo(published) : ""}`;
+        meta.textContent = `${published ? timeAgo(published) : ""}`;
       });
     });
   } catch (e) {
