@@ -229,10 +229,57 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
         scroller.innerHTML += scroller.innerHTML;
+        initStationScroller();
       })
       .catch(function (err) {
         console.error('Failed to load station logos', err);
       });
+  }
+
+  function initStationScroller() {
+    var wrap = document.querySelector('.station-scroller');
+    var track = wrap.querySelector('.scroller-track');
+    var prev = wrap.querySelector('.scroll-btn.prev');
+    var next = wrap.querySelector('.scroll-btn.next');
+    var base = 0.3;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      base = 0;
+    }
+    var direction = -1;
+    var speed = base * direction;
+    var offset = 0;
+    var trackWidth = track.scrollWidth / 2;
+
+    function normalize() {
+      if (offset <= -trackWidth) offset += trackWidth;
+      if (offset >= 0) offset -= trackWidth;
+    }
+
+    window.addEventListener('resize', function () {
+      trackWidth = track.scrollWidth / 2;
+      normalize();
+    });
+
+    function frame() {
+      offset += speed;
+      normalize();
+      track.style.transform = 'translateX(' + offset + 'px)';
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    prev && prev.addEventListener('click', function () {
+      offset += 200;
+      normalize();
+      direction = 1;
+      speed = base * direction;
+    });
+    next && next.addEventListener('click', function () {
+      offset -= 200;
+      normalize();
+      direction = -1;
+      speed = base * direction;
+    });
   }
 
   if ('IntersectionObserver' in window) {
