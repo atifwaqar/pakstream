@@ -417,10 +417,10 @@ section {
   display: flex;
 }
 
-/* maintain horizontal spacing between flex items */
+/* maintain horizontal spacing between flex items
 .youtube-section > * + * {
   margin-left: 16px;
-}
+} */
 
 /* remove gap when the channel list is collapsed */
 .youtube-section .channel-list.collapsed + .video-section {
