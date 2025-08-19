@@ -1208,6 +1208,32 @@ footer nav a:hover {
   color: var(--hover-link);
 }
 
+.support-text {
+  margin-top: 8px;
+}
+
+.bmc-button {
+  display: inline-block;
+  background-color: #FFDD00;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.bmc-button:hover {
+  background-color: #e6c000;
+}
+
+.top-bar .bmc-button {
+  margin-left: 16px;
+  margin-top: 0;
+}
+
 .ad-container {
   margin: 20px 0;
   text-align: center;
