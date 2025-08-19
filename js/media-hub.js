@@ -98,6 +98,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentVideoKey = null;
   let currentVideoChannelId = null;
 
+  let rssAbortController = null;
+  let detailsAbortController = null;
+
+  function abortPendingRequests() {
+    if (rssAbortController) {
+      rssAbortController.abort();
+      rssAbortController = null;
+    }
+    if (detailsAbortController) {
+      detailsAbortController.abort();
+      detailsAbortController = null;
+    }
+  }
+
   // Load data
   const res = await fetch("/all_streams.json");
   const data = await res.json();
@@ -133,8 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return 'Just now';
   }
 
-  async function fetchVideoDetails(videoId) {
-    const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
+  async function fetchVideoDetails(videoId, signal) {
+    const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal });
     if (!resp.ok) throw new Error('Failed to load video details');
     return resp.json();
   }
@@ -524,10 +538,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ---- CORS-safe RSS loader ----
 // Quiet, proxy-only RSS loader (no direct YouTube fetch → no CORS error)
 async function renderLatestVideosRSS(channelId) {
+  abortPendingRequests();
   if (!videoList) return;
   videoList.innerHTML = "";
   currentVideoChannelId = channelId;
   if (!channelId) return;
+
+  rssAbortController = new AbortController();
+  const signal = rssAbortController.signal;
 
   try {
     const feed = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
@@ -538,16 +556,19 @@ async function renderLatestVideosRSS(channelId) {
 
     let xml = "";
     try {
-      xml = await fetch(proxy1, { cache: "no-store" }).then(r => r.text());
+      xml = await fetch(proxy1, { cache: "no-store", signal }).then(r => r.text());
       // r.jina.ai may return non-XML (markdown/JSON); ensure we have XML, otherwise fallback
       if (!xml || !xml.trim().startsWith("<")) throw new Error("Proxy1 bad shape");
     } catch {
-      xml = await fetch(proxy2, { cache: "no-store" }).then(r => r.text());
+      xml = await fetch(proxy2, { cache: "no-store", signal }).then(r => r.text());
     }
 
     const doc = new DOMParser().parseFromString(xml, "text/xml");
     const entries = [...doc.querySelectorAll("entry")].slice(0, 10);
     if (currentVideoChannelId !== channelId || !entries.length) return;
+
+    detailsAbortController = new AbortController();
+    const detailsSignal = detailsAbortController.signal;
 
     entries.forEach(en => {
       const vid = en.querySelector("yt\\:videoId, videoId")?.textContent;
@@ -593,7 +614,7 @@ async function renderLatestVideosRSS(channelId) {
 
       videoList.appendChild(row);
 
-      fetchVideoDetails(vid).then(info => {
+      fetchVideoDetails(vid, detailsSignal).then(info => {
         const viewsText = info.view_count ? `${Number(info.view_count).toLocaleString()} views` : null;
         meta.textContent = viewsText
           ? `${viewsText}${published ? " • " + timeAgo(published) : ""}`
@@ -610,6 +631,7 @@ async function renderLatestVideosRSS(channelId) {
 
   // ---- Selection for TV/FreePress/Creator ----
   function select(item, autoplay=false) {
+    abortPendingRequests();
     const isSame = currentVideoKey === item.key;
     document.querySelectorAll(".channel-card").forEach(c => c.classList.toggle("active", c.dataset.key === item.key));
     if (isSame) return;
@@ -689,6 +711,7 @@ async function renderLatestVideosRSS(channelId) {
   function playRadio(btn, audio, name, logoUrl) {
     if (!audio) return;
 
+    abortPendingRequests();
     currentVideoKey = null;
 
     // Ensure any previously displayed video list is cleared when
