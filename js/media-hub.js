@@ -58,9 +58,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  window.setPlaying = function(playing) {
+    if (playerIF && playerIF.contentWindow) {
+      playerIF.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: playing ? 'playVideo' : 'pauseVideo', args: [] }),
+        '*'
+      );
+    }
+    if (mainPlayer) {
+      if (playing) mainPlayer.play().catch(() => {});
+      else mainPlayer.pause();
+    }
+  };
+
   window.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'media-hub-set-muted') {
       window.setMuted(!!event.data.muted);
+    } else if (event.data && event.data.type === 'media-hub-set-playing') {
+      window.setPlaying(!!event.data.playing);
     }
   });
 

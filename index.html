@@ -260,15 +260,22 @@
           iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
         }
       };
+      const sendPlayMessage = (iframe, playing) => {
+        if (iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'media-hub-set-playing', playing }, '*');
+        }
+      };
 
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
       const isLaptop = canHover && window.matchMedia('(min-width: 1024px)').matches;
 
       if (canHover) {
+        let freepressCard = null;
+        let fpIframe = null;
         if (isLaptop) {
-          const freepressCard = document.querySelector('.feature-card[data-m="freepress"]');
+          freepressCard = document.querySelector('.feature-card[data-m="freepress"]');
           if (freepressCard) {
-            const fpIframe = freepressCard.querySelector('iframe');
+            fpIframe = freepressCard.querySelector('iframe');
             if (fpIframe) {
               const unmute = () => sendMuteMessage(fpIframe, false);
               fpIframe.addEventListener('load', unmute);
@@ -281,15 +288,20 @@
         cardArray.forEach(card => {
           const iframe = card.querySelector('iframe');
           if (!iframe) return;
+          const isFreepress = isLaptop && card === freepressCard;
+          sendPlayMessage(iframe, isFreepress);
           card.addEventListener('mouseenter', () => {
             cardArray.forEach(c => {
               const ifr = c.querySelector('iframe');
               if (!ifr) return;
-              sendMuteMessage(ifr, c !== card);
+              const isCurrent = c === card;
+              sendMuteMessage(ifr, !isCurrent);
+              sendPlayMessage(ifr, isCurrent);
             });
           });
           card.addEventListener('mouseleave', () => {
             sendMuteMessage(iframe, true);
+            sendPlayMessage(iframe, false);
           });
         });
       } else if ('IntersectionObserver' in window) {
@@ -298,21 +310,22 @@
           if (!iframe) return;
 
           let inView = false;
-          const applyMuteState = () => {
+          const applyState = () => {
             sendMuteMessage(iframe, !inView);
+            sendPlayMessage(iframe, inView);
           };
 
           const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
               if (entry.target !== card) return;
               inView = entry.isIntersecting;
-              applyMuteState();
+              applyState();
             });
           }, { threshold: 0.5 });
 
           observer.observe(card);
 
-          iframe.addEventListener('load', applyMuteState);
+          iframe.addEventListener('load', applyState);
         });
       }
     });
