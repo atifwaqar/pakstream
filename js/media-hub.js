@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const icons = {
       youtube: { url: 'https://img.icons8.com/color/48/000000/youtube-play.png', label: 'YouTube' },
       instagram: { url: 'https://img.icons8.com/fluency/48/000000/instagram-new.png', label: 'Instagram' },
-      twitter: { url: 'https://img.icons8.com/color/48/000000/twitter--v1.png', label: 'Twitter' },
+      twitter: { url: 'https://img.icons8.com/ios-filled/50/FFFFFF/twitterx.png', label: 'X (Twitter)' },
       facebook: { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
       linkedin: { url: 'https://img.icons8.com/fluency/48/000000/linkedin.png', label: 'LinkedIn' },
       website: { url: 'https://img.icons8.com/ios-filled/50/000000/domain.png', label: 'Website' },

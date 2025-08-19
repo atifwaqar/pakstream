@@ -732,6 +732,7 @@ section {
   display: flex;
   gap: 16px;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .details-content .profile {
@@ -741,6 +742,7 @@ section {
   text-decoration: none;
   color: inherit;
   font-size: 0.8rem;
+  transition: color 0.2s ease;
 }
 
 .details-content .profile-icon {
@@ -748,15 +750,27 @@ section {
   height: 48px;
   border-radius: 50%;
   background: var(--surface-variant);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .details-content .profile-icon img {
   width: 24px;
   height: 24px;
+}
+
+.details-content .profile:hover {
+  color: var(--accent-link);
+}
+
+.details-content .profile:hover .profile-icon {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 /* Buttons */
