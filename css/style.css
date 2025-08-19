@@ -549,8 +549,7 @@ section {
   cursor: pointer;
 }
 
-.video-list .video-item img,
-.video-list .video-thumb {
+.video-list .video-item img {
   width: 120px;
   height: 67px;
   object-fit: cover;
