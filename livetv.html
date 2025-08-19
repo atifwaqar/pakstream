@@ -394,7 +394,7 @@
               player.loadVideoById(entry.videoId);
             } else {
               const iframe = document.getElementById(playerId);
-              iframe.src = `https://www.youtube.com/embed/${entry.videoId}?${YT_PARAMS}`;
+              iframe.src = `https://www.youtube-nocookie.com/embed/${entry.videoId}?${YT_PARAMS}`;
             }
             setActiveStream(item);
           });
@@ -406,7 +406,7 @@
               player.loadVideoById(entry.videoId);
             } else {
               const iframe = document.getElementById(playerId);
-              iframe.src = `https://www.youtube.com/embed/${entry.videoId}?${YT_PARAMS}`;
+              iframe.src = `https://www.youtube-nocookie.com/embed/${entry.videoId}?${YT_PARAMS}`;
             }
             setActiveStream(item);
           }
