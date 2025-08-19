@@ -20,52 +20,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toggleDetailsBtn = document.getElementById("toggle-details");
   const mediaHubSection = document.querySelector(".media-hub-section");
 
-  // Handle top navigation submenu on the media hub page
-  const dropdown = document.querySelector('.nav-links .dropdown');
-  const topLink = dropdown ? dropdown.querySelector('a[href*="media-hub.html"]') : null;
-  if (topLink && topLink.pathname === location.pathname) {
-    topLink.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        // On small screens, go directly to the main Media Hub with the
-        // "All" tab selected and the channel list visible.
-        e.preventDefault();
-        const allTab = document.querySelector('.tab-btn[data-mode="all"]');
-        if (allTab) allTab.click();
-        const list = document.querySelector('.channel-list');
-        if (list && !list.classList.contains('open') && typeof window.toggleChannelList === 'function') {
-          window.toggleChannelList();
-        }
-        dropdown.classList.remove('open');
-      } else {
-        // Only toggle the submenu, don't navigate
-        e.preventDefault();
-        dropdown.classList.toggle('open');
-      }
-    });
-  }
-
-  const topLinks = dropdown ? dropdown.querySelectorAll('.dropdown-content a[href*="media-hub.html"]') : [];
-  topLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      // Always close the submenu first
-      dropdown.classList.remove('open');
-
-      if (link.pathname === location.pathname) {
-        e.preventDefault();
-        const newMode = new URL(link.href, location.origin).searchParams.get('m');
-        const tab = Array.from(tabs).find(t => t.dataset.mode === newMode);
-        if (tab) tab.click();
-
-        if (window.innerWidth <= 768) {
-          const list = document.querySelector('.channel-list');
-          if (list && !list.classList.contains('open') && typeof window.toggleChannelList === 'function') {
-            window.toggleChannelList();
-          }
-        }
-      }
-    });
-  });
-
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
   const mainPlayer = document.getElementById("radio-player");

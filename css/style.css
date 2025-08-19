@@ -116,55 +116,6 @@ footer nav a:hover {
     background: color-mix(in oklab, var(--primary) 12%, transparent);
   }
 
-  .nav-links .dropdown {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-links .dropdown-content {
-    display: none;
-    position: absolute;
-    background: var(--primary);
-    border: 1px solid var(--primary-container);
-    border-radius: 4px;
-    top: 100%;
-    left: 0;
-    flex-direction: column;
-    padding: 4px 0;
-    z-index: 1003;
-  }
-
-  .nav-links .dropdown:hover .dropdown-content,
-  .nav-links .dropdown:focus-within .dropdown-content {
-    display: flex;
-  }
-
-  /* Allow JS toggle via .open */
-  .nav-links .dropdown.open .dropdown-content {
-    display: flex;
-  }
-
-  .nav-links .dropdown-content a {
-    padding: 8px 12px;
-    border-radius: 0;
-    white-space: nowrap;
-  }
-
-  .nav-links .dropdown-content a:hover {
-    background: color-mix(in oklab, var(--primary) 12%, transparent);
-  }
-
-@media (max-width: 768px) {
-  /* On small screens hide the Media Hub dropdown menu */
-  .nav-links .dropdown-content {
-    display: none !important;
-    position: static;
-    border: 0;
-    background: none;
-    padding: 0;
-  }
-}
 
 .search-form {
   margin-left: 16px;
