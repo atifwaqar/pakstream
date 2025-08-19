@@ -147,31 +147,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return 'Just now';
   }
 
-  function renderProfiles(list) {
-    const icons = {
-      youtube: { url: 'https://img.icons8.com/color/48/000000/youtube-play.png', label: 'YouTube' },
-      instagram: { url: 'https://img.icons8.com/fluency/48/000000/instagram-new.png', label: 'Instagram' },
-      twitter: { url: 'https://img.icons8.com/color/48/000000/twitter--v1.png', label: 'Twitter' },
-      facebook: { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
-      linkedin: { url: 'https://img.icons8.com/fluency/48/000000/linkedin.png', label: 'LinkedIn' },
-      website: { url: 'https://img.icons8.com/ios-filled/50/000000/domain.png', label: 'Website' },
-      tiktok: { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' }
-    };
-    const items = list.map(url => {
-      let type = 'website';
-      if (/youtu/.test(url)) type = 'youtube';
-      else if (/instagram/.test(url)) type = 'instagram';
-      else if (/twitter|x\.com/.test(url)) type = 'twitter';
-      else if (/facebook/.test(url)) type = 'facebook';
-      else if (/linkedin/.test(url)) type = 'linkedin';
-      else if (/tiktok/.test(url)) type = 'tiktok';
-      const { url: icon, label } = icons[type] || { url: '', label: type.charAt(0).toUpperCase() + type.slice(1) };
-      const img = icon ? `<img src='${icon}' alt='${label}'>` : '';
-      return `<a class='profile' href='${url}' target='_blank' rel='noopener'><div class='profile-icon'>${img}</div><span>${label}</span></a>`;
-    }).join('');
-    return `<h3>Profiles</h3><div class='profiles'>${items}</div>`;
-  }
-
   function setActiveVideo(clickedItem) {
     document.querySelectorAll('#videoList .video-item').forEach(item => item.classList.remove('active'));
     if (clickedItem) clickedItem.classList.add('active');
@@ -210,16 +185,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (currentAudio || (!videoPlaying && mode === "radio")) {
       if (playerIF) playerIF.style.display = "none";
       if (audioWrap) audioWrap.style.display = "";
+      if (details) details.style.display = "none";
+      if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
+      if (mediaHubSection) mediaHubSection.classList.add("no-details");
     } else {
       if (playerIF) playerIF.style.display = "";
       if (audioWrap) audioWrap.style.display = "none";
+      const hasDetails = details && details.innerHTML.trim().length > 0;
+      if (details) details.style.display = hasDetails ? "" : "none";
+      if (toggleDetailsBtn) toggleDetailsBtn.style.display = hasDetails ? "" : "none";
+       if (mediaHubSection) mediaHubSection.classList.toggle("no-details", !hasDetails);
       if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
-
-    const hasDetails = details && details.innerHTML.trim().length > 0;
-    if (details) details.style.display = hasDetails ? "" : "none";
-    if (toggleDetailsBtn) toggleDetailsBtn.style.display = hasDetails ? "" : "none";
-    if (mediaHubSection) mediaHubSection.classList.toggle("no-details", !hasDetails);
 
     if (mode === 'favorites') {
       favorites = [];
@@ -283,7 +260,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       playBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         if (!ep) return;
-        playRadio(playBtn, audio, displayName(it), audio.dataset.logo, it);
+        playRadio(playBtn, audio, displayName(it), audio.dataset.logo);
       });
       card.addEventListener("click", (e) => {
         if (e.target.closest("button")) return;
@@ -516,7 +493,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const btn = card ? card.querySelector('.play-btn') : null;
             const audio = card ? card.querySelector('audio') : null;
             if (btn && audio) {
-              playRadio(btn, audio, displayName(target), thumbOf(target), target);
+              playRadio(btn, audio, displayName(target), thumbOf(target));
             }
           }
         } else if (arr.length) {
@@ -525,7 +502,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const btn = card ? card.querySelector('.play-btn') : null;
           const audio = card ? card.querySelector('audio') : null;
           if (btn && audio) {
-            playRadio(btn, audio, displayName(first), thumbOf(first), first);
+            playRadio(btn, audio, displayName(first), thumbOf(first));
           }
         }
       }
@@ -543,7 +520,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               document.querySelectorAll('.channel-card').forEach(c => c.classList.toggle('active', c.dataset.key === match.key));
               handled = true;
             } else if (btn && audio) {
-              playRadio(btn, audio, displayName(match), thumbOf(match), match);
+              playRadio(btn, audio, displayName(match), thumbOf(match));
               handled = true;
             }
           } else {
@@ -706,17 +683,8 @@ async function renderLatestVideosRSS(channelId) {
     }
 
     if (details) {
-      let html = "";
       if (item.details_html) {
-        html = item.details_html;
-      } else {
-        if (item.about) html += item.about;
-        if (item.profiles && item.profiles.length) {
-          html += renderProfiles(item.profiles);
-        }
-      }
-      if (html) {
-        details.innerHTML = html;
+        details.innerHTML = item.details_html;
         details.style.display = "";
         if (toggleDetailsBtn) toggleDetailsBtn.style.display = "";
       } else {
@@ -746,7 +714,7 @@ async function renderLatestVideosRSS(channelId) {
     }
   }
 
-  function playRadio(btn, audio, name, logoUrl, item) {
+  function playRadio(btn, audio, name, logoUrl) {
     if (!audio) return;
 
     abortPendingRequests();
@@ -773,27 +741,6 @@ async function renderLatestVideosRSS(channelId) {
     if (stationLogo) stationLogo.src = logoUrl || defaultLogo;
     if (liveBadge) liveBadge.hidden = true;
     if (notLiveBadge) notLiveBadge.hidden = false;
-
-    if (details) {
-      let html = "";
-      if (item && item.details_html) {
-        html = item.details_html;
-      } else if (item) {
-        if (item.about) html += item.about;
-        if (item.profiles && item.profiles.length) {
-          html += renderProfiles(item.profiles);
-        }
-      }
-      if (html) {
-        details.innerHTML = html;
-        details.style.display = "";
-        if (toggleDetailsBtn) toggleDetailsBtn.style.display = "";
-      } else {
-        details.innerHTML = "";
-        details.style.display = "none";
-        if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
-      }
-    }
 
     if (mainPlayer) {
       mainPlayer.src = audio.src;
@@ -938,7 +885,7 @@ async function renderLatestVideosRSS(channelId) {
     const key = card?.dataset.key;
     const item = items.find(i => i.key === key);
     if (!item) return;
-    playRadio(card.querySelector('.play-btn'), audio, displayName(item), thumbOf(item), item);
+    playRadio(card.querySelector('.play-btn'), audio, displayName(item), thumbOf(item));
   }
 
   // Tabs + Search
