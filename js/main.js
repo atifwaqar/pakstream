@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var items = Array.isArray(data.items) ? data.items : [];
         var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
         items.forEach(function (it) {
-          if (it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
+          if (it.status && it.status.active && it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
             var mode = typeToMode[it.type] || 'tv';
             var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
               ? it.ids.internal_id
