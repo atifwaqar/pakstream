@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Theme Tester</title>
+  <link id="themeStylesheet" rel="stylesheet" href="styles/theme-candy-pop.css">
+</head>
+<body>
+  <h1>Theme Tester</h1>
+  <label for="themeSelector">Choose theme:</label>
+  <select id="themeSelector">
+    <option value="theme-candy-pop.css">Candy Pop</option>
+    <option value="theme-cyber-neon.css">Cyber Neon</option>
+    <option value="theme-nature-calm.css">Nature Calm</option>
+    <option value="theme-pastel-delight.css">Pastel Delight</option>
+    <option value="theme-gradient-glow.css">Gradient Glow</option>
+  </select>
+  <p>This page lets you test different themes.</p>
+  <script>
+    const selector = document.getElementById('themeSelector');
+    const link = document.getElementById('themeStylesheet');
+    selector.addEventListener('change', function() {
+      link.href = 'styles/' + this.value;
+    });
+  </script>
+</body>
+</html>
