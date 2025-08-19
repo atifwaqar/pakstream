@@ -582,7 +582,7 @@ async function renderLatestVideosRSS(channelId) {
       row.addEventListener("click", () => {
         if (playerIF) {
           playerIF.style.display = "";
-          playerIF.src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&enablejsapi=1${muteParam}`;
+          playerIF.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0&enablejsapi=1${muteParam}`;
           if (window.resizeLivePlayers) window.resizeLivePlayers();
         }
         if (audioWrap) audioWrap.style.display = "none";
@@ -644,8 +644,8 @@ async function renderLatestVideosRSS(channelId) {
     } else if (item.ids?.youtube_channel_id) {
       const upl = uploadsId(item.ids.youtube_channel_id);
       src = upl
-        ? `https://www.youtube.com/embed/videoseries?list=${upl}&autoplay=1&rel=0&enablejsapi=1${muteParam}`
-        : `https://www.youtube.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0&enablejsapi=1${muteParam}`;
+        ? `https://www.youtube-nocookie.com/embed/videoseries?list=${upl}&autoplay=1&rel=0&enablejsapi=1${muteParam}`
+        : `https://www.youtube-nocookie.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0&enablejsapi=1${muteParam}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
     if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
