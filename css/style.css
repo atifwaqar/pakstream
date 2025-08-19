@@ -425,6 +425,8 @@ section {
 /* remove gap when the channel list is collapsed */
 .youtube-section .channel-list.collapsed + .video-section {
   margin-left: 0;
+  padding-left:5px;
+  padding-right:5px;
 }
 
 .youtube-section .channel-list,
