@@ -34,6 +34,17 @@
   --hover-link: #1565C0;
   --scrollbar-track: var(--surface-variant);
   --scrollbar-thumb: var(--outline);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-xl: 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-side-right: 2px 0 5px rgba(0,0,0,0.3);
+  --shadow-side-left: -2px 0 5px rgba(0,0,0,0.3);
+  --overlay-bg: rgba(0,0,0,0.4);
+  --overlay-strong: rgba(0,0,0,0.6);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-xxl: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 /* -------- Dark Theme -------- */
@@ -70,4 +81,15 @@
   --hover-link: #64B5F6;
   --scrollbar-track: var(--surface);
   --scrollbar-thumb: var(--outline);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,0.6);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-xl: 0 4px 6px rgba(0,0,0,0.7);
+  --shadow-side-right: 2px 0 5px rgba(0,0,0,0.7);
+  --shadow-side-left: -2px 0 5px rgba(0,0,0,0.7);
+  --overlay-bg: rgba(0,0,0,0.6);
+  --overlay-strong: rgba(0,0,0,0.8);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
+  --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
 }
