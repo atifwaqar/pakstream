@@ -456,10 +456,6 @@ section {
   margin-bottom: 8px;
 }
 
-.button-row .spacer {
-  flex: 1;
-}
-
 .youtube-section .channel-card,
 .media-hub-section .channel-card,
 .youtube-section .detail-item,
