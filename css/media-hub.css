@@ -240,6 +240,67 @@
   margin-bottom: 6px;
 }
 
+.support-section {
+  margin-top: 16px;
+}
+
+.support-toggle {
+  width: 100%;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.support-toggle:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.support-panel {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--surface-variant);
+  box-shadow: var(--shadow-xs);
+}
+
+.support-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.support-code code {
+  background: var(--surface);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.copy-btn {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.coffee-btn {
+  display: inline-block;
+  background: #ffdd00;
+  color: #000;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
 /* responsive */
 @media (max-width: 1080px) {
   .content-grid {

@@ -172,6 +172,81 @@ document.addEventListener("DOMContentLoaded", async () => {
     return `<h3>Profiles</h3><div class='profiles'>${items}</div>`;
   }
 
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+  }
+
+  function getSupportCode(slug) {
+    const key = `ps-code-${slug}`;
+    let code = sessionStorage.getItem(key);
+    if (!code) {
+      const digits = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      code = `PS-${slug}-${digits}`;
+      sessionStorage.setItem(key, code);
+    }
+    return code;
+  }
+
+  function renderSupportSection(item) {
+    if (!item || !item.key || !item.name) return '';
+    const slug = item.key;
+    const name = escapeHtml(item.name);
+    const code = getSupportCode(slug);
+    return `
+    <div class="support-section">
+      <button class="support-toggle" aria-expanded="false">☕ Support this creator</button>
+      <div class="support-panel" hidden>
+        <h3>Support ${name}</h3>
+        <p>100% of your tip goes to ${name}.</p>
+        <div class="support-code">
+          <code id="support-code-${slug}">${code}</code>
+          <button class="copy-btn" data-code-id="support-code-${slug}" aria-label="Copy attribution code">Copy</button>
+        </div>
+        <p class="support-instruction">Paste this code in the Buy Me a Coffee message so we can route your tip to ${name}.</p>
+        <a class="coffee-btn" href="https://buymeacoffee.com/pakstream" target="_blank" rel="noopener">Buy ${name} coffee</a>
+      </div>
+    </div>`;
+  }
+
+  function attachSupportHandlers(container) {
+    const toggle = container.querySelector('.support-toggle');
+    const panel = container.querySelector('.support-panel');
+    if (toggle && panel) {
+      const toggleFn = () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        panel.hidden = expanded;
+      };
+      toggle.addEventListener('click', toggleFn);
+      toggle.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleFn();
+        }
+      });
+    }
+    const copyBtn = container.querySelector('.copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const id = copyBtn.getAttribute('data-code-id');
+        const codeEl = container.querySelector(`#${id}`);
+        if (codeEl) {
+          navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
+            const original = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => (copyBtn.textContent = original), 2000);
+          });
+        }
+      });
+    }
+  }
+
   function updateDetails(item) {
     if (!details || !toggleDetailsBtn) return;
     const label = toggleDetailsBtn.querySelector('.label');
@@ -186,8 +261,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
     }
+    const supportHtml = renderSupportSection(item);
+    if (supportHtml) html += supportHtml;
     if (html) {
       details.innerHTML = html;
+      attachSupportHandlers(details);
       details.style.display = '';
       toggleDetailsBtn.style.display = '';
       if (label) label.textContent = label.dataset.default || 'About';
