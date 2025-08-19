@@ -1,0 +1,78 @@
+/* ===== Gradient Glow Theme ===== */
+/* Note: Use the solid variables below for components; apply gradients via utility classes */
+
+:root {
+  --primary: #6A00FF; /* from 8E2DE2→4A00E0 range */
+  --on-primary: #FFFFFF;
+  --primary-container: #E2D6FF;
+  --on-primary-container: #24006B;
+
+  --secondary: #FF3E7F; /* from FF512F→DD2476 range */
+  --on-secondary: #3A0015;
+
+  --background: #0F1024; /* deep navy */
+  --on-background: #E8E9FF;
+
+  --surface: #141633;
+  --on-surface: #F0F1FF;
+
+  --error: #FF6B6B;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFD7D7;
+
+  --outline: #3B3F6B;
+  --surface-variant: #1B1E45;
+  --on-surface-variant: #C9CBFF;
+
+  --accent-live: #00C9FF;
+  --accent-link: #7F7CFF;
+  --accent-success: #92FE9D;
+  --accent-info: #80D8FF;
+
+  --favorite-row: #6A00FF;
+  --active-row: rgba(122, 77, 255, 0.18);
+
+  --hover-primary: #855DFF;
+  --hover-link: #A7A4FF;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #3B3F6B;
+
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,0.6);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-xl: 0 4px 6px rgba(0,0,0,0.7);
+  --shadow-side-right: 2px 0 5px rgba(0,0,0,0.7);
+  --shadow-side-left: -2px 0 5px rgba(0,0,0,0.7);
+  --overlay-bg: rgba(0,0,0,0.6);
+  --overlay-strong: rgba(0,0,0,0.8);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
+  --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* -------- Light Variant for Gradient Glow (optional) -------- */
+[data-theme="light"] {
+  --background: #F5F6FF;
+  --on-background: #171933;
+
+  --surface: #FFFFFF;
+  --on-surface: #0E1130;
+
+  --outline: #C9CCFF;
+  --surface-variant: #E6E8FF;
+  --on-surface-variant: #2A2F66;
+
+  --favorite-row: #6A00FF;
+  --active-row: rgba(106, 0, 255, 0.10);
+}
+
+/* -------- Dark Theme (default) -------- */
+[data-theme="dark"] {
+  /* same as :root above for consistency */
+}
+/* Utility gradients */
+.glow-primary-bg { background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); }
+.glow-secondary-bg { background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%); }
+.glow-accent-bg { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); }
