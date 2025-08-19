@@ -256,42 +256,22 @@ section {
   overflow: hidden;
   margin: 20px auto;
   max-width: 960px;
-  position: relative;
-  touch-action: pan-y;
-}
-
-.station-scroller::before,
-.station-scroller::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 40px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.station-scroller::before {
-  left: 0;
-  background: linear-gradient(to right, var(--surface), transparent);
-}
-
-.station-scroller::after {
-  right: 0;
-  background: linear-gradient(to left, var(--surface), transparent);
 }
 
 .station-scroller .scroller-track {
   display: flex;
   width: max-content;
-  will-change: transform;
+  animation: station-scroll 80s linear infinite;
+}
+
+.station-scroller:hover .scroller-track {
+  animation-play-state: paused;
 }
 
 .station-scroller .scroller-track a {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  position: relative;
 }
 
 .station-scroller .channel-thumb {
@@ -300,45 +280,11 @@ section {
   border-radius: 8px;
   object-fit: cover;
   margin-right: 16px;
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.station-scroller .scroller-track a:hover .channel-thumb {
-  transform: scale(1.15);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 2;
-}
-
-.station-scroller .scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: var(--surface-variant);
-  color: var(--on-surface-variant);
-  z-index: 2;
-  opacity: 0.6;
-  transition: opacity 0.3s;
-}
-
-.station-scroller .scroll-btn:hover {
-  opacity: 1;
-}
-
-.station-scroller .scroll-btn.prev { left: 8px; }
-.station-scroller .scroll-btn.next { right: 8px; }
-
-@media (prefers-reduced-motion: reduce) {
-  .station-scroller .scroller-track {
-    transition: none;
-  }
+@keyframes station-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* Featured card layout */
