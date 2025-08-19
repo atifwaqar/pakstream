@@ -1013,11 +1013,6 @@ async function renderLatestVideosRSS(channelId) {
     history.replaceState(null, "", "?" + params.toString());
     updateActiveUI();
     renderList(searchEl ? (searchEl.value || "") : "");
-    if (window.innerWidth <= 768 && leftRail &&
-        typeof toggleChannelList === "function" &&
-        !leftRail.classList.contains("open")) {
-      toggleChannelList();
-    }
   }));
   if (searchEl) {
     searchEl.addEventListener("input", e => renderList(e.target.value));
