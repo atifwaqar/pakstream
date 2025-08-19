@@ -147,6 +147,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     return 'Just now';
   }
 
+  function setActiveVideo(clickedItem) {
+    document.querySelectorAll('#videoList .video-item').forEach(item => item.classList.remove('active'));
+    if (clickedItem) clickedItem.classList.add('active');
+  }
+
   async function fetchVideoDetails(videoId, signal) {
     const resp = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal });
     if (!resp.ok) throw new Error('Failed to load video details');
@@ -610,6 +615,7 @@ async function renderLatestVideosRSS(channelId) {
         if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
           toggleDetailsBtn.style.display = "";
         }
+        setActiveVideo(row);
       });
 
       videoList.appendChild(row);
