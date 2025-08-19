@@ -1,0 +1,78 @@
+/* ===== Miami Sunset Theme ===== */
+:root {
+  --primary: #FF6B6B;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #FFB86B;
+  --on-secondary: #FFFFFF;
+
+  --background: #FFF7F4;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #F3C7C1;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #5B2A2A;
+
+  --accent-live: #7AA2FF;
+  --accent-link: #7AA2FF;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #FF6B6B;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #FF6B6B;
+  --hover-link: #7AA2FF;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #F3C7C1;
+}
+
+[data-theme="dark"] {
+  --primary: #FF8FA3;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #FFC58F;
+  --on-secondary: #14000A;
+
+  --background: #1A1111;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #5E3E3E;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #FFD6D2;
+
+  --accent-live: #FFA6A6;
+  --accent-link: #FFA6A6;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #FF8FA3;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #FF8FA3;
+  --hover-link: #FFA6A6;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #5E3E3E;
+}

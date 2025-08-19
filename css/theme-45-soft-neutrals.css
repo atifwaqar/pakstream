@@ -1,0 +1,78 @@
+/* ===== Soft Neutrals Theme ===== */
+:root {
+  --primary: #8E8D8A;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #C3B091;
+  --on-secondary: #FFFFFF;
+
+  --background: #FAFAF8;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #E3E0DA;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #3E3D39;
+
+  --accent-live: #8E8D8A;
+  --accent-link: #8E8D8A;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #8E8D8A;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #8E8D8A;
+  --hover-link: #8E8D8A;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #E3E0DA;
+}
+
+[data-theme="dark"] {
+  --primary: #CFCFCD;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #E5D5BF;
+  --on-secondary: #14000A;
+
+  --background: #121212;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #4A4945;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #E3E0DA;
+
+  --accent-live: #CFCFCD;
+  --accent-link: #CFCFCD;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #CFCFCD;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #CFCFCD;
+  --hover-link: #CFCFCD;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #4A4945;
+}

@@ -1,0 +1,78 @@
+/* ===== Copper Teal Theme ===== */
+:root {
+  --primary: #0D9488;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #D97706;
+  --on-secondary: #FFFFFF;
+
+  --background: #F6FFFD;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #C9EFEA;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #16433F;
+
+  --accent-live: #0D9488;
+  --accent-link: #0D9488;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #0D9488;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #0D9488;
+  --hover-link: #0D9488;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #C9EFEA;
+}
+
+[data-theme="dark"] {
+  --primary: #5EEAD4;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #F2C073;
+  --on-secondary: #14000A;
+
+  --background: #0D1413;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #2A544E;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #C7F7EF;
+
+  --accent-live: #5EEAD4;
+  --accent-link: #5EEAD4;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #5EEAD4;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #5EEAD4;
+  --hover-link: #5EEAD4;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #2A544E;
+}

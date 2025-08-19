@@ -1,0 +1,78 @@
+/* ===== Desert Night Theme ===== */
+:root {
+  --primary: #B45309;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #D97706;
+  --on-secondary: #FFFFFF;
+
+  --background: #FFF8F0;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #F1D4B6;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #4C2E0A;
+
+  --accent-live: #B45309;
+  --accent-link: #B45309;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #B45309;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #B45309;
+  --hover-link: #B45309;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #F1D4B6;
+}
+
+[data-theme="dark"] {
+  --primary: #E6B680;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #F2C073;
+  --on-secondary: #14000A;
+
+  --background: #14100C;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #5C452C;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #FFE5CC;
+
+  --accent-live: #E6B680;
+  --accent-link: #E6B680;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #E6B680;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #E6B680;
+  --hover-link: #E6B680;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #5C452C;
+}

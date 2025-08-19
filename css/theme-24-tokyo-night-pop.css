@@ -1,0 +1,78 @@
+/* ===== Tokyo Night Pop Theme ===== */
+:root {
+  --primary: #7AA2F7;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #BB9AF7;
+  --on-secondary: #FFFFFF;
+
+  --background: #F7F8FF;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #D3DAFF;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #1B2550;
+
+  --accent-live: #9ECE6A;
+  --accent-link: #9ECE6A;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #7AA2F7;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #7AA2F7;
+  --hover-link: #9ECE6A;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #D3DAFF;
+}
+
+[data-theme="dark"] {
+  --primary: #A5C5FF;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #D2BCFF;
+  --on-secondary: #14000A;
+
+  --background: #1A1B26;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #2E3355;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #C6D3FF;
+
+  --accent-live: #A5C5FF;
+  --accent-link: #A5C5FF;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #A5C5FF;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #A5C5FF;
+  --hover-link: #A5C5FF;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #2E3355;
+}

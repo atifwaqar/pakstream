@@ -1,0 +1,78 @@
+/* ===== Pastel Pop 2 Theme ===== */
+:root {
+  --primary: #FF94C2;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #94B3FD;
+  --on-secondary: #FFFFFF;
+
+  --background: #FFF8FE;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #F6D3EA;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #543757;
+
+  --accent-live: #B9FBC0;
+  --accent-link: #B9FBC0;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #FF94C2;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #FF94C2;
+  --hover-link: #B9FBC0;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #F6D3EA;
+}
+
+[data-theme="dark"] {
+  --primary: #FFC1DE;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #C5D5FF;
+  --on-secondary: #14000A;
+
+  --background: #1A1220;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #6D4F77;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #F1D8F7;
+
+  --accent-live: #FFC1DE;
+  --accent-link: #FFC1DE;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #FFC1DE;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #FFC1DE;
+  --hover-link: #FFC1DE;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #6D4F77;
+}

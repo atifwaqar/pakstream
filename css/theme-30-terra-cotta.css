@@ -1,0 +1,78 @@
+/* ===== Terra Cotta Theme ===== */
+:root {
+  --primary: #D65A31;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #E9A368;
+  --on-secondary: #FFFFFF;
+
+  --background: #FFF6F2;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #F0D0C3;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #573127;
+
+  --accent-live: #D65A31;
+  --accent-link: #D65A31;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #D65A31;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #D65A31;
+  --hover-link: #D65A31;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #F0D0C3;
+}
+
+[data-theme="dark"] {
+  --primary: #F29B7A;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #F2C18E;
+  --on-secondary: #14000A;
+
+  --background: #1A1210;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #6B4A3E;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #FFE2D8;
+
+  --accent-live: #F29B7A;
+  --accent-link: #F29B7A;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #F29B7A;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #F29B7A;
+  --hover-link: #F29B7A;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #6B4A3E;
+}

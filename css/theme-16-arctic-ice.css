@@ -1,0 +1,78 @@
+/* ===== Arctic Ice Theme ===== */
+:root {
+  --primary: #60A5FA;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #10B981;
+  --on-secondary: #FFFFFF;
+
+  --background: #F7FBFF;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #D2E6FF;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #203A63;
+
+  --accent-live: #60A5FA;
+  --accent-link: #60A5FA;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #60A5FA;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #60A5FA;
+  --hover-link: #60A5FA;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #D2E6FF;
+}
+
+[data-theme="dark"] {
+  --primary: #A5C4FF;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #6EE7C5;
+  --on-secondary: #14000A;
+
+  --background: #0B1119;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #2A3E5C;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #CBDCFF;
+
+  --accent-live: #A5C4FF;
+  --accent-link: #A5C4FF;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #A5C4FF;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #A5C4FF;
+  --hover-link: #A5C4FF;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #2A3E5C;
+}

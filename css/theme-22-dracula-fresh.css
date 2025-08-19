@@ -1,0 +1,78 @@
+/* ===== Dracula Fresh Theme ===== */
+:root {
+  --primary: #BD93F9;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #FF79C6;
+  --on-secondary: #FFFFFF;
+
+  --background: #F8F8FE;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #E3DAFE;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #26233A;
+
+  --accent-live: #50FA7B;
+  --accent-link: #50FA7B;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #BD93F9;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #BD93F9;
+  --hover-link: #50FA7B;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #E3DAFE;
+}
+
+[data-theme="dark"] {
+  --primary: #C8A6FF;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #FFA0E0;
+  --on-secondary: #14000A;
+
+  --background: #282A36;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #44475A;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #E6E6FF;
+
+  --accent-live: #C8A6FF;
+  --accent-link: #C8A6FF;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #C8A6FF;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #C8A6FF;
+  --hover-link: #C8A6FF;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #44475A;
+}

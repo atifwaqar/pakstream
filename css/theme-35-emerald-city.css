@@ -1,0 +1,78 @@
+/* ===== Emerald City Theme ===== */
+:root {
+  --primary: #059669;
+  --on-primary: #FFFFFF;
+  --primary-container: #E6F0FF;
+  --on-primary-container: #0A0A0A;
+
+  --secondary: #10B981;
+  --on-secondary: #FFFFFF;
+
+  --background: #F2FFF9;
+  --on-background: #1A1A1A;
+
+  --surface: #FFFFFF;
+  --on-surface: #1A1A1A;
+
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+  --error-container: #FFEBEE;
+  --on-error-container: #7F0000;
+
+  --outline: #C4EEE1;
+  --surface-variant: #F2F3F8;
+  --on-surface-variant: #0E3B2F;
+
+  --accent-live: #059669;
+  --accent-link: #059669;
+  --accent-success: #22C55E;
+  --accent-info: #38BDF8;
+
+  --favorite-row: #059669;
+  --active-row: rgba(0,0,0,0.06);
+
+  --hover-primary: #059669;
+  --hover-link: #059669;
+
+  --scrollbar-track: var(--surface-variant);
+  --scrollbar-thumb: #C4EEE1;
+}
+
+[data-theme="dark"] {
+  --primary: #6EE7C5;
+  --on-primary: #001016;
+  --primary-container: #0F1B2E;
+  --on-primary-container: #D6E4FF;
+
+  --secondary: #A7F3D0;
+  --on-secondary: #14000A;
+
+  --background: #0A1411;
+  --on-background: #E6EAF0;
+
+  --surface: #0F1115;
+  --on-surface: #E6EAF0;
+
+  --error: #EF9A9A;
+  --on-error: #3C0404;
+  --error-container: #5C0000;
+  --on-error-container: #FFCDD2;
+
+  --outline: #2A5247;
+  --surface-variant: #151A2B;
+  --on-surface-variant: #CFF7EB;
+
+  --accent-live: #6EE7C5;
+  --accent-link: #6EE7C5;
+  --accent-success: #34D399;
+  --accent-info: #60A5FA;
+
+  --favorite-row: #6EE7C5;
+  --active-row: rgba(255,255,255,0.10);
+
+  --hover-primary: #6EE7C5;
+  --hover-link: #6EE7C5;
+
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #2A5247;
+}
