@@ -229,82 +229,10 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
         scroller.innerHTML += scroller.innerHTML;
-        initStationScroller();
       })
       .catch(function (err) {
         console.error('Failed to load station logos', err);
       });
-  }
-
-  function initStationScroller() {
-    var wrap = document.querySelector('.station-scroller');
-    var track = wrap.querySelector('.scroller-track');
-    var prev = wrap.querySelector('.scroll-btn.prev');
-    var next = wrap.querySelector('.scroll-btn.next');
-    var base = 0.3;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      base = 0;
-    }
-    var direction = -1;
-    var speed = base * direction;
-    var offset = 0;
-    var isDragging = false;
-    var lastX = 0;
-    var lastTime = 0;
-    var velocity = 0;
-
-    function frame() {
-      offset += speed;
-      var width = track.scrollWidth / 2;
-      if (offset <= -width) offset += width;
-      if (offset >= 0) offset -= width;
-      track.style.transform = 'translateX(' + offset + 'px)';
-      if (!isDragging) {
-        var target = base * direction;
-        speed += (target - speed) * 0.02;
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-
-    wrap.addEventListener('pointerdown', function (e) {
-      isDragging = true;
-      wrap.setPointerCapture(e.pointerId);
-      lastX = e.clientX;
-      lastTime = e.timeStamp;
-      speed = 0;
-    });
-
-    wrap.addEventListener('pointermove', function (e) {
-      if (!isDragging) return;
-      var dx = e.clientX - lastX;
-      offset += dx;
-      var dt = e.timeStamp - lastTime;
-      if (dt > 0) velocity = dx / dt * 16;
-      lastX = e.clientX;
-      lastTime = e.timeStamp;
-    });
-
-    function endDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      speed = velocity;
-      direction = speed === 0 ? direction : (speed > 0 ? 1 : -1);
-    }
-
-    wrap.addEventListener('pointerup', endDrag);
-    wrap.addEventListener('pointerleave', endDrag);
-
-    prev && prev.addEventListener('click', function () {
-      offset += 200;
-      direction = 1;
-      speed = base * direction;
-    });
-    next && next.addEventListener('click', function () {
-      offset -= 200;
-      direction = -1;
-      speed = base * direction;
-    });
   }
 
   if ('IntersectionObserver' in window) {
