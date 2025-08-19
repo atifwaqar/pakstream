@@ -11,8 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateScrollLock() {
     var navOpen = navToggle && navToggle.checked;
-    var sideOpen = document.querySelector('.channel-list.open, .details-list.open');
-    var anyOpen = navOpen || !!sideOpen;
+    var channelOpen = document.querySelector('.channel-list.open');
+    var detailsOpen = document.querySelector('.details-list.open');
+    var sideOpen = window.innerWidth <= 768 && (channelOpen || detailsOpen);
+    var anyOpen = navOpen || sideOpen;
     document.body.classList.toggle('no-scroll', anyOpen);
     if (overlay) overlay.classList.toggle('active', anyOpen);
   }
