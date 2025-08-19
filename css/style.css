@@ -586,9 +586,11 @@ section {
   cursor: pointer;
 }
 
-.video-list .video-item img {
+.video-list .video-item img,
+.video-list .video-thumb {
   width: 120px;
   height: 67px;
+  flex: 0 0 120px;
   object-fit: cover;
   border-radius: 4px;
   margin-right: 8px;
