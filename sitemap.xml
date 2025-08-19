@@ -4,22 +4,10 @@
     <loc>https://pakstream.com/</loc>
   </url>
   <url>
+    <loc>https://pakstream.com/media-hub.html</loc>
+  </url>
+  <url>
     <loc>https://pakstream.com/blog.html</loc>
-  </url>
-  <url>
-    <loc>https://pakstream.com/ads.txt</loc>
-  </url>
-  <url>
-    <loc>https://pakstream.com/freepress.html</loc>
-  </url>
-  <url>
-    <loc>https://pakstream.com/creators.html</loc>
-  </url>
-  <url>
-    <loc>https://pakstream.com/radio.html</loc>
-  </url>
-  <url>
-    <loc>https://pakstream.com/livetv.html</loc>
   </url>
   <url>
     <loc>https://pakstream.com/about.html</loc>
@@ -34,7 +22,7 @@
     <loc>https://pakstream.com/terms.html</loc>
   </url>
   <url>
-    <loc>https://pakstream.com/nadraimage.html</loc>
+    <loc>https://pakstream.com/ads.txt</loc>
   </url>
   <url>
     <loc>https://pakstream.com/404.html</loc>
