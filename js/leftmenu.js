@@ -4,6 +4,7 @@
   const detailsList = document.querySelector('.details-list');
   const detailsContainer = document.querySelector('.details-container');
   const detailsToggleBtn = document.getElementById('toggle-details');
+  const channelSection = channelList?.closest('.youtube-section, .media-hub-section');
 
   const modeTabs = [
     { el: document.querySelector('.tab-btn[data-mode="favorites"]'), icon: 'favorite' },
@@ -49,6 +50,7 @@
     } else {
       channelList.classList.toggle('collapsed');
       const collapsed = channelList.classList.contains('collapsed');
+      if (channelSection) channelSection.classList.toggle('channels-collapsed', collapsed);
       if (icon) icon.textContent = collapsed ? 'chevron_right' : 'chevron_left';
       localStorage.setItem('channelListCollapsed', collapsed);
     }
@@ -205,6 +207,7 @@
       const icon = channelToggleBtn?.querySelector('.icon');
       if (localStorage.getItem('channelListCollapsed') === 'true') {
         channelList.classList.add('collapsed');
+        if (channelSection) channelSection.classList.add('channels-collapsed');
         if (icon) icon.textContent = 'chevron_right';
       }
       updateModeTabs();
