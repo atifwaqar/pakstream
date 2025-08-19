@@ -261,8 +261,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
     }
-    const supportHtml = renderSupportSection(item);
-    if (supportHtml) html += supportHtml;
+  const supportHtml = renderSupportSection(item);
+  if (supportHtml) html = supportHtml + html;
     if (html) {
       details.innerHTML = html;
       attachSupportHandlers(details);
