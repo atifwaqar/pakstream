@@ -861,7 +861,7 @@ button:hover,
   margin-top: 4px;
   padding: 2px 6px;
   border-radius: 12px;
-  background: var(--error-container, #ffebee);
+  background: var(--error-container);
   color: var(--error);
   font-size: 0.75rem;
   font-weight: 600;
@@ -947,7 +947,7 @@ table tbody tr:not(:first-child) {
 
 table tbody tr.favorite {
   background-color: var(--favorite-row);
-  color: #FFFFFF;
+  color: var(--on-primary);
 }
 /* Hover highlight for station rows on desktops */
 @media (hover: hover) and (pointer: fine) {
