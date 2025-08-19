@@ -456,10 +456,6 @@ section {
   margin-bottom: 8px;
 }
 
-.button-row .spacer {
-  flex: 1;
-}
-
 .youtube-section .channel-card,
 .media-hub-section .channel-card,
 .youtube-section .detail-item,
@@ -783,7 +779,7 @@ button:hover,
 
 .channel-toggle .icon,
 .details-toggle .icon {
-  display: inline-block;
+  display: none;
 }
 
 @media (min-width: 769px) {
@@ -800,6 +796,11 @@ button:hover,
   .channel-toggle .label,
   .details-toggle .label {
     display: none;
+  }
+
+  .channel-toggle .icon,
+  .details-toggle .icon {
+    display: inline-block;
   }
 
   .channel-toggle:hover,
