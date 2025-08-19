@@ -565,7 +565,7 @@ section {
 }
 
 .video-list .video-item.active {
-  background: rgba(0,100,0,0.1);
+  background: var(--active-row);
 }
 
 .video-list .video-item .video-details {

@@ -30,6 +30,7 @@
   --accent-success: #43A047;
   --accent-info: #4FC3F7;
   --favorite-row: #00796B;
+  --active-row: rgba(0,100,0,0.1);
   --hover-primary: #00695C;
   --hover-link: #1565C0;
   --scrollbar-track: var(--surface-variant);
@@ -77,6 +78,7 @@
   --accent-success: #66BB6A;
   --accent-info: #81D4FA;
   --favorite-row: #00796B;
+  --active-row: rgba(0,100,0,0.3);
   --hover-primary: #00695C;
   --hover-link: #64B5F6;
   --scrollbar-track: var(--surface);
