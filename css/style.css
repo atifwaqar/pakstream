@@ -416,7 +416,18 @@ section {
 .youtube-section,
 .media-hub-section {
   display: flex;
-  gap: 16px;
+}
+
+/* maintain horizontal spacing between flex items */
+.youtube-section > * + *,
+.media-hub-section > * + * {
+  margin-left: 16px;
+}
+
+/* remove gap when the channel list is collapsed */
+.youtube-section .channel-list.collapsed + .video-section,
+.media-hub-section .channel-list.collapsed + .video-section {
+  margin-left: 0;
 }
 
 .youtube-section .channel-list,
@@ -592,6 +603,10 @@ section {
   .youtube-section,
   .media-hub-section {
     display: block;
+  }
+  .youtube-section > * + *,
+  .media-hub-section > * + * {
+    margin-left: 0;
   }
   .youtube-section .channel-list,
   .media-hub-section .channel-list {
