@@ -60,25 +60,7 @@
 </head>
 <body>
 {% include google-tag-manager-body.html %}
-  <header class="top-bar">
-    <input type="checkbox" id="nav-toggle">
-    <label for="nav-toggle" class="nav-toggle-label">☰</label>
-    <h1 class="logo-title">PakStream</h1>
-    <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/freepress.html">Free Press</a>
-        <a href="/livetv.html">Live TV</a>
-        <a href="/creators.html">Creators</a>
-        <a href="/radio.html">Radio</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-      </nav>
-  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
-  <label for="nav-toggle" class="nav-overlay"></label>
-  </header>
+  {% include top-bar.html %}
 
   <main class="post-container">
     <article class="post">
