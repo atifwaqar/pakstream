@@ -305,12 +305,35 @@ section {
   overflow: hidden;
   margin: 20px auto;
   max-width: 960px;
+  position: relative;
+}
+
+.station-scroller::before,
+.station-scroller::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.station-scroller::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface), transparent);
+}
+
+.station-scroller::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface), transparent);
 }
 
 .station-scroller .scroller-track {
   display: flex;
   width: max-content;
   animation: station-scroll 80s linear infinite;
+  will-change: transform;
 }
 
 .station-scroller:hover .scroller-track {
@@ -321,6 +344,7 @@ section {
   display: flex;
   align-items: center;
   flex: 0 0 auto;
+  position: relative;
 }
 
 .station-scroller .channel-thumb {
@@ -329,11 +353,24 @@ section {
   border-radius: 8px;
   object-fit: cover;
   margin-right: 16px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.station-scroller .scroller-track a:hover .channel-thumb {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
 @keyframes station-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station-scroller .scroller-track {
+    animation: none;
+  }
 }
 
 /* Featured card layout */
