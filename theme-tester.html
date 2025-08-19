@@ -74,12 +74,13 @@
   <div class="theme-picker">
     <label for="themeSelector">Choose theme:</label>
     <select id="themeSelector">
-      <option value="/css/theme.css" selected>Default</option>
-      <option value="/css/theme-candy-pop.css">Candy Pop</option>
-      <option value="/css/theme-cyber-neon.css">Cyber Neon</option>
-      <option value="/css/theme-nature-calm.css">Nature Calm</option>
-      <option value="/css/theme-pastel-delight.css">Pastel Delight</option>
-      <option value="/css/theme-gradient-glow.css">Gradient Glow</option>
+      {% assign theme_files = site.static_files | where_exp: "file", "file.path contains '/css/theme'" | sort: "name" %}
+      {% for file in theme_files %}
+        {% assign base = file.name | replace: 'theme-', '' | replace: '.css', '' %}
+        {% assign parts = base | split: '-' %}
+        {% capture label %}{% for part in parts %}{{ part | capitalize }}{% unless forloop.last %} {% endunless %}{% endfor %}{% endcapture %}
+        <option value="{{ file.path }}" {% if file.name == 'theme.css' %}selected{% endif %}>{{ label | strip }}</option>
+      {% endfor %}
     </select>
   </div>
 
