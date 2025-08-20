@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+  // Safe to edit per-environment without touching versioned JS files
+  window.__PAKSTREAM_FLAGS = {
+    // flip to true only when ready
+    newPalette: false,
+    adsEnabled: false,
+    mediaHubV2: false,
+    debugDiagnostics: true
+  };
+  </script>
 {% include google-tag-manager-head.html %}
   <!-- Start cookieyes banner -->
   <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
@@ -79,6 +89,8 @@
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
   <script src="/js/pwa.js" defer></script>
+  <script src="/js/utils/flags.js" defer></script>
+  <script src="/js/diagnostics.js" defer></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
