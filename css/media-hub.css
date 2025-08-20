@@ -422,3 +422,54 @@
 .stream-error-overlay .actions button {
   margin: 8px;
 }
+
+/* ===== Embed Mode: remove all extra spacing and side chrome ===== */
+.is-embed, .is-embed html, .is-embed body {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.is-embed .youtube-section.media-hub-section {
+  margin: 0 !important;
+  padding: 0 !important;
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+}
+
+/* Hide all non-video UI in the embed */
+.is-embed .hub-controls,
+.is-embed .button-row,
+.is-embed #left-rail,
+.is-embed .right-rail,
+.is-embed .page-header,
+.is-embed .page-footer,
+.is-embed .details-container {
+  display: none !important;
+}
+
+/* Let the center/video area take all the space */
+.is-embed .media-hub-section {
+  grid-template-columns: 1fr !important;
+  grid-template-areas: "center" !important;
+}
+
+.is-embed .video-section {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.is-embed .live-player {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure the inner iframe fills correctly and has no border radius conflicts */
+.is-embed #playerFrame {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+}
