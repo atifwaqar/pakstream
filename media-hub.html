@@ -25,9 +25,11 @@
 <body>
   <!-- Top bar (same as site) -->
 {% include top-bar.html %}
+  {% include ad-slot.html id="hub-leaderboard" type="leaderboard" priority="high" %}
 
   <section id="trending-rail" class="rail-section lazy-rail" aria-label="Trending Now"></section>
   <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
+  {% include ad-slot.html id="hub-mid" type="in-content" priority="normal" %}
 
   <section class="youtube-section media-hub-section">
     <div id="hub-controls" class="hub-controls">
@@ -118,8 +120,9 @@
       <a href="/about.html">About Us</a>
       <a href="/contact.html">Contact</a>
       <a href="/privacy.html">Privacy &amp; History</a>
-    <a href="/terms.html">Terms</a>
-  </nav>
+      <a href="/terms.html">Terms</a>
+      <a href="#" data-open-consent>Privacy &amp; Ads settings</a>
+    </nav>
     {% include support-us.html %}
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
@@ -128,6 +131,9 @@
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script defer src="/js/ad-config.js"></script>
+  <script defer src="/js/ad-slot.js"></script>
+  <script defer src="/js/consent.js"></script>
   <script defer src="/js/discovery.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
