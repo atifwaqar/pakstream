@@ -4,6 +4,7 @@
   box-sizing: border-box;
   display: block;
   margin: 16px auto;
+  width: 100%;
   max-width: 100%;
   background: #f8f9fa;
   border: 1px dashed rgba(0,0,0,.08);
@@ -28,14 +29,14 @@
 
 /* Responsive helpers (optional) */
 @media (min-width: 768px) {
-  .ad-slot[data-ad-type="leaderboard"] { min-width: 728px; min-height: 90px; }
+  .ad-slot[data-ad-type="leaderboard"] { max-width: 728px; min-height: 90px; }
 }
 @media (max-width: 767.98px) {
-  .ad-slot[data-ad-type="leaderboard"] { min-width: 320px; min-height: 50px; }
+  .ad-slot[data-ad-type="leaderboard"] { max-width: 320px; min-height: 50px; }
 }
 
 /* “Fluid” slots: fill container width; height via aspect ratio or custom CSS */
 .ad-slot[data-ad-type="fluid"] {
-  min-width: 100%;
+  width: 100%;
   min-height: 1px;
 }
