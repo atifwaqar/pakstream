@@ -26,7 +26,6 @@
 {% include top-bar.html %}
 
   <main id="main-content">
-  <section id="trending-rail" class="rail-section lazy-rail" aria-label="Trending Now"></section>
   <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
 
   <section class="youtube-section media-hub-section">
@@ -43,9 +42,8 @@
         <select id="region-filter" multiple aria-label="Filter by region"></select>
         <label class="live-filter"><input type="checkbox" id="live-filter"> Live Now</label>
         <select id="sort-select" aria-label="Sort results">
-          <option value="trending">Trending</option>
-          <option value="recent">Most Recent</option>
           <option value="az">A → Z</option>
+          <option value="recent">Most Recent</option>
           <option value="played">Recently Played</option>
         </select>
         <input id="mh-search-input" type="text" placeholder="Search…" aria-label="Search media" />

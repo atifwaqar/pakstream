@@ -39,7 +39,7 @@
     overlay.appendChild(actions);
     if(opts && Array.isArray(opts.suggestions) && opts.suggestions.length){
       var sugg = document.createElement('div');
-      sugg.className = 'trending-cards';
+      sugg.className = 'suggestion-cards';
       opts.suggestions.forEach(function(it){
         var a = document.createElement('a');
         a.href = it.url;
