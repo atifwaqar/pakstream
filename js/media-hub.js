@@ -965,14 +965,16 @@ async function renderLatestVideosRSS(channelId) {
     if (currentStreamBus) currentStreamBus.emit('end');
     currentStreamBus = createStreamStateBus({ id: item.key, type: m, provider: 'youtube', sourceUrl: src });
     attachStreamErrorOverlay(currentStreamBus, livePlayerEl);
+    initStreamAutoRetry(currentStreamBus);
     streamStarted = false;
     currentStreamBus.emit('attempt');
     let startTimeout = setTimeout(() => {
       if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
     }, 12000);
     currentStreamBus.on('start', () => { clearTimeout(startTimeout); });
-    currentStreamBus.on('retry', () => {
-      currentStreamBus.meta.attemptNo++;
+    currentStreamBus.on('retry', (e) => {
+      const manual = e && e.detail && e.detail.manual;
+      currentStreamBus.meta.attemptNo = manual ? 1 : currentStreamBus.meta.attemptNo + 1;
       if (playerIF) playerIF.src = src;
       startTimeout = setTimeout(() => {
         if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
@@ -1034,14 +1036,17 @@ async function renderLatestVideosRSS(channelId) {
       sourceUrl: audio.src
     });
     attachStreamErrorOverlay(currentStreamBus, livePlayerEl);
+    initStreamAutoRetry(currentStreamBus);
+    watchMediaStalls(mainPlayer, currentStreamBus, { stallMs: 8000 });
     streamStarted = false;
     currentStreamBus.emit('attempt');
     let startTimeout = setTimeout(() => {
       if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
     }, 12000);
     currentStreamBus.on('start', () => { clearTimeout(startTimeout); });
-    currentStreamBus.on('retry', () => {
-      currentStreamBus.meta.attemptNo++;
+    currentStreamBus.on('retry', (e) => {
+      const manual = e && e.detail && e.detail.manual;
+      currentStreamBus.meta.attemptNo = manual ? 1 : currentStreamBus.meta.attemptNo + 1;
       if (mainPlayer) {
         mainPlayer.load();
         const p = mainPlayer.play();
