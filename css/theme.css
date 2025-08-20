@@ -2,32 +2,32 @@
 
 /* -------- Light Theme -------- */
 :root {
-  --primary: #0F5132;
+  --primary: #00796B;
   --on-primary: #FFFFFF;
-  --primary-container: #D7F2E3;
-  --on-primary-container: #0B3A23;
+  --primary-container: #B2DFDB;
+  --on-primary-container: #004D40;
 
-  --secondary: #E0B100;
-  --on-secondary: #1A1A1A;
+  --secondary: #C62828;
+  --on-secondary: #FFFFFF;
 
   --background: #FAFAFA;
-  --on-background: #1F2937;
+  --on-background: #212121;
 
   --surface: #FFFFFF;
-  --on-surface: #1F2937;
+  --on-surface: #212121;
 
-  --error: #B3261E;
+  --error: #D32F2F;
   --on-error: #FFFFFF;
-  --error-container: #F9DEDC;
-  --on-error-container: #410E0B;
+  --error-container: #FFEBEE;
+  --on-error-container: #B71C1C;
 
-  --outline: #D1D5DB;
-  --surface-variant: #F3F4F6;
-  --on-surface-variant: #4B5563;
+  --outline: #BDBDBD;
+  --surface-variant: #EEEEEE;
+  --on-surface-variant: #424242;
 
   --accent-link: #2563EB;
   --accent-link-visited: #1D4ED8;
-  --accent-live: #DC2626;
+  --accent-live: #FB8C00;
   --accent-success: #43A047;
   --accent-info: #4FC3F7;
   --favorite-row: var(--primary);
