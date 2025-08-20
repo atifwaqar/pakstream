@@ -1,78 +1,84 @@
-(function(){
-  function initTabs(){
-    const tablist = document.getElementById('mh-tabs');
-    if(!tablist) return;
-    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
-    if(!tabs.length) return;
-    // Determine starting tab from URL or default to first
-    const params = new URLSearchParams(location.search);
-    let current = params.get('tab') || tabs.find(t=>t.getAttribute('aria-selected')==='true')?.dataset.tab || tabs[0].dataset.tab;
+const __mh = (() => {
+  // Avoid redefining across modules
+  if (window.__PAKSTREAM_MH_UTILS__) return window.__PAKSTREAM_MH_UTILS__;
 
-    function activate(tab, updateUrl=true){
-      if(!tab) return;
-      tabs.forEach(t => {
-        const selected = t === tab;
-        t.classList.toggle('active', selected);
-        t.setAttribute('aria-selected', selected ? 'true' : 'false');
-        t.tabIndex = selected ? 0 : -1;
-      });
-      current = tab.dataset.tab;
-      if(updateUrl){
-        const p = new URLSearchParams(location.search);
-        if(current && current !== 'all') p.set('tab', current); else p.delete('tab');
-        const qs = p.toString();
-        history.replaceState(null, '', qs ? '?' + qs : location.pathname);
-      }
-      const ev = new CustomEvent('mh:tabs:changed', {detail:{tab:current}});
-      document.dispatchEvent(ev);
+  const qs  = (sel, root=document) => root.querySelector(sel);
+  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const on  = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+
+  function required(el, label) {
+    if (!el) {
+      console.warn(`[MediaHub] Missing required element: ${label}`);
+      return null;
     }
-
-    // Click activation
-    tablist.addEventListener('click', e => {
-      const tab = e.target.closest('[role="tab"]');
-      if(tab) activate(tab);
-    });
-
-    // Keyboard navigation
-    tablist.addEventListener('keydown', e => {
-      const index = tabs.indexOf(document.activeElement);
-      if(index === -1) return;
-      let newIndex = null;
-      switch(e.key){
-        case 'ArrowRight':
-          newIndex = (index + 1) % tabs.length; break;
-        case 'ArrowLeft':
-          newIndex = (index - 1 + tabs.length) % tabs.length; break;
-        case 'Home':
-          newIndex = 0; break;
-        case 'End':
-          newIndex = tabs.length - 1; break;
-        case 'Enter':
-        case ' ':
-          activate(tabs[index]);
-          return;
-        default:
-          return;
-      }
-      tabs[newIndex].focus();
-      e.preventDefault();
-    });
-
-    // External requests to change tab
-    document.addEventListener('mh:tabs:set', e => {
-      const name = e.detail && e.detail.tab;
-      const target = tabs.find(t => t.dataset.tab === name);
-      if(target) activate(target);
-    });
-
-    // Initial activation
-    const first = tabs.find(t=>t.dataset.tab===current) || tabs[0];
-    activate(first, true);
+    return el;
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // Defer initial event so other listeners can attach
-    setTimeout(initTabs, 0);
-  });
+  function emptyState(container, message) {
+    if (!container) return;
+    // Idempotent: don’t duplicate empty states
+    if (container.__emptyRendered) return;
+    container.innerHTML = `
+      <div class="mh-empty" role="status" aria-live="polite">
+        <p>${message}</p>
+      </div>`;
+    container.__emptyRendered = true;
+  }
+
+  function clearContainer(container) {
+    if (!container) return;
+    container.__emptyRendered = false;
+    container.innerHTML = '';
+  }
+
+  function emit(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail }));
+  }
+
+  return (window.__PAKSTREAM_MH_UTILS__ = { qs, qsa, on, required, emptyState, clearContainer, emit });
+})();
+
+window.PAKSTREAM_MH_TABS = (function () {
+  const { qs, qsa, on, required, emit } = __mh;
+
+  function init({ root, tabs }) {
+    if (!root) return;
+    if (!tabs) return; // tabs optional
+    if (tabs.__wired) return;
+    tabs.__wired = true;
+
+    const triggers = qsa('[data-mh-tab]', tabs);
+    if (triggers.length === 0) return;
+
+    function activate(name) {
+      triggers.forEach(btn => {
+        const isActive = btn.getAttribute('data-mh-tab') === name;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.tabIndex = isActive ? 0 : -1;
+      });
+      emit('pakstream:hub:tabchange', { name });
+    }
+
+    triggers.forEach(btn => {
+      on(btn, 'click', (e) => {
+        e.preventDefault();
+        activate(btn.getAttribute('data-mh-tab'));
+      });
+      // Keyboard support
+      on(btn, 'keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate(btn.getAttribute('data-mh-tab'));
+        }
+      });
+    });
+
+    // Default to first if none active
+    const active = triggers.find(b => b.classList.contains('is-active')) || triggers[0];
+    if (active) activate(active.getAttribute('data-mh-tab'));
+  }
+
+  return { init };
 })();
 

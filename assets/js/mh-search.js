@@ -1,46 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('mh-search');
-  if (!container) return;
-  const input = container.querySelector('input[type="search"]');
-  const clearBtn = container.querySelector('.clear-btn');
+const __mh = (() => {
+  // Avoid redefining across modules
+  if (window.__PAKSTREAM_MH_UTILS__) return window.__PAKSTREAM_MH_UTILS__;
 
-  const emit = q => window.dispatchEvent(new CustomEvent('mh:search:changed', { detail: { q } }));
+  const qs  = (sel, root=document) => root.querySelector(sel);
+  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const on  = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
 
-  let timer;
-  input.addEventListener('input', () => {
-    clearBtn.hidden = !input.value;
-    clearTimeout(timer);
-    timer = setTimeout(() => emit(input.value.trim()), 200);
-  });
-
-  clearBtn.addEventListener('click', () => {
-    input.value = '';
-    clearBtn.hidden = true;
-    emit('');
-    input.focus();
-  });
-
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      input.value = '';
-      clearBtn.hidden = true;
-      emit('');
+  function required(el, label) {
+    if (!el) {
+      console.warn(`[MediaHub] Missing required element: ${label}`);
+      return null;
     }
-  });
+    return el;
+  }
 
-  window.addEventListener('mh:search:changed', e => {
-    const q = (e.detail && e.detail.q) || '';
-    if (input.value !== q) {
-      input.value = q;
-    }
-    clearBtn.hidden = !q;
-    const params = new URLSearchParams(location.search);
-    if (q) params.set('q', q); else params.delete('q');
-    const newUrl = params.toString() ? `?${params}` : location.pathname;
-    history.replaceState(null, '', newUrl);
-  });
+  function emptyState(container, message) {
+    if (!container) return;
+    // Idempotent: don’t duplicate empty states
+    if (container.__emptyRendered) return;
+    container.innerHTML = `
+      <div class="mh-empty" role="status" aria-live="polite">
+        <p>${message}</p>
+      </div>`;
+    container.__emptyRendered = true;
+  }
 
-  const params = new URLSearchParams(location.search);
-  const initial = params.get('q') || '';
-  if (initial) emit(initial);
-});
+  function clearContainer(container) {
+    if (!container) return;
+    container.__emptyRendered = false;
+    container.innerHTML = '';
+  }
+
+  function emit(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { detail }));
+  }
+
+  return (window.__PAKSTREAM_MH_UTILS__ = { qs, qsa, on, required, emptyState, clearContainer, emit });
+})();
+
+window.PAKSTREAM_MH_SEARCH = (function () {
+  const { qs, on, emit } = __mh;
+
+  function init({ root, search }) {
+    if (!root || !search) return;
+    if (search.__wired) return;
+    search.__wired = true;
+
+    const input = qs('input[type="search"], input[data-mh-search]', search);
+    if (!input) return;
+
+    let t = 0;
+    on(input, 'input', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        emit('pakstream:hub:rerender', { q: input.value.trim() });
+      }, 150);
+    });
+  }
+
+  return { init };
+})();
+
