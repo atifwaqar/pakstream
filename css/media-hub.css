@@ -93,14 +93,14 @@
 .empty-state .suggestions .btn {
   margin: 4px;
 }
-.empty-state .trending-cards {
+.suggestion-cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   margin-top: 16px;
 }
-.empty-state .trending-cards a {
+.suggestion-cards a {
   width: 120px;
   text-align: center;
 }

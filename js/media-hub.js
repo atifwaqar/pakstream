@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     languages: [],
     regions: [],
     live: false,
-    sort: 'trending',
+    sort: 'az',
     q: ''
   };
   if (params.toString()) {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     state.languages = (params.get('lang') || '').split(',').filter(Boolean);
     state.regions = (params.get('region') || '').split(',').filter(Boolean);
     state.live = params.get('live') === '1';
-    state.sort = params.get('sort') || 'trending';
+    state.sort = params.get('sort') || 'az';
     state.q = params.get('q') || '';
   } else {
     Object.assign(state, loadState());
@@ -632,12 +632,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(state.languages.length) arr = arr.filter(i => state.languages.includes(i.language));
     if(state.regions.length) arr = arr.filter(i => state.regions.includes(i.region));
     if(state.live) arr = arr.filter(i => i.isLive);
-    if(state.sort === 'trending' && window.trendingService){
-      const ranked = window.trendingService.getRanking(arr);
-      const ids = new Set(ranked.map(r => r.key));
-      const rest = arr.filter(i => !ids.has(i.key));
-      arr = ranked.concat(rest.sort((a,b)=>displayName(a).localeCompare(displayName(b))));
-    } else if(state.sort === 'recent'){
+    if(state.sort === 'recent'){
       arr.sort((a,b)=> new Date(b.firstSeen||0) - new Date(a.firstSeen||0));
     } else if(state.sort === 'played' && window.historyService){
       const hist = window.historyService.get();
@@ -686,7 +681,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         state.languages = [];
         state.regions = [];
         state.live = false;
-        state.sort = 'trending';
+        state.sort = 'az';
         state.q = '';
         updateState();
         if(window.analytics) analytics('empty_state_action',{action:'clear_all'});
@@ -725,22 +720,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       sugg.appendChild(nonlive);
       sugg.appendChild(allLang);
       empty.appendChild(sugg);
-      const trend = document.createElement('div');
-      trend.className = 'trending-cards';
-      if(window.trendingService){
-        const tItems = window.trendingService.getRanking(items).slice(0,6);
-        tItems.forEach(it => {
-          const id = (it.ids && it.ids.internal_id) ? it.ids.internal_id : it.key;
-          const modeIt = modeOfItem(it);
-          const a = document.createElement('a');
-          a.href = '/media-hub.html?c=' + encodeURIComponent(id) + '&m=' + modeIt;
-          a.className = 'btn';
-          a.textContent = displayName(it);
-          a.addEventListener('click', function(){ if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
-          trend.appendChild(a);
-        });
-      }
-      empty.appendChild(trend);
       const cats = document.createElement('div');
       cats.className = 'nf-cats';
       ['news','music','talk','drama','sports'].forEach(cat => {
@@ -1012,9 +991,6 @@ async function renderLatestVideosRSS(channelId) {
         poster: thumbOf(item)
       });
     }
-    if (window.trendingService) {
-      window.trendingService.recordClick({ id: item.key, type: modeOfItem(item) });
-    }
   }
 
   // ---- Radio playback ----
@@ -1092,10 +1068,6 @@ async function renderLatestVideosRSS(channelId) {
         url: '/media-hub.html?m=radio&c=' + encodeURIComponent(id),
         poster: logoUrl || thumbOf(item)
       });
-    }
-    if (window.trendingService) {
-      const id = item.ids?.internal_id || item.key;
-      window.trendingService.recordClick({ id, type: 'radio' });
     }
 
     if (mainPlayer) {
@@ -1267,7 +1239,7 @@ async function renderLatestVideosRSS(channelId) {
     if(state.languages.length) p.set('lang', state.languages.join(','));
     if(state.regions.length) p.set('region', state.regions.join(','));
     if(state.live) p.set('live','1');
-    if(state.sort && state.sort !== 'trending') p.set('sort', state.sort);
+    if(state.sort && state.sort !== 'az') p.set('sort', state.sort);
     if(state.q) p.set('q', state.q);
     history.replaceState(null,'','?'+p.toString());
   }
@@ -1303,7 +1275,7 @@ async function renderLatestVideosRSS(channelId) {
     state.languages = [];
     state.regions = [];
     state.live = false;
-    state.sort = 'trending';
+    state.sort = 'az';
     state.q = '';
     updateState();
   });

@@ -3,30 +3,6 @@ document.addEventListener('DOMContentLoaded', function(){
   if(title) title.focus();
   if(window.analytics) analytics('page_404_view');
 
-  // trending suggestions
-  fetch('/all_streams.json').then(function(r){return r.json();}).then(function(data){
-    if(!window.trendingService) return;
-    var items = window.trendingService.getRanking(data.items || []).slice(0,5);
-    var container = document.getElementById('nf-trending');
-    if(!container || items.length===0) return;
-    var h = document.createElement('h3');
-    h.textContent = 'Trending Now';
-    container.appendChild(h);
-    var ul = document.createElement('ul');
-    items.forEach(function(it){
-      var id = (it.ids && it.ids.internal_id) ? it.ids.internal_id : it.key;
-      var mode = (it.category || it.type || '').toLowerCase();
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      a.href = '/media-hub.html?c=' + encodeURIComponent(id) + '&m=' + mode;
-      a.textContent = it.name || it.title || id;
-      a.setAttribute('data-analytics','suggestion');
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
-    container.appendChild(ul);
-  }).catch(function(){});
-
   // recently visited
   if(window.historyService){
     var recent = window.historyService.get().slice(0,5);
