@@ -78,7 +78,7 @@
           <span class="label" data-default="About">About</span>
         </button>
       </div>
-      <div class="live-player" data-stream-container>
+      <div class="live-player" data-stream-container data-youtube-container>
         <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen data-youtube title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
@@ -361,7 +361,7 @@
 
   function loadVideo(videoId) {
     if (videoId) {
-      playerFrame.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+      playerFrame.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`;
       if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
   }
@@ -558,10 +558,13 @@
         if (defaultCard) handleChannelClick(defaultCard);
       });
 </script>
-  <script src="/js/error-overlay.js" defer></script>
-  <script src="/js/leftmenu.js"></script>
-  <script type="module" src="/js/fullscreen-orientation.js"></script>
-  <script src="/js/pwa.js" defer></script>
-  <script defer src="/js/main.js"></script>
+<script src="/js/error-overlay.js" defer></script>
+<script src="/js/stream-state.js" defer></script>
+<script src="/js/radio.js" defer></script>
+<script src="/js/youtube.js" defer></script>
+<script src="/js/leftmenu.js"></script>
+<script type="module" src="/js/fullscreen-orientation.js"></script>
+<script src="/js/pwa.js" defer></script>
+<script defer src="/js/main.js"></script>
 </body>
 </html>

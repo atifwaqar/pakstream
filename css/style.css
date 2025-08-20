@@ -1457,3 +1457,6 @@ footer nav a:hover {
 
 /* Ensure stream containers establish a positioning context (non-breaking) */
 [data-stream-container] { position: relative; }
+
+[data-radio-container].is-playing,
+[data-youtube-container].is-playing { outline: 2px solid rgba(0,0,0,.2); }
