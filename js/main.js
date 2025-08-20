@@ -1,3 +1,12 @@
+if (window.PAKSTREAM?.Flags?.isOn('newPalette')) {
+  document.documentElement.classList.add('theme-new');
+}
+
+// Example: only render ad slots if ads are enabled
+if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
+  // initAds();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');

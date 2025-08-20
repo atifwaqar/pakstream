@@ -1,6 +1,6 @@
 // Feature flags: merge into existing flags object if present
 window.__PAKSTREAM_FLAGS = Object.assign({
-  ads: false,            // default off (safe)
+  adsEnabled: false,     // default off (safe)
   adsDebug: false,       // optional debug logging
   sw: false,             // minimal service worker (off by default)
   swDebug: false         // debug logging for service worker
