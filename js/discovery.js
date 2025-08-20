@@ -1,7 +1,6 @@
 (function(){
   const HISTORY_KEY = 'pakstream.user.history.v1';
   const HISTORY_ENABLED_KEY = 'pakstream.user.history.enabled';
-  const TRENDING_KEY = 'pakstream.trending.signals.v1';
 
   function load(key, fallback){
     try{
@@ -39,41 +38,7 @@
     }
   };
 
-  const trendingService = {
-    _signals(){ return load(TRENDING_KEY, {}); },
-    _save(sig){ save(TRENDING_KEY, sig); },
-    recordClick(item){
-      const sig = this._signals();
-      const id = item.id;
-      const now = new Date().toISOString();
-      sig[id] = sig[id] || {clicks:0, firstSeen:now, lastSeen:now, type:item.type};
-      sig[id].clicks += 1;
-      sig[id].lastSeen = now;
-      sig[id].type = item.type || sig[id].type;
-      this._save(sig);
-    },
-    clear(){ try{ localStorage.removeItem(TRENDING_KEY); }catch(e){} },
-    getRanking(items){
-      const sig = this._signals();
-      const map = {};
-      items.forEach(it => { map[it.key] = it; });
-      const now = Date.now();
-      const scored = Object.keys(sig).map(id => {
-        const s = sig[id];
-        const it = map[id];
-        if(!it) return null;
-        const isNew = s.firstSeen && (now - new Date(s.firstSeen).getTime() < 7*86400*1000) ? 1 : 0;
-        const isLive = it.status && it.status.active ? 1 : 0;
-        const score = 3*(s.clicks||0) + 2*isNew + 1*isLive;
-        return {item:it, score};
-      }).filter(Boolean);
-      scored.sort((a,b) => b.score - a.score);
-      return scored.map(x => x.item);
-    }
-  };
-
   window.historyService = historyService;
-  window.trendingService = trendingService;
 
   function thumbOf(it){ return it.media && (it.media.thumbnail_url || it.media.logo_url) || '/assets/avatar-fallback.png'; }
   function displayName(it){ return it.name || it.title || it.key || 'Untitled'; }
@@ -94,17 +59,10 @@
       rails.forEach(r => renderRail(r.id));
     }
 
-    document.addEventListener('click', function(ev){
-      const link = ev.target.closest('a[data-trend-id]');
-      if(link){
-        trendingService.recordClick({id:link.getAttribute('data-trend-id'), type:link.getAttribute('data-trend-type')});
-      }
-    });
   });
 
   function renderRail(id){
     if(id === 'continue-rail') return renderContinue();
-    if(id === 'trending-rail') return renderTrending();
   }
 
   function renderContinue(){
@@ -132,8 +90,6 @@
       const a = document.createElement('a');
       a.className = 'rail-card';
       a.href = it.url;
-      a.setAttribute('data-trend-id', it.id);
-      a.setAttribute('data-trend-type', it.type);
       const img = document.createElement('img');
       img.src = it.poster;
       img.alt = it.title;
@@ -160,39 +116,4 @@
     container.appendChild(rail);
   }
 
-  function renderTrending(){
-    const container = document.getElementById('trending-rail');
-    if(!container) return;
-    container.innerHTML = '';
-    fetch('/all_streams.json').then(r=>r.json()).then(data => {
-      const items = trendingService.getRanking(data.items || []).slice(0,12);
-      if(items.length < 3){ container.remove(); return; }
-      const title = document.createElement('h2');
-      title.textContent = 'Trending Now';
-      title.setAttribute('aria-label', 'Trending Now');
-      const rail = document.createElement('div');
-      rail.className = 'rail-cards';
-      items.forEach(it => {
-        const mode = (it.category || it.type || '').toLowerCase();
-        const id = it.ids && it.ids.internal_id ? it.ids.internal_id : it.key;
-        const url = '/media-hub.html?c=' + encodeURIComponent(id) + '&m=' + mode;
-        const a = document.createElement('a');
-        a.className = 'rail-card';
-        a.href = url;
-        a.setAttribute('data-trend-id', id);
-        a.setAttribute('data-trend-type', mode);
-        const img = document.createElement('img');
-        img.src = thumbOf(it);
-        img.alt = displayName(it);
-        a.appendChild(img);
-        const name = document.createElement('div');
-        name.className = 'rail-title';
-        name.textContent = displayName(it);
-        a.appendChild(name);
-        rail.appendChild(a);
-      });
-      container.appendChild(title);
-      container.appendChild(rail);
-    }).catch(() => container.remove());
-  }
 })();
