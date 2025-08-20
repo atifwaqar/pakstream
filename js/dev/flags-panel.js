@@ -125,13 +125,14 @@
     if (el.classList.contains('is-open')) render();
   }
 
-  // Keyboard shortcut: Ctrl+Shift+D
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'd')) {
-      e.preventDefault();
-      toggle();
-    }
-  });
+// Keyboard shortcut: Ctrl+Alt+D
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.altKey && (e.key.toLowerCase() === 'd')) {
+    e.preventDefault();
+    toggle();
+  }
+});
+
 
   // Initial
   restoreFlagState();
