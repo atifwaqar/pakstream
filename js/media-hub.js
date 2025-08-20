@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   if (params.toString()) {
     state.tab = params.get('tab') || params.get('m') || 'all';
+    if(state.tab === 'creators') state.tab = 'creator';
     state.topics = (params.get('topic') || '').split(',').filter(Boolean);
     state.languages = (params.get('lang') || '').split(',').filter(Boolean);
     state.regions = (params.get('region') || '').split(',').filter(Boolean);
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const videoList = document.getElementById("videoList");
   const details   = document.querySelector(".details-list");
   const tabs      = document.querySelectorAll(".tab-btn");
+  const searchEl  = document.getElementById("mh-search-input");
   const topicFilter  = document.getElementById('topic-filter');
   const langFilter   = document.getElementById('lang-filter');
   const regionFilter = document.getElementById('region-filter');
@@ -408,12 +410,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   // One place for UI updates (tabs, player visibility, details toggle, favorites cache)
   function updateActiveUI() {
-    tabs.forEach(t => {
-      const isActive = t.dataset.mode === mode;
-      t.classList.toggle("active", isActive);
-      t.setAttribute("aria-pressed", isActive ? "true" : "false");
-    });
-
     const videoPlaying = playerIF && playerIF.src && playerIF.src !== "about:blank";
     if (currentAudio || (!videoPlaying && mode === "radio")) {
       if (playerIF) playerIF.style.display = "none";
@@ -693,6 +689,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         state.live = false;
         state.sort = 'az';
         state.q = '';
+        document.dispatchEvent(new CustomEvent('mh:tabs:set',{detail:{tab:'all'}}));
         updateState();
         if(window.analytics) analytics('empty_state_action',{action:'clear_all'});
       });
@@ -1281,7 +1278,7 @@ async function renderLatestVideosRSS(channelId) {
   // Tabs + Search
   function syncURL(){
     const p = new URLSearchParams();
-    p.set('tab', state.tab);
+    p.set('tab', state.tab === 'creator' ? 'creators' : state.tab);
     if(state.topics.length) p.set('topic', state.topics.join(','));
     if(state.languages.length) p.set('lang', state.languages.join(','));
     if(state.regions.length) p.set('region', state.regions.join(','));
@@ -1308,7 +1305,12 @@ async function renderLatestVideosRSS(channelId) {
     updateActiveUI();
   }
 
-  tabs.forEach(t => t.addEventListener('click', () => { state.tab = t.dataset.mode; updateState(); }));
+  document.addEventListener('mh:tabs:changed', e => {
+    const tab = e.detail && e.detail.tab === 'creators' ? 'creator' : e.detail?.tab;
+    if(!tab || state.tab === tab) return;
+    state.tab = tab;
+    updateState();
+  });
   if(topicFilter) topicFilter.addEventListener('change', () => { state.topics = Array.from(topicFilter.selectedOptions).map(o=>o.value); updateState(); });
   if(langFilter) langFilter.addEventListener('change', () => { state.languages = Array.from(langFilter.selectedOptions).map(o=>o.value); updateState(); });
   if(regionFilter) regionFilter.addEventListener('change', () => { state.regions = Array.from(regionFilter.selectedOptions).map(o=>o.value); updateState(); });
@@ -1322,6 +1324,7 @@ async function renderLatestVideosRSS(channelId) {
     state.live = false;
     state.sort = 'az';
     state.q = '';
+    document.dispatchEvent(new CustomEvent('mh:tabs:set', {detail:{tab:'all'}}));
     updateState();
     window.dispatchEvent(new CustomEvent('mh:search:changed', { detail: { q: '' } }));
   });
