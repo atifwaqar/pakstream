@@ -78,8 +78,8 @@
           <span class="label" data-default="About">About</span>
         </button>
       </div>
-      <div class="live-player">
-        <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
+      <div class="live-player" data-stream-container>
+        <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen data-youtube title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
@@ -558,7 +558,7 @@
         if (defaultCard) handleChannelClick(defaultCard);
       });
 </script>
-
+  <script src="/js/error-overlay.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script src="/js/pwa.js" defer></script>

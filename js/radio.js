@@ -88,6 +88,13 @@
       on(audio, 'pause', () => { setPlayingUI(container, false); if (current === audio) current = null; });
       on(audio, 'ended', () => { setPlayingUI(container, false); if (current === audio) current = null; });
 
+      on(audio, 'error', () => {
+        const container = audio.closest('[data-stream-container]') || audio.parentElement;
+        window.PAKSTREAM?.ErrorOverlay?.show(container, {
+          onRetry: () => { try { audio.load(); audio.play(); } catch {} }
+        });
+      });
+
       // Click-to-toggle on container if you prefer (optional)
       // on(container, 'click', (e) => { if (e.target.closest('button, a, input, textarea')) return;
       //   if (audio.paused) playBtn?.click(); else pauseBtn?.click();

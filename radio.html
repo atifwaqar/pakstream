@@ -75,7 +75,7 @@
         <span class="label">Stations</span>
       </button>
       <div class="live-player">
-        <div id="player-container" class="radio-player">
+        <div id="player-container" class="radio-player" data-stream-container>
           <div class="station-info">
             <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
             <h3 id="current-station" class="station-title">Select a station</h3>
@@ -92,7 +92,7 @@
             <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
             <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
             <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
-            <audio id="radio-player" autoplay></audio>
+            <audio id="radio-player" data-radio autoplay></audio>
           </div>
         </div>
       </div>
@@ -600,6 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
   </script>
+  <script src="/js/error-overlay.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script src="/js/pwa.js" defer></script>
   <script defer src="/js/main.js"></script>
