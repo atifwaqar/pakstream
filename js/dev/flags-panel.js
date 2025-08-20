@@ -125,9 +125,9 @@
     if (el.classList.contains('is-open')) render();
   }
 
-// Keyboard shortcut: Ctrl+Alt+D
+// Keyboard shortcut: Ctrl+Shift+D
 document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.altKey && (e.key.toLowerCase() === 'd')) {
+  if (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'd')) {
     e.preventDefault();
     toggle();
   }
