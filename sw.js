@@ -1,97 +1,58 @@
-const SHELL_CACHE = 'ps-shell-v1';
-const JSON_CACHE = 'ps-json-v1';
-const SHELL_ASSETS = [
-  '/',
-  '/index.html',
-  '/assets/css/tokens.css',
+/* Minimal Service Worker: explicit tiny precache, no runtime routing */
+const CACHE_VERSION = 'v1.0.0'; // bump to invalidate
+const CACHE_NAME = `pakstream-${CACHE_VERSION}`;
+
+// EXPLICIT file list only; keep this tiny and only first-party assets
+const PRECACHE_URLS = [
+  '/',                     // or '/index.html' if your host requires
   '/css/theme.css',
-  '/css/z-layers.css',
   '/css/style.css',
+  '/css/z-layers.css',
+  '/css/ads.css',
   '/js/main.js',
-  '/js/pwa.js',
-  '/favicon.ico',
-  '/manifest.webmanifest',
-  '/images/icons/icon-192-maskable.png',
-  '/images/icons/icon-256-maskable.png',
-  '/images/icons/icon-384-maskable.png',
-  '/icon-512-maskable.png'
+  '/js/youtube.js',
+  '/js/radio.js',
+  '/js/diagnostics.js',
+  '/js/ads/config.js',
+  '/js/ads/ads.js'
+  // DO NOT add JSON/data/media endpoints here
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(SHELL_CACHE).then(cache => cache.addAll(SHELL_ASSETS))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
   );
+  // Activate immediately on first install
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(k => ![SHELL_CACHE, JSON_CACHE].includes(k)).map(k => caches.delete(k))
-    )).then(() => self.clients.claim())
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k.startsWith('pakstream-') && k !== CACHE_NAME)
+            .map(k => caches.delete(k))
+      )
+    )
   );
+  self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-  const url = new URL(req.url);
+// ONLY serve from precache for those exact URLs; no runtime caching
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
 
-  if (req.destination === 'video' || req.destination === 'audio' ||
-      url.hostname.includes('youtube.com') || url.hostname.includes('ytimg.com') || url.hostname.includes('googlevideo.com')) {
-    return;
-  }
+  // Same-origin only
+  if (url.origin !== location.origin) return;
 
-  if (req.destination === 'style' || req.destination === 'script' || req.destination === 'font') {
-    event.respondWith(cacheFirst(req, SHELL_CACHE));
-    return;
-  }
+  // Only respond for explicit precache URLs
+  if (!PRECACHE_URLS.includes(url.pathname)) return;
 
-  if (url.pathname.endsWith('.json') && url.pathname !== '/config.json') {
-    event.respondWith(networkFirst(req, JSON_CACHE));
-    return;
-  }
-});
-
-function cacheFirst(req, cacheName) {
-  return caches.open(cacheName).then(cache =>
-    cache.match(req).then(cached => {
-      if (cached) return cached;
-      return fetch(req).then(res => {
-        if (res && res.status === 200) {
-          cache.put(req, res.clone());
-        }
-        return res;
-      });
+  event.respondWith(
+    caches.open(CACHE_NAME).then(async (cache) => {
+      const cached = await cache.match(event.request);
+      return cached || fetch(event.request);
     })
   );
-}
-
-function networkFirst(req, cacheName) {
-  return Promise.race([
-    fetch(req).then(res => {
-      if (res && res.status === 200) {
-        const copy = res.clone();
-        caches.open(cacheName).then(cache => cache.put(req, copy));
-        return res;
-      }
-      throw new Error('Bad response');
-    }),
-    new Promise((_, reject) => setTimeout(reject, 3000))
-  ]).catch(() => {
-    return caches.open(cacheName).then(cache => cache.match(req)).then(res => {
-      if (res) {
-        self.clients.matchAll().then(clients => {
-          clients.forEach(client => client.postMessage({ type: 'json-fallback', url: req.url }));
-        });
-      }
-      return res;
-    });
-  });
-}
-
-self.addEventListener('message', event => {
-  if (event.data === 'skipWaiting') {
-    self.skipWaiting();
-  }
 });
+
