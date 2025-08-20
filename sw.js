@@ -46,7 +46,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (url.pathname.endsWith('.json')) {
+  if (url.pathname.endsWith('.json') && url.pathname !== '/config.json') {
     event.respondWith(networkFirst(req, JSON_CACHE));
     return;
   }

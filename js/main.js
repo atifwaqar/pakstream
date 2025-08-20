@@ -107,6 +107,25 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!q) return;
       loadData().then(function () {
         var matches = searchData.filter(item => item.name.toLowerCase().includes(q));
+        if(matches.length === 0){
+          var empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.innerHTML = '<p>No results found</p>';
+          var sugg = document.createElement('div');
+          sugg.className = 'suggestions';
+          ['news','music','talk','drama','sports'].forEach(function(cat){
+            var a = document.createElement('a');
+            a.href = '/media-hub.html?topic=' + cat;
+            a.textContent = cat.charAt(0).toUpperCase()+cat.slice(1);
+            a.className = 'chip';
+            a.addEventListener('click', function(){ if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+            sugg.appendChild(a);
+          });
+          empty.appendChild(sugg);
+          results.appendChild(empty);
+          if(window.analytics) analytics('empty_state_view',{context:'search'});
+          return;
+        }
         matches.slice(0, 10).forEach(function (item) {
           var a = document.createElement('a');
           a.href = item.link;
