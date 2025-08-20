@@ -5,13 +5,25 @@ description: Insightful blogs covering Pakistani media, culture, and diaspora li
 ---
 <section class="blog-list">
   <h1>Latest Blog Posts</h1>
-
-  <ul>
+  <div class="blog-grid">
     {% for post in site.posts %}
-      <li class="blog-post-item">
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
-      </li>
+      <article class="blog-card">
+        <a href="{{ post.url | relative_url }}" class="card-image">
+          <img src="{{ post.image | default: '/images/blog-banner.png' }}" alt="{{ post.title }}" loading="lazy">
+        </a>
+        <div class="card-content">
+          <p class="card-category">{{ post.category | default: 'General' }}</p>
+          <h2 class="card-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncate: 120 }}</p>
+          <p class="card-meta">
+            {{ post.date | date: "%B %d, %Y" }} ·
+            {% assign words = post.content | number_of_words %}
+            {% assign read_time = words | divided_by: 200 | ceil %}
+            {{ read_time }} min read ·
+            {{ post.author | default: 'PakStream' }}
+          </p>
+        </div>
+      </article>
     {% endfor %}
-  </ul>
+  </div>
 </section>
