@@ -1,14 +1,143 @@
+(() => {
+  if (window.__NAV_WIRED__) return;
+  window.__NAV_WIRED__ = true;
+
+  // ===== Configurable selectors =====
+  const SEL = {
+    opener: '#nav-toggle, .nav-toggle, .nav-toggle-button',
+    menu:   '#primary-navigation, .primary-navigation, nav[aria-label="Primary"]',
+    overlay: '.nav-overlay, .overlay.nav-overlay',
+    close:  '.nav-close, .menu-close, [data-nav-close]'
+  };
+
+  const DESKTOP_BP = 1024; // px
+
+  // ===== Utilities =====
+  const qs  = (sel, root=document) => root.querySelector(sel);
+  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const on  = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+
+  const body = document.body;
+  const opener = qs(SEL.opener);
+  const menu   = qs(SEL.menu);
+  const overlay = qs(SEL.overlay) || createOverlay();
+  const closeBtns = qsa(SEL.close, menu);
+
+  if (!opener || !menu || !overlay) return;
+
+  opener.setAttribute('aria-expanded', 'false');
+  menu.setAttribute('aria-hidden', 'true');
+
+  // ===== Focus helpers =====
+  const FOCUSABLE = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+    'select:not([disabled])', 'textarea:not([disabled])',
+    '[tabindex]:not([tabindex^="-"])'
+  ].join(',');
+
+  let openerWasFocused = false;
+
+  function firstFocusable(root) {
+    return qs(FOCUSABLE, root) || root;
+  }
+
+  function trapFocus(e) {
+    if (!menu.classList.contains('is-open')) return;
+    if (e.key !== 'Tab') return;
+    const f = qsa(FOCUSABLE, menu).filter(el => el.offsetParent !== null);
+    if (f.length === 0) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
+
+  // ===== Overlay factory (if missing) =====
+  function createOverlay() {
+    const el = document.createElement('div');
+    el.className = 'nav-overlay';
+    el.setAttribute('hidden', '');
+    document.body.appendChild(el);
+    return el;
+  }
+
+  // ===== Open/Close =====
+  function openNav() {
+    menu.classList.add('is-open');
+    overlay.classList.add('is-visible');
+    overlay.removeAttribute('hidden');
+    body.classList.add('scroll-locked');
+    opener.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    openerWasFocused = (document.activeElement === opener);
+    const target = firstFocusable(menu);
+    setTimeout(() => target.focus({preventScroll:true}), 0);
+    if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
+  }
+
+  function closeNav() {
+    menu.classList.remove('is-open');
+    overlay.classList.remove('is-visible');
+    overlay.setAttribute('hidden', '');
+    body.classList.remove('scroll-locked');
+    opener.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    if (openerWasFocused) {
+      setTimeout(() => opener.focus({preventScroll:true}), 0);
+    }
+    if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
+  }
+
+  function toggleNav() {
+    if (menu.classList.contains('is-open')) closeNav();
+    else openNav();
+  }
+
+  // ===== Events =====
+  on(opener, 'click', (e) => { e.preventDefault(); toggleNav(); });
+  on(overlay, 'click', closeNav);
+  closeBtns.forEach(btn => on(btn, 'click', closeNav));
+
+  on(document, 'keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+      e.preventDefault(); closeNav();
+    } else {
+      trapFocus(e);
+    }
+  });
+
+  qsa('a[href]', menu).forEach(a => {
+    on(a, 'click', () => {
+      closeNav();
+    });
+  });
+
+  let resizeTimer = 0;
+  on(window, 'resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth >= DESKTOP_BP) closeNav();
+    }, 100);
+  });
+
+  on(document, 'visibilitychange', () => {
+    if (document.visibilityState === 'hidden') closeNav();
+  });
+  on(window, 'popstate', () => closeNav());
+
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
-  var navToggle = document.getElementById('nav-toggle');
   var navLabel = document.querySelector('.nav-toggle-label');
-  var overlay = document.querySelector('.nav-overlay');
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');
   var navigation = document.getElementById('primary-navigation');
-  if (!navToggle || !navLabel || !overlay || !navigation) return;
 
   function updateScrollLock() {
-    var navOpen = navToggle && navToggle.checked;
+    var menu = document.querySelector('#primary-navigation, .primary-navigation, nav[aria-label="Primary"]');
+    var navOpen = menu && menu.classList.contains('is-open');
     var channelOpen = document.querySelector('.channel-list.open');
     var detailsOpen = document.querySelector('.details-list.open');
     var sideOpen = window.innerWidth <= 768 && (channelOpen || detailsOpen);
@@ -18,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.updateScrollLock = updateScrollLock;
 
   var currentPath = window.location.pathname;
-  var links = navigation.querySelectorAll('.nav-links a');
+  var links = navigation ? navigation.querySelectorAll('.nav-links a') : [];
   links.forEach(function (link) {
     if (link.getAttribute('href') === currentPath) {
       link.classList.add('active');
@@ -157,53 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  navToggle.addEventListener('change', function () {
-    var isOpen = navToggle.checked;
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-    navLabel.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    var icon = navLabel.querySelector('.material-symbols-outlined');
-    if (icon) icon.textContent = isOpen ? 'close' : 'menu';
-    overlay.hidden = !isOpen;
-    if (isOpen) {
-      var focusable = navigation.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
-      if (focusable.length) focusable[0].focus();
-    } else {
-      navLabel.focus();
-    }
-    updateScrollLock();
-  });
-
-  overlay.addEventListener('click', function () {
-    navToggle.checked = false;
-    navToggle.dispatchEvent(new Event('change'));
-  });
-
-  document.addEventListener('keydown', function (e) {
-    if (!navToggle.checked) return;
-    if (e.key === 'Escape') {
-      navToggle.checked = false;
-      navToggle.dispatchEvent(new Event('change'));
-    } else if (e.key === 'Tab') {
-      var focusable = navigation.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
-      if (!focusable.length) return;
-      var first = focusable[0];
-      var last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
-
-  window.addEventListener('resize', function () {
-    if (window.innerWidth > 600 && navToggle.checked) {
-      navToggle.checked = false;
-      navToggle.dispatchEvent(new Event('change'));
-    }
-  });
 
   if (themeToggle) {
     var savedTheme = localStorage.getItem('theme') || 'light';
