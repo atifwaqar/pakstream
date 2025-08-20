@@ -42,6 +42,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Ignore non-HTTP(S) schemes like chrome-extension://
+  if (!url.protocol.startsWith('http')) return;
+
   // Same-origin only
   if (url.origin !== location.origin) return;
 

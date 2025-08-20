@@ -35,13 +35,13 @@
 
   <div class="ad-slot" data-ad-preset="hub_inline"></div>
 
-  <section id="mh-panel" class="youtube-section media-hub-section" role="tabpanel">
+  <section id="mh-panel" class="media-hub youtube-section media-hub-section" role="tabpanel">
     <div id="hub-controls" class="hub-controls">
-      <div id="mh-tabs" class="mode-tabs" role="tablist">
-        <button class="tab-btn" id="mh-tab-all" role="tab" data-tab="all" aria-controls="mh-panel" aria-selected="true" tabindex="0">All</button>
-        <button class="tab-btn" id="mh-tab-tv" role="tab" data-tab="tv" aria-controls="mh-panel" aria-selected="false" tabindex="-1">TV</button>
-        <button class="tab-btn" id="mh-tab-radio" role="tab" data-tab="radio" aria-controls="mh-panel" aria-selected="false" tabindex="-1">Radio</button>
-        <button class="tab-btn" id="mh-tab-creators" role="tab" data-tab="creators" aria-controls="mh-panel" aria-selected="false" tabindex="-1">Creators</button>
+      <div id="mh-tabs" class="mode-tabs mh-tabs" role="tablist">
+        <button class="tab-btn" id="mh-tab-all" role="tab" data-mh-tab="all" aria-controls="mh-panel" aria-selected="true" tabindex="0">All</button>
+        <button class="tab-btn" id="mh-tab-tv" role="tab" data-mh-tab="tv" aria-controls="mh-panel" aria-selected="false" tabindex="-1">TV</button>
+        <button class="tab-btn" id="mh-tab-radio" role="tab" data-mh-tab="radio" aria-controls="mh-panel" aria-selected="false" tabindex="-1">Radio</button>
+        <button class="tab-btn" id="mh-tab-creators" role="tab" data-mh-tab="creators" aria-controls="mh-panel" aria-selected="false" tabindex="-1">Creators</button>
       </div>
       <div class="filters-row">
         <select id="topic-filter" multiple aria-label="Filter by topic"></select>
@@ -58,17 +58,17 @@
       <div id="selected-filters" class="selected-filters" aria-live="polite"></div>
       <div id="results-count" class="results-count" aria-live="polite"></div>
     </div>
-    <div id="mh-search" role="search">
+    <div id="mh-search" class="mh-search" role="search">
       <input type="search" placeholder="Search channels…" aria-label="Search channels">
       <button type="button" class="clear-btn" aria-label="Clear search" hidden>×</button>
     </div>
     <!-- LEFT RAIL -->
     <div id="mh-channels" class="channel-list" aria-label="Channel list">
-      <div class="mh-channels-inner"></div>
+      <div class="mh-channels-inner mh-list"></div>
     </div>
 
     <!-- CENTER -->
-    <div class="video-section">
+    <div class="video-section mh-video">
       <div class="button-row">
         <div class="spacer"></div>
         <button id="mh-channels-toggle" class="channel-toggle" aria-label="Toggle channel list" aria-controls="mh-channels">
@@ -87,7 +87,7 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           title="Selected video player"></iframe>
-        <div id="audioWrap" class="audio-wrap" style="display:none;">
+        <div id="audioWrap" class="audio-wrap mh-audio" style="display:none;">
           <div id="player-container" class="radio-player">
             <div class="station-info">
               <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
