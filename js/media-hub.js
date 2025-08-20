@@ -66,6 +66,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nextBtn = document.getElementById("next-btn");
   const muteBtn = document.getElementById("mute-btn");
   const shareBtn = document.getElementById("share-btn");
+  const livePlayerEl = document.querySelector(".live-player");
+
+  if (playerIF) {
+    playerIF.addEventListener('load', () => {
+      try {
+        playerIF.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
+      } catch (e) {}
+    });
+  }
 
   window.setMuted = function(muted) {
     isMuted = muted;
@@ -107,6 +116,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.setMuted(!!event.data.muted);
     } else if (event.data && event.data.type === 'media-hub-set-playing') {
       window.setPlaying(!!event.data.playing);
+    } else if (playerIF && event.source === playerIF.contentWindow) {
+      let data;
+      try { data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data; } catch (e) {}
+      if (data && data.event === 'onStateChange') {
+        if (data.info === 1) {
+          if (currentStreamBus) {
+            if (!streamStarted) { currentStreamBus.emit('start'); streamStarted = true; }
+            currentStreamBus.emit('playing');
+          }
+        } else if (data.info === 0) {
+          if (currentStreamBus) currentStreamBus.emit('end');
+          streamStarted = false;
+        }
+      } else if (data && data.event === 'onError') {
+        if (currentStreamBus) currentStreamBus.emit('error', { errorCode: data.info });
+      }
     }
   });
 
@@ -128,6 +153,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentBtn = null;
   let currentVideoKey = null;
   let currentVideoChannelId = null;
+
+  let currentStreamBus = null;
+  let streamStarted = false;
 
   let rssAbortController = null;
   let detailsAbortController = null;
@@ -854,6 +882,27 @@ async function renderLatestVideosRSS(channelId) {
         ? `https://www.youtube-nocookie.com/embed/videoseries?list=${upl}&autoplay=1&rel=0&enablejsapi=1${muteParam}`
         : `https://www.youtube-nocookie.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0&enablejsapi=1${muteParam}`;
     }
+
+    const m = modeOfItem(item);
+    if (currentStreamBus) currentStreamBus.emit('end');
+    currentStreamBus = createStreamStateBus({ id: item.key, type: m, provider: 'youtube', sourceUrl: src });
+    attachStreamErrorOverlay(currentStreamBus, livePlayerEl);
+    streamStarted = false;
+    currentStreamBus.emit('attempt');
+    let startTimeout = setTimeout(() => {
+      if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
+    }, 12000);
+    currentStreamBus.on('start', () => { clearTimeout(startTimeout); });
+    currentStreamBus.on('retry', () => {
+      currentStreamBus.meta.attemptNo++;
+      if (playerIF) playerIF.src = src;
+      startTimeout = setTimeout(() => {
+        if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
+      }, 12000);
+      currentStreamBus.emit('attempt');
+    });
+    currentStreamBus.on('open_external', () => { window.open(src, '_blank'); });
+
     if (playerIF) playerIF.src = src || "about:blank";
     if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
 
@@ -898,6 +947,34 @@ async function renderLatestVideosRSS(channelId) {
 
   function playRadio(btn, audio, name, logoUrl, item) {
     if (!audio) return;
+
+    if (currentStreamBus) currentStreamBus.emit('end');
+    currentStreamBus = createStreamStateBus({
+      id: audio.id || item.key,
+      type: 'radio',
+      provider: audio.provider || 'hls',
+      sourceUrl: audio.src
+    });
+    attachStreamErrorOverlay(currentStreamBus, livePlayerEl);
+    streamStarted = false;
+    currentStreamBus.emit('attempt');
+    let startTimeout = setTimeout(() => {
+      if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
+    }, 12000);
+    currentStreamBus.on('start', () => { clearTimeout(startTimeout); });
+    currentStreamBus.on('retry', () => {
+      currentStreamBus.meta.attemptNo++;
+      if (mainPlayer) {
+        mainPlayer.load();
+        const p = mainPlayer.play();
+        if (p && p.catch) p.catch(()=>{});
+      }
+      startTimeout = setTimeout(() => {
+        if (currentStreamBus) currentStreamBus.emit('error', { errorCode: 'start_timeout' });
+      }, 12000);
+      currentStreamBus.emit('attempt');
+    });
+    currentStreamBus.on('open_external', () => { window.open(audio.src, '_blank'); });
 
     abortPendingRequests();
     currentVideoKey = null;
@@ -1004,6 +1081,10 @@ async function renderLatestVideosRSS(channelId) {
         currentBtn = pendingBtn;
         pendingBtn = null;
       }
+      if (currentStreamBus) {
+        if (!streamStarted) { currentStreamBus.emit('start'); streamStarted = true; }
+        currentStreamBus.emit('playing');
+      }
     });
 
     mainPlayer.addEventListener('pause', () => {
@@ -1021,6 +1102,19 @@ async function renderLatestVideosRSS(channelId) {
       if (playPauseBtn) playPauseBtn.setAttribute('aria-label', 'Play');
       if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
       if (currentBtn) resetButton(currentBtn);
+      if (currentStreamBus) currentStreamBus.emit('end');
+      streamStarted = false;
+    });
+
+    mainPlayer.addEventListener('error', () => {
+      if (currentStreamBus) {
+        const err = mainPlayer.error || {};
+        currentStreamBus.emit('error', { errorCode: err.code, errorDetail: err.message });
+      }
+    });
+
+    mainPlayer.addEventListener('stalled', () => {
+      if (currentStreamBus) currentStreamBus.emit('stall');
     });
   }
 
