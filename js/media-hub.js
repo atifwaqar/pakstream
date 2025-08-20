@@ -264,7 +264,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       facebook: { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
       linkedin: { url: 'https://img.icons8.com/fluency/48/000000/linkedin.png', label: 'LinkedIn' },
       website: { url: 'https://img.icons8.com/ios-filled/50/000000/domain.png', label: 'Website' },
-      tiktok: { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' }
+      tiktok: { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' },
+      whatsapp: { url: 'https://img.icons8.com/color/48/000000/whatsapp.png', label: 'WhatsApp' }
     };
     const items = list.map(url => {
       let type = 'website';
@@ -273,6 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       else if (/twitter|x\.com/.test(url)) type = 'twitter';
       else if (/facebook/.test(url)) type = 'facebook';
       else if (/linkedin/.test(url)) type = 'linkedin';
+      else if (/whatsapp|wa\.me/.test(url)) type = 'whatsapp';
       else if (/tiktok/.test(url)) type = 'tiktok';
       const { url: icon, label } = icons[type] || { url: '', label: type.charAt(0).toUpperCase() + type.slice(1) };
       const img = icon ? `<img src='${icon}' alt='${label}'>` : '';
