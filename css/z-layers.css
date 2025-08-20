@@ -1,0 +1,43 @@
+:root {
+  /* Keep the scale lean and predictable */
+  --z-base: 0;
+  --z-header: 100;
+  --z-overlay: 300;   /* page-level scrims/overlays */
+  --z-modal: 500;     /* dialogs */
+  --z-toast: 700;     /* toasts/snackbars */
+}
+
+/* Hidden utility that works everywhere */
+[hidden] { display: none !important; }
+
+/* Generic overlay defaults */
+.overlay,
+.error-overlay,
+.stream-error-overlay,
+.maintenance-overlay,
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: none;                /* opt-in only */
+  pointer-events: none;         /* don't steal clicks unless visible */
+}
+
+/* Explicitly visible overlays */
+.overlay.is-visible,
+.error-overlay.is-visible,
+.stream-error-overlay.is-visible,
+.maintenance-overlay.is-visible,
+.nav-overlay.is-visible {
+  display: block;
+  pointer-events: auto;         /* now it's interactive */
+}
+
+/* Ensure overlays don’t impose layout shifts */
+.overlay *,
+.error-overlay *,
+.stream-error-overlay *,
+.maintenance-overlay *,
+.nav-overlay * {
+  contain: layout paint;        /* safer rendering boundaries */
+}
