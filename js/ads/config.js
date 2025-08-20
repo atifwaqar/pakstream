@@ -1,16 +1,13 @@
-// Feature flags: merge into existing flags object if present
-window.__PAKSTREAM_FLAGS = Object.assign({
-  adsEnabled: false,     // default off (safe)
-  adsDebug: false,       // optional debug logging
-  sw: false,             // minimal service worker (off by default)
-  swDebug: false         // debug logging for service worker
-}, window.__PAKSTREAM_FLAGS || {});
-
-// Preset mapping for convenience
-window.__PAKSTREAM_AD_PRESETS = {
-  homepage_top:   { size: '728x90',  responsive: true },
-  homepage_mid:   { size: '336x280', responsive: true },
-  homepage_bottom:{ size: '300x250', responsive: true },
-  sidebar_top:    { size: '300x250', responsive: true },
-  hub_inline:     { size: '320x100', responsive: true }
-};
+// Per-slot default sizes and settings for ads
+(function () {
+  window.PAKSTREAM = window.PAKSTREAM || {};
+  // Per-slot default sizes (mobile-first; can be overridden via data attributes)
+  const SIZES = {
+    banner:      { w: 320, h: 50 },   // small mobile banner
+    leaderboard: { w: 728, h: 90 },   // desktop top banner
+    rectangle:   { w: 300, h: 250 },  // sidebar/content block
+    skyscraper:  { w: 300, h: 600 },  // tall sidebar
+    fluid:       { w: 1,   h: 1   }   // responsive (height controlled by CSS)
+  };
+  window.PAKSTREAM.AdsConfig = { SIZES };
+})();
