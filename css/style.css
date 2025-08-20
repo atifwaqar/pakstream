@@ -535,6 +535,15 @@ section {
   overflow: hidden;
 }
 
+.channel-card .info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
 .youtube-section .channel-card .channel-thumb,
 .media-hub-section .channel-card .channel-thumb {
   width: 40px;
