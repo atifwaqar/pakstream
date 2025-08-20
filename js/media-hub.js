@@ -831,9 +831,6 @@ async function renderLatestVideosRSS(channelId) {
         poster: thumbOf(item)
       });
     }
-    if (window.trendingService) {
-      window.trendingService.recordClick({ id: item.key, type: modeOfItem(item) });
-    }
   }
 
   // ---- Radio playback ----
@@ -883,10 +880,6 @@ async function renderLatestVideosRSS(channelId) {
         url: '/media-hub.html?m=radio&c=' + encodeURIComponent(id),
         poster: logoUrl || thumbOf(item)
       });
-    }
-    if (window.trendingService) {
-      const id = item.ids?.internal_id || item.key;
-      window.trendingService.recordClick({ id, type: 'radio' });
     }
 
     if (mainPlayer) {

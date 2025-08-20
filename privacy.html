@@ -114,7 +114,6 @@
       if(btn) btn.addEventListener('click', function(){
         if(confirm('Clear local history?')){
           if(window.historyService) window.historyService.clear();
-          if(window.trendingService) window.trendingService.clear();
         }
       });
     });
