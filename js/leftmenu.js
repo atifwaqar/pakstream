@@ -151,7 +151,7 @@
     if (!detailsList || !detailsToggleBtn) return;
     const icon = detailsToggleBtn.querySelector(".icon");
     const label = detailsToggleBtn.querySelector(".label");
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1080) {
       if (detailsToggleBtn.style.display === "none") return;
       detailsList.classList.toggle("open");
       if (label) {
