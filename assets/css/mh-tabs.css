@@ -1,0 +1,26 @@
+#mh-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #ddd;
+}
+
+#mh-tabs [role="tab"] {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  font: inherit;
+}
+
+#mh-tabs [role="tab"].active {
+  border-color: currentColor;
+  font-weight: 500;
+}
+
+#mh-tabs [role="tab"]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
