@@ -1,6 +1,6 @@
-const __mh = (() => {
+(() => {
   // Avoid redefining across modules
-  if (window.__PAKSTREAM_MH_UTILS__) return window.__PAKSTREAM_MH_UTILS__;
+  if (window.__mh) return;
 
   const qs  = (sel, root=document) => root.querySelector(sel);
   const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -35,11 +35,11 @@ const __mh = (() => {
     document.dispatchEvent(new CustomEvent(name, { detail }));
   }
 
-  return (window.__PAKSTREAM_MH_UTILS__ = { qs, qsa, on, required, emptyState, clearContainer, emit });
+  window.__mh = { qs, qsa, on, required, emptyState, clearContainer, emit };
 })();
 
 window.PAKSTREAM_MH_SEARCH = (function () {
-  const { qs, on, emit } = __mh;
+  const { qs, on, emit } = window.__mh;
 
   function init({ root, search }) {
     if (!root || !search) return;
