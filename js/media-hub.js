@@ -624,36 +624,114 @@ document.addEventListener("DOMContentLoaded", async () => {
     return arr;
   }
 
-  function renderSelectedChips(){
-    if(!selectedFiltersEl) return;
-    selectedFiltersEl.innerHTML = '';
+  function renderFilterChips(target){
+    if(!target) return;
+    target.innerHTML = '';
+    let any = false;
     function addChip(label, value, removeFn){
-      const chip = document.createElement('div');
+      const chip = document.createElement('span');
       chip.className = 'chip';
       chip.textContent = label + ': ' + value + ' ';
       const btn = document.createElement('button');
       btn.setAttribute('aria-label','Remove '+label+': '+value);
       btn.textContent = '×';
-      btn.addEventListener('click', removeFn);
+      btn.addEventListener('click', function(){ removeFn(); if(window.analytics) analytics('empty_state_action',{action:'remove_filter'}); });
       chip.appendChild(btn);
-      selectedFiltersEl.appendChild(chip);
+      target.appendChild(chip);
+      any = true;
     }
     state.topics.forEach(v => addChip('Topic', v, () => { state.topics = state.topics.filter(x=>x!==v); updateState(); }));
     state.languages.forEach(v => addChip('Lang', v, () => { state.languages = state.languages.filter(x=>x!==v); updateState(); }));
     state.regions.forEach(v => addChip('Region', v, () => { state.regions = state.regions.filter(x=>x!==v); updateState(); }));
     if(state.live) addChip('Live','Yes', () => { state.live = false; updateState(); });
     if(state.q) addChip('Search', state.q, () => { state.q=''; updateState(); });
+    if(any){
+      const clear = document.createElement('button');
+      clear.className = 'btn';
+      clear.textContent = 'Clear all';
+      clear.addEventListener('click', function(){
+        state.tab = 'all';
+        state.topics = [];
+        state.languages = [];
+        state.regions = [];
+        state.live = false;
+        state.sort = 'trending';
+        state.q = '';
+        updateState();
+        if(window.analytics) analytics('empty_state_action',{action:'clear_all'});
+      });
+      target.appendChild(clear);
+    }
   }
 
   function renderList() {
     if (!listEl) return;
     let arr = filteredByState();
-    listEl.querySelectorAll('.channel-card, .empty').forEach(el => el.remove());
+    listEl.querySelectorAll('.channel-card, .empty-state').forEach(el => el.remove());
     if(arr.length === 0){
       const empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.textContent = 'No results. Clear filters?';
+      empty.className = 'empty-state';
+      empty.innerHTML = '<h2 id="no-results" tabindex="-1">No results found</h2><p>The filters are too specific.</p>';
+      const chipWrap = document.createElement('div');
+      chipWrap.className = 'chips';
+      empty.appendChild(chipWrap);
+      renderFilterChips(chipWrap);
+      const sugg = document.createElement('div');
+      sugg.className = 'suggestions';
+      const intl = document.createElement('button');
+      intl.className = 'btn';
+      intl.textContent = 'Include International';
+      intl.addEventListener('click', function(){ state.regions = []; updateState(); if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+      const nonlive = document.createElement('button');
+      nonlive.className = 'btn';
+      nonlive.textContent = 'Show non-live';
+      nonlive.addEventListener('click', function(){ state.live = false; updateState(); if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+      const allLang = document.createElement('button');
+      allLang.className = 'btn';
+      allLang.textContent = 'All languages';
+      allLang.addEventListener('click', function(){ state.languages = []; updateState(); if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+      sugg.appendChild(intl);
+      sugg.appendChild(nonlive);
+      sugg.appendChild(allLang);
+      empty.appendChild(sugg);
+      const trend = document.createElement('div');
+      trend.className = 'trending-cards';
+      if(window.trendingService){
+        const tItems = window.trendingService.getRanking(items).slice(0,6);
+        tItems.forEach(it => {
+          const id = (it.ids && it.ids.internal_id) ? it.ids.internal_id : it.key;
+          const modeIt = modeOfItem(it);
+          const a = document.createElement('a');
+          a.href = '/media-hub.html?c=' + encodeURIComponent(id) + '&m=' + modeIt;
+          a.className = 'btn';
+          a.textContent = displayName(it);
+          a.addEventListener('click', function(){ if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+          trend.appendChild(a);
+        });
+      }
+      empty.appendChild(trend);
+      const cats = document.createElement('div');
+      cats.className = 'nf-cats';
+      ['news','music','talk','drama','sports'].forEach(cat => {
+        const a = document.createElement('a');
+        a.href = '/media-hub.html?topic=' + cat;
+        a.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        a.className = 'chip';
+        a.addEventListener('click', function(){ if(window.analytics) analytics('empty_state_action',{action:'suggestion_click'}); });
+        cats.appendChild(a);
+      });
+      empty.appendChild(cats);
+      const report = document.createElement('p');
+      const rlink = document.createElement('a');
+      rlink.href = '/contact.html#missing';
+      rlink.textContent = 'Report missing channel';
+      report.appendChild(rlink);
+      empty.appendChild(report);
       listEl.appendChild(empty);
+      const first = empty.querySelector('button, a');
+      if(first) first.focus(); else document.getElementById('no-results')?.focus();
+      if(resultsCountEl) resultsCountEl.textContent = '0 results. Showing suggestions.';
+      if(window.analytics) analytics('empty_state_view',{context:'hub'});
     } else {
       const frag = document.createDocumentFragment();
       arr.forEach(it => {
@@ -661,9 +739,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         frag.appendChild(makeChannelCard(it, im));
       });
       listEl.appendChild(frag);
+      if(resultsCountEl) resultsCountEl.textContent = arr.length + ' results';
     }
-    if(resultsCountEl) resultsCountEl.textContent = arr.length + ' results';
-    renderSelectedChips();
+    renderFilterChips(selectedFiltersEl);
 
     const initialKey = currentVideoKey || params.get('c');
     if (mode === 'radio') {

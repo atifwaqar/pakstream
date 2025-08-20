@@ -3,11 +3,40 @@ layout: default
 title: "Page Not Found"
 permalink: /404.html
 description: "The page you requested could not be found."
-robots: noindex, follow
+robots: noindex
+canonical: /
+no_ads: true
 ---
-
-<section class="not-found">
-  <h2>Page Not Found</h2>
-  <p>Sorry, the page you are looking for doesn’t exist or has been moved.</p>
-  <p><a href="/">Return to the homepage</a>.</p>
+<section class="nf-hero">
+  <img src="/images/icons/icon-192-maskable.png" alt="" class="nf-illust" width="96" height="96">
+  <h1 id="nf-title" tabindex="-1">Can't find that page</h1>
+  <p>Let's get you back to the news.</p>
+  <div class="nf-actions">
+    <a class="btn" href="/" data-analytics="home">Go Home</a>
+    <a class="btn" href="/media-hub.html" data-analytics="media_hub">Open Media Hub</a>
+    <nav class="nf-quick-links">
+      <a href="/livetv.html" data-analytics="tv">TV</a>
+      <a href="/radio.html" data-analytics="radio">Radio</a>
+      <a href="/creators.html" data-analytics="creators">Creators</a>
+    </nav>
+    <form id="nf-search" action="/media-hub.html" role="search">
+      <input type="search" name="q" aria-label="Search PakStream">
+      <button type="submit" data-analytics="search">Search</button>
+    </form>
+  </div>
 </section>
+<section class="nf-suggestions">
+  <h2>Suggestions</h2>
+  <div id="nf-trending" class="nf-trending"></div>
+  <div id="nf-recent" class="nf-recent"></div>
+  <div class="nf-cats">
+    <a class="chip" href="/media-hub.html?topic=news" data-analytics="suggestion">News</a>
+    <a class="chip" href="/media-hub.html?topic=music" data-analytics="suggestion">Music</a>
+    <a class="chip" href="/media-hub.html?topic=talk" data-analytics="suggestion">Talk</a>
+    <a class="chip" href="/media-hub.html?topic=drama" data-analytics="suggestion">Drama</a>
+    <a class="chip" href="/media-hub.html?topic=sports" data-analytics="suggestion">Sports</a>
+  </div>
+  <p><a href="mailto:contact@pakstream.com?subject=Broken%20link">Report a broken link</a></p>
+</section>
+<script defer src="/js/discovery.js"></script>
+<script defer src="/js/404.js"></script>
