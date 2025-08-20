@@ -36,14 +36,14 @@
         </button>
       </div>
 
-      <div class="live-player" data-stream-container>
+      <div class="live-player" data-stream-container data-youtube-container>
         <iframe id="playerFrame" src="about:blank" data-youtube
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
           title="Selected video player"></iframe>
         <div id="audioWrap" class="audio-wrap" style="display:none;">
-          <div id="player-container" class="radio-player" data-stream-container>
+          <div id="player-container" class="radio-player" data-stream-container data-radio-container>
             <div class="station-info">
               <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
               <h3 id="current-station" class="station-title">Select a station</h3>
@@ -82,6 +82,9 @@
     });
   </script>
   <script src="/js/error-overlay.js" defer></script>
+  <script src="/js/stream-state.js" defer></script>
+  <script src="/js/radio.js" defer></script>
+  <script src="/js/youtube.js" defer></script>
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
