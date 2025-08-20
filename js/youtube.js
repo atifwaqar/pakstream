@@ -123,6 +123,20 @@
       });
 
       players.add(player);
+
+      try {
+        const iframeEl = player.getIframe();
+        window.PAKSTREAM?.ErrorOverlay?.armIframeTimeout(iframeEl, 6000, (cont) => {
+          window.PAKSTREAM?.ErrorOverlay?.show(cont, {
+            onRetry: () => {
+              try {
+                const src = iframeEl.getAttribute('src');
+                iframeEl.setAttribute('src', src);
+              } catch {}
+            }
+          });
+        });
+      } catch {}
     });
 
     // B) Upgrade existing iframes to API players (if not already)
@@ -163,6 +177,20 @@
       });
 
       players.add(player);
+
+      try {
+        const iframeEl = iframe;
+        window.PAKSTREAM?.ErrorOverlay?.armIframeTimeout(iframeEl, 6000, (cont) => {
+          window.PAKSTREAM?.ErrorOverlay?.show(cont, {
+            onRetry: () => {
+              try {
+                const src = iframeEl.getAttribute('src');
+                iframeEl.setAttribute('src', src);
+              } catch {}
+            }
+          });
+        });
+      } catch {}
     });
 
     // Global safety: pause all when the tab is hidden
