@@ -2,43 +2,44 @@
 
 /* -------- Light Theme -------- */
 :root {
-  --primary: #00796B;
+  --primary: #0F5132;
   --on-primary: #FFFFFF;
-  --primary-container: #B2DFDB;
-  --on-primary-container: #004D40;
+  --primary-container: #D7F2E3;
+  --on-primary-container: #0B3A23;
 
-  --secondary: #C62828;
-  --on-secondary: #FFFFFF;
+  --secondary: #E0B100;
+  --on-secondary: #1A1A1A;
 
   --background: #FAFAFA;
-  --on-background: #212121;
+  --on-background: #1F2937;
 
   --surface: #FFFFFF;
-  --on-surface: #212121;
+  --on-surface: #1F2937;
 
-  --error: #D32F2F;
+  --error: #B3261E;
   --on-error: #FFFFFF;
-  --error-container: #FFEBEE;
-  --on-error-container: #B71C1C;
+  --error-container: #F9DEDC;
+  --on-error-container: #410E0B;
 
-  --outline: #BDBDBD;
-  --surface-variant: #EEEEEE;
-  --on-surface-variant: #424242;
+  --outline: #D1D5DB;
+  --surface-variant: #F3F4F6;
+  --on-surface-variant: #4B5563;
 
-  --accent-live: #FB8C00;
-  --accent-link: #1E88E5;
+  --accent-link: #2563EB;
+  --accent-link-visited: #1D4ED8;
+  --accent-live: #DC2626;
   --accent-success: #43A047;
   --accent-info: #4FC3F7;
-  --favorite-row: #00796B;
-  --active-row: rgba(0,100,0,0.1);
-  --hover-primary: #00695C;
-  --hover-link: #1565C0;
+  --favorite-row: var(--primary);
+  --active-row: color-mix(in srgb, var(--primary) 10%, transparent);
+  --hover-primary: color-mix(in srgb, var(--primary) 85%, var(--on-primary));
+  --hover-link: color-mix(in srgb, var(--accent-link) 85%, var(--on-surface));
   --scrollbar-track: var(--surface-variant);
   --scrollbar-thumb: var(--outline);
   --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-  --shadow-md: 0 2px 4px rgba(0,0,0,0.2);
-  --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.07);
+  --shadow-md: 0 4px 10px rgba(0,0,0,.08);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,.12);
   --shadow-xl: 0 4px 6px rgba(0,0,0,0.3);
   --shadow-side-right: 2px 0 5px rgba(0,0,0,0.3);
   --shadow-side-left: -2px 0 5px rgba(0,0,0,0.3);
@@ -50,43 +51,44 @@
 
 /* -------- Dark Theme -------- */
 [data-theme="dark"] {
-  --primary: #80CBC4;
-  --on-primary: #00332C;
-  --primary-container: #004D40;
-  --on-primary-container: #B2DFDB;
+  --primary: #7EE2B8;
+  --on-primary: #0D1B16;
+  --primary-container: #1A3A2B;
+  --on-primary-container: #CFF6E7;
 
-  --secondary: #EF9A9A;
-  --on-secondary: #3C0404;
+  --secondary: #F4C44E;
+  --on-secondary: #171717;
 
-  --background: #121212;
-  --on-background: #E0E0E0;
+  --background: #0B0F0E;
+  --on-background: #E5E7EB;
 
-  --surface: #1E1E1E;
-  --on-surface: #F5F5F5;
+  --surface: #111615;
+  --on-surface: #E5E7EB;
 
-  --error: #EF9A9A;
-  --on-error: #3C0404;
-  --error-container: #5C0000;
-  --on-error-container: #FFCDD2;
+  --error: #F2B8B5;
+  --on-error: #601410;
+  --error-container: #8C1D18;
+  --on-error-container: #FFDAD6;
 
-  --outline: #424242;
-  --surface-variant: #2C2C2C;
-  --on-surface-variant: #DDDDDD;
+  --outline: #374151;
+  --surface-variant: #111827;
+  --on-surface-variant: #9CA3AF;
 
-  --accent-live: #FFB74D;
-  --accent-link: #1565C0;
+  --accent-link: #93C5FD;
+  --accent-link-visited: #60A5FA;
+  --accent-live: #F87171;
   --accent-success: #66BB6A;
   --accent-info: #81D4FA;
-  --favorite-row: #00796B;
-  --active-row: rgba(0,100,0,0.3);
-  --hover-primary: #00695C;
-  --hover-link: #64B5F6;
+  --favorite-row: var(--primary);
+  --active-row: color-mix(in srgb, var(--primary) 30%, transparent);
+  --hover-primary: color-mix(in srgb, var(--primary) 80%, var(--on-primary));
+  --hover-link: color-mix(in srgb, var(--accent-link) 70%, var(--on-surface));
   --scrollbar-track: var(--surface);
   --scrollbar-thumb: var(--outline);
   --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
-  --shadow-md: 0 2px 4px rgba(0,0,0,0.6);
-  --shadow-lg: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 10px rgba(0,0,0,.45);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,.55);
   --shadow-xl: 0 4px 6px rgba(0,0,0,0.7);
   --shadow-side-right: 2px 0 5px rgba(0,0,0,0.7);
   --shadow-side-left: -2px 0 5px rgba(0,0,0,0.7);
@@ -94,4 +96,11 @@
   --overlay-strong: rgba(0,0,0,0.8);
   --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
   --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Accessible, high-contrast focus ring */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent-link);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-link) 25%, transparent);
 }
