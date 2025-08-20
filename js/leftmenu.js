@@ -16,18 +16,56 @@
   const detailsToggleDefaultText = detailsLabelEl?.textContent || "About";
   if (detailsLabelEl) detailsLabelEl.dataset.default = detailsToggleDefaultText;
 
+  const FOCUSABLE_SELECTOR =
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  function trapFocus(container) {
+    const focusableEls = Array.from(
+      container.querySelectorAll(FOCUSABLE_SELECTOR),
+    ).filter((el) => el.offsetParent !== null);
+    if (!focusableEls.length) return () => {};
+    const firstEl = focusableEls[0];
+    const lastEl = focusableEls[focusableEls.length - 1];
+    function handleKeydown(e) {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        }
+      } else {
+        if (document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    }
+    container.addEventListener("keydown", handleKeydown);
+    firstEl.focus();
+    return () => container.removeEventListener("keydown", handleKeydown);
+  }
+
+  let removeChannelFocusTrap = null;
+  let removeDetailsFocusTrap = null;
+
   function toggleChannelList() {
     if (!channelList || !channelToggleBtn) return;
     const icon = channelToggleBtn.querySelector(".icon");
     const label = channelToggleBtn.querySelector(".label");
     if (window.innerWidth <= 768) {
+      const opening = !channelList.classList.contains("open");
       channelList.classList.toggle("open");
       if (label) {
-        label.textContent = channelList.classList.contains("open")
+        label.textContent = opening
           ? `Close ${channelToggleDefaultText}`
           : channelToggleDefaultText;
       }
       if (typeof updateScrollLock === "function") updateScrollLock();
+      if (opening) {
+        removeChannelFocusTrap = trapFocus(channelList);
+      } else if (removeChannelFocusTrap) {
+        removeChannelFocusTrap();
+        channelToggleBtn.focus();
+      }
     } else {
       channelList.classList.toggle("collapsed");
       const collapsed = channelList.classList.contains("collapsed");
@@ -51,6 +89,8 @@
       const label = channelToggleBtn.querySelector(".label");
       if (label) label.textContent = channelToggleDefaultText;
       if (typeof updateScrollLock === "function") updateScrollLock();
+      if (removeChannelFocusTrap) removeChannelFocusTrap();
+      channelToggleBtn.focus();
     }
   });
 
@@ -62,6 +102,8 @@
         const label = channelToggleBtn?.querySelector(".label");
         if (label) label.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === "function") updateScrollLock();
+        if (removeChannelFocusTrap) removeChannelFocusTrap();
+        channelToggleBtn.focus();
       }
     });
 
@@ -81,6 +123,8 @@
         const label = channelToggleBtn?.querySelector(".label");
         if (label) label.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === "function") updateScrollLock();
+        if (removeChannelFocusTrap) removeChannelFocusTrap();
+        channelToggleBtn.focus();
       }
       touchStartX = null;
       touchFromModeTabs = false;
@@ -111,6 +155,7 @@
         const label = channelToggleBtn?.querySelector(".label");
         if (label) label.textContent = `Close ${channelToggleDefaultText}`;
         if (typeof updateScrollLock === "function") updateScrollLock();
+        removeChannelFocusTrap = trapFocus(channelList);
       }
       openStartX = null;
     });
@@ -120,21 +165,28 @@
     if (!detailsList || !detailsToggleBtn) return;
     const icon = detailsToggleBtn.querySelector(".icon");
     const label = detailsToggleBtn.querySelector(".label");
-    if (window.innerWidth <= 1080) {
-      if (detailsToggleBtn.style.display === "none") return;
-      detailsList.classList.toggle("open");
-      if (label) {
-        label.textContent = detailsList.classList.contains("open")
-          ? `Close ${detailsToggleDefaultText}`
-          : detailsToggleDefaultText;
-      }
-      if (typeof updateScrollLock === "function") updateScrollLock();
-    } else {
-      if (!detailsContainer) return;
-      detailsContainer.classList.toggle("collapsed");
-      const collapsed = detailsContainer.classList.contains("collapsed");
-      if (channelSection)
-        channelSection.classList.toggle("details-collapsed", collapsed);
+      if (window.innerWidth <= 1080) {
+        if (detailsToggleBtn.style.display === "none") return;
+        const opening = !detailsList.classList.contains("open");
+        detailsList.classList.toggle("open");
+        if (label) {
+          label.textContent = opening
+            ? `Close ${detailsToggleDefaultText}`
+            : detailsToggleDefaultText;
+        }
+        if (typeof updateScrollLock === "function") updateScrollLock();
+        if (opening) {
+          removeDetailsFocusTrap = trapFocus(detailsList);
+        } else if (removeDetailsFocusTrap) {
+          removeDetailsFocusTrap();
+          detailsToggleBtn.focus();
+        }
+      } else {
+        if (!detailsContainer) return;
+        detailsContainer.classList.toggle("collapsed");
+        const collapsed = detailsContainer.classList.contains("collapsed");
+        if (channelSection)
+          channelSection.classList.toggle("details-collapsed", collapsed);
       if (icon) icon.textContent = collapsed ? "chevron_left" : "chevron_right";
       localStorage.setItem("detailsListCollapsed", collapsed);
     }
@@ -153,6 +205,8 @@
       const label = detailsToggleBtn.querySelector(".label");
       if (label) label.textContent = detailsToggleDefaultText;
       if (typeof updateScrollLock === "function") updateScrollLock();
+      if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+      detailsToggleBtn.focus();
     }
   });
 
@@ -166,13 +220,15 @@
       if (detailsTouchStartX === null) return;
       const touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - detailsTouchStartX > 50) {
-        detailsList.classList.remove("open");
-        const label = detailsToggleBtn.querySelector(".label");
-        if (label) label.textContent = detailsToggleDefaultText;
-        if (typeof updateScrollLock === "function") updateScrollLock();
-      }
-      detailsTouchStartX = null;
-    });
+          detailsList.classList.remove("open");
+          const label = detailsToggleBtn.querySelector(".label");
+          if (label) label.textContent = detailsToggleDefaultText;
+          if (typeof updateScrollLock === "function") updateScrollLock();
+          if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+          detailsToggleBtn.focus();
+        }
+        detailsTouchStartX = null;
+      });
 
     let detailsOpenStartX = null;
     document.addEventListener("touchstart", (e) => {
@@ -204,13 +260,14 @@
         detailsOpenStartX > window.innerWidth - 50 &&
         detailsOpenStartX - touchEndX > 50
       ) {
-        detailsList.classList.add("open");
-        const label = detailsToggleBtn.querySelector(".label");
-        if (label) label.textContent = `Close ${detailsToggleDefaultText}`;
-        if (typeof updateScrollLock === "function") updateScrollLock();
-      }
-      detailsOpenStartX = null;
-    });
+          detailsList.classList.add("open");
+          const label = detailsToggleBtn.querySelector(".label");
+          if (label) label.textContent = `Close ${detailsToggleDefaultText}`;
+          if (typeof updateScrollLock === "function") updateScrollLock();
+          removeDetailsFocusTrap = trapFocus(detailsList);
+        }
+        detailsOpenStartX = null;
+      });
   }
 
   (function () {
