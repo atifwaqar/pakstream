@@ -56,6 +56,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
+  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
 </head>
 <body>
 {% include google-tag-manager-body.html %}
@@ -63,7 +64,7 @@
 
 
   <!-- TV Livestream section -->
-  <section class="youtube-section">
+  <section id="main-content" class="youtube-section">
     <div class="channel-list"></div>
     <div class="video-section">
       <button id="toggle-channels" class="channel-toggle" onclick="toggleChannelList()" aria-label="Toggle channel list">
