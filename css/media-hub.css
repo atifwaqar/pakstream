@@ -422,3 +422,82 @@
 .stream-error-overlay .actions button {
   margin: 8px;
 }
+
+/* ===== Embed mode: tighten vertical chrome ===== */
+
+/* Kill any body/section padding that creates a top band */
+.is-embed html,
+.is-embed body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important; /* prevent inner scrollbar */
+  box-sizing: border-box;
+}
+
+.is-embed .youtube-section.media-hub-section {
+  margin: 0 !important;
+  padding: 0 !important;              /* << was creating the top band */
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+}
+
+/* Keep the Channels button snug at the very top */
+.is-embed .button-row {
+  margin: 0 !important;               /* << remove ~20px margin */
+  padding: 8px 8px 0 8px !important;  /* small breathing room, top-aligned */
+  min-height: 0 !important;
+  border: 0 !important;
+}
+.is-embed .channel-toggle {
+  margin: 0 !important;
+}
+
+/* Tighten the video area; no extra band at the bottom */
+.is-embed .video-section,
+.is-embed .live-player {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/* Remove any 56.25% ratio pseudo element that causes bottom whitespace */
+.is-embed .live-player::before,
+.is-embed .video-wrapper::before,
+.is-embed .player::before {
+  content: none !important;
+  display: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Define the ratio on the container and stretch the inner iframe */
+.is-embed .live-player,
+.is-embed .video-wrapper,
+.is-embed .player {
+  position: relative !important;
+  aspect-ratio: 16 / 9 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: hidden !important;
+}
+
+.is-embed #playerFrame,
+.is-embed .live-player iframe,
+.is-embed .video-wrapper iframe,
+.is-embed .player iframe {
+  position: absolute !important;
+  inset: 0 !important;  /* top/right/bottom/left:0 */
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  display: block !important;
+  background: transparent !important;
+}
+
+/* Optional: in embed hide non-essential rails; keep toggle working if desired */
+.is-embed #left-rail,
+.is-embed .right-rail,
+.is-embed .details-container {
+  display: none !important;
+}
+
