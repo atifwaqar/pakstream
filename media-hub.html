@@ -30,22 +30,32 @@
   <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
 
   <section class="youtube-section media-hub-section">
-    <div class="mode-tabs">
-      <button class="tab-btn" data-mode="all">All</button>
-      <button class="tab-btn" data-mode="favorites">Favorites</button>
-      <button class="tab-btn" data-mode="tv">Live TV</button>
-      <button class="tab-btn" data-mode="freepress">Free Press</button>
-      <button class="tab-btn" data-mode="creator">Creators</button>
-      <button class="tab-btn" data-mode="radio">Radio</button>
+    <div id="hub-controls" class="hub-controls">
+      <div class="mode-tabs" role="tablist">
+        <button class="tab-btn" data-mode="all" role="tab">All</button>
+        <button class="tab-btn" data-mode="tv" role="tab">TV</button>
+        <button class="tab-btn" data-mode="radio" role="tab">Radio</button>
+        <button class="tab-btn" data-mode="creator" role="tab">Creators</button>
+      </div>
+      <div class="filters-row">
+        <select id="topic-filter" multiple aria-label="Filter by topic"></select>
+        <select id="lang-filter" multiple aria-label="Filter by language"></select>
+        <select id="region-filter" multiple aria-label="Filter by region"></select>
+        <label class="live-filter"><input type="checkbox" id="live-filter"> Live Now</label>
+        <select id="sort-select" aria-label="Sort results">
+          <option value="trending">Trending</option>
+          <option value="recent">Most Recent</option>
+          <option value="az">A → Z</option>
+          <option value="played">Recently Played</option>
+        </select>
+        <input id="mh-search-input" type="text" placeholder="Search…" aria-label="Search media" />
+        <button id="reset-filters" type="button">Reset</button>
+      </div>
+      <div id="selected-filters" class="selected-filters" aria-live="polite"></div>
+      <div id="results-count" class="results-count" aria-live="polite"></div>
     </div>
     <!-- LEFT RAIL -->
     <div class="channel-list open" id="left-rail">
-      <!-- NEW: search at the top of left menu -->
-      <div class="left-rail-header">
-        <div class="search-wrap">
-          <input id="mh-search-input" type="text" placeholder="Search…" />
-        </div>
-      </div>
       <!-- list gets injected here -->
     </div>
 
