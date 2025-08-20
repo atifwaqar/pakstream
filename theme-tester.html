@@ -60,6 +60,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link id="themeStylesheet" rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/assets/css/hero.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
@@ -82,8 +83,8 @@
   </div>
 
   <!-- Hero section with image and tagline -->
-  <section class="hero-banner">
-    <picture>
+  <section id="ps-hero" class="hero-banner">
+    <picture role="img" aria-hidden="true">
       <source
         type="image/webp"
         srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
@@ -92,14 +93,14 @@
         src="/images/pakistan-abstract-380.webp"
         width="380"
         height="380"
-        alt="Abstract Pakistan crescent and star"
+        alt=""
         decoding="async"
-        fetchpriority="high"
-        style="aspect-ratio: 1 / 1; object-fit: cover;" />
+        fetchpriority="high" />
     </picture>
-    <div class="hero-text">
-      <h2>Your Gateway to Pakistani Media</h2>
-      <p>Stay Connected to Pakistan — News, Radio &amp; More</p>
+    <div class="hero-content">
+      <h1>Your Gateway to Pakistani Media</h1>
+      <p class="subheading">Stay Connected to Pakistan — News, Radio &amp; More</p>
+      <a class="hero-cta" href="/media-hub.html">Browse Streams</a>
     </div>
   </section>
 
