@@ -1,39 +1,41 @@
-/* Reserved heights for common display sizes (prevents CLS) */
+/* Ads: CLS-safe placeholders (additive) */
 .ad-slot {
   position: relative;
-  width: 100%;
-  margin: 16px auto;
-  background: var(--surface-variant, #EEE);
-  border: 1px dashed var(--outline, #BDBDBD);
+  box-sizing: border-box;
   display: block;
-  overflow: hidden;
+  margin: 16px auto;
+  max-width: 100%;
+  background: #f8f9fa;
+  border: 1px dashed rgba(0,0,0,.08);
+  border-radius: 10px;
 }
 
-/* Base reserved heights (can be overridden by data-ad-size) */
-.ad-slot[data-ad-size="300x250"]  { max-width: 300px;  height: 250px; }
-.ad-slot[data-ad-size="336x280"]  { max-width: 336px;  height: 280px; }
-.ad-slot[data-ad-size="320x100"]  { max-width: 320px;  height: 100px; }
-.ad-slot[data-ad-size="728x90"]   { max-width: 728px;  height: 90px;  }
-.ad-slot[data-ad-size="970x250"]  { max-width: 970px;  height: 250px; }
-
-/* Center reserved boxes */
-.ad-slot > .ad-reserved {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font: 600 12px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: var(--on-surface-variant, #424242);
-  opacity: .7;
+.ad-slot.is-ready {
+  border-style: solid;
+  border-color: rgba(0,0,0,.06);
 }
 
-/* Optional label */
-.ad-slot::before {
-  content: "Ad";
-  position: absolute; top: 4px; right: 6px;
-  font-size: 10px; opacity: .6;
+.ad-slot .ad-placeholder {
+  display: grid;
+  place-items: center;
+  font-size: .85rem;
+  color: #6b7280;
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+  text-align: center;
 }
 
-/* Responsive helpers: stack medium sizes nicely on mobile */
-@media (max-width: 480px) {
-  .ad-slot[data-ad-size="728x90"]   { max-width: 320px; height: 100px; }
-  .ad-slot[data-ad-size="970x250"]  { max-width: 320px; height: 100px; }
+/* Responsive helpers (optional) */
+@media (min-width: 768px) {
+  .ad-slot[data-ad-type="leaderboard"] { min-width: 728px; min-height: 90px; }
+}
+@media (max-width: 767.98px) {
+  .ad-slot[data-ad-type="leaderboard"] { min-width: 320px; min-height: 50px; }
+}
+
+/* “Fluid” slots: fill container width; height via aspect ratio or custom CSS */
+.ad-slot[data-ad-type="fluid"] {
+  min-width: 100%;
+  min-height: 1px;
 }
