@@ -128,17 +128,28 @@
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
 
-  <!-- Keep order to preserve swipe/lock behavior from your site -->
+  <!-- 1) Global feature flags / shared utils (if present) -->
   <script src="/js/stream-state.js"></script>
+
+  <!-- 2) Media Hub sub-modules -->
   <script src="/assets/js/mh-tabs.js"></script>
-  <script src="/js/media-hub.js"></script>
   <script src="/assets/js/mh-search.js"></script>
   <script src="/assets/js/mh-channels.js"></script>
+
+  <!-- 3) Media Hub bootstrap (wires sub-modules together) -->
+  <script src="/js/media-hub.js"></script>
+
+  <!-- 4) Site-wide scripts (may listen to hub events) -->
+  <script src="/js/youtube.js"></script>
+  <script src="/js/radio.js"></script>
+  <script src="/js/main.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
-  <script defer src="/js/discovery.js"></script>
-  <script defer src="/js/maintenance.js"></script>
-  <script defer src="/js/error-overlay.js"></script>
-  <script defer src="/js/main.js"></script>
+  <script src="/js/discovery.js"></script>
+  <script src="/js/maintenance.js"></script>
+  <script src="/js/error-overlay.js"></script>
+
+  <!-- 5) Keep PWA/SW disabled for now -->
+  <!-- <script src="/js/pwa.js"></script> -->
 </body>
 </html>
