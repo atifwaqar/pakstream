@@ -98,6 +98,39 @@
   --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
 }
 
+/* New palette (scoped): activated by [data-theme="new"] or JS applying .theme-new */
+:root.theme-new,
+html[data-theme="new"],
+body[data-theme="new"] {
+  /* Primary */
+  --primary: #0F5132;
+  --on-primary: #FFFFFF;
+  --primary-container: #D1E7DD;
+  --on-primary-container: #0A3622;
+
+  /* Secondary / Accent */
+  --secondary: #E0B100;
+  --on-secondary: #1A1A1A;
+
+  /* Background / Surface */
+  --background: #F7F9FC;
+  --on-background: #263238;
+  --surface: #FFFFFF;
+  --on-surface: #263238;
+
+  /* Error (unchanged or updated if needed) */
+  --error: #D32F2F;
+  --on-error: #FFFFFF;
+
+  /* Variants */
+  --outline: #CBD5E1;
+  --surface-variant: #EEF2F7;
+  --on-surface-variant: #4B5563;
+
+  /* Accents */
+  --accent-live: #1E88E5;
+}
+
 /* Accessible, high-contrast focus ring */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 3px solid var(--accent-link);
