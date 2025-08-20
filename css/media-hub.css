@@ -289,8 +289,8 @@
 
 .coffee-btn {
   display: inline-block;
-  background: #ffdd00;
-  color: #000;
+  background: var(--secondary);
+  color: var(--on-secondary);
   border-radius: 8px;
   padding: 8px 16px;
   text-decoration: none;

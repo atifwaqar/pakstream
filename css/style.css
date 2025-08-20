@@ -1,11 +1,6 @@
 /* Refactored style.css with improved readability & polished UI/UX */
 /* Roboto font loaded asynchronously via HTML link tags */
 
-:focus-visible {
-  outline: 2px dashed var(--accent-link);
-  outline-offset: 2px;
-}
-
 * {
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
   scrollbar-width: thin;
@@ -14,6 +9,13 @@
 
 [hidden] {
   display: none !important;
+}
+
+a {
+  color: var(--accent-link);
+}
+a:visited {
+  color: var(--accent-link-visited);
 }
 
 
@@ -1232,8 +1234,8 @@ footer nav a:hover {
 
 .bmc-button {
   display: inline-block;
-  background-color: #FFDD00;
-  color: #000;
+  background-color: var(--secondary);
+  color: var(--on-secondary);
   padding: 8px 12px;
   border-radius: 8px;
   text-decoration: none;
@@ -1244,7 +1246,7 @@ footer nav a:hover {
 }
 
 .bmc-button:hover {
-  background-color: #e6c000;
+  background-color: color-mix(in srgb, var(--secondary) 85%, var(--on-secondary));
 }
 
 .top-bar .bmc-button {
