@@ -43,22 +43,13 @@
     else log(false, 'Media Hub list missing');
   }
 
-  async function checkDataCounts() {
-    if (!window.PAKSTREAM_DATA) return log('warn', 'Data loader not present');
-    const data = await window.PAKSTREAM_DATA.getAllStreams();
-    if (!data) return log(false, 'all_streams.json missing or invalid');
-    const { counts } = data;
-    log(true, `Data counts: radio=${counts.radio||0}, tv=${counts.tv||0}, creators=${counts.creators||0}, freepress=${counts.freepress||0}`);
-  }
-
-  async function runChecks() {
+  function runChecks() {
     console.groupCollapsed('%cPakStream Sanity Checklist', 'color:#1E88E5;font-weight:bold');
     checkNav();
     checkOverlay();
     checkYouTube();
     checkAudio();
     checkMediaHub();
-    await checkDataCounts();
     console.groupEnd();
   }
 

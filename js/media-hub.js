@@ -1,5 +1,5 @@
 (() => {
-  // Avoid redefining across modules; shared helpers for hub pieces
+  // Avoid redefining across modules
   if (window.__mh) return;
 
   const qs  = (sel, root=document) => root.querySelector(sel);
@@ -65,7 +65,7 @@
     const video  = qs(SEL.video, root);
     const audio  = qs(SEL.audio, root);
 
-    // Sub-module init (each module must be idempotent); data comes from PAKSTREAM_DATA
+    // Sub-module init (each module must be idempotent)
     try { window.PAKSTREAM_MH_TABS?.init({ root, tabs }); } catch (e) { console.warn('[MediaHub] tabs init failed', e); }
     try { window.PAKSTREAM_MH_SEARCH?.init({ root, search }); } catch (e) { console.warn('[MediaHub] search init failed', e); }
     try { window.PAKSTREAM_MH_CHANNELS?.init({ root, list, video, audio }); } catch (e) { console.warn('[MediaHub] channels init failed', e); }
