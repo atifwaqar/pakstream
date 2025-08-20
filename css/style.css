@@ -728,14 +728,14 @@ section {
   font-size: 0.9rem;
 }
 
-.details-content .profiles {
+.profiles {
   display: flex;
   gap: 16px;
   margin-top: 8px;
   flex-wrap: wrap;
 }
 
-.details-content .profile {
+.profile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -743,9 +743,10 @@ section {
   color: inherit;
   font-size: 0.8rem;
   transition: color 0.2s ease;
+  flex: 0 0 auto;
 }
 
-.details-content .profile-icon {
+.profile-icon {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -757,18 +758,21 @@ section {
   margin-bottom: 4px;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
-.details-content .profile-icon img {
-  width: 24px;
-  height: 24px;
+.profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-.details-content .profile:hover {
+.profile:hover {
   color: var(--accent-link);
 }
 
-.details-content .profile:hover .profile-icon {
+.profile:hover .profile-icon {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
