@@ -22,8 +22,64 @@
   grid-template-columns: 72px 1fr 24px;
   column-gap: 0;
 }
-.media-hub-section .mode-tabs {
+.media-hub-section .hub-controls {
   grid-area: tabs;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+  padding: 8px 0 10px;
+  border-bottom: 1px solid var(--outline);
+}
+.hub-controls .mode-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+.hub-controls .filters-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.hub-controls select,
+.hub-controls input[type="text"] {
+  padding: 6px 8px;
+  border: 1px solid var(--outline);
+  background: var(--surface);
+  color: var(--on-surface);
+  border-radius: 8px;
+}
+.hub-controls .live-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.selected-filters {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.selected-filters .chip {
+  background: var(--surface-variant);
+  border-radius: 16px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.selected-filters .chip button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 16px;
+}
+.results-count {
+  margin-top: 4px;
 }
 .media-hub-section #left-rail {
   grid-area: left;

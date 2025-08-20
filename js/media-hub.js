@@ -1,10 +1,33 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(location.search);
-  if (!params.has("m")) {
-    params.set("m", "all");
-    history.replaceState(null, "", `${location.pathname}?${params}`);
+  const STORAGE_KEY = 'pakstream.mh.state';
+  function loadState(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch(e){ return {}; }
   }
-  let mode = params.get("m") || "all"; // default, will auto-correct based on data
+  function saveState(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  const state = {
+    tab: 'all',
+    topics: [],
+    languages: [],
+    regions: [],
+    live: false,
+    sort: 'trending',
+    q: ''
+  };
+  if (params.toString()) {
+    state.tab = params.get('tab') || params.get('m') || 'all';
+    state.topics = (params.get('topic') || '').split(',').filter(Boolean);
+    state.languages = (params.get('lang') || '').split(',').filter(Boolean);
+    state.regions = (params.get('region') || '').split(',').filter(Boolean);
+    state.live = params.get('live') === '1';
+    state.sort = params.get('sort') || 'trending';
+    state.q = params.get('q') || '';
+  } else {
+    Object.assign(state, loadState());
+  }
+  let mode = state.tab;
   let isMuted = params.get("muted") === "1";
   let muteParam = isMuted ? "&mute=1" : "";
 
@@ -17,6 +40,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const details   = document.querySelector(".details-list");
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
+  const topicFilter  = document.getElementById('topic-filter');
+  const langFilter   = document.getElementById('lang-filter');
+  const regionFilter = document.getElementById('region-filter');
+  const liveFilter   = document.getElementById('live-filter');
+  const sortSelect   = document.getElementById('sort-select');
+  const resetBtn     = document.getElementById('reset-filters');
+  const selectedFiltersEl = document.getElementById('selected-filters');
+  const resultsCountEl = document.getElementById('results-count');
   const toggleDetailsBtn = document.getElementById("toggle-details");
   const mediaHubSection = document.querySelector(".media-hub-section");
 
@@ -130,6 +161,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (it.category === "creator" || it.type === "creator" || /creator|vlog|podcast/i.test(it.tags || "")) return "creator";
     return "tv";
   };
+
+  function deriveTopic(it){
+    const name = displayName(it).toLowerCase();
+    if(/news|press/.test(name)) return 'news';
+    if(/sport/.test(name)) return 'sports';
+    if(/music|fm/.test(name)) return 'music';
+    if(/talk|podcast/.test(name)) return 'talk';
+    return 'general';
+  }
+  function deriveLanguage(it){
+    const name = displayName(it).toLowerCase();
+    if(/english/.test(name)) return 'en';
+    if(/urdu/.test(name)) return 'ur';
+    return 'both';
+  }
+  function deriveRegion(it){
+    return 'pakistan';
+  }
+  function deriveLive(it){
+    if(it.type === 'radio' || it.category === 'radio') return true;
+    if(it.status && typeof it.status.active === 'boolean') return it.status.active;
+    const emb = ytEmbed(it);
+    return emb ? /live/i.test(emb.url||'') : false;
+  }
+  const topicSet = new Set();
+  const langSet = new Set();
+  const regionSet = new Set();
+  items.forEach(it => {
+    it.topic = deriveTopic(it);
+    it.language = deriveLanguage(it);
+    it.region = deriveRegion(it);
+    it.isLive = deriveLive(it);
+    topicSet.add(it.topic);
+    langSet.add(it.language);
+    regionSet.add(it.region);
+  });
+
+  function populateSelect(sel, values){
+    if(!sel) return;
+    sel.innerHTML = '';
+    values.sort().forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v.charAt(0).toUpperCase() + v.slice(1);
+      sel.appendChild(opt);
+    });
+  }
+  populateSelect(topicFilter, Array.from(topicSet));
+  populateSelect(langFilter, Array.from(langSet));
+  populateSelect(regionFilter, Array.from(regionSet));
 
   function timeAgo(dateString) {
     const seconds = (Date.now() - new Date(dateString)) / 1000;
@@ -288,22 +369,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!resp.ok) throw new Error('Failed to load video details');
     return resp.json();
   }
-
-  // Determine which modes are available based on current data
-  function modeHasItems(m) {
-    const list = filteredByMode(m, "");
-    return list.length > 0;
-  }
-  function detectAvailableMode() {
-    const pref = ["tv", "freepress", "creator", "radio"];
-    for (const m of pref) {
-      if (modeHasItems(m)) return m;
-    }
-    // if nothing matches, but we have any items at all, just pick radio if present by type/name heuristic
-    if (items.some(i => i.type === "radio")) return "radio";
-    return "tv";
-  }
-
   // One place for UI updates (tabs, player visibility, details toggle, favorites cache)
   function updateActiveUI() {
     tabs.forEach(t => {
@@ -509,110 +574,98 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else if (itemMode === mode) {
         favorites = favArr;
       }
-      if (mode === 'favorites') renderList(searchEl ? (searchEl.value || '') : '');
-      else updateFavoritesUI();
+      updateFavoritesUI();
+      renderList();
     }
 
   // Filter items for current mode (robust when 'category' is missing)
-  function filteredByMode(m, filterText) {
+  function filteredByState() {
     let arr = items.slice();
-
-    // Primary filter by mode
-    if (m === "favorites") {
-      const tvFavs = JSON.parse(localStorage.getItem(favKeys.tv) || '[]');
-      const ytFavs = JSON.parse(localStorage.getItem(favKeys.freepress) || '[]');
-      const radioFavs = JSON.parse(localStorage.getItem(favKeys.radio) || '[]');
-      arr = arr.filter(i => {
-        const im = modeOfItem(i);
-        const id = im === 'radio' ? (i.ids?.internal_id || i.key) : i.key;
-        if (im === 'radio') return radioFavs.includes(id);
-        if (im === 'tv') return tvFavs.includes(id);
-        if (im === 'freepress' || im === 'creator') return ytFavs.includes(id);
-        return false;
-      });
-    } else if (m === "radio") {
-      arr = arr.filter(i => i.category === "radio" || i.type === "radio" || /radio/i.test(i.platform || ""));
-    } else if (m === "tv") {
-      arr = arr.filter(i =>
-        i.type === "livetv" ||
-        i.type === "tv" ||
-        i.category === "tv"
-      );
-    } else if (m === "freepress") {
-      arr = arr.filter(i =>
-        i.category === "freepress" ||
-        i.type === "freepress" ||
-        /freepress|journalist|news/i.test(i.tags || "")
-      );
-    } else if (m === "creator") {
-      arr = arr.filter(i =>
-        i.category === "creator" ||
-        i.type === "creator" ||
-        /creator|vlog|podcast/i.test(i.tags || "")
-      );
+    if (mode === 'radio') {
+      arr = arr.filter(i => i.category === 'radio' || i.type === 'radio' || /radio/i.test(i.platform || ''));
+    } else if (mode === 'tv') {
+      arr = arr.filter(i => i.type === 'livetv' || i.type === 'tv' || i.category === 'tv');
+    } else if (mode === 'creator') {
+      arr = arr.filter(i => i.category === 'creator' || i.type === 'creator' || /creator|vlog|podcast/i.test(i.tags || ''));
     }
-
-    // Search
-    const q = (filterText || "").toLowerCase().trim();
-    if (q) {
+    const q = (state.q || '').toLowerCase().trim();
+    if(q){
       arr = arr.filter(i => {
         const dn = displayName(i).toLowerCase();
-        const k = (i.key || "").toLowerCase();
-        return dn.includes(q) || k.includes(q);
+        const k = (i.key || '').toLowerCase();
+        const tags = (i.tags || '').toLowerCase();
+        return dn.includes(q) || k.includes(q) || tags.includes(q);
       });
     }
-
-    // Sort
-    if (m === 'favorites') {
-      arr.sort((a,b) => {
-        const aInactive = a.status?.active === false ? 1 : 0;
-        const bInactive = b.status?.active === false ? 1 : 0;
-        if (aInactive !== bInactive) return aInactive - bInactive;
-        return displayName(a).localeCompare(displayName(b));
+    if(state.topics.length) arr = arr.filter(i => state.topics.includes(i.topic));
+    if(state.languages.length) arr = arr.filter(i => state.languages.includes(i.language));
+    if(state.regions.length) arr = arr.filter(i => state.regions.includes(i.region));
+    if(state.live) arr = arr.filter(i => i.isLive);
+    if(state.sort === 'trending' && window.trendingService){
+      const ranked = window.trendingService.getRanking(arr);
+      const ids = new Set(ranked.map(r => r.key));
+      const rest = arr.filter(i => !ids.has(i.key));
+      arr = ranked.concat(rest.sort((a,b)=>displayName(a).localeCompare(displayName(b))));
+    } else if(state.sort === 'recent'){
+      arr.sort((a,b)=> new Date(b.firstSeen||0) - new Date(a.firstSeen||0));
+    } else if(state.sort === 'played' && window.historyService){
+      const hist = window.historyService.get();
+      arr.sort((a,b)=>{
+        const ai = hist.findIndex(h=>h.id===a.key);
+        const bi = hist.findIndex(h=>h.id===b.key);
+        if(ai===-1 && bi===-1) return displayName(a).localeCompare(displayName(b));
+        if(ai===-1) return 1;
+        if(bi===-1) return -1;
+        return ai - bi;
       });
     } else {
-      arr.sort((a,b) => {
-        const am = m === 'all' ? modeOfItem(a) : m;
-        const bm = m === 'all' ? modeOfItem(b) : m;
-        const aid = am === "radio" ? (a.ids?.internal_id || a.key) : a.key;
-        const bid = bm === "radio" ? (b.ids?.internal_id || b.key) : b.key;
-        const af = favorites.includes(aid) ? 0 : 1;
-        const bf = favorites.includes(bid) ? 0 : 1;
-        if (af !== bf) return af - bf;
-        const aInactive = a.status?.active === false ? 1 : 0;
-        const bInactive = b.status?.active === false ? 1 : 0;
-        if (aInactive !== bInactive) return aInactive - bInactive;
-        return displayName(a).localeCompare(displayName(b));
-      });
+      arr.sort((a,b)=>displayName(a).localeCompare(displayName(b)));
     }
-
     return arr;
   }
 
-  function renderList(filterText="") {
-    if (!listEl) return;
-
-    // Get items; if none for current mode, auto-switch to an available mode
-    // Only auto-switch when not actively filtering to avoid jumping tabs during search
-    let arr = filteredByMode(mode, filterText);
-    if (!filterText && arr.length === 0 && mode !== 'favorites') {
-      mode = detectAvailableMode();
-      params.set("m", mode);
-      history.replaceState(null, "", "?" + params.toString());
-      updateActiveUI();
-      arr = filteredByMode(mode, filterText);
+  function renderSelectedChips(){
+    if(!selectedFiltersEl) return;
+    selectedFiltersEl.innerHTML = '';
+    function addChip(label, value, removeFn){
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.textContent = label + ': ' + value + ' ';
+      const btn = document.createElement('button');
+      btn.setAttribute('aria-label','Remove '+label+': '+value);
+      btn.textContent = '×';
+      btn.addEventListener('click', removeFn);
+      chip.appendChild(btn);
+      selectedFiltersEl.appendChild(chip);
     }
+    state.topics.forEach(v => addChip('Topic', v, () => { state.topics = state.topics.filter(x=>x!==v); updateState(); }));
+    state.languages.forEach(v => addChip('Lang', v, () => { state.languages = state.languages.filter(x=>x!==v); updateState(); }));
+    state.regions.forEach(v => addChip('Region', v, () => { state.regions = state.regions.filter(x=>x!==v); updateState(); }));
+    if(state.live) addChip('Live','Yes', () => { state.live = false; updateState(); });
+    if(state.q) addChip('Search', state.q, () => { state.q=''; updateState(); });
+  }
 
-    // Clear & render
-    listEl.querySelectorAll(".channel-card").forEach(el => el.remove());
-    const frag = document.createDocumentFragment();
-    arr.forEach(it => {
-      const im = (mode === 'favorites' || mode === 'all') ? modeOfItem(it) : mode;
-      frag.appendChild(makeChannelCard(it, im));
-    });
-    listEl.appendChild(frag);
+  function renderList() {
+    if (!listEl) return;
+    let arr = filteredByState();
+    listEl.querySelectorAll('.channel-card, .empty').forEach(el => el.remove());
+    if(arr.length === 0){
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'No results. Clear filters?';
+      listEl.appendChild(empty);
+    } else {
+      const frag = document.createDocumentFragment();
+      arr.forEach(it => {
+        const im = mode === 'all' ? modeOfItem(it) : mode;
+        frag.appendChild(makeChannelCard(it, im));
+      });
+      listEl.appendChild(frag);
+    }
+    if(resultsCountEl) resultsCountEl.textContent = arr.length + ' results';
+    renderSelectedChips();
 
-    const initialKey = params.get('c');
+    const initialKey = currentVideoKey || params.get('c');
     if (mode === 'radio') {
       if (!currentAudio) {
         if (initialKey) {
@@ -772,9 +825,7 @@ async function renderLatestVideosRSS(channelId) {
     if (isSame) return;
 
     currentVideoKey = item.key;
-    params.set("m", mode);
-    params.set("c", item.key);
-    history.replaceState(null, "", "?" + params.toString());
+    syncURL();
 
     if (videoList) videoList.innerHTML = "";
     currentVideoChannelId = null;
@@ -920,10 +971,8 @@ async function renderLatestVideosRSS(channelId) {
 
     currentAudio = audio;
     if (currentLabel) currentLabel.textContent = name;
-
-      params.set('m', mode === 'favorites' ? 'favorites' : mode);
-    params.set('c', audio.id);
-    history.replaceState(null, '', '?' + params.toString());
+    currentVideoKey = audio.id;
+    syncURL();
 
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
@@ -986,8 +1035,8 @@ async function renderLatestVideosRSS(channelId) {
         if (idx >= 0) favArr.splice(idx, 1); else favArr.push(id);
         localStorage.setItem(storeKey, JSON.stringify(favArr));
         if (mode === 'radio') favorites = favArr;
-        if (mode === 'favorites') renderList(searchEl ? (searchEl.value || '') : '');
         updateFavoritesUI();
+        renderList();
       });
     }
   if (playPauseBtn) {
@@ -1036,36 +1085,53 @@ async function renderLatestVideosRSS(channelId) {
   }
 
   // Tabs + Search
-  tabs.forEach(t => t.addEventListener("click", () => {
-    mode = t.dataset.mode;
-    params.set("m", mode);
-    history.replaceState(null, "", "?" + params.toString());
-    updateActiveUI();
-    renderList(searchEl ? (searchEl.value || "") : "");
-  }));
-  if (searchEl) {
-    searchEl.addEventListener("input", e => renderList(e.target.value));
-    searchEl.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        renderList(searchEl.value);
-        const firstCard = listEl.querySelector('.channel-card');
-        if (firstCard) {
-          firstCard.click();
-          searchEl.value = '';
-          renderList('');
-        }
-      }
-    });
+  function syncURL(){
+    const p = new URLSearchParams();
+    p.set('tab', state.tab);
+    if(state.topics.length) p.set('topic', state.topics.join(','));
+    if(state.languages.length) p.set('lang', state.languages.join(','));
+    if(state.regions.length) p.set('region', state.regions.join(','));
+    if(state.live) p.set('live','1');
+    if(state.sort && state.sort !== 'trending') p.set('sort', state.sort);
+    if(state.q) p.set('q', state.q);
+    history.replaceState(null,'','?'+p.toString());
   }
 
-  // ===== Init =====
-  // If current mode has no items, switch to first available
-    if (mode !== 'favorites' && !modeHasItems(mode)) {
-      mode = detectAvailableMode();
-      params.set("m", mode);
-      history.replaceState(null, "", "?" + params.toString());
-    }
-  updateActiveUI();
-  renderList(searchEl ? (searchEl.value || "") : "");
+  function updateControlsFromState(){
+    if(topicFilter) Array.from(topicFilter.options).forEach(o => o.selected = state.topics.includes(o.value));
+    if(langFilter) Array.from(langFilter.options).forEach(o => o.selected = state.languages.includes(o.value));
+    if(regionFilter) Array.from(regionFilter.options).forEach(o => o.selected = state.regions.includes(o.value));
+    if(liveFilter) liveFilter.checked = state.live;
+    if(sortSelect) sortSelect.value = state.sort;
+    if(searchEl) searchEl.value = state.q;
+  }
+
+  function updateState(){
+    mode = state.tab;
+    updateControlsFromState();
+    renderList();
+    syncURL();
+    saveState();
+    updateActiveUI();
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => { state.tab = t.dataset.mode; updateState(); }));
+  if(topicFilter) topicFilter.addEventListener('change', () => { state.topics = Array.from(topicFilter.selectedOptions).map(o=>o.value); updateState(); });
+  if(langFilter) langFilter.addEventListener('change', () => { state.languages = Array.from(langFilter.selectedOptions).map(o=>o.value); updateState(); });
+  if(regionFilter) regionFilter.addEventListener('change', () => { state.regions = Array.from(regionFilter.selectedOptions).map(o=>o.value); updateState(); });
+  if(liveFilter) liveFilter.addEventListener('change', () => { state.live = liveFilter.checked; updateState(); });
+  if(sortSelect) sortSelect.addEventListener('change', () => { state.sort = sortSelect.value; updateState(); });
+  if(searchEl) searchEl.addEventListener('input', e => { state.q = e.target.value; updateState(); });
+  if(resetBtn) resetBtn.addEventListener('click', () => {
+    state.tab = 'all';
+    state.topics = [];
+    state.languages = [];
+    state.regions = [];
+    state.live = false;
+    state.sort = 'trending';
+    state.q = '';
+    updateState();
+  });
+
+  updateState();
 });
