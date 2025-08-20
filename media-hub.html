@@ -24,7 +24,10 @@
 </head>
 <body>
   <!-- Top bar (same as site) -->
-  {% include top-bar.html %}
+{% include top-bar.html %}
+
+  <section id="trending-rail" class="rail-section lazy-rail" aria-label="Trending Now"></section>
+  <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
 
   <section class="youtube-section media-hub-section">
     <div class="mode-tabs">
@@ -104,7 +107,7 @@
     <nav class="footer-nav">
       <a href="/about.html">About Us</a>
       <a href="/contact.html">Contact</a>
-      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/privacy.html">Privacy &amp; History</a>
     <a href="/terms.html">Terms</a>
   </nav>
     {% include support-us.html %}
@@ -115,6 +118,7 @@
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script defer src="/js/discovery.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
