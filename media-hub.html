@@ -13,12 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="/assets/css/tokens.css" />
-  <link rel="stylesheet" href="/css/theme.css" />
-  <link rel="stylesheet" href="/css/z-layers.css">
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="stylesheet" href="/css/ads.css" />
-  <link rel="stylesheet" href="/css/media-hub.css" />
+  <link rel="stylesheet" href="/assets/css/tokens.css" /><link rel="stylesheet" href="/css/style.css" /><link rel="stylesheet" href="/css/media-hub.css" />
   <link rel="stylesheet" href="/assets/css/mh-search.css" />
   <link rel="stylesheet" href="/assets/css/mh-tabs.css" />
   <link rel="stylesheet" href="/assets/css/mh-channels.css" />
@@ -133,24 +128,12 @@
 
   <!-- 1) Global feature flags / shared utils (if present) -->
   <script src="/js/stream-state.js"></script>
-  <script src="/js/data.js"></script>
 
   <!-- 2) Media Hub sub-modules -->
-  <script src="/assets/js/mh-tabs.js"></script>
-  <script src="/assets/js/mh-search.js"></script>
-  <script src="/assets/js/mh-channels.js"></script>
 
   <!-- 3) Media Hub bootstrap (wires sub-modules together) -->
-  <script src="/js/media-hub.js"></script>
 
   <!-- 4) Site-wide scripts (may listen to hub events) -->
-  <script src="/js/youtube.js"></script>
-  <script src="/js/radio.js"></script>
-  <script src="/js/utils/flags.js"></script>
-
-  <script src="/js/main.js"></script>
-  <script src="/js/ads/config.js"></script>
-  <script src="/js/ads/ads.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script src="/js/discovery.js"></script>
@@ -158,6 +141,25 @@
   <script src="/js/error-overlay.js"></script>
 
   <!-- 5) Keep PWA/SW disabled for now -->
-  <!-- <script src="/js/pwa.js"></script> -->
+  <!-- -->
+
+<link rel="stylesheet" href="/css/theme.css">
+<link rel="stylesheet" href="/css/z-layers.css">
+<link rel="stylesheet" href="/css/ads.css">
+<script src="/js/utils/flags.js"></script>
+<script src="/js/data.js"></script>
+<script src="/assets/js/mh-tabs.js"></script>
+<script src="/assets/js/mh-search.js"></script>
+<script src="/assets/js/mh-channels.js"></script>
+<script src="/js/media-hub.js"></script>
+<script src="/js/youtube.js"></script>
+<script src="/js/radio.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/ads/config.js"></script>
+<script src="/js/ads/ads.js"></script>
+<script src="/js/diagnostics.js"></script>
+<script src="/js/pwa.js"></script>
+<link rel="stylesheet" href="/css/dev/flags-panel.css">
+<script src="/js/dev/flags-panel.js"></script>
 </body>
 </html>
