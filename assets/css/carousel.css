@@ -1,0 +1,66 @@
+#ps-carousel {
+  position: relative;
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+#ps-carousel .ps-carousel__viewport {
+  overflow: hidden;
+}
+
+#ps-carousel .ps-carousel__track {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+#ps-carousel.ps-no-motion .ps-carousel__track {
+  transition: none;
+}
+
+#ps-carousel .ps-carousel__slide {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#ps-carousel .ps-carousel__slide img {
+  width: 120px;
+  height: 90px;
+  object-fit: contain;
+}
+
+#ps-carousel .ps-carousel__controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+#ps-carousel button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#ps-carousel button:focus-visible,
+#ps-carousel .ps-carousel__slide a:focus-visible {
+  outline: 2px solid #0F5132;
+  outline-offset: 2px;
+}
+
+#ps-carousel .ps-carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

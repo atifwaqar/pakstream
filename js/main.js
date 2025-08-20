@@ -1,13 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
   var navToggle = document.getElementById('nav-toggle');
-  var nav = document.querySelector('nav');
-  var label = document.querySelector('.nav-toggle-label');
+  var navLabel = document.querySelector('.nav-toggle-label');
+  var overlay = document.querySelector('.nav-overlay');
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');
-  var overlay = document.querySelector('.nav-overlay');
-  if (!navToggle || !nav || !label) return;
-  var touchStartX = null;
-  var touchStartY = null;
+  var navigation = document.getElementById('primary-navigation');
+  if (!navToggle || !navLabel || !overlay || !navigation) return;
 
   function updateScrollLock() {
     var navOpen = navToggle && navToggle.checked;
@@ -15,13 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var detailsOpen = document.querySelector('.details-list.open');
     var sideOpen = window.innerWidth <= 768 && (channelOpen || detailsOpen);
     var anyOpen = navOpen || sideOpen;
-    document.body.classList.toggle('no-scroll', anyOpen);
-    if (overlay) overlay.classList.toggle('active', anyOpen);
+    document.body.classList.toggle('scroll-locked', anyOpen);
   }
   window.updateScrollLock = updateScrollLock;
 
   var currentPath = window.location.pathname;
-  var links = document.querySelectorAll('.nav-links a');
+  var links = navigation.querySelectorAll('.nav-links a');
   links.forEach(function (link) {
     if (link.getAttribute('href') === currentPath) {
       link.classList.add('active');
@@ -30,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   var homePaths = ['/', '/'];
-  if (topBar && label && homePaths.indexOf(currentPath) === -1) {
+  if (topBar && navLabel && homePaths.indexOf(currentPath) === -1) {
     var backBtn = document.createElement('a');
     backBtn.href = '/';
     backBtn.className = 'back-button';
@@ -43,13 +40,13 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = '/';
       }
     });
-    topBar.insertBefore(backBtn, label.nextSibling);
+    topBar.insertBefore(backBtn, navLabel.nextSibling);
   }
 
   // Add top-bar search on all pages, including the media hub.
   if (topBar) {
     var themeBtn = themeToggle;
-    var logoTitle = document.querySelector('.logo-title');
+    var logoTitle = document.querySelector('.logo');
     var searchForm = document.createElement('form');
     searchForm.id = 'search-form';
     searchForm.className = 'search-form';
@@ -153,52 +150,59 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    if (themeBtn) {
-      topBar.insertBefore(searchForm, themeBtn);
-    } else {
-      topBar.appendChild(searchForm);
+    if (navigation && themeBtn) {
+      navigation.insertBefore(searchForm, themeBtn);
+    } else if (navigation) {
+      navigation.appendChild(searchForm);
     }
   }
 
-  label.addEventListener('click', function (e) {
-    e.preventDefault();
-    navToggle.checked = !navToggle.checked;
+  navToggle.addEventListener('change', function () {
+    var isOpen = navToggle.checked;
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navLabel.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    var icon = navLabel.querySelector('.material-symbols-outlined');
+    if (icon) icon.textContent = isOpen ? 'close' : 'menu';
+    overlay.hidden = !isOpen;
+    if (isOpen) {
+      var focusable = navigation.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (focusable.length) focusable[0].focus();
+    } else {
+      navLabel.focus();
+    }
     updateScrollLock();
   });
 
-  document.addEventListener('click', function (e) {
-    if (navToggle.checked && !nav.contains(e.target) && !label.contains(e.target)) {
-      navToggle.checked = false;
-      updateScrollLock();
-    }
+  overlay.addEventListener('click', function () {
+    navToggle.checked = false;
+    navToggle.dispatchEvent(new Event('change'));
   });
 
-  if (overlay) {
-    overlay.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (navToggle) navToggle.checked = false;
-      updateScrollLock();
-    });
-  }
-
-  document.addEventListener('touchstart', function (e) {
+  document.addEventListener('keydown', function (e) {
     if (!navToggle.checked) return;
-    var t = e.touches[0];
-    touchStartX = t.clientX;
-    touchStartY = t.clientY;
+    if (e.key === 'Escape') {
+      navToggle.checked = false;
+      navToggle.dispatchEvent(new Event('change'));
+    } else if (e.key === 'Tab') {
+      var focusable = navigation.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
 
-  document.addEventListener('touchend', function (e) {
-    if (!navToggle.checked || touchStartX === null) return;
-    var t = e.changedTouches[0];
-    var dx = t.clientX - touchStartX;
-    var dy = Math.abs(t.clientY - touchStartY);
-    if (dx < -50 && dy < 30) {
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 600 && navToggle.checked) {
       navToggle.checked = false;
-      updateScrollLock();
+      navToggle.dispatchEvent(new Event('change'));
     }
-    touchStartX = null;
-    touchStartY = null;
   });
 
   if (themeToggle) {
@@ -225,134 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.resizeLivePlayers = resizeLivePlayers;
   resizeLivePlayers();
 
-  var scroller = document.querySelector('.station-scroller .scroller-track');
-  if (scroller) {
-    fetch('/all_streams.json')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var items = Array.isArray(data.items) ? data.items : [];
-        var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
-        items.forEach(function (it) {
-          if (it.status && it.status.active && it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
-            var mode = typeToMode[it.type] || 'tv';
-            var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
-              ? it.ids.internal_id
-              : it.key;
-            var a = document.createElement('a');
-            a.href = '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode;
-            a.title = it.name || '';
-            a.setAttribute('role', 'listitem');
-            a.setAttribute('aria-label', it.name || '');
-            var img = document.createElement('img');
-            img.src = it.media.logo_url;
-            img.alt = it.name || '';
-            img.className = 'channel-thumb';
-            a.appendChild(img);
-            scroller.appendChild(a);
-          }
-        });
-        scroller.innerHTML += scroller.innerHTML;
-        initStationScroller();
-        initStationScrollerControls();
-      })
-      .catch(function (err) {
-        console.error('Failed to load station logos', err);
-      });
-  }
-
-  function initStationScroller() {
-    var wrap = document.querySelector('.station-scroller');
-    var track = wrap.querySelector('.scroller-track');
-    var prev = wrap.querySelector('.scroll-btn.prev');
-    var next = wrap.querySelector('.scroll-btn.next');
-    var base = 0.3;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      base = 0;
-    }
-    var direction = -1;
-    var speed = base * direction;
-    var offset = 0;
-    var trackWidth = track.scrollWidth / 2;
-
-    window.setScrollSpeed = function (v) {
-      base = v;
-      speed = base * direction;
-    };
-
-    function normalize() {
-      if (offset <= -trackWidth) offset += trackWidth;
-      if (offset >= 0) offset -= trackWidth;
-    }
-
-    window.addEventListener('resize', function () {
-      trackWidth = track.scrollWidth / 2;
-      normalize();
-    });
-
-    function frame() {
-      offset += speed;
-      normalize();
-      track.style.transform = 'translateX(' + offset + 'px)';
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-
-    prev && prev.addEventListener('click', function () {
-      offset += 200;
-      normalize();
-      direction = 1;
-      speed = base * direction;
-    });
-    next && next.addEventListener('click', function () {
-      offset -= 200;
-      normalize();
-      direction = -1;
-      speed = base * direction;
-    });
-  }
-
-  function initStationScrollerControls() {
-    const wrap = document.querySelector('.station-scroller-wrap');
-    const scroller = wrap?.querySelector('.station-scroller');
-    const toggleBtn = wrap?.querySelector('.scroller-toggle');
-    if (!wrap || !scroller || !toggleBtn) return;
-
-    let paused = false;
-    const SPEED_ACTIVE = 0.3;
-    const SPEED_PAUSED = 0;
-
-    function applySpeed() {
-      const v = paused ? SPEED_PAUSED : SPEED_ACTIVE;
-      if (typeof setScrollSpeed === 'function') setScrollSpeed(v);
-      else scroller.dataset.speed = String(v);
-    }
-
-    function setPaused(next) {
-      paused = next;
-      applySpeed();
-      toggleBtn.setAttribute('aria-pressed', String(paused));
-      toggleBtn.textContent = paused ? 'Resume' : 'Pause';
-      toggleBtn.setAttribute('aria-label', paused ? 'Resume scrolling' : 'Pause scrolling');
-    }
-
-    toggleBtn.addEventListener('click', () => setPaused(!paused));
-    scroller.addEventListener('mouseenter', () => setPaused(true));
-    scroller.addEventListener('mouseleave', () => setPaused(false));
-    scroller.addEventListener('focusin', () => setPaused(true));
-    scroller.addEventListener('focusout', () => setPaused(false));
-    scroller.addEventListener('touchstart', () => setPaused(true), { passive: true });
-    scroller.addEventListener('touchend', () => setPaused(false), { passive: true });
-    scroller.addEventListener('touchcancel', () => setPaused(false), { passive: true });
-    scroller.addEventListener('keydown', function (e) {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        setPaused(!paused);
-      }
-    });
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setPaused(prefersReduced);
-  }
 
   if ('IntersectionObserver' in window) {
     const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');
