@@ -422,3 +422,23 @@
 .stream-error-overlay .actions button {
   margin: 8px;
 }
+
+/* Embed mode overrides */
+.is-embed .hub-controls {
+  padding: 0;
+  border-bottom: 0;
+}
+
+.is-embed .media-hub-section {
+  row-gap: 0;
+}
+
+.is-embed .channel-list,
+.is-embed .details-container {
+  display: none !important;
+}
+
+.is-embed .media-hub-section {
+  grid-template-columns: 1fr !important;
+  grid-template-areas: "center";
+}
