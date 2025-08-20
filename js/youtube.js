@@ -176,3 +176,20 @@
     document.addEventListener('DOMContentLoaded', init);
   } else { init(); }
 })();
+
+
+// PWA patch: ensure YouTube iframes include enablejsapi=1 & origin to avoid postMessage errors
+(function(){
+  try {
+    const origin = location.origin;
+    const iframes = document.querySelectorAll('iframe[src*="youtube.com"],iframe[src*="youtube-nocookie.com"]');
+    iframes.forEach((f) => {
+      try {
+        const u = new URL(f.src, origin);
+        if (!u.searchParams.get('enablejsapi')) u.searchParams.set('enablejsapi', '1');
+        if (!u.searchParams.get('origin')) u.searchParams.set('origin', origin);
+        f.src = u.toString();
+      } catch(_) { /* ignore */ }
+    });
+  } catch(_) { /* ignore */ }
+})();
