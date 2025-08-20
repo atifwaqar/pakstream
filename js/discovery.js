@@ -175,7 +175,8 @@
       items.forEach(it => {
         const mode = (it.category || it.type || '').toLowerCase();
         const id = it.ids && it.ids.internal_id ? it.ids.internal_id : it.key;
-        const url = '/media-hub.html?c=' + encodeURIComponent(id) + '&m=' + mode;
+        const route = (mode === 'creator' || mode === 'freepress') ? '/creator/' : '/channel/';
+        const url = route + it.key;
         const a = document.createElement('a');
         a.className = 'rail-card';
         a.href = url;
