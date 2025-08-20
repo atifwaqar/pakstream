@@ -420,8 +420,6 @@ section {
   height: auto;
   border: none;
   border-radius: 0.75rem;
-  display: block;
-  vertical-align: top;
 }
 
 .feature-card .cta-btn {
