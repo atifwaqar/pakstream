@@ -3,6 +3,7 @@ const JSON_CACHE = 'ps-json-v1';
 const SHELL_ASSETS = [
   '/',
   '/index.html',
+  '/assets/css/tokens.css',
   '/css/style.css',
   '/css/theme.css',
   '/js/main.js',

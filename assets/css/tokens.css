@@ -1,0 +1,40 @@
+:root{
+  /* Brand */
+  --color-brand: #0F5132;        /* deep Pakistan green */
+  --color-brand-contrast: #FFFFFF;
+
+  /* Surfaces */
+  --surface-0: #FFFFFF;
+  --surface-1: #F7F9FC;
+  --surface-2: #EEF3F8;
+
+  /* Text */
+  --text-strong: #1A1F24;
+  --text-default: #232A2F;
+  --text-muted: #5A6B7A;
+
+  /* Accents */
+  --accent: #1E88E5;
+  --accent-contrast: #FFFFFF;
+
+  /* States */
+  --ok: #43A047; --warn: #FB8C00; --danger: #E53935;
+}
+
+/* Legacy variable mapping
+   --primary -> --color-brand
+   --on-primary -> --color-brand-contrast
+   --background -> --surface-0
+   --surface -> --surface-1
+   --surface-variant -> --surface-2
+   --on-surface -> --text-default
+   --on-surface-variant -> --text-muted
+   --accent-link -> --accent
+   --accent-link-visited -> --accent
+*/
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --surface-0:#101418; --surface-1:#121821; --text-default:#E6EDF3;
+  }
+}
