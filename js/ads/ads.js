@@ -7,12 +7,20 @@
   function applyReserveBox(slot) {
     // Read size from data attributes or named type
     const type = slot.dataset.adType || 'rectangle';
-    const w = Number(slot.dataset.adWidth  || Cfg.SIZES[type]?.w || 300);
-    const h = Number(slot.dataset.adHeight || Cfg.SIZES[type]?.h || 250);
+    let w = Number(slot.dataset.adWidth  || Cfg.SIZES[type]?.w || 300);
+    let h = Number(slot.dataset.adHeight || Cfg.SIZES[type]?.h || 250);
 
-    // Reserve space to prevent CLS
-    slot.style.minWidth  = w > 1 ? w + 'px' : '';
+    // Switch to mobile banner size if viewport is narrow
+    if (type === 'leaderboard' && window.matchMedia('(max-width: 767.98px)').matches) {
+      w = Cfg.SIZES.banner.w;
+      h = Cfg.SIZES.banner.h;
+    }
+
+    // Reserve space to prevent CLS while staying responsive
+    slot.style.width = '100%';
+    slot.style.maxWidth = w > 1 ? w + 'px' : '';
     slot.style.minHeight = h > 1 ? h + 'px' : '';
+
     // Add a lightweight placeholder while empty
     if (!slot.querySelector('.ad-placeholder')) {
       const ph = document.createElement('div');
