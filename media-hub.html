@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="/css/theme.css" />
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/media-hub.css" />
+  <link rel="stylesheet" href="/assets/css/mh-search.css" />
   <link rel="stylesheet" href="/assets/css/mh-tabs.css" />
   <link rel="stylesheet" href="/assets/css/mh-channels.css" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -48,11 +49,14 @@
           <option value="recent">Most Recent</option>
           <option value="played">Recently Played</option>
         </select>
-        <input id="mh-search-input" type="text" placeholder="Search…" aria-label="Search media" />
         <button id="reset-filters" type="button">Reset</button>
       </div>
       <div id="selected-filters" class="selected-filters" aria-live="polite"></div>
       <div id="results-count" class="results-count" aria-live="polite"></div>
+    </div>
+    <div id="mh-search" role="search">
+      <input type="search" placeholder="Search channels…" aria-label="Search channels">
+      <button type="button" class="clear-btn" aria-label="Clear search" hidden>×</button>
     </div>
     <!-- LEFT RAIL -->
     <div id="mh-channels" class="channel-list" aria-label="Channel list">
@@ -127,6 +131,7 @@
   <script src="/js/stream-state.js"></script>
   <script src="/assets/js/mh-tabs.js"></script>
   <script src="/js/media-hub.js"></script>
+  <script src="/assets/js/mh-search.js"></script>
   <script src="/assets/js/mh-channels.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>

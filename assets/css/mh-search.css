@@ -1,0 +1,27 @@
+#mh-search {
+  position: relative;
+  padding: 0.5rem;
+}
+
+#mh-search input[type="search"] {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
+  box-sizing: border-box;
+}
+
+#mh-search .clear-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.channel-list mark {
+  background: #ffeb3b;
+  color: inherit;
+  padding: 0;
+}
