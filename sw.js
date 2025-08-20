@@ -15,7 +15,7 @@ const PRECACHE_URLS = [
   '/js/diagnostics.js',
   '/js/ads/config.js',
   '/js/ads/ads.js'
-  // DO NOT add JSON/data/media endpoints here
+  // DO NOT add JSON/data/media endpoints here (all_streams.json intentionally excluded)
 ];
 
 self.addEventListener('install', (event) => {
