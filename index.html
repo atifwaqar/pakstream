@@ -70,7 +70,6 @@
 <body>
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
-  {% include ad-slot.html id="home-leaderboard" type="leaderboard" priority="high" %}
 
   <!-- Hero section with image and tagline -->
   <section class="hero-banner">
@@ -96,7 +95,6 @@
 
   <section id="trending-rail" class="rail-section lazy-rail" aria-label="Trending Now"></section>
   <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
-  {% include ad-slot.html id="home-mid" type="in-content" priority="normal" %}
 
   <section class="station-scroller-wrap" aria-label="Trending channels">
     <div class="scroller-header">
@@ -236,8 +234,7 @@
       <a href="/about.html">About Us</a>
       <a href="/contact.html">Contact</a>
       <a href="/privacy.html">Privacy &amp; History</a>
-      <a href="/terms.html">Terms</a>
-      <a href="#" data-open-consent>Privacy &amp; Ads settings</a>
+    <a href="/terms.html">Terms</a>
     </nav>
     {% include support-us.html %}
     <p>© 2025 PakStream. All rights reserved.</p>
@@ -337,9 +334,6 @@
       loadNext();
     });
   </script>
-  <script defer src="/js/ad-config.js"></script>
-  <script defer src="/js/ad-slot.js"></script>
-  <script defer src="/js/consent.js"></script>
   <script defer src="/js/discovery.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
