@@ -414,12 +414,19 @@ section {
   min-height: 3rem;
 }
 
+.media-hub-embed-wrap {
+  line-height: 0;          /* neutralize inline gaps in some engines */
+}
+
 .media-hub-embed {
   width: 100%;
   aspect-ratio: 16 / 9;
   height: auto;
   border: none;
   border-radius: 0.75rem;
+  display: block;           /* removes baseline gap */
+  vertical-align: top;
+  background: transparent;
 }
 
 .feature-card .cta-btn {
