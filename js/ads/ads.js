@@ -2,7 +2,8 @@
   if (window.__ADS_WIRED__) return;
   window.__ADS_WIRED__ = true;
 
-  const FLAGS = window.__PAKSTREAM_FLAGS || {};
+  const F = (window.PAKSTREAM && window.PAKSTREAM.Flags) || { isOn: () => false, all: () => ({}) };
+  const FLAGS = F.all();
   const PRESETS = window.__PAKSTREAM_AD_PRESETS || {};
   const log = (...a) => FLAGS.adsDebug && console.log('[ads]', ...a);
 
@@ -55,7 +56,7 @@
     // Always reserve to prevent CLS, even when ads are disabled
     slots.forEach(el => { applyPreset(el); reserve(el); });
 
-    if (!FLAGS.ads) {
+    if (!F.isOn('adsEnabled')) {
       log('ads disabled; reserved only');
       return;
     }
