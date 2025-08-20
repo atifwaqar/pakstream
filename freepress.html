@@ -165,16 +165,20 @@
       twitter:   { url: 'https://img.icons8.com/color/48/000000/twitter--v1.png', label: 'X (Twitter)' },
       facebook:  { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
       linkedin:  { url: 'https://img.icons8.com/color/48/000000/linkedin.png', label: 'LinkedIn' },
-      tiktok:    { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' }
+      website:   { url: 'https://img.icons8.com/ios-filled/50/000000/domain.png', label: 'Website' },
+      tiktok:    { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' },
+      whatsapp:  { url: 'https://img.icons8.com/color/48/000000/whatsapp.png', label: 'WhatsApp' }
     };
     const items = list.map(url => {
       let type = 'website';
-      if (/youtu/.test(url)) type = 'youtube';
-      else if (/instagram/.test(url)) type = 'instagram';
-      else if (/twitter|x\.com/.test(url)) type = 'twitter';
-      else if (/facebook/.test(url)) type = 'facebook';
-      else if (/linkedin/.test(url)) type = 'linkedin';
-      else if (/tiktok/.test(url)) type = 'tiktok';
+      const urlLower = (url || '').toLowerCase();
+      if (urlLower.includes('youtu')) type = 'youtube';
+      else if (urlLower.includes('instagram')) type = 'instagram';
+      else if (urlLower.includes('twitter') || urlLower.includes('x.com')) type = 'twitter';
+      else if (urlLower.includes('facebook')) type = 'facebook';
+      else if (urlLower.includes('linkedin')) type = 'linkedin';
+      else if (urlLower.includes('whatsapp.com') || urlLower.includes('wa.me')) type = 'whatsapp';
+      else if (urlLower.includes('tiktok')) type = 'tiktok';
       const { url: icon, label } = icons[type] || { url: '', label: type.charAt(0).toUpperCase() + type.slice(1) };
       const img = icon ? `<img src='${icon}' alt='${label}'>` : '';
       return `<a class='profile' href='${url}' target='_blank' rel='noopener'><div class='profile-icon'>${img}</div><span>${label}</span></a>`;
