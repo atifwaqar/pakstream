@@ -1378,3 +1378,37 @@ footer nav a:hover {
   background: var(--primary);
   border-radius: 2px;
 }
+
+.site-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 900;
+}
+.site-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.site-nav {
+  transition: transform .2s ease;
+}
+.is-menu-open {
+  overflow: hidden;
+}
+.is-menu-open .site-nav {
+  transform: translateX(0);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

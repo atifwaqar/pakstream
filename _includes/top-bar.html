@@ -1,8 +1,11 @@
+<div class="site-overlay" hidden data-overlay></div>
 <header class="top-bar">
-  <input type="checkbox" id="nav-toggle">
-  <label for="nav-toggle" class="nav-toggle-label">☰</label>
+  <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" data-nav-toggle>
+    <span class="visually-hidden">Toggle menu</span>
+    ☰
+  </button>
   <h1 class="logo-title">PakStream</h1>
-  <nav class="nav-links">
+  <nav id="site-nav" class="nav-links site-nav" aria-label="Primary">
     <a href="/">Home</a>
     <a href="/media-hub.html">Media Hub</a>
     <a href="/blog.html">Blog</a>
@@ -13,5 +16,4 @@
   </nav>
   <a href="https://buymeacoffee.com/pakstream" class="bmc-button" target="_blank" rel="noopener">Buy me a coffee ☕</a>
   <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌓</button>
-  <label for="nav-toggle" class="nav-overlay"></label>
 </header>

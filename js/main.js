@@ -1,25 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var navToggle = document.getElementById('nav-toggle');
-  var nav = document.querySelector('nav');
-  var label = document.querySelector('.nav-toggle-label');
   var topBar = document.querySelector('.top-bar');
   var themeToggle = document.getElementById('theme-toggle');
-  var overlay = document.querySelector('.nav-overlay');
-  if (!navToggle || !nav || !label) return;
-  var touchStartX = null;
-  var touchStartY = null;
-
-  function updateScrollLock() {
-    var navOpen = navToggle && navToggle.checked;
-    var channelOpen = document.querySelector('.channel-list.open');
-    var detailsOpen = document.querySelector('.details-list.open');
-    var sideOpen = window.innerWidth <= 768 && (channelOpen || detailsOpen);
-    var anyOpen = navOpen || sideOpen;
-    document.body.classList.toggle('no-scroll', anyOpen);
-    if (overlay) overlay.classList.toggle('active', anyOpen);
-  }
-  window.updateScrollLock = updateScrollLock;
-
+  var btn = document.querySelector('[data-nav-toggle]');
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
   links.forEach(function (link) {
@@ -30,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   var homePaths = ['/', '/'];
-  if (topBar && label && homePaths.indexOf(currentPath) === -1) {
+  if (topBar && btn && homePaths.indexOf(currentPath) === -1) {
     var backBtn = document.createElement('a');
     backBtn.href = '/';
     backBtn.className = 'back-button';
@@ -43,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = '/';
       }
     });
-    topBar.insertBefore(backBtn, label.nextSibling);
+    topBar.insertBefore(backBtn, btn.nextSibling);
   }
 
   // Add top-bar search on all pages, including the media hub.
@@ -141,47 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  label.addEventListener('click', function (e) {
-    e.preventDefault();
-    navToggle.checked = !navToggle.checked;
-    updateScrollLock();
-  });
-
-  document.addEventListener('click', function (e) {
-    if (navToggle.checked && !nav.contains(e.target) && !label.contains(e.target)) {
-      navToggle.checked = false;
-      updateScrollLock();
-    }
-  });
-
-  if (overlay) {
-    overlay.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (navToggle) navToggle.checked = false;
-      updateScrollLock();
-    });
-  }
-
-  document.addEventListener('touchstart', function (e) {
-    if (!navToggle.checked) return;
-    var t = e.touches[0];
-    touchStartX = t.clientX;
-    touchStartY = t.clientY;
-  });
-
-  document.addEventListener('touchend', function (e) {
-    if (!navToggle.checked || touchStartX === null) return;
-    var t = e.changedTouches[0];
-    var dx = t.clientX - touchStartX;
-    var dy = Math.abs(t.clientY - touchStartY);
-    if (dx < -50 && dy < 30) {
-      navToggle.checked = false;
-      updateScrollLock();
-    }
-    touchStartX = null;
-    touchStartY = null;
-  });
-
   if (themeToggle) {
     var savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -192,8 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('theme', next);
     });
   }
-
-  updateScrollLock();
 
   // Maintain 16:9 aspect ratio for any live-player iframes
   function resizeLivePlayers() {
@@ -355,6 +294,77 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// Unified menu + overlay controller
+(function () {
+  const doc = document;
+  const html = doc.documentElement;
+  const btn = doc.querySelector('[data-nav-toggle]');
+  const nav = doc.getElementById('site-nav');
+  const overlay = doc.querySelector('[data-overlay]');
+  if (!btn || !nav || !overlay) return;
+
+  let lastFocus = null;
+
+  function openMenu() {
+    if (html.classList.contains('is-menu-open')) return;
+    lastFocus = doc.activeElement;
+    html.classList.add('is-menu-open');
+    btn.setAttribute('aria-expanded', 'true');
+    overlay.hidden = false;
+    overlay.classList.add('is-active');
+    // Focus first focusable in nav, fallback to nav
+    const focusable = nav.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
+    (focusable || nav).focus({ preventScroll: true });
+  }
+
+  function closeMenu() {
+    if (!html.classList.contains('is-menu-open')) return;
+    html.classList.remove('is-menu-open');
+    btn.setAttribute('aria-expanded', 'false');
+    overlay.classList.remove('is-active');
+    // Delay to avoid flicker before hiding
+    setTimeout(() => { overlay.hidden = true; }, 200);
+    // Restore focus
+    if (lastFocus && typeof lastFocus.focus === 'function') {
+      lastFocus.focus({ preventScroll: true });
+    } else {
+      btn.focus({ preventScroll: true });
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    expanded ? closeMenu() : openMenu();
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  // Close on ESC anywhere
+  doc.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // Close on focus leaving nav via tabbing (basic containment)
+  nav.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = nav.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && doc.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && doc.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+
+  // Optional: close when a nav link is clicked (good for single-page sections)
+  nav.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t && t.closest('a')) closeMenu();
+  });
+})();
 
 (function(){
   var loaded=false;
