@@ -7,26 +7,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   function saveState(){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
   }
-  const state = {
-    tab: 'all',
-    topics: [],
-    languages: [],
-    regions: [],
-    live: false,
-    sort: 'az',
-    q: ''
-  };
-  if (params.toString()) {
-    state.tab = params.get('tab') || params.get('m') || 'all';
-    state.topics = (params.get('topic') || '').split(',').filter(Boolean);
-    state.languages = (params.get('lang') || '').split(',').filter(Boolean);
-    state.regions = (params.get('region') || '').split(',').filter(Boolean);
-    state.live = params.get('live') === '1';
-    state.sort = params.get('sort') || 'az';
-    state.q = params.get('q') || '';
-  } else {
-    Object.assign(state, loadState());
-  }
+    const state = {
+      tab: 'all',
+      topics: [],
+      languages: [],
+      regions: [],
+      live: false,
+      sort: 'alpha',
+      q: ''
+    };
+    if (params.toString()) {
+      state.tab = params.get('tab') || params.get('m') || 'all';
+      state.topics = (params.get('topic') || '').split(',').filter(Boolean);
+      state.languages = (params.get('lang') || '').split(',').filter(Boolean);
+      state.regions = (params.get('region') || '').split(',').filter(Boolean);
+      state.live = params.get('live') === '1';
+      state.sort = params.get('sort') || 'alpha';
+      state.q = params.get('q') || '';
+    } else {
+      Object.assign(state, loadState());
+    }
+    if(state.sort === 'az') state.sort = 'alpha';
   let mode = state.tab;
   let isMuted = params.get("muted") === "1";
   let muteParam = isMuted ? "&mute=1" : "";
@@ -40,12 +41,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const details   = document.querySelector(".details-list");
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
-  const topicFilter  = document.getElementById('topic-filter');
-  const langFilter   = document.getElementById('lang-filter');
-  const regionFilter = document.getElementById('region-filter');
-  const liveFilter   = document.getElementById('live-filter');
-  const sortSelect   = document.getElementById('sort-select');
-  const resetBtn     = document.getElementById('reset-filters');
+    const topicFilter  = document.getElementById('topic-filter');
+    const langFilter   = document.getElementById('lang-filter');
+    const regionFilter = document.getElementById('region-filter');
   const selectedFiltersEl = document.getElementById('selected-filters');
   const resultsCountEl = document.getElementById('results-count');
   const toggleDetailsBtn = document.getElementById("toggle-details");
@@ -681,7 +679,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         state.languages = [];
         state.regions = [];
         state.live = false;
-        state.sort = 'az';
+        state.sort = 'alpha';
         state.q = '';
         updateState();
         if(window.analytics) analytics('empty_state_action',{action:'clear_all'});
@@ -1244,7 +1242,7 @@ async function renderLatestVideosRSS(channelId) {
     if(state.languages.length) p.set('lang', state.languages.join(','));
     if(state.regions.length) p.set('region', state.regions.join(','));
     if(state.live) p.set('live','1');
-    if(state.sort && state.sort !== 'az') p.set('sort', state.sort);
+    if(state.sort && state.sort !== 'alpha') p.set('sort', state.sort);
     if(state.q) p.set('q', state.q);
     history.replaceState(null,'','?'+p.toString());
   }
@@ -1253,8 +1251,6 @@ async function renderLatestVideosRSS(channelId) {
     if(topicFilter) Array.from(topicFilter.options).forEach(o => o.selected = state.topics.includes(o.value));
     if(langFilter) Array.from(langFilter.options).forEach(o => o.selected = state.languages.includes(o.value));
     if(regionFilter) Array.from(regionFilter.options).forEach(o => o.selected = state.regions.includes(o.value));
-    if(liveFilter) liveFilter.checked = state.live;
-    if(sortSelect) sortSelect.value = state.sort;
     if(searchEl) searchEl.value = state.q;
   }
 
@@ -1271,18 +1267,14 @@ async function renderLatestVideosRSS(channelId) {
   if(topicFilter) topicFilter.addEventListener('change', () => { state.topics = Array.from(topicFilter.selectedOptions).map(o=>o.value); updateState(); });
   if(langFilter) langFilter.addEventListener('change', () => { state.languages = Array.from(langFilter.selectedOptions).map(o=>o.value); updateState(); });
   if(regionFilter) regionFilter.addEventListener('change', () => { state.regions = Array.from(regionFilter.selectedOptions).map(o=>o.value); updateState(); });
-  if(liveFilter) liveFilter.addEventListener('change', () => { state.live = liveFilter.checked; updateState(); });
-  if(sortSelect) sortSelect.addEventListener('change', () => { state.sort = sortSelect.value; updateState(); });
   if(searchEl) searchEl.addEventListener('input', e => { state.q = e.target.value; updateState(); });
-  if(resetBtn) resetBtn.addEventListener('click', () => {
-    state.tab = 'all';
-    state.topics = [];
-    state.languages = [];
-    state.regions = [];
-    state.live = false;
-    state.sort = 'az';
-    state.q = '';
-    updateState();
+
+  window.addEventListener('mh:filters:changed', e => {
+    if(e.detail){
+      state.live = !!e.detail.liveNow;
+      state.sort = e.detail.sort || 'alpha';
+      updateState();
+    }
   });
 
   updateState();
