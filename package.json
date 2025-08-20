@@ -1,0 +1,7 @@
+{
+  "name": "pakstream",
+  "version": "1.0.0",
+  "scripts": {
+    "build:data": "node scripts/build-all-streams.js"
+  }
+}
