@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderSupportSection(item) {
-    if (!item || !item.key || !item.name) return '';
+    if (!item || !item.key || !item.name || !item.support) return '';
     const slug = item.key;
     const name = escapeHtml(item.name);
     const code = getSupportCode(slug);
