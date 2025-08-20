@@ -78,6 +78,21 @@
   padding: 0;
   font-size: 16px;
 }
+
+.empty-state .suggestions .btn {
+  margin: 4px;
+}
+.empty-state .trending-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.empty-state .trending-cards a {
+  width: 120px;
+  text-align: center;
+}
 .results-count {
   margin-top: 4px;
 }

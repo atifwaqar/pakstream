@@ -15,7 +15,7 @@
   <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani Free Press, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
   <meta name="author" content="PakStream by Chatdroid AB">
   <meta name="robots" content="{{ page.robots | default: 'index, follow' }}">
-  <link rel="canonical" href="{{ page.url | absolute_url }}" />
+  <link rel="canonical" href="{{ page.canonical | default: page.url | absolute_url }}" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="theme-color" content="#0F5132" media="(prefers-color-scheme: light)">
@@ -62,10 +62,12 @@
   
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to content</a>
+<div id="maintenance-banner" class="maintenance-banner" role="status" hidden></div>
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
 
-  <main>
+  <main id="main-content">
     {{ content }}
   </main>
 
@@ -80,9 +82,12 @@
     {% include support-us.html %}
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
+  {% unless page.no_ads %}
   <script defer src="/js/ad-config.js"></script>
   <script defer src="/js/ad-slot.js"></script>
   <script defer src="/js/pwa.js"></script>
+  <script defer src="/js/maintenance.js"></script>
+  <script defer src="/js/error-overlay.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
