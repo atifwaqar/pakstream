@@ -43,7 +43,7 @@
           allowfullscreen
           title="Selected video player"></iframe>
         <div id="audioWrap" class="audio-wrap" style="display:none;">
-          <div id="player-container" class="radio-player">
+          <div id="player-container" class="radio-player" data-radio-container>
             <div class="station-info">
               <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
               <h3 id="current-station" class="station-title">Select a station</h3>
@@ -60,7 +60,7 @@
               <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
               <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
               <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
-              <audio id="radio-player" autoplay></audio>
+              <audio id="radio-player" data-radio autoplay></audio>
             </div>
           </div>
         </div>
@@ -81,6 +81,9 @@
       }
     });
   </script>
+  <script src="/js/stream-state.js" defer></script>
+  <script src="/js/radio.js" defer></script>
+  <script src="/js/youtube.js" defer></script>
   <script src="/js/media-hub.js"></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>

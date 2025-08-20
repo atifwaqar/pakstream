@@ -1415,3 +1415,7 @@ footer nav a:hover {
   white-space: nowrap;
   border: 0;
 }
+
+[data-radio-container].is-playing,
+[data-youtube-container].is-playing { outline: 2px solid rgba(0,0,0,.2); }
+

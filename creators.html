@@ -60,8 +60,8 @@
         <span class="label" data-default="Channels">Channels</span>
       </button>
 
-      <div class="live-player">
-        <iframe id="playerFrame" src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
+      <div class="live-player" data-youtube-container>
+        <iframe id="playerFrame" data-youtube src="about:blank" loading="lazy" allow="autoplay" allowfullscreen title="Selected video player"></iframe>
       </div>
       <div id="videoList" class="video-list"><p>Loading videos…</p></div>
     </div>
@@ -311,7 +311,7 @@
 
   function loadVideo(videoId) {
     if (videoId) {
-      playerFrame.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+      playerFrame.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`;
       if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
   }
@@ -477,6 +477,9 @@
     });
 </script>
 
+  <script src="/js/stream-state.js" defer></script>
+  <script src="/js/radio.js" defer></script>
+  <script src="/js/youtube.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script src="/js/pwa.js" defer></script>
