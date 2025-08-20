@@ -1,0 +1,24 @@
+/* Toasts (additive) */
+.ps-toast-host {
+  position: fixed;
+  inset: auto 0 16px 0;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  pointer-events: none;
+  z-index: var(--z-toast, 1000);
+}
+.ps-toast {
+  pointer-events: auto;
+  background: #111827;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: .95rem;
+  box-shadow: var(--ps-shadow-1, 0 6px 18px rgba(0,0,0,.12));
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.ps-toast.is-in { opacity: 1; transform: translateY(0); }
+.ps-toast.is-out { opacity: 0; transform: translateY(8px); }
