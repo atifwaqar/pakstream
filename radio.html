@@ -60,6 +60,7 @@
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/assets/css/carousel.css">
+  <link rel="stylesheet" href="/css/toast.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
@@ -528,8 +529,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(shareData.url).then(() => {
         alert('Page URL copied to clipboard');
+        window.PAKSTREAM?.Toast?.show('Link copied');
       }, () => {
         window.prompt('Copy this URL', shareData.url);
+        window.PAKSTREAM?.Toast?.show('Could not copy link');
       });
     } else {
       window.prompt('Copy this URL', shareData.url);
@@ -605,6 +608,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="/js/stream-state.js" defer></script>
   <script src="/js/radio.js" defer></script>
   <script src="/js/youtube.js" defer></script>
+  <script src="/js/ui/toast.js" defer></script>
+  <script src="/js/now-playing.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script src="/js/pwa.js" defer></script>
   <script defer src="/js/main.js"></script>
