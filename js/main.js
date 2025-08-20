@@ -362,3 +362,24 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+
+(() => {
+  const FLAGS = window.__PAKSTREAM_FLAGS || {};
+  const root = document.documentElement;
+
+  function applyThemeFlag() {
+    if (FLAGS.newPalette) {
+      root.classList.add('theme-new');
+    } else {
+      root.classList.remove('theme-new');
+    }
+  }
+
+  // Run once and on rerenders
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyThemeFlag, { once: true });
+  } else {
+    applyThemeFlag();
+  }
+  window.addEventListener('pakstream:rerender', applyThemeFlag);
+})();
