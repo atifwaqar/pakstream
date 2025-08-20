@@ -820,6 +820,20 @@ async function renderLatestVideosRSS(channelId) {
     }
 
     updateActiveUI();
+
+    if (window.historyService) {
+      const m = modeOfItem(item);
+      window.historyService.add({
+        id: item.key,
+        type: m,
+        title: displayName(item),
+        url: '/media-hub.html?c=' + encodeURIComponent(item.key) + '&m=' + m,
+        poster: thumbOf(item)
+      });
+    }
+    if (window.trendingService) {
+      window.trendingService.recordClick({ id: item.key, type: modeOfItem(item) });
+    }
   }
 
   // ---- Radio playback ----
@@ -859,6 +873,21 @@ async function renderLatestVideosRSS(channelId) {
     if (liveBadge) liveBadge.hidden = true;
     if (notLiveBadge) notLiveBadge.hidden = false;
     updateDetails(item);
+
+    if (window.historyService) {
+      const id = item.ids?.internal_id || item.key;
+      window.historyService.add({
+        id,
+        type: 'radio',
+        title: name,
+        url: '/media-hub.html?m=radio&c=' + encodeURIComponent(id),
+        poster: logoUrl || thumbOf(item)
+      });
+    }
+    if (window.trendingService) {
+      const id = item.ids?.internal_id || item.key;
+      window.trendingService.recordClick({ id, type: 'radio' });
+    }
 
     if (mainPlayer) {
       mainPlayer.src = audio.src;
