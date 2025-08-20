@@ -1,19 +1,19 @@
-document.addEventListener('DOMContentLoaded', function(){
-  var title = document.getElementById('mt-title');
-  if(title) title.focus();
-  if(window.analytics) analytics('maintenance_page_view');
-  var retry = document.getElementById('mt-retry');
-  if(retry){
-    retry.addEventListener('click', function(){
-      if(window.analytics) analytics('maintenance_action',{action:'retry'});
-      location.reload();
+// js/maintenance-page.js
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const p = new URLSearchParams(location.search);
+  const from = p.get('from');
+  if (from) {
+    const el = $('#origin');
+    if (el) el.textContent = 'Original page: ' + decodeURIComponent(from);
+  }
+  const retry = $('#retry');
+  if (retry) {
+    retry.addEventListener('click', () => {
+      // Retry original page if known, else home; add ?live=1 to bypass gate
+      const target = from ? decodeURIComponent(from) : '/';
+      const url = target.includes('?') ? target + '&live=1' : target + '?live=1';
+      location.href = url;
     });
   }
-  document.addEventListener('click', function(ev){
-    var link = ev.target.closest('[data-analytics="follow_status"]');
-    if(link && window.analytics) analytics('maintenance_action',{action:'follow_status'});
-    var home = ev.target.closest('[data-analytics="home"]');
-    var hub = ev.target.closest('[data-analytics="media_hub"]');
-    if((home || hub) && window.analytics) analytics('maintenance_action',{action:(home?'home':'media_hub')});
-  });
-});
+})();

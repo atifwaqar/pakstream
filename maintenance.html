@@ -1,37 +1,37 @@
----
-layout: default
-title: "Maintenance"
-permalink: /maintenance.html
-robots: noindex
-canonical: /
-no_ads: true
----
-<section class="mt-hero">
-  <img src="/images/icons/icon-192-maskable.png" alt="" class="mt-illust" width="96" height="96">
-  <h1 id="mt-title" tabindex="-1">We're upgrading PakStream</h1>
-  <p>Some features may be unavailable. Please check back soon.</p>
-  <div class="mt-actions">
-     <button id="mt-retry" class="btn" data-analytics="retry">Retry</button>
-     <a class="btn" href="/" data-analytics="home">Home</a>
-     <a class="btn" href="/media-hub.html" data-analytics="media_hub">Media Hub</a>
-  </div>
-  <p><a href="https://twitter.com/PakStream" target="_blank" rel="noopener" data-analytics="follow_status">Status updates</a> · <a href="/contact.html" data-analytics="follow_status">Contact</a></p>
-</section>
-<script defer src="/js/maintenance-page.js"></script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>PakStream — Maintenance</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
+  <style>
+    html,body{height:100%}
+    body{margin:0;display:grid;place-items:center;background:var(--ps-neutral-50,#fafafa);color:var(--ps-on-surface,#212121);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .card{max-width:560px;width:calc(100% - 2rem);background:#fff;border-radius:16px;box-shadow:var(--ps-shadow-1,0 6px 18px rgba(0,0,0,.12));padding:24px}
+    .title{font-size:1.4rem;font-weight:800;margin:0 0 .25rem}
+    .sub{opacity:.8;margin:0 0 1rem}
+    .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:1rem}
+    .btn{appearance:none;border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer}
+    .primary{background:var(--ps-color-primary,#1e88e5);color:#fff}
+    .ghost{background:#eef2f7}
+    .meta{font-size:.85rem;opacity:.7;margin-top:.75rem;text-align:center}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1 class="title">We’ll be right back</h1>
+    <p class="sub">PakStream is undergoing a quick update. Thanks for your patience.</p>
+    <div class="row">
+      <button class="btn primary" id="retry">Try the site</button>
+      <a class="btn ghost" href="mailto:support@pakstream.com">Contact support</a>
+    </div>
+    <p class="meta" id="origin"></p>
+  </main>
 
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <script src="/js/maintenance-page.js" defer></script>
+</body>
+</html>
