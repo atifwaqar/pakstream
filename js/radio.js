@@ -17,7 +17,10 @@
     };
     const unregister = SS.register(id, api);
 
-    el.addEventListener('play', () => SS.play(id));
+    el.addEventListener('play', () => {
+      try { window.PAKSTREAM?.ErrorOverlay?.hide(container); } catch {}
+      SS.play(id);
+    });
     el.addEventListener('pause', () => {
       if (SS.getCurrentId() === id) { /* keep current unless another starts */ }
       container?.classList.remove('is-playing');

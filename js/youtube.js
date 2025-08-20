@@ -114,6 +114,8 @@
         events: {
           onStateChange: (e) => {
             if (destroyed) return;
+            // Hide any previous error overlay once the player state changes
+            try { window.PAKSTREAM?.ErrorOverlay?.hide(container); } catch {}
             // 1 = playing, 2 = paused, 0 = ended
             if (e.data === 1) { SS.play(id); container?.classList.add('is-playing'); }
             if (e.data === 2) { container?.classList.remove('is-playing'); }
