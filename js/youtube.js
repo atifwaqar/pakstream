@@ -21,6 +21,15 @@
   }
   function flush() { pending.splice(0).forEach(fn => { try { fn(); } catch {} }); }
 
+  function ytHostFor(url) {
+    try {
+      const u = new URL(url, location.origin);
+      return /youtube-nocookie\.com$/.test(u.hostname)
+        ? 'https://www.youtube-nocookie.com'
+        : 'https://www.youtube.com';
+    } catch { return 'https://www.youtube.com'; }
+  }
+
   function ensureHttps(u) {
     if (!u) return '';
     if (u.startsWith('//')) return 'https:' + u;
@@ -75,22 +84,27 @@
       }
     } catch {}
 
-    // Required params
+    const hostBase = ytHostFor(src);
+
+    // required params
     if (!hasParam(src, 'enablejsapi')) src = setParam(src, 'enablejsapi', '1');
-    // Strongly recommended
+
+    // strongly recommended flags
     src = setParam(src, 'playsinline', '1');
     src = setParam(src, 'rel', '0');
     src = setParam(src, 'modestbranding', '1');
 
-    // Critical: origin must be your site origin (prevents about: postMessage issues)
+    // critical: the page origin (your site)
     const origin = location.origin || (location.protocol + '//' + location.host);
     src = setParam(src, 'origin', origin);
 
-    // Apply back to iframe if changed
+    // IMPORTANT for nocookie: set host to match iframe domain
+    src = setParam(src, 'host', hostBase);
+
+    // apply back if changed
     if (iframe.getAttribute('src') !== src) {
       iframe.setAttribute('src', src);
     }
-
     return src;
   }
 
@@ -110,7 +124,18 @@
 
     function makePlayer() {
       let destroyed = false;
+      const hostBase = ytHostFor(iframe.getAttribute('src') || '');
       const player = new YT.Player(iframe, {
+        host: hostBase, // <-- this aligns the API with the iframe’s domain
+        playerVars: {
+          // keep these in case the API rebuilds the URL
+          enablejsapi: 1,
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1,
+          origin: location.origin || (location.protocol + '//' + location.host),
+          host: hostBase
+        },
         events: {
           onStateChange: (e) => {
             if (destroyed) return;
