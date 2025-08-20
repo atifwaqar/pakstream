@@ -14,7 +14,7 @@ const SHELL_ASSETS = [
   '/images/icons/icon-192-maskable.png',
   '/images/icons/icon-256-maskable.png',
   '/images/icons/icon-384-maskable.png',
-  '/images/icons/icon-512-maskable.png'
+  '/icon-512-maskable.png'
 ];
 
 self.addEventListener('install', event => {
