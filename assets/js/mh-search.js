@@ -1,63 +1,33 @@
-(() => {
-  // Avoid redefining across modules
-  if (window.__mh) return;
+// assets/js/mh-search.js
+(function () {
+  const Core = window.PAKSTREAM?.MHCore;
+  if (!Core) return;
 
-  const qs  = (sel, root=document) => root.querySelector(sel);
-  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  const on  = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+  function init(root) {
+    if (!root || root.__mhSearch) return;
+    root.__mhSearch = true;
+    const input = root.querySelector('[data-mh-search-input]');
+    const list = root.querySelector('[data-mh-list]');
+    if (!input || !list) return;
 
-  function required(el, label) {
-    if (!el) {
-      console.warn(`[MediaHub] Missing required element: ${label}`);
-      return null;
+    function filterCards(q) {
+      const cards = list.querySelectorAll('[data-mh-card]');
+      const query = (q || '').trim().toLowerCase();
+      cards.forEach(card => {
+        const text = (card.dataset.search || card.textContent || '').toLowerCase();
+        const show = !query || text.includes(query);
+        card.style.display = show ? '' : 'none';
+      });
     }
-    return el;
+
+    input.addEventListener('input', (e) => filterCards(e.target.value));
   }
 
-  function emptyState(container, message) {
-    if (!container) return;
-    // Idempotent: don’t duplicate empty states
-    if (container.__emptyRendered) return;
-    container.innerHTML = `
-      <div class="mh-empty" role="status" aria-live="polite">
-        <p>${message}</p>
-      </div>`;
-    container.__emptyRendered = true;
+  function auto() {
+    document.querySelectorAll('[data-mh]').forEach(init);
   }
 
-  function clearContainer(container) {
-    if (!container) return;
-    container.__emptyRendered = false;
-    container.innerHTML = '';
-  }
-
-  function emit(name, detail) {
-    document.dispatchEvent(new CustomEvent(name, { detail }));
-  }
-
-  window.__mh = { qs, qsa, on, required, emptyState, clearContainer, emit };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', auto);
+  } else { auto(); }
 })();
-
-window.PAKSTREAM_MH_SEARCH = (function () {
-  const { qs, on, emit } = window.__mh;
-
-  function init({ root, search }) {
-    if (!root || !search) return;
-    if (search.__wired) return;
-    search.__wired = true;
-
-    const input = qs('input[type="search"], input[data-mh-search]', search);
-    if (!input) return;
-
-    let t = 0;
-    on(input, 'input', () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        emit('pakstream:hub:rerender', { q: input.value.trim() });
-      }, 150);
-    });
-  }
-
-  return { init };
-})();
-
