@@ -1,0 +1,11 @@
+:where(a, button, [role="button"], input, select, textarea):where(:focus-visible){
+  outline: 2px solid var(--focus-ring, #1e88e5);
+  outline-offset: 3px;
+}
+
+.skip-link{position:absolute;left:-9999px}
+.skip-link:focus{left:1rem;top:1rem;z-index:9999;background:var(--surface-elevated);padding:.5rem 1rem;border-radius:.5rem}
+
+:where(button,[role="button"]){min-width:44px;min-height:44px}
+
+:where(p,li) > a:where(:hover,:focus){text-decoration:underline}
