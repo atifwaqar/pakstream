@@ -1,171 +1,85 @@
 (function () {
-  const root = document.getElementById('ps-carousel');
-  if (!root) return;
-  const track = root.querySelector('.ps-carousel__track');
-  const prevBtn = root.querySelector('.ps-carousel__prev');
-  const nextBtn = root.querySelector('.ps-carousel__next');
-  const pauseBtn = root.querySelector('.ps-carousel__pause');
-  const status = root.querySelector('.ps-carousel__status');
+  function init(root) {
+    if (!root || root.__psCarousel) return;
+    root.__psCarousel = true;
 
-  let slides = [];
-  let index = 0;
-  const INTERVAL = 5000;
-  let timer = null;
-  let hover = false;
-  let focusIn = false;
-  let userPaused = false;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) root.classList.add('ps-no-motion');
-  userPaused = reduceMotion || localStorage.getItem('ps-carousel-paused') === 'true';
+    const track = root.querySelector('[data-crs-track]');
+    const prev  = root.querySelector('[data-crs-prev]');
+    const next  = root.querySelector('[data-crs-next]');
+    if (!track) return;
 
-  function updatePauseBtn() {
-    pauseBtn.setAttribute('aria-pressed', String(userPaused));
-    pauseBtn.textContent = userPaused ? 'Play' : 'Pause';
-    pauseBtn.setAttribute('aria-label', userPaused ? 'Start autoplay' : 'Pause autoplay');
-  }
+    // Make track scroll-snap if not already styled
+    track.setAttribute('role', 'list');
+    track.tabIndex = 0;
 
-  function announce() {
-    if (!slides.length) return;
-    const label = slides[index].getAttribute('aria-label') || '';
-    status.textContent = label + ' (' + (index + 1) + '/' + slides.length + ')';
-  }
+    function cardWidth() {
+      const first = track.querySelector('[data-crs-item]');
+      return first ? first.getBoundingClientRect().width : 320;
+    }
 
-  function updateSlides() {
-    slides.forEach((s, i) => {
-      s.setAttribute('tabindex', i === index ? '0' : '-1');
-      const parent = s.closest('.ps-carousel__slide');
-      parent && parent.classList.toggle('is-active', i === index);
+    function scrollByCards(n = 1) {
+      const dx = cardWidth() * n;
+      track.scrollBy({ left: dx, behavior: 'smooth' });
+    }
+
+    function updateButtons() {
+      const max = track.scrollWidth - track.clientWidth - 2; // fudge
+      const x = track.scrollLeft;
+      if (prev) prev.disabled = x <= 0;
+      if (next) next.disabled = x >= max;
+    }
+
+    // Buttons
+    prev && prev.addEventListener('click', () => scrollByCards(-1));
+    next && next.addEventListener('click', () => scrollByCards(1));
+
+    // Keyboard (on track)
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); scrollByCards(1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); scrollByCards(-1); }
+      if (e.key === 'Home')       { e.preventDefault(); track.scrollTo({ left: 0, behavior: 'smooth' }); }
+      if (e.key === 'End')        { e.preventDefault(); track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' }); }
     });
-    track.style.transform = 'translateX(' + (-100 * index) + '%)';
-    announce();
-  }
 
-  function goTo(i) {
-    if (!slides.length) return;
-    const wasFocused = root.contains(document.activeElement);
-    index = (i + slides.length) % slides.length;
-    updateSlides();
-    if (wasFocused) slides[index].focus();
-  }
-
-  const next = () => goTo(index + 1);
-  const prev = () => goTo(index - 1);
-
-  function stopAutoplay() {
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
+    // Touch drag / mouse drag (optional enhancement)
+    let isDown = false, startX = 0, startScroll = 0;
+    function startDrag(e) {
+      isDown = true;
+      startX = (e.touches ? e.touches[0].pageX : e.pageX);
+      startScroll = track.scrollLeft;
+      track.classList.add('is-dragging');
     }
+    function moveDrag(e) {
+      if (!isDown) return;
+      const x = (e.touches ? e.touches[0].pageX : e.pageX);
+      track.scrollLeft = startScroll - (x - startX);
+    }
+    function endDrag() {
+      isDown = false;
+      track.classList.remove('is-dragging');
+    }
+    track.addEventListener('mousedown', (e) => { if (e.button === 0) startDrag(e); });
+    track.addEventListener('mousemove', moveDrag);
+    track.addEventListener('mouseleave', endDrag);
+    track.addEventListener('mouseup', endDrag);
+    track.addEventListener('touchstart', startDrag, { passive: true });
+    track.addEventListener('touchmove',  moveDrag,  { passive: true });
+    track.addEventListener('touchend',   endDrag);
+
+    // State sync
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+
+    // Initial paint
+    updateButtons();
   }
 
-  function startAutoplay() {
-    stopAutoplay();
-    timer = setInterval(next, INTERVAL);
+    function auto() {
+    document.querySelectorAll('[data-crs]').forEach(init);
   }
 
-  function refreshAutoplay() {
-    if (!userPaused && !hover && !focusIn && !document.hidden) {
-      startAutoplay();
-    } else {
-      stopAutoplay();
-    }
-    updatePauseBtn();
-  }
-
-  prevBtn.addEventListener('click', prev);
-  nextBtn.addEventListener('click', next);
-
-  pauseBtn.addEventListener('click', () => {
-    userPaused = !userPaused;
-    localStorage.setItem('ps-carousel-paused', String(userPaused));
-    refreshAutoplay();
-  });
-
-  root.addEventListener('mouseenter', () => { hover = true; refreshAutoplay(); });
-  root.addEventListener('mouseleave', () => { hover = false; refreshAutoplay(); });
-
-  root.addEventListener('focusin', () => { focusIn = true; refreshAutoplay(); });
-  root.addEventListener('focusout', () => {
-    setTimeout(() => {
-      if (!root.contains(document.activeElement)) {
-        focusIn = false;
-        refreshAutoplay();
-      }
-    }, 0);
-  });
-
-  document.addEventListener('visibilitychange', refreshAutoplay);
-
-  root.addEventListener('keydown', (e) => {
-    if (!root.contains(document.activeElement)) return;
-    switch (e.key) {
-      case 'ArrowRight':
-        e.preventDefault();
-        next();
-        break;
-      case 'ArrowLeft':
-        e.preventDefault();
-        prev();
-        break;
-      case 'Home':
-        e.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        e.preventDefault();
-        goTo(slides.length - 1);
-        break;
-    }
-  });
-
-  let startX = null;
-  track.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    hover = true;
-    refreshAutoplay();
-  }, { passive: true });
-  track.addEventListener('touchend', (e) => {
-    if (startX !== null) {
-      const diff = e.changedTouches[0].clientX - startX;
-      if (Math.abs(diff) > 40) {
-        diff > 0 ? prev() : next();
-      }
-    }
-    startX = null;
-    hover = false;
-    refreshAutoplay();
-  }, { passive: true });
-
-  fetch('/all_streams.json')
-    .then(r => r.json())
-    .then(data => {
-      const items = Array.isArray(data.items) ? data.items : [];
-      const typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
-      items.forEach(it => {
-        if (it.status && it.status.active && it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
-          const mode = typeToMode[it.type] || 'tv';
-          const channelId = it.type === 'radio' && it.ids && it.ids.internal_id ? it.ids.internal_id : it.key;
-          const li = document.createElement('li');
-          li.className = 'ps-carousel__slide';
-          const a = document.createElement('a');
-          a.href = '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode;
-          a.setAttribute('aria-label', it.name || '');
-          a.setAttribute('tabindex', '-1');
-          const img = document.createElement('img');
-          img.src = it.media.logo_url;
-          img.alt = it.name || '';
-          img.width = 120;
-          img.height = 90;
-          a.appendChild(img);
-          li.appendChild(a);
-          track.appendChild(li);
-        }
-      });
-      slides = Array.from(track.querySelectorAll('.ps-carousel__slide a'));
-      updateSlides();
-      refreshAutoplay();
-    })
-    .catch(err => {
-      console.error('Failed to load carousel items', err);
-    });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', auto);
+  } else { auto(); }
 })();
+

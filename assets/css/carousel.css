@@ -1,66 +1,48 @@
-#ps-carousel {
-  position: relative;
-  max-width: 100%;
-  margin: 1rem 0;
+/* Carousel (additive) */
+.ps-carousel {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
 }
 
-#ps-carousel .ps-carousel__viewport {
-  overflow: hidden;
-}
-
-#ps-carousel .ps-carousel__track {
+.ps-crs-header {
   display: flex;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  transition: transform 0.5s ease;
-  will-change: transform;
-}
-
-#ps-carousel.ps-no-motion .ps-carousel__track {
-  transition: none;
-}
-
-#ps-carousel .ps-carousel__slide {
-  flex: 0 0 100%;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
 }
 
-#ps-carousel .ps-carousel__slide img {
-  width: 120px;
-  height: 90px;
-  object-fit: contain;
-}
+.ps-crs-title { margin: 0; font-size: 1.1rem; }
 
-#ps-carousel .ps-carousel__controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-#ps-carousel button {
-  background: none;
-  border: none;
+.ps-crs-ctrls { display: flex; gap: 6px; }
+.ps-crs-btn {
+  appearance: none;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
   cursor: pointer;
+  font-weight: 700;
+}
+.ps-crs-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.ps-crs-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 1fr);
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+.ps-crs-track::-webkit-scrollbar { height: 8px; }
+.ps-crs-track::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 8px; }
+
+.ps-crs-item {
+  scroll-snap-align: start;
 }
 
-#ps-carousel button:focus-visible,
-#ps-carousel .ps-carousel__slide a:focus-visible {
-  outline: 2px solid #0F5132;
-  outline-offset: 2px;
-}
+.ps-crs-track.is-dragging { cursor: grabbing; }
 
-#ps-carousel .ps-carousel__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
+/* If you place MH cards inside, they already have styles from mh-lite.css */
+
