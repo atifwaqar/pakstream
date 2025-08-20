@@ -93,14 +93,21 @@
     </div>
   </section>
 
-  <section class="station-scroller">
-    <button class="scroll-btn prev" aria-label="Scroll left">
-      <span class="material-symbols-outlined">chevron_left</span>
-    </button>
-    <div class="scroller-track"></div>
-    <button class="scroll-btn next" aria-label="Scroll right">
-      <span class="material-symbols-outlined">chevron_right</span>
-    </button>
+  <section class="station-scroller-wrap" aria-label="Trending channels">
+    <div class="scroller-header">
+      <h2 class="scroller-title">Trending Channels</h2>
+      <button class="scroller-toggle" type="button" aria-pressed="false" aria-label="Pause scrolling">Pause</button>
+    </div>
+
+    <div class="station-scroller" role="list" tabindex="0" aria-live="polite">
+      <button class="scroll-btn prev" aria-label="Scroll left">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <div class="scroller-track" role="presentation"></div>
+      <button class="scroll-btn next" aria-label="Scroll right">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
   </section>
 
   <!-- Featured cards -->

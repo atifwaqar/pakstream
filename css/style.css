@@ -254,12 +254,46 @@ section {
   color: var(--on-primary-container);
 }
 
-.station-scroller {
-  overflow: hidden;
-  margin: 20px auto;
+.station-scroller-wrap {
+  margin-block: 1.5rem;
   max-width: 960px;
+  margin-inline: auto;
+}
+
+.scroller-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+
+.scroller-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.scroller-toggle {
+  padding: .4rem .75rem;
+  border-radius: .5rem;
+  background: var(--surface-variant);
+  color: var(--on-surface-variant);
+  border: 1px solid var(--outline);
+  cursor: pointer;
+}
+
+.station-scroller {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  overflow: hidden;
   position: relative;
+  user-select: none;
   touch-action: pan-y;
+}
+
+.station-scroller [role="listitem"] {
+  flex: 0 0 auto;
 }
 
 .station-scroller::before,

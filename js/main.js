@@ -222,6 +222,8 @@ document.addEventListener('DOMContentLoaded', function () {
             var a = document.createElement('a');
             a.href = '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode;
             a.title = it.name || '';
+            a.setAttribute('role', 'listitem');
+            a.setAttribute('aria-label', it.name || '');
             var img = document.createElement('img');
             img.src = it.media.logo_url;
             img.alt = it.name || '';
@@ -232,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         scroller.innerHTML += scroller.innerHTML;
         initStationScroller();
+        initStationScrollerControls();
       })
       .catch(function (err) {
         console.error('Failed to load station logos', err);
@@ -251,6 +254,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var speed = base * direction;
     var offset = 0;
     var trackWidth = track.scrollWidth / 2;
+
+    window.setScrollSpeed = function (v) {
+      base = v;
+      speed = base * direction;
+    };
 
     function normalize() {
       if (offset <= -trackWidth) offset += trackWidth;
@@ -282,6 +290,49 @@ document.addEventListener('DOMContentLoaded', function () {
       direction = -1;
       speed = base * direction;
     });
+  }
+
+  function initStationScrollerControls() {
+    const wrap = document.querySelector('.station-scroller-wrap');
+    const scroller = wrap?.querySelector('.station-scroller');
+    const toggleBtn = wrap?.querySelector('.scroller-toggle');
+    if (!wrap || !scroller || !toggleBtn) return;
+
+    let paused = false;
+    const SPEED_ACTIVE = 0.3;
+    const SPEED_PAUSED = 0;
+
+    function applySpeed() {
+      const v = paused ? SPEED_PAUSED : SPEED_ACTIVE;
+      if (typeof setScrollSpeed === 'function') setScrollSpeed(v);
+      else scroller.dataset.speed = String(v);
+    }
+
+    function setPaused(next) {
+      paused = next;
+      applySpeed();
+      toggleBtn.setAttribute('aria-pressed', String(paused));
+      toggleBtn.textContent = paused ? 'Resume' : 'Pause';
+      toggleBtn.setAttribute('aria-label', paused ? 'Resume scrolling' : 'Pause scrolling');
+    }
+
+    toggleBtn.addEventListener('click', () => setPaused(!paused));
+    scroller.addEventListener('mouseenter', () => setPaused(true));
+    scroller.addEventListener('mouseleave', () => setPaused(false));
+    scroller.addEventListener('focusin', () => setPaused(true));
+    scroller.addEventListener('focusout', () => setPaused(false));
+    scroller.addEventListener('touchstart', () => setPaused(true), { passive: true });
+    scroller.addEventListener('touchend', () => setPaused(false), { passive: true });
+    scroller.addEventListener('touchcancel', () => setPaused(false), { passive: true });
+    scroller.addEventListener('keydown', function (e) {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        setPaused(!paused);
+      }
+    });
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setPaused(prefersReduced);
   }
 
   if ('IntersectionObserver' in window) {
