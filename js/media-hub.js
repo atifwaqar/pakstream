@@ -435,17 +435,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Build card
   function makeChannelCard(it, itemMode = mode) {
-    const detailUrl = (itemMode === 'creator' || itemMode === 'freepress' ? '/creator/' : '/channel/') + it.key;
     const card = document.createElement("div");
     card.className = "channel-card";
     card.dataset.key = it.key;
     card.dataset.mode = itemMode;
     card.dataset.active = it.status?.active === false ? "false" : "true";
     if (it.status?.active === false) card.classList.add("inactive");
-
-    const link = document.createElement('a');
-    link.className = 'info';
-    link.href = detailUrl;
 
     const img = document.createElement("img");
     img.className = "channel-thumb";
@@ -455,9 +450,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const name = document.createElement("span");
     name.className = "channel-name";
     name.textContent = displayName(it);
-
-    link.appendChild(img);
-    link.appendChild(name);
 
     const playBtn = document.createElement("button");
     playBtn.className = "play-btn material-symbols-outlined";
@@ -474,14 +466,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleFavorite(itemMode === "radio" ? (it.ids?.internal_id || it.key) : it.key, itemMode);
     });
 
-    card.appendChild(link);
+    card.appendChild(img);
+    card.appendChild(name);
     card.appendChild(playBtn);
     card.appendChild(favButton);
-
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('button')) return;
-      location.href = detailUrl;
-    });
 
     if (itemMode === "radio") {
       const ep = radioEndpoint(it);
@@ -492,18 +480,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       audio.dataset.logo = thumbOf(it);
 
       playBtn.addEventListener("click", (e) => {
-        e.preventDefault();
         e.stopPropagation();
         if (!ep) return;
         playRadio(playBtn, audio, displayName(it), audio.dataset.logo, it);
       });
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("button")) return;
+        playBtn.click();
+      });
       card.appendChild(audio);
     } else {
-      playBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        select(it, true);
-      });
+      playBtn.addEventListener("click", (e) => { e.stopPropagation(); select(it, true); });
+      card.addEventListener("click", () => select(it, true));
     }
 
     return card;
@@ -1013,12 +1001,11 @@ async function renderLatestVideosRSS(channelId) {
 
     if (window.historyService) {
       const m = modeOfItem(item);
-      const detailUrl = (m === 'creator' || m === 'freepress' ? '/creator/' : '/channel/') + item.key;
       window.historyService.add({
         id: item.key,
         type: m,
         title: displayName(item),
-        url: detailUrl,
+        url: '/media-hub.html?c=' + encodeURIComponent(item.key) + '&m=' + m,
         poster: thumbOf(item)
       });
     }
@@ -1095,12 +1082,11 @@ async function renderLatestVideosRSS(channelId) {
 
     if (window.historyService) {
       const id = item.ids?.internal_id || item.key;
-      const detailUrl = '/channel/' + (item.key);
       window.historyService.add({
         id,
         type: 'radio',
         title: name,
-        url: detailUrl,
+        url: '/media-hub.html?m=radio&c=' + encodeURIComponent(id),
         poster: logoUrl || thumbOf(item)
       });
     }
