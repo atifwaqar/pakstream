@@ -1,0 +1,39 @@
+/* Reserved heights for common display sizes (prevents CLS) */
+.ad-slot {
+  position: relative;
+  width: 100%;
+  margin: 16px auto;
+  background: var(--surface-variant, #EEE);
+  border: 1px dashed var(--outline, #BDBDBD);
+  display: block;
+  overflow: hidden;
+}
+
+/* Base reserved heights (can be overridden by data-ad-size) */
+.ad-slot[data-ad-size="300x250"]  { max-width: 300px;  height: 250px; }
+.ad-slot[data-ad-size="336x280"]  { max-width: 336px;  height: 280px; }
+.ad-slot[data-ad-size="320x100"]  { max-width: 320px;  height: 100px; }
+.ad-slot[data-ad-size="728x90"]   { max-width: 728px;  height: 90px;  }
+.ad-slot[data-ad-size="970x250"]  { max-width: 970px;  height: 250px; }
+
+/* Center reserved boxes */
+.ad-slot > .ad-reserved {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font: 600 12px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--on-surface-variant, #424242);
+  opacity: .7;
+}
+
+/* Optional label */
+.ad-slot::before {
+  content: "Ad";
+  position: absolute; top: 4px; right: 6px;
+  font-size: 10px; opacity: .6;
+}
+
+/* Responsive helpers: stack medium sizes nicely on mobile */
+@media (max-width: 480px) {
+  .ad-slot[data-ad-size="728x90"]   { max-width: 320px; height: 100px; }
+  .ad-slot[data-ad-size="970x250"]  { max-width: 320px; height: 100px; }
+}
