@@ -5,44 +5,13 @@ description: Insightful blogs covering Pakistani media, culture, and diaspora li
 ---
 <section class="blog-list">
   <h1>Latest Blog Posts</h1>
-  <div class="blog-grid">
-    {% for post in site.posts %}
-      <article class="blog-card">
-        <a href="{{ post.url | relative_url }}" class="card-image">
-          <img src="{{ post.image | default: '/images/blog-banner.png' }}" alt="{{ post.title }}" loading="lazy">
-        </a>
-        <div class="card-content">
-          <p class="card-category">{{ post.category | default: 'General' }}</p>
-          <h2 class="card-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-          <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncate: 120 }}</p>
-          <p class="card-meta">
-            {{ post.date | date: "%B %d, %Y" }} ·
-            {% assign words = post.content | number_of_words %}
-            {% assign read_time = words | divided_by: 200 | ceil %}
-            {{ read_time }} min read ·
-            {{ post.author | default: 'PakStream' }}
-          </p>
-        </div>
-      </article>
-    {% endfor %}
-  </div>
-</section>
 
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/utils/flags.js"></script>
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/diagnostics.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <ul>
+    {% for post in site.posts %}
+      <li class="blog-post-item">
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>

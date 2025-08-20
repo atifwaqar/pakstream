@@ -4,6 +4,9 @@
 <html lang="en">
 <head>
 {% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
   {% include google-analytics.html %}
   <!-- Basic Meta Tags -->
   <title>PakStream - Privacy &amp; History</title>
@@ -54,11 +57,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css"><link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
-  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
 </head>
 <body>
 {% include google-tag-manager-body.html %}
@@ -66,7 +69,7 @@
   {% include top-bar.html %}
 
   <!-- Privacy policy content -->
-<section id="main-content">
+<section>
   <h2>Privacy &amp; History</h2>
   <p>At PakStream, your privacy is important. This website uses cookies to deliver and improve the service. We use Google Analytics to understand how visitors interact with the site, and we plan to integrate Google Ads which may also use cookies for ad personalisation.</p>
   <p>PakStream uses YouTube API Services to retrieve and display channel and video information. By using PakStream, you agree to be bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. PakStream does not store or collect personal information from these services. For details on how Google collects and processes data, please see the <a href="https://www.google.com/policies/privacy">Google Privacy Policy</a>.</p>
@@ -111,29 +114,12 @@
       if(btn) btn.addEventListener('click', function(){
         if(confirm('Clear local history?')){
           if(window.historyService) window.historyService.clear();
+          if(window.trendingService) window.trendingService.clear();
         }
       });
     });
   </script>
   <script defer src="/js/discovery.js"></script>
-
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/utils/flags.js"></script>
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/diagnostics.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>

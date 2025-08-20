@@ -1,12 +1,8 @@
 ---
 layout: post
 title: "Welcome to PakStream Blog"
-description: "Introducing the PakStream blog and the story behind building a home for overseas Pakistanis."
 date: 2025-07-29
-updated: 2025-07-29
 author: Atif Waqar
-category: Announcements
-tags: [pakstream, introduction]
 image: /images/blog-banner.png  # optional
 ---
 

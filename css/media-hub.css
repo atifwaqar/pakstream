@@ -1,15 +1,4 @@
 /* Layout: mode tabs on top, channel list and video section below */
-
-/* Embed mode: strip section chrome */
-.is-embed section.youtube-section.media-hub-section {
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  max-width: none !important;
-}
-
 .media-hub-section {
   display: grid;
   grid-template-columns: 220px 1fr 300px;
@@ -33,79 +22,8 @@
   grid-template-columns: 72px 1fr 24px;
   column-gap: 0;
 }
-.media-hub-section .hub-controls {
+.media-hub-section .mode-tabs {
   grid-area: tabs;
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  background: var(--surface);
-  padding: 8px 0 10px;
-  border-bottom: 1px solid var(--outline);
-}
-.hub-controls .mode-tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  margin-bottom: 8px;
-}
-.hub-controls .filters-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.hub-controls select,
-.hub-controls input[type="text"] {
-  padding: 6px 8px;
-  border: 1px solid var(--outline);
-  background: var(--surface);
-  color: var(--on-surface);
-  border-radius: 8px;
-}
-.hub-controls .live-filter {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.selected-filters {
-  margin-top: 8px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.selected-filters .chip {
-  background: var(--surface-variant);
-  border-radius: 16px;
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.selected-filters .chip button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-  font-size: 16px;
-}
-
-.empty-state .suggestions .btn {
-  margin: 4px;
-}
-.suggestion-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-}
-.suggestion-cards a {
-  width: 120px;
-  text-align: center;
-}
-.results-count {
-  margin-top: 4px;
 }
 .media-hub-section #left-rail {
   grid-area: left;
@@ -278,13 +196,13 @@
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  background: var(--surface-1);
+  background: var(--surface);
   border-radius: 14px;
   margin-bottom: 10px;
   box-shadow: var(--card-shadow, var(--shadow-xs));
 }
 .channel-card.active {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--primary);
 }
 .channel-thumb {
   width: 40px;
@@ -306,7 +224,7 @@
 }
 .player-container .audio-wrap {
   padding: 14px;
-  background: var(--surface-1);
+  background: var(--surface);
 }
 
 .details-list {
@@ -409,23 +327,4 @@
     height: 100vh;
     padding-top: 0;
   }
-}
-
-/* stream error overlay */
-.stream-error-overlay {
-  background: rgba(0, 0, 0, 0.8);
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: var(--on-surface);
-  padding: 16px;
-}
-
-.stream-error-overlay.is-visible {
-  display: flex;
-}
-
-.stream-error-overlay .actions button {
-  margin: 8px;
 }

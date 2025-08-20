@@ -1,9 +1,12 @@
 ---
 ---
 <!DOCTYPE html>
-<html lang="en" data-theme="new">
+<html lang="en">
 <head>
 {% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
   {% include google-analytics.html %}
   <!-- Standard Meta -->
   <title>PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press</title>
@@ -58,11 +61,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css"><link rel="stylesheet" href="/css/style.css">
+  <link id="themeStylesheet" rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
-  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
 </head>
 <body>
 {% include google-tag-manager-body.html %}
@@ -82,7 +85,7 @@
   </div>
 
   <!-- Hero section with image and tagline -->
-  <section id="main-content" class="hero-banner">
+  <section class="hero-banner">
     <picture>
       <source
         type="image/webp"
@@ -103,9 +106,9 @@
     </div>
   </section>
 
-  <section class="station-scroller-wrap" aria-label="Popular channels">
+  <section class="station-scroller-wrap" aria-label="Trending channels">
     <div class="scroller-header">
-      <h2 class="scroller-title">Popular Channels</h2>
+      <h2 class="scroller-title">Trending Channels</h2>
       <button class="scroller-toggle" type="button" aria-pressed="false" aria-label="Pause scrolling">Pause</button>
     </div>
 
@@ -134,7 +137,7 @@
     <div class="feature-card" data-m="radio" data-c="audio35">
       <span class="material-symbols-outlined">radio</span>
       <h3>Popular Radio Stations</h3>
-      <p>Listen to Pakistani radio.</p>
+      <p>Listen to trending Pakistani radio.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
         <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
@@ -151,7 +154,7 @@
     </div>
     <div class="feature-card" data-m="creator" data-c="zeeshanusmani">
       <span class="material-symbols-outlined">person</span>
-      <h3>Featured Creators</h3>
+      <h3>Trending Creators</h3>
       <p>Watch the latest from Pakistani creators.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
         <iframe class="media-hub-embed" src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -341,24 +344,6 @@
       document.getElementById('themeStylesheet').href = this.value;
     });
   </script>
-
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/utils/flags.js"></script>
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/diagnostics.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>

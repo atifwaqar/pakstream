@@ -4,6 +4,9 @@
 <html lang="en">
 <head>
 {% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
   {% include google-analytics.html %}
   <!-- Standard Meta -->
   <title>PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press</title>
@@ -16,9 +19,6 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://pakstream.com/" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <meta name="theme-color" content="#0F5132" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#7EE2B8" media="(prefers-color-scheme: dark)">
 
   <link rel="preload" as="image"
     href="/images/pakistan-abstract-380.webp"
@@ -61,18 +61,18 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/assets/css/carousel.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
-  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
 </head>
 <body>
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
 
   <!-- Hero section with image and tagline -->
-  <section id="main-content" class="hero-banner">
+  <section class="hero-banner">
     <picture>
       <source
         type="image/webp"
@@ -93,27 +93,24 @@
     </div>
   </section>
 
-  <div class="ad-slot" data-ad-preset="homepage_top"></div>
-
+  <section id="trending-rail" class="rail-section lazy-rail" aria-label="Trending Now"></section>
   <section id="continue-rail" class="rail-section lazy-rail" aria-label="Continue Watching and Listening"></section>
 
-  <section id="ps-carousel" aria-label="Popular channels">
-    <div class="ps-carousel__header">
-      <h2 class="ps-carousel__title">Popular Channels</h2>
+  <section class="station-scroller-wrap" aria-label="Trending channels">
+    <div class="scroller-header">
+      <h2 class="scroller-title">Trending Channels</h2>
+      <button class="scroller-toggle" type="button" aria-pressed="false" aria-label="Pause scrolling">Pause</button>
     </div>
-    <div class="ps-carousel__viewport">
-      <ul class="ps-carousel__track"></ul>
-    </div>
-    <div class="ps-carousel__controls">
-      <button class="ps-carousel__prev" type="button" aria-label="Previous slide" aria-controls="ps-carousel">
+
+    <div class="station-scroller" role="list" tabindex="0" aria-live="polite">
+      <button class="scroll-btn prev" aria-label="Scroll left">
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
-      <button class="ps-carousel__next" type="button" aria-label="Next slide" aria-controls="ps-carousel">
+      <div class="scroller-track" role="presentation"></div>
+      <button class="scroll-btn next" aria-label="Scroll right">
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
-      <button class="ps-carousel__pause" type="button" aria-label="Pause autoplay" aria-controls="ps-carousel" aria-pressed="false">Pause</button>
     </div>
-    <p class="ps-carousel__status" aria-live="polite"></p>
   </section>
 
   <!-- Featured cards -->
@@ -123,16 +120,16 @@
       <h3>Free Press</h3>
       <p>Stay updated with the latest new from Independent Voices.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=freepress&c=wajahatsaeedkhan" class="cta-btn">Watch Now</a>
     </div>
     <div class="feature-card" data-m="radio" data-c="audio35">
       <span class="material-symbols-outlined">radio</span>
       <h3>Popular Radio Stations</h3>
-      <p>Listen to Pakistani radio.</p>
+      <p>Listen to trending Pakistani radio.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=radio&c=audio35" class="cta-btn">Listen</a>
     </div>
@@ -141,16 +138,16 @@
       <h3>Live TV Channels</h3>
       <p>Watch the most viewed live TV streams.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=tv&c=geo&muted=1" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=tv&c=geo&muted=1" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=tv&c=24news" class="cta-btn">Watch Now</a>
     </div>
     <div class="feature-card" data-m="creator" data-c="zeeshanusmani">
       <span class="material-symbols-outlined">person</span>
-      <h3>Featured Creators</h3>
+      <h3>Trending Creators</h3>
       <p>Watch the latest from Pakistani creators.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=creator&c=zeeshanusmani" class="cta-btn">Watch Now</a>
     </div>
@@ -159,7 +156,7 @@
       <h3>All Streams</h3>
       <p>Browse every channel in one place.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=all&c=geo&muted=1" title="PakStream Media Hub" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=all&c=geo&muted=1" title="PakStream Media Hub" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=all&c=geo" class="cta-btn">Browse</a>
     </div>
@@ -168,13 +165,11 @@
       <h3>Your Favorites</h3>
       <p>Quick access to your saved channels.</p>
       <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=favorites&c=wajahatsaeedkhan&muted=1" title="PakStream Favorites" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="media-hub-embed" src="/media-hub-embed.html?m=favorites&c=wajahatsaeedkhan&muted=1" title="PakStream Favorites" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </section>
       <a href="/media-hub.html?m=favorites&c=wajahatsaeedkhan" class="cta-btn">View</a>
     </div>
   </section>
-
-  <div class="ad-slot" data-ad-preset="homepage_mid"></div>
 
   <!-- Main content sections -->
   <section class="intro">
@@ -272,12 +267,28 @@
 
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
       const isLaptop = canHover && window.matchMedia('(min-width: 1024px)').matches;
-      const cardArray = Array.from(cards);
 
       if (canHover) {
+        let freepressCard = null;
+        let fpIframe = null;
+        if (isLaptop) {
+          freepressCard = document.querySelector('.feature-card[data-m="freepress"]');
+          if (freepressCard) {
+            fpIframe = freepressCard.querySelector('iframe');
+            if (fpIframe) {
+              const unmute = () => sendMuteMessage(fpIframe, false);
+              fpIframe.addEventListener('load', unmute);
+              unmute();
+            }
+          }
+        }
+
+        const cardArray = Array.from(cards);
         cardArray.forEach(card => {
           const iframe = card.querySelector('iframe');
           if (!iframe) return;
+          const isFreepress = isLaptop && card === freepressCard;
+          sendPlayMessage(iframe, isFreepress);
           card.addEventListener('mouseenter', () => {
             cardArray.forEach(c => {
               const ifr = c.querySelector('iframe');
@@ -293,7 +304,7 @@
           });
         });
       } else if ('IntersectionObserver' in window) {
-        cardArray.forEach(card => {
+        cards.forEach(card => {
           const iframe = card.querySelector('iframe');
           if (!iframe) return;
 
@@ -316,50 +327,9 @@
           iframe.addEventListener('load', applyState);
         });
       }
-
-      // Load iframes sequentially to avoid simultaneous autoplay
-      const iframes = cardArray.map(card => card.querySelector('iframe')).filter(Boolean);
-      let idx = 0;
-      const loadNext = () => {
-        if (idx >= iframes.length) return;
-        const iframe = iframes[idx];
-        const src = iframe.dataset.src;
-        if (src) iframe.src = src;
-        iframe.addEventListener('load', () => {
-          if (canHover) {
-            const play = idx === 0;
-            const unmute = play && isLaptop;
-            sendPlayMessage(iframe, play);
-            sendMuteMessage(iframe, !unmute);
-          }
-          idx++;
-          loadNext();
-        }, { once: true });
-      };
-      loadNext();
     });
   </script>
   <script defer src="/js/discovery.js"></script>
-  <script defer src="/assets/js/carousel.js"></script>
-  <!-- -->
-
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/utils/flags.js"></script>
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/diagnostics.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>

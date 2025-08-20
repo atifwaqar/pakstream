@@ -1,61 +1,28 @@
-/* Minimal Service Worker: explicit tiny precache, no runtime routing */
-const CACHE_VERSION = 'v1.0.0'; // bump to invalidate
-const CACHE_NAME = `pakstream-${CACHE_VERSION}`;
+const CACHE_NAME = 'pakstream-image-cache-v1';
 
-// EXPLICIT file list only; keep this tiny and only first-party assets
-const PRECACHE_URLS = [
-  '/',                     // or '/index.html' if your host requires
-  '/css/theme.css',
-  '/css/style.css',
-  '/css/z-layers.css',
-  '/css/ads.css',
-  '/js/main.js',
-  '/js/youtube.js',
-  '/js/radio.js',
-  '/js/diagnostics.js',
-  '/js/ads/config.js',
-  '/js/ads/ads.js'
-  // DO NOT add JSON/data/media endpoints here
-];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
-  );
-  // Activate immediately on first install
+self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(k => k.startsWith('pakstream-') && k !== CACHE_NAME)
-            .map(k => caches.delete(k))
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.destination === 'image') {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(req).then(resp => {
+          if (resp) return resp;
+          return fetch(req).then(networkResp => {
+            if (networkResp && networkResp.status === 200) {
+              cache.put(req, networkResp.clone());
+            }
+            return networkResp;
+          });
+        })
       )
-    )
-  );
-  self.clients.claim();
+    );
+  }
 });
-
-// ONLY serve from precache for those exact URLs; no runtime caching
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  // Ignore non-HTTP(S) schemes like chrome-extension://
-  if (!url.protocol.startsWith('http')) return;
-
-  // Same-origin only
-  if (url.origin !== location.origin) return;
-
-  // Only respond for explicit precache URLs
-  if (!PRECACHE_URLS.includes(url.pathname)) return;
-
-  event.respondWith(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      const cached = await cache.match(event.request);
-      return cached || fetch(event.request);
-    })
-  );
-});
-

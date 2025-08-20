@@ -4,6 +4,9 @@
 <html lang="en">
 <head>
 {% include google-tag-manager-head.html %}
+  <!-- Start cookieyes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
+  <!-- End cookieyes banner -->
   {% include google-analytics.html %}
   <!-- Standard Meta -->
   <title>PakStream Free Press - Watch Independent Pakistani News Voices</title>
@@ -51,16 +54,16 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="/assets/css/tokens.css"><link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="/assets/css/a11y-focus.css">
 </head>
 <body>
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
 
-  <section id="main-content" class="youtube-section">
+  <section class="youtube-section">
     <div class="channel-list"></div>
     <div class="video-section">
       <div class="button-row">
@@ -165,20 +168,16 @@
       twitter:   { url: 'https://img.icons8.com/color/48/000000/twitter--v1.png', label: 'X (Twitter)' },
       facebook:  { url: 'https://img.icons8.com/color/48/000000/facebook-new.png', label: 'Facebook' },
       linkedin:  { url: 'https://img.icons8.com/color/48/000000/linkedin.png', label: 'LinkedIn' },
-      website:   { url: 'https://img.icons8.com/ios-filled/50/000000/domain.png', label: 'Website' },
-      tiktok:    { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' },
-      whatsapp:  { url: 'https://img.icons8.com/color/48/000000/whatsapp.png', label: 'WhatsApp' }
+      tiktok:    { url: 'https://img.icons8.com/color/48/000000/tiktok--v1.png', label: 'TikTok' }
     };
     const items = list.map(url => {
       let type = 'website';
-      const urlLower = (url || '').toLowerCase();
-      if (urlLower.includes('youtu')) type = 'youtube';
-      else if (urlLower.includes('instagram')) type = 'instagram';
-      else if (urlLower.includes('twitter') || urlLower.includes('x.com')) type = 'twitter';
-      else if (urlLower.includes('facebook')) type = 'facebook';
-      else if (urlLower.includes('linkedin')) type = 'linkedin';
-      else if (urlLower.includes('whatsapp') || urlLower.includes('wa.me')) type = 'whatsapp';
-      else if (urlLower.includes('tiktok')) type = 'tiktok';
+      if (/youtu/.test(url)) type = 'youtube';
+      else if (/instagram/.test(url)) type = 'instagram';
+      else if (/twitter|x\.com/.test(url)) type = 'twitter';
+      else if (/facebook/.test(url)) type = 'facebook';
+      else if (/linkedin/.test(url)) type = 'linkedin';
+      else if (/tiktok/.test(url)) type = 'tiktok';
       const { url: icon, label } = icons[type] || { url: '', label: type.charAt(0).toUpperCase() + type.slice(1) };
       const img = icon ? `<img src='${icon}' alt='${label}'>` : '';
       return `<a class='profile' href='${url}' target='_blank' rel='noopener'><div class='profile-icon'>${img}</div><span>${label}</span></a>`;
@@ -549,24 +548,6 @@
 
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
-
-<link rel="stylesheet" href="/css/theme.css">
-<link rel="stylesheet" href="/css/z-layers.css">
-<link rel="stylesheet" href="/css/ads.css">
-<script src="/js/utils/flags.js"></script>
-<script src="/js/data.js"></script>
-<script src="/assets/js/mh-tabs.js"></script>
-<script src="/assets/js/mh-search.js"></script>
-<script src="/assets/js/mh-channels.js"></script>
-<script src="/js/media-hub.js"></script>
-<script src="/js/youtube.js"></script>
-<script src="/js/radio.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/ads/config.js"></script>
-<script src="/js/ads/ads.js"></script>
-<script src="/js/diagnostics.js"></script>
-<script src="/js/pwa.js"></script>
-<link rel="stylesheet" href="/css/dev/flags-panel.css">
-<script src="/js/dev/flags-panel.js"></script>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>

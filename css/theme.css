@@ -2,32 +2,32 @@
 
 /* -------- Light Theme -------- */
 :root {
-  --primary: #00796B;
+  --primary: #0F5132;
   --on-primary: #FFFFFF;
-  --primary-container: #B2DFDB;
-  --on-primary-container: #004D40;
+  --primary-container: #D7F2E3;
+  --on-primary-container: #0B3A23;
 
-  --secondary: #C62828;
-  --on-secondary: #FFFFFF;
+  --secondary: #E0B100;
+  --on-secondary: #1A1A1A;
 
   --background: #FAFAFA;
-  --on-background: #212121;
+  --on-background: #1F2937;
 
   --surface: #FFFFFF;
-  --on-surface: #212121;
+  --on-surface: #1F2937;
 
-  --error: #D32F2F;
+  --error: #B3261E;
   --on-error: #FFFFFF;
-  --error-container: #FFEBEE;
-  --on-error-container: #B71C1C;
+  --error-container: #F9DEDC;
+  --on-error-container: #410E0B;
 
-  --outline: #BDBDBD;
-  --surface-variant: #EEEEEE;
-  --on-surface-variant: #424242;
+  --outline: #D1D5DB;
+  --surface-variant: #F3F4F6;
+  --on-surface-variant: #4B5563;
 
   --accent-link: #2563EB;
   --accent-link-visited: #1D4ED8;
-  --accent-live: #FB8C00;
+  --accent-live: #DC2626;
   --accent-success: #43A047;
   --accent-info: #4FC3F7;
   --favorite-row: var(--primary);
@@ -96,39 +96,6 @@
   --overlay-strong: rgba(0,0,0,0.8);
   --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
   --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-/* New palette (scoped): activated by [data-theme="new"] or JS applying .theme-new */
-:root.theme-new,
-html[data-theme="new"],
-body[data-theme="new"] {
-  /* Primary */
-  --primary: #0F5132;
-  --on-primary: #FFFFFF;
-  --primary-container: #D1E7DD;
-  --on-primary-container: #0A3622;
-
-  /* Secondary / Accent */
-  --secondary: #E0B100;
-  --on-secondary: #1A1A1A;
-
-  /* Background / Surface */
-  --background: #F7F9FC;
-  --on-background: #263238;
-  --surface: #FFFFFF;
-  --on-surface: #263238;
-
-  /* Error (unchanged or updated if needed) */
-  --error: #D32F2F;
-  --on-error: #FFFFFF;
-
-  /* Variants */
-  --outline: #CBD5E1;
-  --surface-variant: #EEF2F7;
-  --on-surface-variant: #4B5563;
-
-  /* Accents */
-  --accent-live: #1E88E5;
 }
 
 /* Accessible, high-contrast focus ring */
