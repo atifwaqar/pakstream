@@ -63,11 +63,6 @@
   color: var(--on-surface);
   border-radius: 8px;
 }
-.hub-controls .live-filter {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
 .selected-filters {
   margin-top: 8px;
   display: flex;
