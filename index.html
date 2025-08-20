@@ -71,6 +71,7 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/ads.css">
+  <link rel="stylesheet" href="/assets/css/mh-lite.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
@@ -253,12 +254,20 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   </aside>
 
   <!-- Placeholder for advertising or additional content -->
-  <div class="ad-container">
-    <!-- Google AdSense: Insert your ad code here -->
-  </div>
+    <div class="ad-container">
+      <!-- Google AdSense: Insert your ad code here -->
+    </div>
+    <section class="mh-wrap" data-mh>
+      <div class="mh-row mh-search">
+        <label for="mh-q" class="visually-hidden">Search channels</label>
+        <input id="mh-q" data-mh-search-input type="search" placeholder="Search channels…">
+      </div>
 
-  <!-- Footer with copyright notice -->
-  <footer>
+      <div class="mh-grid" data-mh-list></div>
+    </section>
+
+    <!-- Footer with copyright notice -->
+    <footer>
     <nav class="footer-nav">
       <a href="/about.html">About Us</a>
       <a href="/contact.html">Contact</a>
@@ -362,6 +371,9 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   <script src="/js/pwa.js" defer></script>
   <script src="/js/ads/config.js" defer></script>
   <script src="/js/ads/ads.js" defer></script>
+  <script src="/assets/js/mh-core.js" defer></script>
+  <script src="/assets/js/mh-search.js" defer></script>
+  <script src="/assets/js/mh-channels.js" defer></script>
   <script defer src="/js/main.js"></script>
   <!--
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-CA-PUB-ID"
