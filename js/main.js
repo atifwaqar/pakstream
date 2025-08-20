@@ -355,22 +355,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if ('IntersectionObserver' in window) {
-    const lazyElements = document.querySelectorAll('img[data-src], iframe[data-src]');
+    const lazyImages = document.querySelectorAll('img[data-src]');
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const el = entry.target;
-          el.src = el.dataset.src;
-          el.removeAttribute('data-src');
-          obs.unobserve(el);
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          obs.unobserve(img);
         }
       });
     });
-    lazyElements.forEach(el => observer.observe(el));
+    lazyImages.forEach(img => observer.observe(img));
   } else {
-    document.querySelectorAll('img[data-src], iframe[data-src]').forEach(el => {
-      el.src = el.dataset.src;
-      el.removeAttribute('data-src');
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
     });
   }
 });

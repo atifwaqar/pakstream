@@ -63,6 +63,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/assets/css/cards.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   
@@ -113,61 +114,67 @@
   </section>
 
   <!-- Featured cards -->
-  <section class="feature-cards">
-    <div class="feature-card" data-m="freepress" data-c="wajahatsaeedkhan">
+  <section id="ps-feature-cards">
+    <a class="ps-card" href="/media-hub.html?m=freepress&c=wajahatsaeedkhan">
       <span class="material-symbols-outlined">article</span>
       <h3>Free Press</h3>
       <p>Stay updated with the latest new from Independent Voices.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=freepress&c=wajahatsaeedkhan" class="cta-btn">Watch Now</a>
-    </div>
-    <div class="feature-card" data-m="radio" data-c="audio35">
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">Watch Now</span>
+    </a>
+    <a class="ps-card" href="/media-hub.html?m=radio&c=audio35">
       <span class="material-symbols-outlined">radio</span>
       <h3>Popular Radio Stations</h3>
       <p>Listen to Pakistani radio.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=radio&c=audio35" class="cta-btn">Listen</a>
-    </div>
-    <div class="feature-card" data-m="tv" data-c="24news">
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=radio&c=audio35&muted=1" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">Listen</span>
+    </a>
+    <a class="ps-card" href="/media-hub.html?m=tv&c=24news">
       <span class="material-symbols-outlined">live_tv</span>
       <h3>Live TV Channels</h3>
       <p>Watch the most viewed live TV streams.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=tv&c=geo&muted=1" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=tv&c=24news" class="cta-btn">Watch Now</a>
-    </div>
-    <div class="feature-card" data-m="creator" data-c="zeeshanusmani">
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=tv&c=geo&muted=1" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">Watch Now</span>
+    </a>
+    <a class="ps-card" href="/media-hub.html?m=creator&c=zeeshanusmani">
       <span class="material-symbols-outlined">person</span>
       <h3>Featured Creators</h3>
       <p>Watch the latest from Pakistani creators.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=creator&c=zeeshanusmani" class="cta-btn">Watch Now</a>
-    </div>
-    <div class="feature-card" data-m="all" data-c="geo">
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">Watch Now</span>
+    </a>
+    <a class="ps-card" href="/media-hub.html?m=all&c=geo">
       <span class="material-symbols-outlined">apps</span>
       <h3>All Streams</h3>
       <p>Browse every channel in one place.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=all&c=geo&muted=1" title="PakStream Media Hub" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=all&c=geo" class="cta-btn">Browse</a>
-    </div>
-    <div class="feature-card" data-m="favorites" data-c="wajahatsaeedkhan">
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=all&c=geo&muted=1" title="PakStream Media Hub" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">Browse</span>
+    </a>
+    <a class="ps-card" href="/media-hub.html?m=favorites&c=wajahatsaeedkhan">
       <span class="material-symbols-outlined">favorite</span>
       <h3>Your Favorites</h3>
       <p>Quick access to your saved channels.</p>
-      <section class="youtube-section media-hub-section" style="padding: 0; margin: 0;">
-        <iframe class="media-hub-embed" data-src="/media-hub-embed.html?m=favorites&c=wajahatsaeedkhan&muted=1" title="PakStream Favorites" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </section>
-      <a href="/media-hub.html?m=favorites&c=wajahatsaeedkhan" class="cta-btn">View</a>
-    </div>
+      <div class="ps-card__media">
+        <iframe data-src="/media-hub-embed.html?m=favorites&c=wajahatsaeedkhan&muted=1" title="PakStream Favorites" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen tabindex="-1"></iframe>
+        <img class="ps-card__poster" src="/images/pakistan-abstract-380.webp" alt="">
+      </div>
+      <span class="ps-card__cta">View</span>
+    </a>
   </section>
 
   <!-- Main content sections -->
@@ -238,105 +245,11 @@
     {% include support-us.html %}
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const cards = document.querySelectorAll('.feature-card');
-      cards.forEach(card => {
-        const mode = card.dataset.m;
-        const channel = card.dataset.c;
-        card.addEventListener('click', () => {
-          if (!mode) return;
-          let url = `/media-hub.html?m=${encodeURIComponent(mode)}`;
-          if (channel) {
-            url += `&c=${encodeURIComponent(channel)}`;
-          }
-          window.location.href = url;
-        });
-      });
-      const sendMuteMessage = (iframe, muted) => {
-        if (iframe.contentWindow) {
-          iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
-        }
-      };
-      const sendPlayMessage = (iframe, playing) => {
-        if (iframe.contentWindow) {
-          iframe.contentWindow.postMessage({ type: 'media-hub-set-playing', playing }, '*');
-        }
-      };
-
-      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
-      const isLaptop = canHover && window.matchMedia('(min-width: 1024px)').matches;
-      const cardArray = Array.from(cards);
-
-      if (canHover) {
-        cardArray.forEach(card => {
-          const iframe = card.querySelector('iframe');
-          if (!iframe) return;
-          card.addEventListener('mouseenter', () => {
-            cardArray.forEach(c => {
-              const ifr = c.querySelector('iframe');
-              if (!ifr) return;
-              const isCurrent = c === card;
-              sendMuteMessage(ifr, !isCurrent);
-              sendPlayMessage(ifr, isCurrent);
-            });
-          });
-          card.addEventListener('mouseleave', () => {
-            sendMuteMessage(iframe, true);
-            sendPlayMessage(iframe, false);
-          });
-        });
-      } else if ('IntersectionObserver' in window) {
-        cardArray.forEach(card => {
-          const iframe = card.querySelector('iframe');
-          if (!iframe) return;
-
-          let inView = false;
-          const applyState = () => {
-            sendMuteMessage(iframe, !inView);
-            sendPlayMessage(iframe, inView);
-          };
-
-          const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-              if (entry.target !== card) return;
-              inView = entry.isIntersecting;
-              applyState();
-            });
-          }, { threshold: 0.5 });
-
-          observer.observe(card);
-
-          iframe.addEventListener('load', applyState);
-        });
-      }
-
-      // Load iframes sequentially to avoid simultaneous autoplay
-      const iframes = cardArray.map(card => card.querySelector('iframe')).filter(Boolean);
-      let idx = 0;
-      const loadNext = () => {
-        if (idx >= iframes.length) return;
-        const iframe = iframes[idx];
-        const src = iframe.dataset.src;
-        if (src) iframe.src = src;
-        iframe.addEventListener('load', () => {
-          if (canHover) {
-            const play = idx === 0;
-            const unmute = play && isLaptop;
-            sendPlayMessage(iframe, play);
-            sendMuteMessage(iframe, !unmute);
-          }
-          idx++;
-          loadNext();
-        }, { once: true });
-      };
-      loadNext();
-    });
-  </script>
   <script defer src="/js/ad-config.js"></script>
   <script defer src="/js/ad-slot.js"></script>
   <script defer src="/js/pwa.js"></script>
   <script defer src="/js/discovery.js"></script>
   <script defer src="/js/main.js"></script>
+  <script defer src="/assets/js/iframeloader.js"></script>
 </body>
 </html>
