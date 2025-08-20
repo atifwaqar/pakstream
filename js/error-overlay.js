@@ -1,58 +1,65 @@
-(function(){
-  window.showStreamError = function(container, opts){
-    if(!container) return;
-    var overlay = document.createElement('div');
-    overlay.className = 'error-overlay';
-    var msg = document.createElement('p');
-    msg.textContent = "This stream isn't responding";
-    overlay.appendChild(msg);
-    var actions = document.createElement('div');
-    var retry = document.createElement('button');
-    retry.className = 'btn';
-    retry.textContent = 'Retry';
-    retry.addEventListener('click', function(){
-      if(opts && opts.onRetry) opts.onRetry();
-      overlay.remove();
+(function () {
+  if (window.PAKSTREAM?.ErrorOverlay) return;
+
+  function h(tag, attrs = {}, children = []) {
+    const el = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => {
+      if (k === 'class') el.className = v;
+      else if (k === 'text') el.textContent = v;
+      else el.setAttribute(k, v);
     });
-    actions.appendChild(retry);
-    if(opts && opts.onAlt){
-      var alt = document.createElement('button');
-      alt.className = 'btn';
-      alt.textContent = 'Try another source';
-      alt.addEventListener('click', opts.onAlt);
-      actions.appendChild(alt);
-    }
-    if(opts && opts.youtube){
-      var yt = document.createElement('a');
-      yt.className = 'btn';
-      yt.textContent = 'Open on YouTube';
-      yt.href = opts.youtube;
-      yt.target = '_blank';
-      yt.rel = 'noopener';
-      actions.appendChild(yt);
-    }
-    var rep = document.createElement('a');
-    rep.className = 'btn';
-    rep.textContent = 'Report';
-    rep.href = '/contact.html';
-    actions.appendChild(rep);
-    overlay.appendChild(actions);
-    if(opts && Array.isArray(opts.suggestions) && opts.suggestions.length){
-      var sugg = document.createElement('div');
-      sugg.className = 'suggestion-cards';
-      opts.suggestions.forEach(function(it){
-        var a = document.createElement('a');
-        a.href = it.url;
-        a.className = 'btn';
-        a.textContent = it.title;
-        sugg.appendChild(a);
-      });
-      overlay.appendChild(sugg);
-    }
-    container.style.position = 'relative';
+    children.forEach(c => el.appendChild(c));
+    return el;
+  }
+
+  function ensureOverlay(container) {
+    let overlay = container.querySelector('[data-error-overlay]');
+    if (overlay) return overlay;
+    overlay = h('div', { class: 'ps-error-overlay', 'data-error-overlay': '' }, [
+      h('div', { class: 'ps-error-card' }, [
+        h('div', { class: 'ps-error-title', text: 'Stream unavailable' }),
+        h('div', { class: 'ps-error-msg', text: 'We couldn’t load this stream. You can try again.' }),
+        h('div', { class: 'ps-error-actions' }, [
+          h('button', { type: 'button', class: 'ps-error-retry', 'data-error-retry': '', text: 'Retry' })
+        ])
+      ])
+    ]);
     container.appendChild(overlay);
-    var first = overlay.querySelector('button, a');
-    if(first) first.focus();
     return overlay;
-  };
+  }
+
+  function show(container, { onRetry } = {}) {
+    const overlay = ensureOverlay(container);
+    overlay.hidden = false;
+    overlay.classList.add('is-visible');
+    const btn = overlay.querySelector('[data-error-retry]');
+    if (onRetry) {
+      btn.onclick = () => {
+        hide(container);
+        try { onRetry(); } catch {}
+      };
+    } else {
+      btn.onclick = () => hide(container);
+    }
+  }
+
+  function hide(container) {
+    const overlay = container.querySelector('[data-error-overlay]');
+    if (!overlay) return;
+    overlay.classList.remove('is-visible');
+    // keep overlay in DOM for reuse; just hide
+    overlay.hidden = true;
+  }
+
+  // Simple watchdog for iframes that don’t fire onerror
+  function armIframeTimeout(iframe, ms, onTimeout) {
+    const container = iframe.closest('[data-stream-container]') || iframe.parentElement;
+    let done = false;
+    function mark() { done = true; }
+    iframe.addEventListener('load', mark, { once: true });
+    setTimeout(() => { if (!done) onTimeout?.(container); }, ms);
+  }
+
+  window.PAKSTREAM = window.PAKSTREAM || {};
+  window.PAKSTREAM.ErrorOverlay = { show, hide, armIframeTimeout };
 })();

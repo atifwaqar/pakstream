@@ -1378,3 +1378,46 @@ footer nav a:hover {
   background: var(--primary);
   border-radius: 2px;
 }
+
+/* Error overlay (additive) */
+.ps-error-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 950;
+}
+.ps-error-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ps-error-card {
+  max-width: 420px;
+  width: calc(100% - 2rem);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  padding: 16px 18px;
+  text-align: center;
+}
+.ps-error-title { font-weight: 700; margin-bottom: 6px; }
+.ps-error-msg { font-size: 0.95rem; opacity: .85; margin-bottom: 12px; }
+.ps-error-actions { display: flex; justify-content: center; gap: 8px; }
+.ps-error-retry {
+  appearance: none;
+  border: 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #1e88e5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ps-error-retry:focus { outline: 2px solid #000; outline-offset: 2px; }
+
+/* Ensure stream containers establish a positioning context (non-breaking) */
+[data-stream-container] { position: relative; }

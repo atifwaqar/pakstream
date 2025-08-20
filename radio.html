@@ -73,7 +73,7 @@
         <span class="label">Stations</span>
       </button>
       <div class="live-player">
-        <div id="player-container" class="radio-player">
+        <div id="player-container" class="radio-player" data-stream-container>
           <div class="station-info">
             <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
             <h3 id="current-station" class="station-title">Select a station</h3>
@@ -593,12 +593,17 @@ document.addEventListener('DOMContentLoaded', function() {
     stationLogo.src = defaultLogo;
     stationLogo.hidden = false;
     updateFavoritesUI();
+    const container = mainPlayer.closest('[data-stream-container]') || mainPlayer.parentElement;
+    window.PAKSTREAM?.ErrorOverlay?.show(container, {
+      onRetry: () => { try { mainPlayer.load(); mainPlayer.play(); } catch {} }
+    });
   });
 
 });
 
   </script>
   <script src="/js/leftmenu.js"></script>
+  <script src="/js/error-overlay.js" defer></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>

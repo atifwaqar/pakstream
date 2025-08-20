@@ -241,6 +241,7 @@
             const div = document.createElement('div');
             div.id = ch.id;
             div.className = 'live-player';
+            div.setAttribute('data-stream-container', '');
             div.style.display = 'none';
 
             const iframe = document.createElement('iframe');
@@ -250,6 +251,7 @@
             iframe.loading = 'lazy';
             iframe.allow = 'autoplay';
             iframe.allowFullscreen = true;
+            iframe.setAttribute('data-youtube', '');
             div.appendChild(iframe);
             videoSection.appendChild(div);
           });
@@ -468,6 +470,7 @@
   </script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
+  <script src="/js/error-overlay.js" defer></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
