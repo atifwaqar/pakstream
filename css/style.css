@@ -1378,3 +1378,8 @@ footer nav a:hover {
   background: var(--primary);
   border-radius: 2px;
 }
+
+[data-radio-container].is-playing,
+[data-youtube-container].is-playing {
+  outline: 2px solid rgba(0,0,0,.2);
+}

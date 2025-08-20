@@ -80,7 +80,7 @@
             <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
             <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
           </div>
-          <div class="controls">
+          <div class="controls" data-radio-container>
             <button id="favorite-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
             <button id="prev-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Previous station" disabled>skip_previous</button>
             <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
@@ -90,7 +90,7 @@
             <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
             <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
             <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
-            <audio id="radio-player" autoplay></audio>
+            <audio id="radio-player" data-radio autoplay></audio>
           </div>
         </div>
       </div>
@@ -598,6 +598,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
   </script>
+  <script src="/js/stream-state.js" defer></script>
+  <script src="/js/radio.js" defer></script>
+  <script src="/js/youtube.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script defer src="/js/main.js"></script>
 </body>

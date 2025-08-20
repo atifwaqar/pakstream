@@ -165,7 +165,7 @@
           about: about,
           media: { thumbnail_url: thumb },
           endpoints: [
-            { kind: 'embed', provider: 'youtube', url: `https://www.youtube-nocookie.com/embed/live_stream?channel=${channelId}` },
+            { kind: 'embed', provider: 'youtube', url: `https://www.youtube-nocookie.com/embed/live_stream?channel=${channelId}&enablejsapi=1` },
             { kind: 'channel', provider: 'youtube', url: channelUrl }
           ],
           ids: { youtube_channel_id: channelId },

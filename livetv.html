@@ -242,14 +242,16 @@
             div.id = ch.id;
             div.className = 'live-player';
             div.style.display = 'none';
+            div.setAttribute('data-youtube-container', '');
 
             const iframe = document.createElement('iframe');
             iframe.id = `${ch.id}-player`;
             iframe.dataset.src = ch.src + (ch.src.includes('?') ? '&' : '?') + YT_PARAMS;
             iframe.src = '';
             iframe.loading = 'lazy';
-            iframe.allow = 'autoplay';
+            iframe.allow = 'autoplay; encrypted-media';
             iframe.allowFullscreen = true;
+            iframe.setAttribute('data-youtube', '');
             div.appendChild(iframe);
             videoSection.appendChild(div);
           });
@@ -466,6 +468,9 @@
     }
 
   </script>
+  <script src="/js/stream-state.js" defer></script>
+  <script src="/js/radio.js" defer></script>
+  <script src="/js/youtube.js" defer></script>
   <script src="/js/leftmenu.js"></script>
   <script type="module" src="/js/fullscreen-orientation.js"></script>
   <script defer src="/js/main.js"></script>
