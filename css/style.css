@@ -398,6 +398,16 @@ section {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Remove global section spacing for inline video sections */
+.feature-card > section.youtube-section.media-hub-section {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  max-width: none !important;
+}
+
 .feature-card:hover,
 .feature-card:focus-within {
   transform: translateY(-4px) scale(1.02);
