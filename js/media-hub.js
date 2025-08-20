@@ -1,6 +1,6 @@
-const __mh = (() => {
+(() => {
   // Avoid redefining across modules
-  if (window.__PAKSTREAM_MH_UTILS__) return window.__PAKSTREAM_MH_UTILS__;
+  if (window.__mh) return;
 
   const qs  = (sel, root=document) => root.querySelector(sel);
   const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -35,14 +35,14 @@ const __mh = (() => {
     document.dispatchEvent(new CustomEvent(name, { detail }));
   }
 
-  return (window.__PAKSTREAM_MH_UTILS__ = { qs, qsa, on, required, emptyState, clearContainer, emit });
+  window.__mh = { qs, qsa, on, required, emptyState, clearContainer, emit };
 })();
 
 (() => {
   if (window.__MH_BOOT_WIRED__) return;
   window.__MH_BOOT_WIRED__ = true;
 
-  const { qs, required, emit } = __mh;
+  const { qs, required, emit } = window.__mh;
 
   // Required top-level containers (adjust selectors to your DOM)
   const SEL = {
