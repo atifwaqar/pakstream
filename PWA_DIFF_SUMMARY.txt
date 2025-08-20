@@ -1,0 +1,24 @@
+PWA Diff Summary
+================
+
+Added files:
+- README_PWA.md
+- offline.html
+
+Modified files:
+- 404.html
+- _includes/google-analytics.html
+- _includes/google-tag-manager-body.html
+- _includes/google-tag-manager-head.html
+- _includes/support-us.html
+- _includes/top-bar.html
+- _layouts/post.html
+- blog.html
+- js/pwa.js
+- js/youtube.js
+- maintenance.html
+- manifest.webmanifest
+- sw.js
+
+Patched YouTube files:
+- js/youtube.js

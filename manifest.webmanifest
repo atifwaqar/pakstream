@@ -7,11 +7,23 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
-  "description": "Your Gateway to Pakistani Media — News, Radio & More",
+  "description": "Your Gateway to Pakistani Media \u2014 News, Radio & More",
   "icons": [
     {
       "src": "/images/icons/icon-192-maskable.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icons/icon-256-maskable.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icons/icon-384-maskable.png",
+      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },
@@ -27,12 +39,22 @@
       "src": "/images/screenshots/home-wide.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "PakStream Home (Wide)"
     },
     {
       "src": "/images/screenshots/home-mobile.png",
       "sizes": "720x1280",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "PakStream Home (Mobile)"
     }
-  ]
+  ],
+  "categories": [
+    "entertainment",
+    "news",
+    "music"
+  ],
+  "dir": "ltr",
+  "lang": "en"
 }
