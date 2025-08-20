@@ -11,6 +11,11 @@
     debugDiagnostics: true
   };
   </script>
+  <script>
+  window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
+    maintenance: false   // flip to true to enable maintenance redirect
+  });
+  </script>
 {% include google-tag-manager-head.html %}
   <!-- Start cookieyes banner -->
   <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
@@ -105,6 +110,7 @@
   <script src="/js/ads/config.js" defer></script>
   <script src="/js/ads/ads.js" defer></script>
   <script defer src="/js/main.js"></script>
+  <script src="/js/maintenance.js" defer></script>
   <!--
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-CA-PUB-ID"
           crossorigin="anonymous"></script>
