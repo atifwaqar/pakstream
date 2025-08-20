@@ -1,0 +1,1 @@
+// Ad configuration placeholder

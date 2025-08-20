@@ -17,6 +17,9 @@
   <meta name="robots" content="{{ page.robots | default: 'index, follow' }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#0F5132" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#7EE2B8" media="(prefers-color-scheme: dark)">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -72,10 +75,15 @@
       <a href="/contact.html">Contact</a>
       <a href="/privacy.html">Privacy Policy</a>
       <a href="/terms.html">Terms</a>
+      <a href="#" data-open-consent>Privacy &amp; Ads settings</a>
     </nav>
     {% include support-us.html %}
     <p>© 2025 PakStream. All rights reserved.</p>
   </footer>
+  <script defer src="/js/ad-config.js"></script>
+  <script defer src="/js/ad-slot.js"></script>
+  <script defer src="/js/consent.js"></script>
+  <script defer src="/js/pwa.js"></script>
   <script defer src="/js/main.js"></script>
 </body>
 </html>
