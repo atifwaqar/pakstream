@@ -412,12 +412,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function updateFavoritesUI() {
-    if (!listEl) return;
-    const cards = Array.from(listEl.querySelectorAll('.channel-card'));
-
     if (muteBtn) {
       muteBtn.textContent = mainPlayer && mainPlayer.muted ? 'volume_off' : 'volume_up';
     }
+    if (!listEl) {
+      if (currentAudio && favBtn) {
+        const radioFavs = JSON.parse(localStorage.getItem(favKeys['radio']) || '[]');
+        const isFav = radioFavs.includes(currentAudio.id);
+        favBtn.textContent = isFav ? 'favorite' : 'favorite_border';
+        favBtn.classList.toggle('favorited', isFav);
+        favBtn.disabled = false;
+        if (muteBtn) muteBtn.disabled = false;
+      } else {
+        if (favBtn) favBtn.disabled = true;
+        if (muteBtn) muteBtn.disabled = true;
+      }
+      if (playPauseBtn) playPauseBtn.disabled = false;
+      if (prevBtn && nextBtn) prevBtn.disabled = nextBtn.disabled = true;
+      return;
+    }
+    const cards = Array.from(listEl.querySelectorAll('.channel-card'));
 
     if (mode === 'favorites') {
       const activeFavFrag = document.createDocumentFragment();
