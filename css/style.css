@@ -1491,3 +1491,22 @@ footer nav a:hover {
   outline: 2px solid rgba(30,136,229,.35);
   outline-offset: 2px;
 }
+
+/* Utility: stack controls and videos vertically inside a section */
+.youtube-section.vertical {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.youtube-section.vertical iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.youtube-section.vertical .channels-btn {
+  align-self: flex-start;
+  margin-bottom: 8px;
+}
