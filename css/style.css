@@ -199,7 +199,7 @@ footer nav a:hover {
 /* Generic sections */
 section {
   background: var(--surface);
-  margin: 20px auto;
+  /*margin: 20px auto;*/
   padding: 16px;
   border-radius: 4px;
   box-shadow: var(--shadow-sm);
