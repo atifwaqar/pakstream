@@ -859,10 +859,6 @@ button:hover,
   background: var(--primary-container);
 }
 
-.channel-toggle .icon,
-.details-toggle .icon {
-  display: none;
-}
 
 @media (min-width: 769px) {
   .channel-toggle,
@@ -873,16 +869,6 @@ button:hover,
     padding: 4px;
     border-radius: 0;
     font-size: 20px;
-  }
-
-  .channel-toggle .label,
-  .details-toggle .label {
-    display: none;
-  }
-
-  .channel-toggle .icon,
-  .details-toggle .icon {
-    display: inline-block;
   }
 
   .channel-toggle:hover,

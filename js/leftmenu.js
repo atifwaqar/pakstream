@@ -42,7 +42,6 @@
 
   function toggleChannelList() {
     if (!channelList || !channelToggleBtn) return;
-    const icon = channelToggleBtn.querySelector(".icon");
     if (window.innerWidth <= 768) {
       const opening = !channelList.classList.contains("open");
       channelList.classList.toggle("open");
@@ -58,7 +57,6 @@
       const collapsed = channelList.classList.contains("collapsed");
       if (channelSection)
         channelSection.classList.toggle("channels-collapsed", collapsed);
-      if (icon) icon.textContent = collapsed ? "chevron_right" : "chevron_left";
       localStorage.setItem("channelListCollapsed", collapsed);
     }
   }
@@ -142,7 +140,6 @@
 
   function toggleDetailsList() {
     if (!detailsList || !detailsToggleBtn) return;
-    const icon = detailsToggleBtn.querySelector(".icon");
       if (window.innerWidth <= 1080) {
         if (detailsToggleBtn.style.display === "none") return;
         const opening = !detailsList.classList.contains("open");
@@ -160,7 +157,6 @@
         const collapsed = detailsContainer.classList.contains("collapsed");
         if (channelSection)
           channelSection.classList.toggle("details-collapsed", collapsed);
-      if (icon) icon.textContent = collapsed ? "chevron_left" : "chevron_right";
       localStorage.setItem("detailsListCollapsed", collapsed);
     }
   }
@@ -239,20 +235,16 @@
 
   (function () {
     if (channelList) {
-      const icon = channelToggleBtn?.querySelector(".icon");
       if (localStorage.getItem("channelListCollapsed") === "true") {
         channelList.classList.add("collapsed");
         if (channelSection) channelSection.classList.add("channels-collapsed");
-        if (icon) icon.textContent = "chevron_right";
       }
     }
     if (detailsContainer && detailsToggleBtn) {
-      const icon = detailsToggleBtn.querySelector(".icon");
       const collapsedPref = localStorage.getItem("detailsListCollapsed");
       if (collapsedPref === null || collapsedPref === "true") {
         detailsContainer.classList.add("collapsed");
         if (channelSection) channelSection.classList.add("details-collapsed");
-        if (icon) icon.textContent = "chevron_left";
       }
     }
   })();
