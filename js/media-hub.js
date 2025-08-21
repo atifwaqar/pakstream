@@ -817,6 +817,13 @@ async function renderLatestVideosRSS(channelId) {
   // ---- Selection for TV/FreePress/Creator ----
   function select(item, autoplay=false) {
     abortPendingRequests();
+    // Clear any previous stream error when selecting a new channel
+    if (playerIF) {
+      try {
+        const container = playerIF.closest('[data-stream-container]') || playerIF.parentElement;
+        window.PAKSTREAM?.ErrorOverlay?.hide(container);
+      } catch {}
+    }
     const isSame = currentVideoKey === item.key;
     document.querySelectorAll(".channel-card").forEach(c => c.classList.toggle("active", c.dataset.key === item.key));
     if (isSame) return;
@@ -892,6 +899,18 @@ async function renderLatestVideosRSS(channelId) {
 
   function playRadio(btn, audio, name, logoUrl, item) {
     if (!audio) return;
+
+    // Remove any existing stream error before starting radio playback
+    try {
+      if (playerIF) {
+        const vCont = playerIF.closest('[data-stream-container]') || playerIF.parentElement;
+        window.PAKSTREAM?.ErrorOverlay?.hide(vCont);
+      }
+      if (mainPlayer) {
+        const rCont = mainPlayer.closest('[data-stream-container]') || mainPlayer.parentElement;
+        window.PAKSTREAM?.ErrorOverlay?.hide(rCont);
+      }
+    } catch {}
 
     abortPendingRequests();
     currentVideoKey = null;
