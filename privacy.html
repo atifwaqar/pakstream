@@ -73,9 +73,18 @@
 
   <!-- Privacy policy content -->
 <section>
+  <h2>Privacy Policy</h2>
+  <!-- BEGIN: YOUTUBE-API-PRIVACY-NOTICE -->
+  <section id="youtube-api-privacy-notice">
+    <h2>YouTube API Services & Your Privacy</h2>
+    <p>PakStream uses <strong>YouTube API Services</strong> to retrieve and display public channel, video, and livestream information. By using PakStream, you also agree to the     <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube Terms of Service</a>.   </p>
+    <p>Data handling related to Google and YouTube is further governed by the     <a href="http://www.google.com/policies/privacy/" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.     You can review and manage your Google account permissions anytime at     <a href="https://security.google.com/settings/security/permissions" target="_blank" rel="noopener noreferrer">Google Security Settings</a>.   </p>
+    <p>PakStream does not store YouTube OAuth tokens, and it does not access private YouTube user data. Any data shown is fetched directly from YouTube’s public endpoints via YouTube API Services and displayed to you.</p>
+    <p><em>Last Updated:</em> <time datetime="2025-08-22">22 Aug 2025</time></p>
+  </section>
+  <!-- END: YOUTUBE-API-PRIVACY-NOTICE -->
   <h2>Privacy &amp; History</h2>
   <p>At PakStream, your privacy is important. This website uses cookies to deliver and improve the service. We use Google Analytics to understand how visitors interact with the site, and we plan to integrate Google Ads which may also use cookies for ad personalisation.</p>
-  <p>PakStream uses YouTube API Services to retrieve and display channel and video information. By using PakStream, you agree to the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Google may collect and process data as described in the <a href="https://www.google.com/policies/privacy">Google Privacy Policy</a>. PakStream does not store or collect personal information from these services.</p>
   <p>We do not collect personal data directly. Any information gathered through cookies is processed by Google in accordance with their policies. You can manage your cookie preferences through your browser settings or via the cookie consent banner.</p>
   <p>If you have any privacy concerns or questions, feel free to contact me at:
     <a href="mailto:atif.sheikh87@gmail.com">atif.sheikh87@gmail.com</a>
@@ -123,8 +132,27 @@
   </script>
   <script defer src="/js/discovery.js"></script>
   <script src="/js/pwa.js" defer></script>
-  <script defer src="/js/main.js"></script>
-  <script src="/assets/js/carousel.js" defer></script>
-  <script src="/assets/js/mh-featured.js" defer></script>
-</body>
-</html>
+    <script defer src="/js/main.js"></script>
+    <script src="/assets/js/carousel.js" defer></script>
+    <script src="/assets/js/mh-featured.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PrivacyPolicy",
+      "name": "PakStream Privacy Policy",
+      "url": "https://pakstream.com/privacy.html",
+      "provider": {
+        "@type": "Organization",
+        "name": "PakStream",
+        "url": "https://pakstream.com"
+      },
+      "dateModified": "2025-08-22",
+      "mentions": [
+        "https://www.youtube.com/t/terms",
+        "http://www.google.com/policies/privacy/",
+        "https://security.google.com/settings/security/permissions"
+      ]
+    }
+    </script>
+  </body>
+  </html>
