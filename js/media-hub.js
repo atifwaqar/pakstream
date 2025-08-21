@@ -8,10 +8,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   let isMuted = params.get("muted") === "1";
   let muteParam = isMuted ? "&mute=1" : "";
   const showVideoList = params.get("list") !== "0";
+  const showChannels = params.get("channels") !== "0";
 
   // DOM
-  const leftRail  = document.getElementById("left-rail");
-  const listEl    = leftRail; // left menu is the list container
+  const leftRail = document.getElementById("left-rail");
+  const channelsBtn = document.getElementById("toggle-channels");
+  const mediaHubSection = document.querySelector(".media-hub-section");
+  if (!showChannels) {
+    if (leftRail) leftRail.style.display = "none";
+    if (channelsBtn) channelsBtn.style.display = "none";
+    if (mediaHubSection) mediaHubSection.classList.add("no-channels");
+  }
+  const listEl = showChannels ? leftRail : null; // left menu is the list container
   const playerIF  = document.getElementById("playerFrame");
   const audioWrap = document.getElementById("audioWrap");
   const videoListEl = document.getElementById("videoList");
@@ -21,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
-  const mediaHubSection = document.querySelector(".media-hub-section");
 
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
@@ -590,8 +597,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderList(filterText="") {
-    if (!listEl) return;
-
     // Get items; if none for current mode, auto-switch to an available mode
     // Only auto-switch when not actively filtering to avoid jumping tabs during search
     let arr = filteredByMode(mode, filterText);
@@ -603,36 +608,59 @@ document.addEventListener("DOMContentLoaded", async () => {
       arr = filteredByMode(mode, filterText);
     }
 
-    // Clear & render
-    listEl.querySelectorAll(".channel-card").forEach(el => el.remove());
-    const frag = document.createDocumentFragment();
-    arr.forEach(it => {
-      const im = (mode === 'favorites' || mode === 'all') ? modeOfItem(it) : mode;
-      frag.appendChild(makeChannelCard(it, im));
-    });
-    listEl.appendChild(frag);
+    if (listEl) {
+      // Clear & render
+      listEl.querySelectorAll(".channel-card").forEach(el => el.remove());
+      const frag = document.createDocumentFragment();
+      arr.forEach(it => {
+        const im = (mode === 'favorites' || mode === 'all') ? modeOfItem(it) : mode;
+        frag.appendChild(makeChannelCard(it, im));
+      });
+      listEl.appendChild(frag);
+    }
 
     const initialKey = params.get('c');
     if (mode === 'radio') {
       if (!currentAudio) {
+        const choose = () => {
+          const first = arr[0];
+          if (!first) return;
+          const card = listEl ? listEl.querySelector(`.channel-card[data-key="${first.key}"]`) : null;
+          let btn = card ? card.querySelector('.play-btn') : null;
+          let audio = card ? card.querySelector('audio') : null;
+          if (!audio) {
+            const ep = radioEndpoint(first);
+            if (!ep) return;
+            audio = document.createElement('audio');
+            audio.id = first.ids?.internal_id || first.key;
+            audio.src = ep.url;
+            audio.dataset.logo = thumbOf(first);
+            btn = document.createElement('button');
+          }
+          playRadio(btn, audio, displayName(first), thumbOf(first), first);
+        };
         if (initialKey) {
           const target = arr.find(it => it.key === initialKey || it.ids?.internal_id === initialKey);
           if (target) {
-            const card = listEl.querySelector(`.channel-card[data-key="${target.key}"]`);
-            const btn = card ? card.querySelector('.play-btn') : null;
-            const audio = card ? card.querySelector('audio') : null;
-            if (btn && audio) {
-              playRadio(btn, audio, displayName(target), thumbOf(target), target);
+            const card = listEl ? listEl.querySelector(`.channel-card[data-key="${target.key}"]`) : null;
+            let btn = card ? card.querySelector('.play-btn') : null;
+            let audio = card ? card.querySelector('audio') : null;
+            if (!audio) {
+              const ep = radioEndpoint(target);
+              if (ep) {
+                audio = document.createElement('audio');
+                audio.id = target.ids?.internal_id || target.key;
+                audio.src = ep.url;
+                audio.dataset.logo = thumbOf(target);
+                btn = document.createElement('button');
+              }
             }
+            if (audio) playRadio(btn, audio, displayName(target), thumbOf(target), target);
+          } else {
+            choose();
           }
-        } else if (arr.length) {
-          const first = arr[0];
-          const card = listEl.querySelector(`.channel-card[data-key="${first.key}"]`);
-          const btn = card ? card.querySelector('.play-btn') : null;
-          const audio = card ? card.querySelector('audio') : null;
-          if (btn && audio) {
-            playRadio(btn, audio, displayName(first), thumbOf(first), first);
-          }
+        } else {
+          choose();
         }
       }
     } else {
@@ -641,14 +669,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         const match = arr.find(it => it.key === initialKey || it.ids?.internal_id === initialKey);
         if (match) {
           if ((mode === 'favorites' || mode === 'all') && modeOfItem(match) === 'radio') {
-            const card = listEl.querySelector(`.channel-card[data-key="${match.key}"]`);
-            const btn = card ? card.querySelector('.play-btn') : null;
-            const audio = card ? card.querySelector('audio') : null;
+            const card = listEl ? listEl.querySelector(`.channel-card[data-key="${match.key}"]`) : null;
+            let btn = card ? card.querySelector('.play-btn') : null;
+            let audio = card ? card.querySelector('audio') : null;
+            if (!audio) {
+              const ep = radioEndpoint(match);
+              if (ep) {
+                audio = document.createElement('audio');
+                audio.id = match.ids?.internal_id || match.key;
+                audio.src = ep.url;
+                audio.dataset.logo = thumbOf(match);
+                btn = document.createElement('button');
+              }
+            }
             const matchId = match.ids?.internal_id || match.key;
             if (currentAudio && currentAudio.id === matchId) {
-              document.querySelectorAll('.channel-card').forEach(c => c.classList.toggle('active', c.dataset.key === match.key));
+              if (listEl) {
+                document.querySelectorAll('.channel-card').forEach(c => c.classList.toggle('active', c.dataset.key === match.key));
+              }
               handled = true;
-            } else if (btn && audio) {
+            } else if (audio) {
               playRadio(btn, audio, displayName(match), thumbOf(match), match);
               handled = true;
             }
@@ -662,6 +702,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         const chosen = arr[0];
         if (!((mode === 'favorites' || mode === 'all') && modeOfItem(chosen) === 'radio')) {
           select(chosen, false);
+        } else if ((mode === 'favorites' || mode === 'all')) {
+          const ep = radioEndpoint(chosen);
+          if (ep) {
+            const audio = document.createElement('audio');
+            audio.id = chosen.ids?.internal_id || chosen.key;
+            audio.src = ep.url;
+            audio.dataset.logo = thumbOf(chosen);
+            const btn = document.createElement('button');
+            playRadio(btn, audio, displayName(chosen), thumbOf(chosen), chosen);
+          }
         }
       }
     }
