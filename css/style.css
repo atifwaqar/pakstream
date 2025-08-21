@@ -661,6 +661,21 @@ section {
   color: var(--on-surface-variant);
 }
 
+/* Home page YouTube sections */
+.index-youtube-section {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+/* Offset feature card padding so embeds touch the edges */
+.feature-card .index-youtube-section {
+  margin: -20px -20px 0;
+}
+
 /* Responsive behaviour for channel list */
 @media (max-width: 768px) {
   .youtube-section {
