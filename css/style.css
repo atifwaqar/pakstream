@@ -661,6 +661,15 @@ section {
   color: var(--on-surface-variant);
 }
 
+/* Home page YouTube sections */
+.index-youtube-section {
+  display: block;
+  margin: 0;
+  border: 0;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
 /* Responsive behaviour for channel list */
 @media (max-width: 768px) {
   .youtube-section {
