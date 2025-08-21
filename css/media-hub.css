@@ -1,9 +1,3 @@
-/* Ensure the page and layout section are tall enough to display the full video area */
-body.media-hub-embed,
-body.media-hub-embed .youtube-section.media-hub-section {
-  min-height: calc(100vh - 120px);
-}
-
 /* Layout: mode tabs on top, channel list and video section below */
 .media-hub-section {
   display: grid;
