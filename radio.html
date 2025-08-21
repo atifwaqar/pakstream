@@ -444,8 +444,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (window.innerWidth <= 768) {
         const list = document.querySelector('.channel-list');
         list.classList.remove('open');
-        const label = document.querySelector('#toggle-channels .label');
-        if (label) label.textContent = label.dataset.default || label.textContent;
         if (typeof updateScrollLock === 'function') updateScrollLock();
       }
 

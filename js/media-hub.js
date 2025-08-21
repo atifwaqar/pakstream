@@ -252,7 +252,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateDetails(item) {
     if (!details || !toggleDetailsBtn) return;
-    const label = toggleDetailsBtn.querySelector('.label');
     let html = '';
     if (item) {
       if (item.details_html) {
@@ -271,13 +270,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       attachSupportHandlers(details);
       details.style.display = '';
       toggleDetailsBtn.style.display = '';
-      if (label) label.textContent = label.dataset.default || 'About';
     } else {
       details.classList.remove('open');
       details.innerHTML = '';
       details.style.display = 'none';
       toggleDetailsBtn.style.display = 'none';
-      if (label) label.textContent = label.dataset.default || 'About';
     }
   }
 
@@ -817,8 +814,6 @@ async function renderLatestVideosRSS(channelId) {
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       if (list) list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
       if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
     }
 
@@ -924,8 +919,6 @@ async function renderLatestVideosRSS(channelId) {
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       if (list) list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
       if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
     }
     updateFavoritesUI();
