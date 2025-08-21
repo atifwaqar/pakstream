@@ -1,0 +1,49 @@
+
+:root{ --bnz-max:1240px; }
+.annc{ background:#ebebeb; color:#111; font-size:12px; }
+.annc__inner{ text-align:center; padding:8px 0; }
+.bnz-header{ border-bottom:1px solid var(--border); background:#fff; position:sticky; top:0; z-index:40; }
+.bnz-header__row{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; min-height:74px; }
+.bnz-logo{ font-family:'Playfair Display',serif; letter-spacing:4px; font-weight:700; color:#000; text-decoration:none; font-size:22px; }
+.bnz-header__right{ display:flex; gap:16px; justify-self:end; align-items:center; }
+.bnz-search{ border:1px solid var(--border); border-radius:999px; padding:4px 10px; }
+.bnz-search input{ border:0; outline:0; min-width:220px; }
+.bnz-search button{ background:transparent; border:0; padding:0 6px; }
+.bnz-icon{ position:relative; color:#111; }
+.bnz-badge{ position:absolute; top:-6px; right:-8px; background:#111; color:#fff; border-radius:999px; font-size:10px; line-height:1; padding:2px 6px; }
+.bnz-tabs{ border-top:1px solid var(--border); }
+.bnz-tabs .container-narrow{ display:flex; gap:18px; overflow:auto; white-space:nowrap; }
+.bnz-tab{ padding:10px 12px; display:inline-block; border-radius:999px; font-size:14px; color:#111; text-decoration:none; }
+.bnz-tab.is-active{ background:#111; color:#fff; }
+.bnz-main{ padding:28px 0 40px; }
+.product-grid{ grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:36px 28px; }
+.pc.card-soft{ border-color:#e9e9e9; border-radius:0; box-shadow:none; }
+.pc__body{ padding:12px 0 0; }
+.pc__title{ font-size:13px; letter-spacing:.02em; text-transform:uppercase; color:#111; }
+.pc__price .price--new{ font-weight:600; }
+.pc__price .price--old{ font-size:12px; }
+.pc__cta{ display:none; }
+.pc__badges{ top:12px; left:12px; }
+.pc-badge{ border-radius:2px; text-transform:uppercase; font-size:10px; padding:3px 6px; }
+.pc-badge--best{ background:#b30000; }
+.pc__wish{ background:transparent; border-color:transparent; width:auto; height:auto; font-size:18px; color:#222; }
+.pc__wish[aria-pressed="true"]{ color:#e60023; background:transparent; }
+.pc__swatches{ display:flex; gap:8px; margin-top:10px; align-items:center; }
+.pc__swatch{ width:14px; height:14px; border-radius:999px; border:1px solid rgba(0,0,0,.1); display:inline-block; }
+.pc__swatch.more{ width:auto; height:auto; font-size:12px; color:#555; border:0; }
+.bnz-progress{ margin:36px 0 16px; }
+.bnz-progress__label{ font-size:13px; color:#333; margin-bottom:8px; text-align:center; }
+.bnz-progress__bar{ height:4px; background:#eee; border-radius:999px; overflow:hidden; }
+.bnz-progress__bar span{ display:block; height:100%; background:#111; border-radius:999px; }
+.bnz-loadmore{ text-align:center; margin-top:20px; }
+.btn-outline-dark{ border:1px solid #111; color:#111; background:#fff; border-radius:0; padding:10px 20px; }
+.btn-outline-dark:hover{ background:#111; color:#fff; }
+.bnz-footer{ background:#f7f7f7; border-top:1px solid #e9e9e9; padding:32px 0; }
+.bnz-footer__cols{ display:grid; gap:20px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
+.bnz-footer h4{ font-size:13px; letter-spacing:.02em; text-transform:uppercase; color:#111; }
+.bnz-footer ul{ list-style:none; padding:0; margin:0; }
+.bnz-footer a{ color:#111; }
+.bnz-news{ display:flex; border:1px solid #ddd; border-radius:999px; overflow:hidden; }
+.bnz-news input{ border:0; padding:10px 12px; flex:1; }
+.bnz-news button{ background:#111; color:#fff; border:0; width:42px; }
+.bnz-copy{ margin-top:20px; font-size:13px; color:#555; text-align:center; }

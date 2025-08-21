@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4D Cosmetics</title>
-  <meta name="description" content="Shop premium makeup, skincare, perfume and accessories at 4D Cosmetics.">
+  <title>Product | 4D Cosmetics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
@@ -13,6 +12,7 @@
   <link rel="stylesheet" href="/assets/css/theme.css">
   <link rel="stylesheet" href="/assets/css/product-card.css">
   <link rel="stylesheet" href="/assets/css/bonanza-layout.css">
+  <link rel="stylesheet" href="/assets/css/pdp.css">
 </head>
 <body data-active-tab="Beauty">
   
@@ -38,15 +38,45 @@
   </nav>
 </header>
 
-  <main id="main" class="bnz-main">
-    <section class="container-narrow">
-      <div id="home-grid" class="product-grid"></div>
-      <div class="bnz-progress" id="home-progress" hidden>
-        <div class="bnz-progress__label">You’ve viewed <span id="viewed-count">0</span> of <span id="total-count">0</span> products</div>
-        <div class="bnz-progress__bar"><span id="progress-bar" style="width:0%"></span></div>
+  <main id="main">
+    <nav aria-label="Breadcrumb"><ol class="breadcrumb" id="breadcrumb"></ol></nav>
+    <section class="pdp container-narrow pdp">
+      <div class="pdp__media">
+        <div class="pdp__main aspect-1x1"></div>
+        <div class="pdp__thumbs" aria-label="Product thumbnails"></div>
       </div>
-      <div class="bnz-loadmore"><button id="load-more" class="btn btn-outline-dark">Load More</button></div>
+      <div class="pdp__details">
+        <p class="pdp__brand">{{ brand }}</p>
+        <h1 class="pdp__title">{{ title }}</h1>
+        <div class="pdp__rating" aria-label="{{ rating }} out of 5 stars, {{ reviews }} reviews">
+          <span class="pdp__rating-stars" aria-hidden="true"></span>
+          <span class="pc__rating-num">{{ rating }}</span>
+          <span class="pc__rating-count">({{ reviews }})</span>
+        </div>
+        <div class="pdp__price"></div>
+        <ul class="pdp__bullets">{{ bullets }}</ul>
+        <div class="pdp__cta">
+          <button class="btn-modern btn-modern--primary" data-atc>Add to Cart</button>
+          <button class="btn-modern btn-modern--ghost">Add to Wishlist</button>
+        </div>
+        <div class="pdp-tabs">
+          <nav class="pdp-tabs__nav" role="tablist">
+            <button data-tab="desc" class="is-active">Description</button>
+            <button data-tab="ingr">Ingredients</button>
+            <button data-tab="use">How to Use</button>
+            <button data-tab="rev">Reviews</button>
+          </nav>
+          <div class="pdp-tabs__panel is-active" data-panel="desc">{{ description }}</div>
+          <div class="pdp-tabs__panel" data-panel="ingr">{{ ingredients }}</div>
+          <div class="pdp-tabs__panel" data-panel="use">{{ how_to_use }}</div>
+          <div class="pdp-tabs__panel" data-panel="rev">{{ reviews_html }}</div>
+        </div>
+      </div>
     </section>
+    <div class="mobile-atc">
+      <button class="btn-modern btn-modern--primary" data-atc>Add to Cart</button>
+      <div class="mobile-atc__price" id="mobile-atc-price"></div>
+    </div>
   </main>
   
 <footer class="bnz-footer">
@@ -87,34 +117,6 @@
   <script src="/assets/js/storefront-runtime.js"></script>
   <script src="/assets/js/product-card.js"></script>
   <script src="/assets/js/tabs.js"></script>
-  <script>
-  (function(){
-    var grid = document.getElementById('home-grid');
-    var all = (window.__ALL_PRODUCTS__ || []);
-    if (!all.length && window.Storefront && Storefront.getAllProducts) {
-      Storefront.getAllProducts().then(function(items){
-        all = items || [];
-        init();
-      });
-    } else { init(); }
-    function init(){
-      var page = 0, size = 12;
-      function render(){
-        var slice = all.slice(0, (page+1)*size);
-        grid.innerHTML = slice.map(function(p){ return window.ProductCard.renderProductCard(p); }).join('');
-        var viewed = slice.length, total = all.length, pct = total? Math.min(100, Math.round((viewed/total)*100)) : 0;
-        document.getElementById('home-progress').hidden = false;
-        document.getElementById('viewed-count').textContent = viewed;
-        document.getElementById('total-count').textContent = total;
-        document.getElementById('progress-bar').style.width = pct + '%';
-      }
-      document.getElementById('load-more').addEventListener('click', function(){
-        page++; render();
-      });
-      render();
-    }
-  })();
-  </script>
-  <script src="/assets/js/home-feed.js"></script>
+  <script src="/assets/js/pdp.js"></script>
 </body>
 </html>

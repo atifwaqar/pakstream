@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4D Cosmetics</title>
-  <meta name="description" content="Shop premium makeup, skincare, perfume and accessories at 4D Cosmetics.">
+  <title>Search | 4D Cosmetics</title>
+  <meta name="robots" content="noindex, follow">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
@@ -38,15 +38,31 @@
   </nav>
 </header>
 
-  <main id="main" class="bnz-main">
-    <section class="container-narrow">
-      <div id="home-grid" class="product-grid"></div>
-      <div class="bnz-progress" id="home-progress" hidden>
-        <div class="bnz-progress__label">You’ve viewed <span id="viewed-count">0</span> of <span id="total-count">0</span> products</div>
-        <div class="bnz-progress__bar"><span id="progress-bar" style="width:0%"></span></div>
+  <main class="bnz-main">
+    <div class="container-narrow">
+      <h1 class="mb-3" id="search-heading"></h1>
+      <p id="results-count" aria-live="polite"></p>
+      <div class="mb-3">
+        <label for="sort" class="visually-hidden">Sort</label>
+        <select id="sort" class="form-select w-auto">
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="name_asc">Name A-Z</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+      <div id="search-grid" class="product-grid"></div>
+      <div id="search-empty" class="d-none">
+        <p>No products found for “<span id="empty-query"></span>”.</p>
+        <div id="empty-links"></div>
+      </div>
+      <div class="bnz-progress" id="search-progress" hidden>
+        <div class="bnz-progress__label">You’ve viewed <span id="search-viewed">0</span> of <span id="search-total">0</span> products</div>
+        <div class="bnz-progress__bar"><span id="search-bar" style="width:0%"></span></div>
       </div>
       <div class="bnz-loadmore"><button id="load-more" class="btn btn-outline-dark">Load More</button></div>
-    </section>
+    </div>
   </main>
   
 <footer class="bnz-footer">
@@ -87,34 +103,19 @@
   <script src="/assets/js/storefront-runtime.js"></script>
   <script src="/assets/js/product-card.js"></script>
   <script src="/assets/js/tabs.js"></script>
+  <script src="/assets/js/search.js"></script>
+  <script type="module" src="/assets/js/ui-cards.js"></script>
+  <script type="module" src="/assets/js/search-page.js"></script>
   <script>
-  (function(){
-    var grid = document.getElementById('home-grid');
-    var all = (window.__ALL_PRODUCTS__ || []);
-    if (!all.length && window.Storefront && Storefront.getAllProducts) {
-      Storefront.getAllProducts().then(function(items){
-        all = items || [];
-        init();
-      });
-    } else { init(); }
-    function init(){
-      var page = 0, size = 12;
-      function render(){
-        var slice = all.slice(0, (page+1)*size);
-        grid.innerHTML = slice.map(function(p){ return window.ProductCard.renderProductCard(p); }).join('');
-        var viewed = slice.length, total = all.length, pct = total? Math.min(100, Math.round((viewed/total)*100)) : 0;
-        document.getElementById('home-progress').hidden = false;
-        document.getElementById('viewed-count').textContent = viewed;
-        document.getElementById('total-count').textContent = total;
-        document.getElementById('progress-bar').style.width = pct + '%';
-      }
-      document.getElementById('load-more').addEventListener('click', function(){
-        page++; render();
-      });
-      render();
-    }
-  })();
+  window.__updateSearchProgress = function(viewed, total){
+    var wrap = document.getElementById('search-progress');
+    if(!wrap) return;
+    wrap.hidden = false;
+    document.getElementById('search-viewed').textContent = viewed;
+    document.getElementById('search-total').textContent = total;
+    var pct = total ? Math.min(100, Math.round((viewed/total)*100)) : 0;
+    document.getElementById('search-bar').style.width = pct + '%';
+  };
   </script>
-  <script src="/assets/js/home-feed.js"></script>
 </body>
 </html>

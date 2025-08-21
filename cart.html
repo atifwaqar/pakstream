@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4D Cosmetics</title>
-  <meta name="description" content="Shop premium makeup, skincare, perfume and accessories at 4D Cosmetics.">
+  <title>Cart - 4D Cosmetics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/assets/css/custom.css">
   <link rel="stylesheet" href="/assets/css/theme.css">
-  <link rel="stylesheet" href="/assets/css/product-card.css">
   <link rel="stylesheet" href="/assets/css/bonanza-layout.css">
+  <link rel="stylesheet" href="/assets/css/cart.css">
 </head>
 <body data-active-tab="Beauty">
   
@@ -38,15 +37,16 @@
   </nav>
 </header>
 
-  <main id="main" class="bnz-main">
-    <section class="container-narrow">
-      <div id="home-grid" class="product-grid"></div>
-      <div class="bnz-progress" id="home-progress" hidden>
-        <div class="bnz-progress__label">You’ve viewed <span id="viewed-count">0</span> of <span id="total-count">0</span> products</div>
-        <div class="bnz-progress__bar"><span id="progress-bar" style="width:0%"></span></div>
-      </div>
-      <div class="bnz-loadmore"><button id="load-more" class="btn btn-outline-dark">Load More</button></div>
+  <main class="container bnz-main cart" id="main">
+    <section>
+      <h1>Your Cart</h1>
+      <div id="cart-lines"></div>
     </section>
+    <aside class="cart-summary">
+      <div class="row"><span>Subtotal</span><span id="cart-subtotal">—</span></div>
+      <div class="row total"><span>Total</span><span id="cart-total">See checkout</span></div>
+      <a href="/checkout.html" class="btn btn-outline-dark w-100 mt-2">Proceed to Checkout</a>
+    </aside>
   </main>
   
 <footer class="bnz-footer">
@@ -87,34 +87,6 @@
   <script src="/assets/js/storefront-runtime.js"></script>
   <script src="/assets/js/product-card.js"></script>
   <script src="/assets/js/tabs.js"></script>
-  <script>
-  (function(){
-    var grid = document.getElementById('home-grid');
-    var all = (window.__ALL_PRODUCTS__ || []);
-    if (!all.length && window.Storefront && Storefront.getAllProducts) {
-      Storefront.getAllProducts().then(function(items){
-        all = items || [];
-        init();
-      });
-    } else { init(); }
-    function init(){
-      var page = 0, size = 12;
-      function render(){
-        var slice = all.slice(0, (page+1)*size);
-        grid.innerHTML = slice.map(function(p){ return window.ProductCard.renderProductCard(p); }).join('');
-        var viewed = slice.length, total = all.length, pct = total? Math.min(100, Math.round((viewed/total)*100)) : 0;
-        document.getElementById('home-progress').hidden = false;
-        document.getElementById('viewed-count').textContent = viewed;
-        document.getElementById('total-count').textContent = total;
-        document.getElementById('progress-bar').style.width = pct + '%';
-      }
-      document.getElementById('load-more').addEventListener('click', function(){
-        page++; render();
-      });
-      render();
-    }
-  })();
-  </script>
-  <script src="/assets/js/home-feed.js"></script>
+  <script src="/assets/js/cart-ui.js"></script>
 </body>
 </html>
