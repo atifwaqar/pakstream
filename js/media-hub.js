@@ -892,7 +892,7 @@ async function renderLatestVideosRSS(channelId) {
       const playPromise = mainPlayer.play();
       if (playPromise !== undefined) {
         pendingBtn = btn;
-        btn.classList.add('loading');
+        if (btn) btn.classList.add('loading');
         if (playPauseBtn) playPauseBtn.classList.add('loading');
         playPromise.catch(() => {
           // require user interaction
@@ -1057,4 +1057,21 @@ async function renderLatestVideosRSS(channelId) {
     }
   updateActiveUI();
   renderList(searchEl ? (searchEl.value || "") : "");
+
+  // If no channels are rendered but a specific radio channel is requested,
+  // load it directly so primary controls remain enabled.
+  const initialKey = params.get('c');
+  if (!currentAudio && initialKey) {
+    const item = items.find(i => i.key === initialKey || i.ids?.internal_id === initialKey);
+    if (item && modeOfItem(item) === 'radio') {
+      const ep = radioEndpoint(item);
+      if (ep) {
+        const audio = document.createElement('audio');
+        audio.id = item.ids?.internal_id || item.key;
+        audio.src = ep.url;
+        audio.dataset.logo = thumbOf(item);
+        playRadio(null, audio, displayName(item), audio.dataset.logo, item);
+      }
+    }
+  }
 });
