@@ -1460,34 +1460,3 @@ footer nav a:hover {
 
 [data-radio-container].is-playing,
 [data-youtube-container].is-playing { outline: 2px solid rgba(0,0,0,.2); }
-
-/* Now Playing badge (additive) */
-[data-stream-container] { position: relative; }
-.ps-now-playing {
-  position: absolute;
-  top: 8px; right: 8px;
-  background: rgba(30,136,229,.95);
-  color: #fff;
-  font-size: .75rem;
-  padding: 6px 8px;
-  border-radius: 999px;
-  display: inline-flex; align-items: center; gap: 6px;
-  box-shadow: var(--ps-shadow-1, 0 6px 18px rgba(0,0,0,.12));
-}
-.ps-now-playing .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 2px rgba(34,197,94,.35);
-  animation: ps-pulse 1.2s infinite;
-}
-@keyframes ps-pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
-}
-.has-now-playing .mh-card,
-.has-now-playing .video-tile,
-.has-now-playing .radio-tile {
-  outline: 2px solid rgba(30,136,229,.35);
-  outline-offset: 2px;
-}
