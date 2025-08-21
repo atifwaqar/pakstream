@@ -259,7 +259,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function updateDetails(item) {
     if (!details || !toggleDetailsBtn) return;
-    const label = toggleDetailsBtn.querySelector('.label');
     let html = '';
     if (item) {
       if (item.details_html) {
@@ -278,13 +277,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       attachSupportHandlers(details);
       details.style.display = '';
       toggleDetailsBtn.style.display = '';
-      if (label) label.textContent = label.dataset.default || 'About';
     } else {
       details.classList.remove('open');
       details.innerHTML = '';
       details.style.display = 'none';
       toggleDetailsBtn.style.display = 'none';
-      if (label) label.textContent = label.dataset.default || 'About';
     }
   }
 
@@ -867,8 +864,6 @@ async function renderLatestVideosRSS(channelId) {
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       if (list) list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
       if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
     }
 
@@ -947,7 +942,7 @@ async function renderLatestVideosRSS(channelId) {
       const playPromise = mainPlayer.play();
       if (playPromise !== undefined) {
         pendingBtn = btn;
-        btn.classList.add('loading');
+        if (btn) btn.classList.add('loading');
         if (playPauseBtn) playPauseBtn.classList.add('loading');
         playPromise.catch(() => {
           // require user interaction
@@ -974,8 +969,6 @@ async function renderLatestVideosRSS(channelId) {
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       if (list) list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || label.textContent;
       if (typeof window.updateScrollLock === 'function') window.updateScrollLock();
     }
     updateFavoritesUI();
@@ -1114,4 +1107,21 @@ async function renderLatestVideosRSS(channelId) {
     }
   updateActiveUI();
   renderList(searchEl ? (searchEl.value || "") : "");
+
+  // If no channels are rendered but a specific radio channel is requested,
+  // load it directly so primary controls remain enabled.
+  const initialKey = params.get('c');
+  if (!currentAudio && initialKey) {
+    const item = items.find(i => i.key === initialKey || i.ids?.internal_id === initialKey);
+    if (item && modeOfItem(item) === 'radio') {
+      const ep = radioEndpoint(item);
+      if (ep) {
+        const audio = document.createElement('audio');
+        audio.id = item.ids?.internal_id || item.key;
+        audio.src = ep.url;
+        audio.dataset.logo = thumbOf(item);
+        playRadio(null, audio, displayName(item), audio.dataset.logo, item);
+      }
+    }
+  }
 });

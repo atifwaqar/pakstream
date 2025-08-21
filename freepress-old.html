@@ -73,11 +73,11 @@
       <div class="button-row">
         <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
           <span class="material-symbols-outlined icon">chevron_left</span>
-          <span class="label" data-default="Channels">Channels</span>
+          <span class="label">Channels</span>
         </button>
         <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()" aria-label="Toggle details list" style="display: none;">
           <span class="material-symbols-outlined icon">chevron_right</span>
-          <span class="label" data-default="About">About</span>
+          <span class="label">About</span>
         </button>
       </div>
       <div class="live-player" data-stream-container data-youtube-container>
@@ -370,23 +370,13 @@
 
   function toggleChannelList() {
     const list = document.querySelector('.channel-list');
-    const btn = document.getElementById('toggle-channels');
-    const label = btn?.querySelector('.label');
     list.classList.toggle('open');
-    if (label) {
-      label.textContent = list.classList.contains('open') ? 'Hide' : (label.dataset.default || 'Channels');
-    }
   }
 
   function toggleDetailsList() {
     const details = document.querySelector('.details-list');
-    const btn = document.getElementById('toggle-details');
-    const label = btn?.querySelector('.label');
     details.classList.toggle('open');
     details.style.display = details.classList.contains('open') ? '' : 'none';
-    if (label) {
-      label.textContent = details.classList.contains('open') ? 'Hide' : (label.dataset.default || 'About');
-    }
   }
 
   async function handleChannelClick(card) {
@@ -426,8 +416,6 @@
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');
       list.classList.remove('open');
-      const label = document.querySelector('#toggle-channels .label');
-      if (label) label.textContent = label.dataset.default || 'Channels';
     }
 
     if (!channelId) {

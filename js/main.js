@@ -154,6 +154,25 @@ document.addEventListener('DOMContentLoaded', function () {
   window.resizeLivePlayers = resizeLivePlayers;
   resizeLivePlayers();
 
+  // Match iframe height to its content so feature cards don't scroll internally
+  function resizeMediaHubEmbeds() {
+    document.querySelectorAll('.media-hub-embed').forEach(function (iframe) {
+      try {
+        var doc = iframe.contentWindow.document;
+        var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+        iframe.style.height = h + 'px';
+      } catch (e) {
+        // Ignore cross-origin frames
+      }
+    });
+  }
+  window.addEventListener('resize', resizeMediaHubEmbeds);
+  document.querySelectorAll('.media-hub-embed').forEach(function (iframe) {
+    iframe.setAttribute('scrolling', 'no');
+    iframe.addEventListener('load', resizeMediaHubEmbeds);
+  });
+  resizeMediaHubEmbeds();
+
   var scroller = document.querySelector('.station-scroller .scroller-track');
   if (scroller) {
     fetch('/all_streams.json')

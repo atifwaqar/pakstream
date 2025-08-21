@@ -8,13 +8,6 @@
     ".youtube-section, .media-hub-section",
   );
 
-  const channelLabelEl = channelToggleBtn?.querySelector(".label");
-  const channelToggleDefaultText =
-    channelLabelEl?.textContent || channelToggleBtn?.textContent || "";
-  if (channelLabelEl) channelLabelEl.dataset.default = channelToggleDefaultText;
-  const detailsLabelEl = detailsToggleBtn?.querySelector(".label");
-  const detailsToggleDefaultText = detailsLabelEl?.textContent || "About";
-  if (detailsLabelEl) detailsLabelEl.dataset.default = detailsToggleDefaultText;
 
   const FOCUSABLE_SELECTOR =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -50,15 +43,9 @@
   function toggleChannelList() {
     if (!channelList || !channelToggleBtn) return;
     const icon = channelToggleBtn.querySelector(".icon");
-    const label = channelToggleBtn.querySelector(".label");
     if (window.innerWidth <= 768) {
       const opening = !channelList.classList.contains("open");
       channelList.classList.toggle("open");
-      if (label) {
-        label.textContent = opening
-          ? `Close ${channelToggleDefaultText}`
-          : channelToggleDefaultText;
-      }
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (opening) {
         removeChannelFocusTrap = trapFocus(channelList);
@@ -86,8 +73,6 @@
       !channelToggleBtn.contains(e.target)
     ) {
       channelList.classList.remove("open");
-      const label = channelToggleBtn.querySelector(".label");
-      if (label) label.textContent = channelToggleDefaultText;
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeChannelFocusTrap) removeChannelFocusTrap();
       channelToggleBtn.focus();
@@ -99,8 +84,6 @@
       if (window.innerWidth > 768) return;
       if (e.target.closest(".channel-card")) {
         channelList.classList.remove("open");
-        const label = channelToggleBtn?.querySelector(".label");
-        if (label) label.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === "function") updateScrollLock();
         if (removeChannelFocusTrap) removeChannelFocusTrap();
         channelToggleBtn.focus();
@@ -120,8 +103,6 @@
       const touchEndX = e.changedTouches[0].clientX;
       if (!touchFromModeTabs && touchStartX - touchEndX > 50) {
         channelList.classList.remove("open");
-        const label = channelToggleBtn?.querySelector(".label");
-        if (label) label.textContent = channelToggleDefaultText;
         if (typeof updateScrollLock === "function") updateScrollLock();
         if (removeChannelFocusTrap) removeChannelFocusTrap();
         channelToggleBtn.focus();
@@ -152,8 +133,6 @@
       const touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - openStartX > 50 && openStartX < 50) {
         channelList.classList.add("open");
-        const label = channelToggleBtn?.querySelector(".label");
-        if (label) label.textContent = `Close ${channelToggleDefaultText}`;
         if (typeof updateScrollLock === "function") updateScrollLock();
         removeChannelFocusTrap = trapFocus(channelList);
       }
@@ -164,16 +143,10 @@
   function toggleDetailsList() {
     if (!detailsList || !detailsToggleBtn) return;
     const icon = detailsToggleBtn.querySelector(".icon");
-    const label = detailsToggleBtn.querySelector(".label");
       if (window.innerWidth <= 1080) {
         if (detailsToggleBtn.style.display === "none") return;
         const opening = !detailsList.classList.contains("open");
         detailsList.classList.toggle("open");
-        if (label) {
-          label.textContent = opening
-            ? `Close ${detailsToggleDefaultText}`
-            : detailsToggleDefaultText;
-        }
         if (typeof updateScrollLock === "function") updateScrollLock();
         if (opening) {
           removeDetailsFocusTrap = trapFocus(detailsList);
@@ -202,8 +175,6 @@
       !detailsToggleBtn.contains(e.target)
     ) {
       detailsList.classList.remove("open");
-      const label = detailsToggleBtn.querySelector(".label");
-      if (label) label.textContent = detailsToggleDefaultText;
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeDetailsFocusTrap) removeDetailsFocusTrap();
       detailsToggleBtn.focus();
@@ -221,8 +192,6 @@
       const touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - detailsTouchStartX > 50) {
           detailsList.classList.remove("open");
-          const label = detailsToggleBtn.querySelector(".label");
-          if (label) label.textContent = detailsToggleDefaultText;
           if (typeof updateScrollLock === "function") updateScrollLock();
           if (removeDetailsFocusTrap) removeDetailsFocusTrap();
           detailsToggleBtn.focus();
@@ -261,8 +230,6 @@
         detailsOpenStartX - touchEndX > 50
       ) {
           detailsList.classList.add("open");
-          const label = detailsToggleBtn.querySelector(".label");
-          if (label) label.textContent = `Close ${detailsToggleDefaultText}`;
           if (typeof updateScrollLock === "function") updateScrollLock();
           removeDetailsFocusTrap = trapFocus(detailsList);
         }
