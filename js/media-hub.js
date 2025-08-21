@@ -7,13 +7,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   let mode = params.get("m") || "all"; // default, will auto-correct based on data
   let isMuted = params.get("muted") === "1";
   let muteParam = isMuted ? "&mute=1" : "";
+  const showVideoList = params.get("list") !== "0";
 
   // DOM
   const leftRail  = document.getElementById("left-rail");
   const listEl    = leftRail; // left menu is the list container
   const playerIF  = document.getElementById("playerFrame");
   const audioWrap = document.getElementById("audioWrap");
-  const videoList = document.getElementById("videoList");
+  const videoListEl = document.getElementById("videoList");
+  if (!showVideoList && videoListEl) videoListEl.style.display = "none";
+  const videoList = showVideoList ? videoListEl : null;
   const details   = document.querySelector(".details-list");
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
@@ -806,7 +809,7 @@ async function renderLatestVideosRSS(channelId) {
     if (playerIF) playerIF.src = src || "about:blank";
     if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
 
-    if (item.ids?.youtube_channel_id) {
+    if (showVideoList && item.ids?.youtube_channel_id) {
       renderLatestVideosRSS(item.ids.youtube_channel_id);
     }
     updateDetails(item);
