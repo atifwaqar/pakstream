@@ -399,6 +399,7 @@ section {
   flex: 1 1 250px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
 .feature-card:hover,
@@ -415,6 +416,12 @@ section {
 
 .feature-card p {
   min-height: 3rem;
+}
+
+.feature-card .right-menu {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 
 .media-hub-embed {
