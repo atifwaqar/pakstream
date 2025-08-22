@@ -1007,28 +1007,58 @@ button:hover,
 }
 
 .controls {
-  --btn-size: 40px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 12px;
+  flex-wrap: wrap;            /* allow wrapping on narrow screens */
+  gap: 10px;                  /* consistent spacing */
+  margin-top: 0;
+  max-width: 100%;
+  overflow: hidden;           /* never bleed outside the card */
 }
 
-.controls button {
-  border: none;
+/* Base size for all control buttons (shrinks on small viewports) */
+:root {
+  --radio-btn-size: clamp(36px, 9vw, 54px);   /* responsive but bounded */
+  --radio-icon-size: clamp(18px, 4.5vw, 26px);
+}
+
+/* Make all control buttons the same circular size */
+.controls button,
+.controls .fav-btn,
+.controls .mute-btn,
+.controls .play-pause-btn {
+  width: var(--radio-btn-size);
+  height: var(--radio-btn-size);
   border-radius: 50%;
-  width: var(--btn-size);
-  height: var(--btn-size);
-  font-size: calc(var(--btn-size) * 0.6);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 4px;
+  padding: 0;
+  line-height: 1;
+  flex: 0 1 auto;               /* allow shrinking; don’t force overflow */
+  box-sizing: border-box;
+  border: none;
   background: var(--primary);
   color: var(--on-primary);
   cursor: pointer;
-  box-sizing: border-box;
+}
+
+/* Icon/text inside the buttons scales too */
+.controls .material-symbols-outlined,
+.controls button .label {
+  font-size: var(--radio-icon-size);
+}
+
+/* Spinner inside play button stays centered and sized */
+.controls .play-pause-btn .spinner {
+  width: calc(var(--radio-icon-size) * 0.9);
+  height: calc(var(--radio-icon-size) * 0.9);
+}
+
+/* When card is extremely narrow, allow a second row cleanly */
+@media (max-width: 380px) {
+  .controls { gap: 8px; }
 }
 
 .controls button:hover {
@@ -1038,6 +1068,13 @@ button:hover,
 .controls button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Override any global no-shrink setting for controls area */
+.controls .fav-btn,
+.controls .play-pause-btn,
+.controls .mute-btn {
+  flex-shrink: 1;
 }
 
 /* Tables */
