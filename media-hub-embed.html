@@ -48,8 +48,10 @@
           title="Selected video player"></iframe>
         <div id="player-container" class="radio-player" data-stream-container data-radio-container style="display:none; margin-bottom:0">
             <div class="station-info">
-              <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
-              <h3 id="current-station" class="station-title">Select a station</h3>
+              <div class="station-header">
+                <img id="station-logo" class="station-avatar" src="/images/default_radio.png" alt="Station logo" loading="lazy">
+                <span id="current-station" class="station-title">Select a station</span>
+              </div>
               <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
               <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
             </div>
