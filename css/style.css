@@ -1625,3 +1625,22 @@ footer nav a:hover {
   .controls { gap: calc(var(--controls-gap) * 0.8); }
 }
 
+/* --- PATCH: Prevent control buttons from being cut in media-hub embed --- */
+.media-hub-section .radio-card,
+.media-hub-section .radio-container,
+.media-hub-section .radio-player,
+.media-hub-section [data-radio-container]{
+  aspect-ratio: auto !important;
+  overflow: visible !important;
+}
+.media-hub-section .radio-player { 
+  min-height: unset !important;
+}
+
+/* Ensure the control row itself never clips inside the embed */
+.media-hub-section .controls { 
+  overflow: visible !important;
+  padding-bottom: var(--controls-gap); /* a little breathing room */
+}
+
+/* --- END PATCH --- */
