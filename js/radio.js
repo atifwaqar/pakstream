@@ -37,6 +37,13 @@
   }
 
   function init() {
+    doc.querySelectorAll('[data-radio-container]').forEach(wrap => {
+      const player = wrap.querySelector('#player-container, .radio-player');
+      const controls = wrap.querySelector(':scope > .controls');
+      if (player && controls && !player.contains(controls)) {
+        player.appendChild(controls);
+      }
+    });
     doc.querySelectorAll('audio[data-radio], [data-radio] audio').forEach(wireRadio);
   }
   if (document.readyState === 'loading') {
