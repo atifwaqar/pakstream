@@ -926,16 +926,51 @@ button:hover,
   text-align: center;
 }
 
-.station-info img {
+/* Station header: flex aligns title with avatar center */
+.station-header {
+  display: flex;
+  align-items: center;   /* vertical alignment */
+  gap: 12px;
+  padding: 0.5rem 0;
+  min-width: 0;          /* enables text truncation */
+}
+
+/* Round avatar, no distortion */
+.station-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #eee;      /* fallback if no image */
+}
+
+/* Station title: one line, truncate with ellipsis */
+.station-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;       /* keeps vertical balance */
+  color: var(--text-color, #263238);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;    /* force one line */
+  flex: 1;                /* take available space */
+  display: block;         /* stable box model for ellipsis */
+}
+
+/* Station info image fallback when not using avatar */
+.station-info img:not(.station-avatar) {
   width: 80px;
   height: 80px;
   object-fit: contain;
   margin-bottom: 8px;
 }
 
-.station-title {
-  font-weight: 700;
-  margin: 0;
+/* Compact version for narrow screens */
+@media (max-width: 360px) {
+  .station-avatar { width: 40px; height: 40px; }
+  .station-title  { font-size: 0.95rem; }
 }
 
 /* Compact layout when the player overflows */
@@ -943,32 +978,8 @@ button:hover,
   padding: 8px;
 }
 
-.radio-player.compact .station-info {
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 0;
-  text-align: left;
-}
-
-.radio-player.compact .station-info img {
-  width: 40px;
-  height: 40px;
-  margin: 0 8px 0 0;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
 .radio-player.compact .controls {
   margin-top: 0;
-}
-
-.radio-player.compact .station-title {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .radio-player.compact .live-badge,
