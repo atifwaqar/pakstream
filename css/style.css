@@ -867,26 +867,6 @@ button:hover,
 }
 
 
-@media (min-width: 769px) {
-  .channel-toggle,
-  .details-toggle {
-    background: none;
-    color: var(--primary);
-    border: none;
-    padding: 4px;
-    border-radius: 0;
-    font-size: 20px;
-  }
-
-  .channel-toggle:hover,
-  .channel-toggle:focus,
-  .details-toggle:hover,
-  .details-toggle:focus {
-    background: none;
-    color: var(--hover-primary);
-  }
-}
-
 button:hover,
 .channel-toggle:hover {
   transform: scale(1.03);
