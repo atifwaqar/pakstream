@@ -154,17 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
   window.resizeLivePlayers = resizeLivePlayers;
   resizeLivePlayers();
 
-  // Limit iframe height so internal content can scroll
+  // Match iframe height to its content so feature cards don't scroll internally
   function resizeMediaHubEmbeds() {
     document.querySelectorAll('.media-hub-embed').forEach(function (iframe) {
       try {
         var doc = iframe.contentWindow.document;
-        var scrollHeight = Math.max(
-          doc.body.scrollHeight,
-          doc.documentElement.scrollHeight,
-        );
-        var maxHeight = 210;
-        var h = Math.min(scrollHeight, maxHeight);
+        var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
         iframe.style.height = h + 'px';
       } catch (e) {
         // Ignore cross-origin frames
@@ -173,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   window.addEventListener('resize', resizeMediaHubEmbeds);
   document.querySelectorAll('.media-hub-embed').forEach(function (iframe) {
-    iframe.setAttribute('scrolling', 'auto');
+    iframe.setAttribute('scrolling', 'no');
     iframe.addEventListener('load', resizeMediaHubEmbeds);
   });
   resizeMediaHubEmbeds();
