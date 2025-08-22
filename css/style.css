@@ -907,7 +907,6 @@ button:hover,
   box-sizing: border-box;
 }
 
-/* The 16:9 radio card */
 .radio-player {
   background: linear-gradient(180deg, var(--surface), var(--surface-variant));
   padding: 16px;
@@ -915,8 +914,6 @@ button:hover,
   box-shadow: var(--shadow-lg);
   margin-bottom: 16px;
   align-items: center;
-  aspect-ratio: 16 / 9;
-  container-type: inline-size; /* allow cqw units inside */
 }
 
 .radio-list #player-container {
@@ -981,6 +978,10 @@ button:hover,
   padding: 8px;
 }
 
+.radio-player.compact .controls {
+  margin-top: 0;
+}
+
 .radio-player.compact .live-badge,
 .radio-player.compact .not-live-badge {
   display: none;
@@ -1026,38 +1027,23 @@ button:hover,
   margin-right: 4px;
 }
 
-/* Default (fallback) responsive sizing by viewport width */
 :root {
-  --radio-btn-size: clamp(36px, 9vw, 54px);
-  --radio-icon-size: clamp(18px, 4.5vw, 26px);
+  --radio-btn-size: clamp(36px, 8vw, 54px);
+  --radio-icon-size: clamp(18px, 4vw, 26px);
 }
 
-/* Prefer container width if supported (scales with the card, not viewport) */
-@supports (width: 1cqw) {
-  .radio-player {
-    /* inside this container, size buttons based on container width */
-    --radio-btn-size: clamp(36px, 12cqw, 54px);
-    --radio-icon-size: clamp(18px, 6cqw, 26px);
-  }
-}
-
-/* Controls: responsive grid, centered, wraps as needed */
 .controls {
-  display: grid;
+  display: flex;
   justify-content: center;
-  justify-items: center;
   align-items: center;
-  align-content: start;
+  flex-wrap: wrap;
   gap: 10px;
-  grid-auto-rows: 1fr;
-  /* 6 buttons typical; will auto-wrap when narrow */
-  grid-template-columns: repeat(auto-fit, minmax(var(--radio-btn-size), 1fr));
-  padding: 8px 12px 0;
+  padding: 0.5rem;
+  width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  margin-top: 12px;
 }
 
-/* Uniform circular buttons that can shrink */
 .controls button,
 .controls .fav-btn,
 .controls .play-pause-btn,
@@ -1069,11 +1055,8 @@ button:hover,
   align-items: center;
   justify-content: center;
   padding: 0;
-  line-height: 1;
-  flex: 0 1 auto;     /* allow shrinking */
+  flex: 0 1 auto;
   box-sizing: border-box;
-  /* In case any global rules set flex-shrink:0; override here */
-  flex-shrink: 1 !important;
   border: none;
   background: var(--primary);
   color: var(--on-primary);
@@ -1090,6 +1073,12 @@ button:hover,
   height: calc(var(--radio-icon-size) * 0.9);
 }
 
+.controls .fav-btn,
+.controls .play-pause-btn,
+.controls .mute-btn {
+  flex-shrink: 1;
+}
+
 .controls button:hover {
   background: var(--hover-primary);
 }
@@ -1097,12 +1086,6 @@ button:hover,
 .controls button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Ensure header/controls padding is modest on tiny widths */
-@media (max-width: 360px) {
-  .radio-player { padding: 10px; }
-  .controls { gap: 8px; }
 }
 
 /* Tables */
