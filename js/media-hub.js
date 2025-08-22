@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const leftRail = document.getElementById("left-rail");
   const channelsBtn = document.getElementById("toggle-channels");
   const mediaHubSection = document.querySelector(".media-hub-section");
+  const buttonRow = document.querySelector(".button-row");
   if (!showChannels) {
     if (leftRail) leftRail.style.display = "none";
     if (channelsBtn) channelsBtn.style.display = "none";
@@ -35,6 +36,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (detailsContainer) detailsContainer.style.display = "none";
     if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
     if (mediaHubSection) mediaHubSection.classList.add("no-details");
+  }
+
+  if (!showChannels && !showDetails && buttonRow) {
+    buttonRow.style.display = "none";
   }
 
   // Radio player elements
