@@ -18,6 +18,13 @@
     if (!focusableEls.length) return () => {};
     const firstEl = focusableEls[0];
     const lastEl = focusableEls[focusableEls.length - 1];
+    const focusTarget =
+      focusableEls.find(
+        (el) =>
+          el.tagName !== "INPUT" &&
+          el.tagName !== "TEXTAREA" &&
+          el.tagName !== "SELECT",
+      ) || firstEl;
     function handleKeydown(e) {
       if (e.key !== "Tab") return;
       if (e.shiftKey) {
@@ -33,7 +40,7 @@
       }
     }
     container.addEventListener("keydown", handleKeydown);
-    firstEl.focus();
+    focusTarget.focus();
     return () => container.removeEventListener("keydown", handleKeydown);
   }
 
