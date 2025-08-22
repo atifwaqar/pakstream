@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   const listEl = showChannels ? leftRail : null; // left menu is the list container
   const playerIF  = document.getElementById("playerFrame");
-  const audioWrap = document.getElementById("audioWrap");
   const videoListEl = document.getElementById("videoList");
   if (!showVideoList && videoListEl) videoListEl.style.display = "none";
   const videoList = showVideoList ? videoListEl : null;
@@ -334,10 +333,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const videoPlaying = playerIF && playerIF.src && playerIF.src !== "about:blank";
     if (currentAudio || (!videoPlaying && mode === "radio")) {
       if (playerIF) playerIF.style.display = "none";
-      if (audioWrap) audioWrap.style.display = "";
+      if (radioContainer) radioContainer.style.display = "";
     } else {
       if (playerIF) playerIF.style.display = "";
-      if (audioWrap) audioWrap.style.display = "none";
+      if (radioContainer) radioContainer.style.display = "none";
       if (window.resizeLivePlayers) window.resizeLivePlayers();
     }
 
@@ -816,7 +815,7 @@ async function renderLatestVideosRSS(channelId) {
           playerIF.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0&enablejsapi=1${muteParam}`;
           if (window.resizeLivePlayers) window.resizeLivePlayers();
         }
-        if (audioWrap) audioWrap.style.display = "none";
+        if (radioContainer) radioContainer.style.display = "none";
         if (details && toggleDetailsBtn && details.innerHTML.trim().length) {
           toggleDetailsBtn.style.display = "";
         }
@@ -862,7 +861,7 @@ async function renderLatestVideosRSS(channelId) {
     if (videoList) videoList.innerHTML = "";
     currentVideoChannelId = null;
     if (playerIF) playerIF.style.display = "";
-    if (audioWrap) audioWrap.style.display = "none";
+    if (radioContainer) radioContainer.style.display = "none";
 
     // stop any radio that might be playing
     if (mainPlayer) {
@@ -957,7 +956,7 @@ async function renderLatestVideosRSS(channelId) {
       playerIF.src = "about:blank";
       playerIF.style.display = "none";
     }
-    if (audioWrap) audioWrap.style.display = "";
+    if (radioContainer) radioContainer.style.display = "";
 
     if (stationLogo) stationLogo.src = logoUrl || defaultLogo;
     if (liveBadge) liveBadge.hidden = true;

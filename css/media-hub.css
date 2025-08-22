@@ -153,12 +153,6 @@
   border-color: var(--primary);
   color: var(--on-primary-container);
 }
-.live-player .audio-wrap {
-  background: var(--surface);
-  border-radius: 14px;
-  box-shadow: var(--shadow-xs);
-  padding: 12px;
-}
 
 /* layout that mirrors your existing pages */
 .page-wrap {
@@ -239,14 +233,14 @@
   display: none;
 }
 
-.player-container iframe,
-.player-container .audio-wrap {
+.live-player iframe,
+.live-player .radio-player {
   width: 100%;
   border: 0;
   border-radius: 14px;
   box-shadow: var(--shadow-xs);
 }
-.player-container .audio-wrap {
+.live-player .radio-player {
   padding: 14px;
   background: var(--surface);
 }
