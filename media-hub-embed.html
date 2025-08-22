@@ -35,6 +35,9 @@
         <button class="channel-toggle" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
           <span class="label">Channels</span>
         </button>
+        <button class="details-toggle" id="toggle-details" onclick="toggleDetailsList()" aria-label="Toggle details list" style="display:none;">
+          <span class="label">About</span>
+        </button>
       </div>
 
       <div class="live-player" data-stream-container data-youtube-container>
@@ -68,6 +71,9 @@
       </div>
 
       <div id="videoList" class="video-list"></div>
+    </div>
+    <div class="details-container" style="height: inherit; min-height: inherit;">
+      <div class="details-list" style="display:none;"></div>
     </div>
   </section>
   <script>
