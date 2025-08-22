@@ -901,9 +901,6 @@ button:hover,
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  aspect-ratio: 16 / 9;
 }
 
 .radio-list #player-container {
