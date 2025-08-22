@@ -892,18 +892,28 @@ button:hover,
 }
 
 /* Radio player controls */
+.radio-card,
+.radio-container,
+.radio-player,
+[data-radio-container] {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .radio-player {
   background: linear-gradient(180deg, var(--surface), var(--surface-variant));
   padding: 16px;
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
   margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  aspect-ratio: 16 / 9;
 }
 
 .radio-list #player-container {
@@ -1006,29 +1016,56 @@ button:hover,
   margin-right: 4px;
 }
 
+:root {
+  --radio-btn-size: clamp(36px, 8vw, 54px);
+  --radio-icon-size: clamp(18px, 4vw, 26px);
+}
+
 .controls {
-  --btn-size: 40px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
   margin-top: 12px;
 }
 
-.controls button {
-  border: none;
+.controls button,
+.controls .fav-btn,
+.controls .play-pause-btn,
+.controls .mute-btn {
+  width: var(--radio-btn-size);
+  height: var(--radio-btn-size);
   border-radius: 50%;
-  width: var(--btn-size);
-  height: var(--btn-size);
-  font-size: calc(var(--btn-size) * 0.6);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 4px;
+  padding: 0;
+  flex: 0 1 auto;
+  box-sizing: border-box;
+  border: none;
   background: var(--primary);
   color: var(--on-primary);
   cursor: pointer;
-  box-sizing: border-box;
+}
+
+.controls .material-symbols-outlined,
+.controls button .label {
+  font-size: var(--radio-icon-size);
+}
+
+.controls .play-pause-btn .spinner {
+  width: calc(var(--radio-icon-size) * 0.9);
+  height: calc(var(--radio-icon-size) * 0.9);
+}
+
+.controls .fav-btn,
+.controls .play-pause-btn,
+.controls .mute-btn {
+  flex-shrink: 1;
 }
 
 .controls button:hover {
