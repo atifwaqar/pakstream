@@ -938,6 +938,35 @@ button:hover,
   margin: 0;
 }
 
+/* Station row: image + title side by side */
+.station-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;       /* space between image and title */
+  padding: 0.5rem;
+}
+
+/* Make station image round, like YouTube avatars */
+.station-header img {
+  width: 48px;       /* adjust size as needed */
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover; /* ensures image doesn’t stretch */
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* Title text aligns nicely with image */
+.station-header .station-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #263238; /* your charcoal text color */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Compact layout when the player overflows */
 .radio-player.compact {
   padding: 8px;
