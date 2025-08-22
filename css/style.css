@@ -1665,4 +1665,18 @@ footer nav a:hover {
 
 .media-hub-section .radio-player { padding-bottom: calc(var(--card-pad) + 4px); }
 
+/* Ensure the radio card grows to fit its children */
+#player-container.radio-player {
+  height: auto !important;
+  min-height: max-content;     /* force wrap to content height */
+  overflow: visible !important;/* undo group overflow:hidden */
+}
+
+/* Grid rows should size to their content (not stretch/compress) */
+#player-container.radio-player .controls {
+  grid-auto-rows: min-content !important;
+  overflow: visible !important;
+  padding-bottom: var(--controls-gap);
+}
+
 /* --- END PATCH --- */
