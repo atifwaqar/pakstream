@@ -901,9 +901,6 @@ button:hover,
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  aspect-ratio: 16 / 9;
 }
 
 .radio-list #player-container {
@@ -926,40 +923,6 @@ button:hover,
 .station-title {
   font-weight: 700;
   margin: 0;
-}
-
-/* Compact layout when the player overflows */
-.radio-player.compact {
-  padding: 8px;
-}
-
-.radio-player.compact .station-info {
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 8px;
-  text-align: left;
-}
-
-.radio-player.compact .station-info img {
-  width: 40px;
-  height: 40px;
-  margin: 0 8px 0 0;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
-.radio-player.compact .station-title {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.radio-player.compact .live-badge,
-.radio-player.compact .not-live-badge {
-  display: none;
 }
 
 .live-badge {
