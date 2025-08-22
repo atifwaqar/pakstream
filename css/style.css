@@ -1529,3 +1529,99 @@ footer nav a:hover {
 
 [data-radio-container].is-playing,
 [data-youtube-container].is-playing { outline: 2px solid rgba(0,0,0,.2); }
+
+/* Make the radio card a SIZE container so we get both cqw and cqh */
+.radio-player {
+  /* ...existing styles... */
+  container-type: size; /* was inline-size */
+}
+
+/* Fallback (old browsers) – viewport based */
+:root {
+  --radio-btn-size: clamp(32px, 8vw, 52px);
+  --radio-icon-size: clamp(16px, 4vw, 24px);
+  --controls-gap: 10px;
+  --card-pad: 16px;
+}
+
+/* Prefer container-relative sizing.
+   Use the MIN of width- and height-based units so buttons shrink
+   when HEIGHT is the bottleneck in the 16:9 box. */
+@supports (width: 1cqw) and (height: 1cqh) {
+  .radio-player {
+    --radio-btn-size: min(
+      clamp(32px, 12cqw, 52px),
+      clamp(32px, 14cqh, 52px)
+    );
+    --radio-icon-size: min(
+      clamp(16px, 6cqw, 24px),
+      clamp(16px, 7cqh, 24px)
+    );
+    /* pad and gaps also scale with card height */
+    --controls-gap: clamp(6px, 4cqh, 12px);
+    --card-pad: clamp(8px, 5cqh, 16px);
+  }
+}
+
+/* Use the scalable padding */
+.radio-player {
+  padding: var(--card-pad);
+}
+
+/* Controls grid: use scalable gap and allow it to compress */
+.controls {
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: start;
+  gap: var(--controls-gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--radio-btn-size), 1fr));
+  grid-auto-rows: 1fr;
+  padding: calc(var(--controls-gap) * 0.8) var(--controls-gap) 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-height: 0; /* allow shrink inside fixed-aspect card */
+}
+
+/* Uniform circular buttons that can shrink */
+.controls button,
+.controls .fav-btn,
+.controls .play-pause-btn,
+.controls .mute-btn {
+  width: var(--radio-btn-size);
+  height: var(--radio-btn-size);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  flex: 0 1 auto;
+  flex-shrink: 1 !important;
+  box-sizing: border-box;
+}
+
+/* Icons scale with button size */
+.controls .material-symbols-outlined,
+.controls button .label {
+  font-size: var(--radio-icon-size);
+}
+
+.controls .play-pause-btn .spinner {
+  width: calc(var(--radio-icon-size) * 0.9);
+  height: calc(var(--radio-icon-size) * 0.9);
+}
+
+/* Header tightens up on small cards to free vertical space */
+.station-header {
+  gap: calc(var(--controls-gap) * 0.9);
+  min-height: 0; /* avoid forcing extra height */
+}
+.station-title { line-height: 1.15; }
+
+/* Extra squeeze on very narrow screens */
+@media (max-width: 360px) {
+  .controls { gap: calc(var(--controls-gap) * 0.8); }
+}
+
