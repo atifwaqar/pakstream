@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let muteParam = isMuted ? "&mute=1" : "";
   const showVideoList = params.get("list") !== "0";
   const showChannels = params.get("channels") !== "0";
+  const showDetails = params.get("about") !== "0";
 
   // DOM
   const leftRail = document.getElementById("left-rail");
@@ -25,10 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const videoListEl = document.getElementById("videoList");
   if (!showVideoList && videoListEl) videoListEl.style.display = "none";
   const videoList = showVideoList ? videoListEl : null;
-  const details   = document.querySelector(".details-list");
+  const detailsContainer = document.querySelector(".details-container");
+  const details   = showDetails ? document.querySelector(".details-list") : null;
   const tabs      = document.querySelectorAll(".tab-btn");
   const searchEl  = document.getElementById("mh-search-input");
   const toggleDetailsBtn = document.getElementById("toggle-details");
+  if (!showDetails) {
+    if (detailsContainer) detailsContainer.style.display = "none";
+    if (toggleDetailsBtn) toggleDetailsBtn.style.display = "none";
+    if (mediaHubSection) mediaHubSection.classList.add("no-details");
+  }
 
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
