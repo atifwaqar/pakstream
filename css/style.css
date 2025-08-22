@@ -912,7 +912,11 @@ button:hover,
   padding: 16px;
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
-  margin-bottom: 16px;
+  margin-bottom: 0; /* controls are inside now */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -1582,6 +1586,11 @@ footer nav a:hover {
   box-sizing: border-box;
   overflow: hidden;
   min-height: 0; /* allow shrink inside fixed-aspect card */
+}
+
+.radio-player .controls {
+  overflow: visible;
+  padding-bottom: var(--controls-gap);
 }
 
 /* Uniform circular buttons that can shrink */
