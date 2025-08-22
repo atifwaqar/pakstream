@@ -524,7 +524,7 @@ section {
 .media-hub-section .button-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 8px;
+  margin: 8px;
 }
 
 .button-row .spacer {
