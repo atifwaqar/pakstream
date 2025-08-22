@@ -1643,4 +1643,17 @@ footer nav a:hover {
   padding-bottom: var(--controls-gap); /* a little breathing room */
 }
 
+/* Make grid rows size to content so circles never get cropped */
+.media-hub-section .controls {
+  grid-auto-rows: min-content !important;
+  overflow: visible !important; /* you already added this — keep it */
+}
+
+/* Ensure the card itself isn’t constraining height */
+.media-hub-section .radio-player {
+  height: auto !important;
+}
+
+.media-hub-section .radio-player { padding-bottom: calc(var(--card-pad) + 4px); }
+
 /* --- END PATCH --- */
