@@ -143,11 +143,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Maintain 16:9 aspect ratio for any live-player iframes
+  // Maintain 16:9 aspect ratio for live-player iframes and radio players
   function resizeLivePlayers() {
-    document.querySelectorAll('.live-player iframe').forEach(function (iframe) {
-      var w = iframe.clientWidth;
-      if (w > 0) iframe.style.height = (w * 9 / 16) + 'px';
+    document.querySelectorAll('.live-player iframe').forEach(function (el) {
+      var w = el.clientWidth;
+      if (w > 0) el.style.height = (w * 9 / 16) + 'px';
+    });
+
+    document.querySelectorAll('.radio-player').forEach(function (el) {
+      var w = el.clientWidth;
+      if (w > 0) {
+        el.style.height = (w * 9 / 16) + 'px';
+        var overflow = el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
+        el.classList.toggle('compact', overflow);
+      }
     });
   }
   window.addEventListener('resize', resizeLivePlayers);
