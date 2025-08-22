@@ -252,10 +252,6 @@
 }
 
 .details-list {
-  background: var(--surface);
-  border-radius: 14px;
-  padding: 12px;
-  box-shadow: var(--shadow-xs);
   height: calc(100vh - 120px);
   overflow-y: auto;
 }
@@ -345,10 +341,11 @@
   }
 }
 
-/* Make left menu cover full height on mobile */
+/* Make menus cover full height on mobile */
 @media (max-width: 768px) {
   .youtube-section .channel-list,
-  .media-hub-section .channel-list {
+  .media-hub-section .channel-list,
+  .media-hub-section .details-list {
     top: 0;
     height: 100vh;
     padding-top: 0;
