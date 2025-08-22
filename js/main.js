@@ -143,11 +143,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Maintain 16:9 aspect ratio for any live-player iframes
+  // Maintain 16:9 aspect ratio for live-player iframes and radio players
   function resizeLivePlayers() {
-    document.querySelectorAll('.live-player iframe').forEach(function (iframe) {
-      var w = iframe.clientWidth;
-      if (w > 0) iframe.style.height = (w * 9 / 16) + 'px';
+    document.querySelectorAll('.live-player iframe').forEach(function (el) {
+      var w = el.clientWidth;
+      if (w > 0) el.style.height = (w * 9 / 16) + 'px';
+    });
+
+    document.querySelectorAll('.radio-player').forEach(function (el) {
+      var w = el.clientWidth;
+      if (w > 0) {
+        el.style.height = (w * 9 / 16) + 'px';
+        var overflow = el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
+        el.classList.toggle('compact', overflow);
+        var stationInfo = el.querySelector('.station-info');
+        var controls = el.querySelector('.controls');
+        if (controls) controls.style.setProperty('--btn-size', '40px');
+        if (overflow && stationInfo && controls) {
+          var availableHeight = el.clientHeight - stationInfo.offsetHeight;
+          var availableWidth = el.clientWidth;
+          var scaleH = availableHeight / controls.scrollHeight;
+          var scaleW = availableWidth / controls.scrollWidth;
+          var scale = Math.min(scaleH, scaleW, 1);
+          if (scale < 1) {
+            controls.style.setProperty('--btn-size', (40 * scale) + 'px');
+          }
+        }
+      }
     });
   }
   window.addEventListener('resize', resizeLivePlayers);

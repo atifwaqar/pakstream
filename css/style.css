@@ -901,6 +901,9 @@ button:hover,
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 16 / 9;
 }
 
 .radio-list #player-container {
@@ -923,6 +926,44 @@ button:hover,
 .station-title {
   font-weight: 700;
   margin: 0;
+}
+
+/* Compact layout when the player overflows */
+.radio-player.compact {
+  padding: 8px;
+}
+
+.radio-player.compact .station-info {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.radio-player.compact .station-info img {
+  width: 40px;
+  height: 40px;
+  margin: 0 8px 0 0;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.radio-player.compact .controls {
+  margin-top: 0;
+}
+
+.radio-player.compact .station-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.radio-player.compact .live-badge,
+.radio-player.compact .not-live-badge {
+  display: none;
 }
 
 .live-badge {
@@ -966,6 +1007,7 @@ button:hover,
 }
 
 .controls {
+  --btn-size: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -976,8 +1018,9 @@ button:hover,
 .controls button {
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  font-size: calc(var(--btn-size) * 0.6);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -985,6 +1028,7 @@ button:hover,
   background: var(--primary);
   color: var(--on-primary);
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .controls button:hover {
