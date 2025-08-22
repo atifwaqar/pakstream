@@ -925,49 +925,17 @@ button:hover,
 .station-info {
   text-align: center;
 }
-.station-info > img {
+
+.station-info img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   margin-bottom: 8px;
 }
 
-/* Header row: avatar + title side by side */
-.station-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0.5rem 0;
-  min-width: 0;
-}
-
-/* Round avatar like YouTube */
-.station-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: #eee;
-}
-
-/* Title: bold, one line only, truncate with ellipsis */
 .station-title {
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--text-color, #263238);
+  font-weight: 700;
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
-/* Compact on very small screens */
-@media (max-width: 360px) {
-  .station-avatar { width: 40px; height: 40px; }
-  .station-title  { font-size: 0.95rem; }
 }
 
 /* Compact layout when the player overflows */
@@ -984,10 +952,11 @@ button:hover,
   text-align: left;
 }
 
-.radio-player.compact .station-avatar {
+.radio-player.compact .station-info img {
   width: 40px;
   height: 40px;
   margin: 0 8px 0 0;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
