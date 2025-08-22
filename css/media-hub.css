@@ -252,6 +252,10 @@
 }
 
 .details-list {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: var(--shadow-xs);
   height: calc(100vh - 120px);
   overflow-y: auto;
 }
