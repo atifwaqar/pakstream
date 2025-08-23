@@ -1,5 +1,5 @@
 /* Refactored style.css with improved readability & polished UI/UX */
-/* Roboto font loaded asynchronously via HTML link tags */
+/* Inter font loaded asynchronously via HTML link tags */
 
 * {
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
@@ -37,7 +37,7 @@ a:visited {
 
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: var(--background);
   color: var(--on-surface);
   padding: 0;
