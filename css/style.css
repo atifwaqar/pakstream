@@ -263,8 +263,9 @@ section {
 
 .station-scroller-wrap {
   margin-block: 1.5rem;
-  max-width: 960px;
+  max-width: 1200px;
   margin-inline: auto;
+  padding: 0 24px;
 }
 
 .scroller-header {
@@ -377,6 +378,12 @@ section {
 
 .station-scroller .scroll-btn.prev { left: 8px; }
 .station-scroller .scroll-btn.next { right: 8px; }
+
+@media (max-width: 768px) {
+  .station-scroller-wrap {
+    padding: 0 16px;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .station-scroller .scroller-track {

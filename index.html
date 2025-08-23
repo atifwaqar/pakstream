@@ -444,8 +444,9 @@ section {
 
 .station-scroller-wrap {
   margin-block: 1.5rem;
-  max-width: 960px;
+  max-width: 1200px;
   margin-inline: auto;
+  padding: 0 24px;
 }
 
 .scroller-header {
@@ -1855,6 +1856,9 @@ footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
   /* Suggestion chips: horizontal scroll */
   .suggest{justify-content:flex-start; overflow-x:auto; padding:0 2px; gap:8px}
   .suggest .chip{white-space:nowrap}
+
+  /* Trending scroller: match feature width */
+  .station-scroller-wrap{padding:0 16px}
 
   /* Feature grid: single column */
   .features{
