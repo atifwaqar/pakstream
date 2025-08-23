@@ -431,7 +431,7 @@ section {
   flex: 1;
 }
 
-.feature-card .cta-btn {
+.feature-card .cta-btn {box-sizing: border-box; max-width: 100%;
   align-self: flex-start;
   background: var(--secondary);
   color: var(--on-secondary);
@@ -1812,7 +1812,7 @@ footer.site-footer .copy {
 .search-xl .search-results a:hover {
   background: color-mix(in srgb, var(--on-surface) 12%, transparent);
 }
-.btn {
+.btn {box-sizing: border-box; max-width: 100%;
   appearance: none;
   border: 0;
   border-radius: 12px;
