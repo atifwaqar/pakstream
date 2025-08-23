@@ -1808,7 +1808,7 @@ nav a{color:var(--muted);margin-left:14px}
 .search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
 .search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
 .search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
-.btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
+.btn{box-sizing:border-box;max-width:100%;appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
 .btn-primary{background:var(--brand);color:#03130c}
 .btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
 .suggest{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
@@ -1821,7 +1821,7 @@ nav a{color:var(--muted);margin-left:14px}
 .feature-card-content{padding:16px;display:flex;flex-direction:column;flex:1}
 .feature-card h3{margin:0 0 6px;font-size:18px;color:var(--ink)}
 .feature-card p{margin:0 0 12px;color:var(--muted);font-size:14px;flex:1}
-.feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
+.feature-card a{box-sizing:border-box;max-width:100%;align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
 
 footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
 
