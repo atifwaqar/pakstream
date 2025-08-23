@@ -24,18 +24,63 @@
       <pre id="log">Loading…</pre>
     </main>
     <script>
-    async function testStream(url, type) {
-    const el = document.createElement(type === 'audio' ? 'audio' : 'video');
-    el.src = url;
-    el.muted = true;
-    el.playsInline = true;
-    return new Promise(resolve => {
-      const timer = setTimeout(() => resolve(false), 8000);
-      el.addEventListener('playing', () => { clearTimeout(timer); resolve(true); }, { once: true });
-      el.addEventListener('error', () => { clearTimeout(timer); resolve(false); }, { once: true });
-      el.play().catch(() => { clearTimeout(timer); resolve(false); });
-    });
-  }
+    async function testMediaStream(url, type) {
+      const el = document.createElement(type === 'audio' ? 'audio' : 'video');
+      el.src = url;
+      el.muted = true;
+      el.playsInline = true;
+      return new Promise(resolve => {
+        const cleanup = (result) => {
+          clearTimeout(timer);
+          // stop and release the stream so only one plays at a time
+          el.pause();
+          el.removeAttribute('src');
+          el.load();
+          resolve(result);
+        };
+        const timer = setTimeout(() => cleanup(false), 8000);
+        el.addEventListener('playing', () => cleanup(true), { once: true });
+        el.addEventListener('error', () => cleanup(false), { once: true });
+        el.play().catch(() => cleanup(false));
+      });
+    }
+
+    function loadYouTubeAPI() {
+      if (window.YT && YT.Player) return Promise.resolve();
+      return new Promise(resolve => {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+        window.onYouTubeIframeAPIReady = () => resolve();
+      });
+    }
+
+    async function testYouTubeStream(url) {
+      await loadYouTubeAPI();
+      return new Promise(resolve => {
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        const sep = url.includes('?') ? '&' : '?';
+        iframe.src = `${url}${sep}autoplay=1&mute=1&enablejsapi=1&origin=${location.origin}`;
+        document.body.appendChild(iframe);
+        const player = new YT.Player(iframe, {
+          events: {
+            onReady: () => player.playVideo(),
+            onStateChange: (e) => {
+              if (e.data === YT.PlayerState.PLAYING) cleanup(true);
+            },
+            onError: () => cleanup(false)
+          }
+        });
+        const timer = setTimeout(() => cleanup(false), 8000);
+        function cleanup(result) {
+          clearTimeout(timer);
+          player.destroy();
+          iframe.remove();
+          resolve(result);
+        }
+      });
+    }
   (async () => {
     const log = document.getElementById('log');
     const progress = document.getElementById('progress');
@@ -48,15 +93,23 @@
       const results = [];
       for (const item of data.items) {
         const endpoint = item.endpoints && item.endpoints[0];
+        results.push(`Checking ${item.name}...`);
+        log.textContent = results.join('\n');
         if (!endpoint) {
-          results.push(`${item.name}: offline`);
+          results[results.length - 1] = `${item.name}: offline`;
         } else {
-          const type = item.platform === 'audio' ? 'audio' : 'video';
-          const ok = await testStream(endpoint.url, type);
-          results.push(`${item.name}: ${ok ? 'online' : 'offline'}`);
+          let ok = false;
+          if (item.platform === 'youtube') {
+            ok = await testYouTubeStream(endpoint.url);
+          } else {
+            const type = item.platform === 'audio' ? 'audio' : 'video';
+            ok = await testMediaStream(endpoint.url, type);
+          }
+          results[results.length - 1] = `${item.name}: ${ok ? 'online' : 'offline'}`;
         }
         checked++;
         progress.textContent = `Checked ${checked} of ${total} streams (${total - checked} remaining)`;
+        log.textContent = results.join('\n');
       }
       progress.textContent = `Finished checking ${total} streams`;
       log.textContent = results.join('\n');
