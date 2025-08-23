@@ -647,7 +647,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const initialKey = params.get('c');
     if (mode === 'radio') {
-      if (!currentAudio) {
+      const videoActive =
+        playerIF && playerIF.src && playerIF.src !== '' && playerIF.src !== 'about:blank';
+      if (!currentAudio && !videoActive) {
         const choose = () => {
           const first = arr[0];
           if (!first) return;
@@ -666,9 +668,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           playRadio(btn, audio, displayName(first), thumbOf(first), first, allowAutoplay);
         };
         if (initialKey) {
-          const target = arr.find(it => it.key === initialKey || it.ids?.internal_id === initialKey);
+          const target = arr.find(
+            it => it.key === initialKey || it.ids?.internal_id === initialKey,
+          );
           if (target) {
-            const card = listEl ? listEl.querySelector(`.channel-card[data-key="${target.key}"]`) : null;
+            const card = listEl
+              ? listEl.querySelector(`.channel-card[data-key="${target.key}"]`)
+              : null;
             let btn = card ? card.querySelector('.play-btn') : null;
             let audio = card ? card.querySelector('audio') : null;
             if (!audio) {
@@ -1127,13 +1133,27 @@ async function renderLatestVideosRSS(channelId) {
   }
 
   // Tabs + Search
-  tabs.forEach(t => t.addEventListener("click", () => {
-    mode = t.dataset.mode;
-    params.set("m", mode);
-    history.replaceState(null, "", "?" + params.toString());
-    updateActiveUI();
-    renderList(searchEl ? (searchEl.value || "") : "");
-  }));
+  tabs.forEach((t) =>
+    t.addEventListener("click", () => {
+      mode = t.dataset.mode;
+      params.set("m", mode);
+      history.replaceState(null, "", "?" + params.toString());
+      updateActiveUI();
+      renderList(searchEl ? (searchEl.value || "") : "");
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          const channelList = document.querySelector(".channel-list");
+          if (
+            channelList &&
+            !channelList.classList.contains("open") &&
+            typeof toggleChannelList === "function"
+          ) {
+            toggleChannelList();
+          }
+        }, 0);
+      }
+    })
+  );
   if (searchEl) {
     searchEl.addEventListener("input", e => renderList(e.target.value));
     searchEl.addEventListener("keydown", e => {
