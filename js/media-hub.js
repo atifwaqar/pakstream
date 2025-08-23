@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let mode = params.get("m") || "all"; // default, will auto-correct based on data
   let isMuted = params.get("muted") === "1";
   let muteParam = isMuted ? "&mute=1" : "";
+  const allowAutoplay = params.get("autoplay") !== "0";
   const showVideoList = params.get("list") !== "0";
   const showChannels = params.get("channels") !== "0";
   const showDetails = params.get("about") !== "0";
@@ -662,7 +663,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             audio.dataset.logo = thumbOf(first);
             btn = document.createElement('button');
           }
-          playRadio(btn, audio, displayName(first), thumbOf(first), first);
+          playRadio(btn, audio, displayName(first), thumbOf(first), first, allowAutoplay);
         };
         if (initialKey) {
           const target = arr.find(it => it.key === initialKey || it.ids?.internal_id === initialKey);
@@ -680,7 +681,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 btn = document.createElement('button');
               }
             }
-            if (audio) playRadio(btn, audio, displayName(target), thumbOf(target), target);
+            if (audio) playRadio(btn, audio, displayName(target), thumbOf(target), target, allowAutoplay);
           } else {
             choose();
           }
@@ -714,11 +715,11 @@ document.addEventListener("DOMContentLoaded", async () => {
               }
               handled = true;
             } else if (audio) {
-              playRadio(btn, audio, displayName(match), thumbOf(match), match);
+              playRadio(btn, audio, displayName(match), thumbOf(match), match, allowAutoplay);
               handled = true;
             }
           } else {
-            select(match, false);
+            select(match, allowAutoplay);
             handled = true;
           }
         }
@@ -726,7 +727,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!handled && playerIF && (playerIF.src === '' || playerIF.src === 'about:blank') && !currentAudio && arr.length) {
         const chosen = arr[0];
         if (!((mode === 'favorites' || mode === 'all') && modeOfItem(chosen) === 'radio')) {
-          select(chosen, false);
+          select(chosen, allowAutoplay);
         } else if ((mode === 'favorites' || mode === 'all')) {
           const ep = radioEndpoint(chosen);
           if (ep) {
@@ -735,7 +736,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             audio.src = ep.url;
             audio.dataset.logo = thumbOf(chosen);
             const btn = document.createElement('button');
-            playRadio(btn, audio, displayName(chosen), thumbOf(chosen), chosen);
+            playRadio(btn, audio, displayName(chosen), thumbOf(chosen), chosen, allowAutoplay);
           }
         }
       }
@@ -874,16 +875,17 @@ async function renderLatestVideosRSS(channelId) {
     if (currentBtn) { const b = currentBtn; currentBtn = null; resetButton(b); }
 
     const emb = ytEmbed(item);
+    const auto = autoplay ? 1 : 0;
     let src = "";
     if (emb) {
       src = emb.url.includes("?")
-        ? `${emb.url}&autoplay=1&enablejsapi=1${muteParam}`
-        : `${emb.url}?autoplay=1&enablejsapi=1${muteParam}`;
+        ? `${emb.url}&autoplay=${auto}&enablejsapi=1${muteParam}`
+        : `${emb.url}?autoplay=${auto}&enablejsapi=1${muteParam}`;
     } else if (item.ids?.youtube_channel_id) {
       const upl = uploadsId(item.ids.youtube_channel_id);
       src = upl
-        ? `https://www.youtube-nocookie.com/embed/videoseries?list=${upl}&autoplay=1&rel=0&enablejsapi=1${muteParam}`
-        : `https://www.youtube-nocookie.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=1&rel=0&enablejsapi=1${muteParam}`;
+        ? `https://www.youtube-nocookie.com/embed/videoseries?list=${upl}&autoplay=${auto}&rel=0&enablejsapi=1${muteParam}`
+        : `https://www.youtube-nocookie.com/embed/live_stream?channel=${item.ids.youtube_channel_id}&autoplay=${auto}&rel=0&enablejsapi=1${muteParam}`;
     }
     if (playerIF) playerIF.src = src || "about:blank";
     if (playerIF && window.resizeLivePlayers) window.resizeLivePlayers();
@@ -922,7 +924,7 @@ async function renderLatestVideosRSS(channelId) {
     }
   }
 
-  function playRadio(btn, audio, name, logoUrl, item) {
+  function playRadio(btn, audio, name, logoUrl, item, autoplay=true) {
     if (!audio) return;
 
     // Remove any existing stream error before starting radio playback
@@ -983,23 +985,25 @@ async function renderLatestVideosRSS(channelId) {
         });
       }
       mainPlayer.load();
-      const playPromise = mainPlayer.play();
-      if (playPromise !== undefined) {
-        pendingBtn = btn;
-        if (btn) btn.classList.add('loading');
-        if (playPauseBtn) playPauseBtn.classList.add('loading');
-        playPromise.catch(() => {
-          // require user interaction
-          resumeHandler = () => {
-            const p2 = mainPlayer.play();
-            if (p2 && p2.catch) p2.catch(()=>{});
-            document.removeEventListener('click', resumeHandler);
-            document.removeEventListener('touchstart', resumeHandler);
-            resumeHandler = null;
-          };
-          document.addEventListener('click', resumeHandler, { once: true });
-          document.addEventListener('touchstart', resumeHandler, { once: true });
-        });
+      if (autoplay) {
+        const playPromise = mainPlayer.play();
+        if (playPromise !== undefined) {
+          pendingBtn = btn;
+          if (btn) btn.classList.add('loading');
+          if (playPauseBtn) playPauseBtn.classList.add('loading');
+          playPromise.catch(() => {
+            // require user interaction
+            resumeHandler = () => {
+              const p2 = mainPlayer.play();
+              if (p2 && p2.catch) p2.catch(()=>{});
+              document.removeEventListener('click', resumeHandler);
+              document.removeEventListener('touchstart', resumeHandler);
+              resumeHandler = null;
+            };
+            document.addEventListener('click', resumeHandler, { once: true });
+            document.addEventListener('touchstart', resumeHandler, { once: true });
+          });
+        }
       }
     }
 
@@ -1168,7 +1172,7 @@ async function renderLatestVideosRSS(channelId) {
         audio.id = item.ids?.internal_id || item.key;
         audio.src = ep.url;
         audio.dataset.logo = thumbOf(item);
-        playRadio(null, audio, displayName(item), audio.dataset.logo, item);
+        playRadio(null, audio, displayName(item), audio.dataset.logo, item, allowAutoplay);
       }
     }
   }
