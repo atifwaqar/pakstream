@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var items = Array.isArray(data.items) ? data.items : [];
         var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
         items.forEach(function (it) {
-          if (it.status && it.status.active && it.media && it.media.logo_url && !it.media.logo_url.includes('default_radio.png')) {
+          if (it.status && it.status.active && it.media && it.media.thumbnail_url && !it.media.thumbnail_url.includes('default_radio.png')) {
             var mode = typeToMode[it.type] || 'tv';
             var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
               ? it.ids.internal_id
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
             a.setAttribute('role', 'listitem');
             a.setAttribute('aria-label', it.name || '');
             var img = document.createElement('img');
-            img.src = it.media.logo_url;
+            img.src = it.media.thumbnail_url;
             img.alt = it.name || '';
             img.className = 'channel-thumb';
             a.appendChild(img);

@@ -15,7 +15,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/hum.png"
+        "thumbnail_url": "/images/stations/hum.png"
       },
       "endpoints": [
         {
@@ -37,7 +37,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -59,7 +59,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -81,7 +81,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -103,7 +103,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -125,7 +125,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -147,7 +147,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -169,7 +169,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -191,7 +191,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -213,7 +213,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -235,7 +235,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -257,7 +257,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -279,7 +279,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -301,7 +301,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -323,7 +323,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -345,7 +345,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -367,7 +367,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -389,7 +389,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -411,7 +411,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -433,7 +433,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -455,7 +455,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -477,7 +477,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -499,7 +499,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -521,7 +521,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -543,7 +543,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/hyderabad-fm.png"
+        "thumbnail_url": "/images/stations/hyderabad-fm.png"
       },
       "endpoints": [
         {
@@ -565,7 +565,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -587,7 +587,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -609,7 +609,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -631,7 +631,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -653,7 +653,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/planet-87-6.png"
+        "thumbnail_url": "/images/stations/planet-87-6.png"
       },
       "endpoints": [
         {
@@ -675,7 +675,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -697,7 +697,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/pakistan-toronto.png"
+        "thumbnail_url": "/images/stations/pakistan-toronto.png"
       },
       "endpoints": [
         {
@@ -719,7 +719,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -741,7 +741,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/ncac.png"
+        "thumbnail_url": "/images/stations/ncac.png"
       },
       "endpoints": [
         {
@@ -763,7 +763,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -785,7 +785,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -807,7 +807,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -829,7 +829,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -851,7 +851,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -873,7 +873,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -895,7 +895,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -917,7 +917,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -939,7 +939,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -961,7 +961,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -983,7 +983,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1005,7 +1005,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1027,7 +1027,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1049,7 +1049,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1071,7 +1071,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1093,7 +1093,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/radio-1.png"
+        "thumbnail_url": "/images/stations/radio-1.png"
       },
       "endpoints": [
         {
@@ -1115,7 +1115,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/city-fm.png"
+        "thumbnail_url": "/images/stations/city-fm.png"
       },
       "endpoints": [
         {
@@ -1137,7 +1137,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/fm-101.png"
+        "thumbnail_url": "/images/stations/fm-101.png"
       },
       "endpoints": [
         {
@@ -1159,7 +1159,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/fm-101.png"
+        "thumbnail_url": "/images/stations/fm-101.png"
       },
       "endpoints": [
         {
@@ -1181,7 +1181,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/pbc-lahore.png"
+        "thumbnail_url": "/images/stations/pbc-lahore.png"
       },
       "endpoints": [
         {
@@ -1203,7 +1203,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1225,7 +1225,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1247,7 +1247,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/mera-1074.png"
+        "thumbnail_url": "/images/stations/mera-1074.png"
       },
       "endpoints": [
         {
@@ -1269,7 +1269,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1291,7 +1291,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -1313,7 +1313,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -2883,7 +2883,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -2905,7 +2905,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/100-lahore.png"
+        "thumbnail_url": "/images/stations/100-lahore.png"
       },
       "endpoints": [],
       "ids": {
@@ -2921,7 +2921,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/101-fm-karachi.png"
+        "thumbnail_url": "/images/stations/101-fm-karachi.png"
       },
       "endpoints": [],
       "ids": {
@@ -2937,7 +2937,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/aladin.png"
+        "thumbnail_url": "/images/stations/aladin.png"
       },
       "endpoints": [],
       "ids": {
@@ -2953,7 +2953,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/apna-107.png"
+        "thumbnail_url": "/images/stations/apna-107.png"
       },
       "endpoints": [],
       "ids": {
@@ -2969,7 +2969,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/apna-karachi.png"
+        "thumbnail_url": "/images/stations/apna-karachi.png"
       },
       "endpoints": [],
       "ids": {
@@ -2985,7 +2985,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/big.png"
+        "thumbnail_url": "/images/stations/big.png"
       },
       "endpoints": [],
       "ids": {
@@ -3001,7 +3001,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/city-karachi.png"
+        "thumbnail_url": "/images/stations/city-karachi.png"
       },
       "endpoints": [],
       "ids": {
@@ -3017,7 +3017,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/city-lahore.png"
+        "thumbnail_url": "/images/stations/city-lahore.png"
       },
       "endpoints": [],
       "ids": {
@@ -3033,7 +3033,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/fm-100.png"
+        "thumbnail_url": "/images/stations/fm-100.png"
       },
       "endpoints": [],
       "ids": {
@@ -3049,7 +3049,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/karachi-fm-live.png"
+        "thumbnail_url": "/images/stations/karachi-fm-live.png"
       },
       "endpoints": [],
       "ids": {
@@ -3065,7 +3065,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/fm-world.png"
+        "thumbnail_url": "/images/stations/fm-world.png"
       },
       "endpoints": [],
       "ids": {
@@ -3081,7 +3081,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/funcafe.png"
+        "thumbnail_url": "/images/stations/funcafe.png"
       },
       "endpoints": [],
       "ids": {
@@ -3097,7 +3097,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/hot-fm.png"
+        "thumbnail_url": "/images/stations/hot-fm.png"
       },
       "endpoints": [],
       "ids": {
@@ -3113,7 +3113,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/hot-karachi.png"
+        "thumbnail_url": "/images/stations/hot-karachi.png"
       },
       "endpoints": [],
       "ids": {
@@ -3129,7 +3129,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/mast-karachi.png"
+        "thumbnail_url": "/images/stations/mast-karachi.png"
       },
       "endpoints": [],
       "ids": {
@@ -3145,7 +3145,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/mast-fm.png"
+        "thumbnail_url": "/images/stations/mast-fm.png"
       },
       "endpoints": [],
       "ids": {
@@ -3161,7 +3161,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/mast-lahore.png"
+        "thumbnail_url": "/images/stations/mast-lahore.png"
       },
       "endpoints": [],
       "ids": {
@@ -3177,7 +3177,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/power-99.png"
+        "thumbnail_url": "/images/stations/power-99.png"
       },
       "endpoints": [],
       "ids": {
@@ -3193,7 +3193,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/awaz-106.png"
+        "thumbnail_url": "/images/stations/awaz-106.png"
       },
       "endpoints": [],
       "ids": {
@@ -3209,7 +3209,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/radio.png"
+        "thumbnail_url": "/images/stations/radio.png"
       },
       "endpoints": [],
       "ids": {
@@ -3225,7 +3225,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/jeevay.png"
+        "thumbnail_url": "/images/stations/jeevay.png"
       },
       "endpoints": [],
       "ids": {
@@ -3241,7 +3241,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/pak-filmi.png"
+        "thumbnail_url": "/images/stations/pak-filmi.png"
       },
       "endpoints": [],
       "ids": {
@@ -3257,7 +3257,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/riphah.png"
+        "thumbnail_url": "/images/stations/riphah.png"
       },
       "endpoints": [],
       "ids": {
@@ -3273,7 +3273,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/spice-fm-107.png"
+        "thumbnail_url": "/images/stations/spice-fm-107.png"
       },
       "endpoints": [],
       "ids": {
@@ -3289,7 +3289,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/suno-urdu-live.png"
+        "thumbnail_url": "/images/stations/suno-urdu-live.png"
       },
       "endpoints": [],
       "ids": {
@@ -3305,7 +3305,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/sunrise-hasan-abda.png"
+        "thumbnail_url": "/images/stations/sunrise-hasan-abda.png"
       },
       "endpoints": [],
       "ids": {
@@ -3321,7 +3321,7 @@
       "type": "radio",
       "platform": "audio",
       "media": {
-        "logo_url": "/images/stations/voa-deewa.png"
+        "thumbnail_url": "/images/stations/voa-deewa.png"
       },
       "endpoints": [],
       "ids": {
@@ -3337,7 +3337,7 @@
       "type": "freepress",
       "platform": "youtube",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -3360,7 +3360,7 @@
       "type": "freepress",
       "platform": "youtube",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -3383,7 +3383,7 @@
       "type": "freepress",
       "platform": "youtube",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
@@ -3439,7 +3439,7 @@
       "type": "freepress",
       "platform": "youtube",
       "media": {
-        "logo_url": "/images/default_radio.png"
+        "thumbnail_url": "/images/default_radio.png"
       },
       "endpoints": [
         {
