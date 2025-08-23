@@ -1,117 +1,109 @@
 ---
 ---
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
+<head><link crossorigin="True" href="https://fonts.googleapis.com" rel="preconnect"/>
 {% include google-tag-manager-head.html %}
   <!-- Start cookieyes banner -->
-  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js"></script>
-  <!-- End cookieyes banner -->
+<script defer="True" id="cookieyes" src="https://cdn-cookieyes.com/client_data/4d58f851fda21f329d07e980/script.js" type="text/javascript"></script>
+<!-- End cookieyes banner -->
   {% include google-analytics.html %}
   <!-- Standard Meta -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>PakStream Media Hub</title>
-  <meta name="description" content="PakStream Media Hub - Live TV, Free Press, Radio and Creators in one place." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="/css/index.css" />
-  <link rel="stylesheet" href="/css/media-hub.css" />
-  <link rel="stylesheet" href="/assets/css/carousel.css" />
-  <link rel="stylesheet" href="/css/toast.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
-<body>
-  <!-- Top bar (same as site) -->
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<title>PakStream Media Hub</title>
+<meta content="PakStream Media Hub - Live TV, Free Press, Radio and Creators in one place." name="description"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/manifest.webmanifest" rel="manifest"/>
+<meta content="#ffffff" name="theme-color"/>
+<link href="/css/index.css" rel="stylesheet"/>
+<link href="/css/media-hub.css" rel="stylesheet"/>
+<link href="/assets/css/carousel.css" rel="stylesheet"/>
+<link href="/css/toast.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&amp;display=swap" rel="stylesheet">
+</link></link><link href="https://pakstream.com/" rel="canonical"/><meta content="PakStream Media Hub" property="og:title"/><meta content="PakStream Media Hub - Live TV, Free Press, Radio and Creators in one place." property="og:description"/><meta content="https://pakstream.com/images/og-default.png" property="og:image"/><meta content="https://pakstream.com/" property="og:url"/><meta content="summary_large_image" name="twitter:card"/></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<!-- Top bar (same as site) -->
 {% include top-bar.html %}
 
-  <section class="youtube-section media-hub-section">
-    <div class="mode-tabs">
-      <button class="tab-btn" data-mode="all">All</button>
-      <button class="tab-btn" data-mode="favorites">Favorites</button>
-      <button class="tab-btn" data-mode="tv">Live TV</button>
-      <button class="tab-btn" data-mode="freepress">Free Press</button>
-      <button class="tab-btn" data-mode="creator">Creators</button>
-      <button class="tab-btn" data-mode="radio">Radio</button>
-    </div>
-    <!-- LEFT RAIL -->
-    <div class="channel-list open" id="left-rail">
-      <!-- NEW: search at the top of left menu -->
-      <div class="left-rail-header">
-        <div class="search-wrap">
-          <input id="mh-search-input" type="text" placeholder="Search all..." />
-        </div>
-      </div>
-      <!-- list gets injected here -->
-    </div>
-
-    <!-- CENTER -->
-    <div class="video-section">
-      <div class="button-row">
-        <button class="channel-toggle btn btn-primary" id="toggle-channels" onclick="toggleChannelList()" aria-label="Toggle channel list">
-          <span class="label">Channels</span>
-        </button>
-        <div class="spacer"></div>
-        <button class="details-toggle btn btn-primary" id="toggle-details" onclick="toggleDetailsList()" aria-label="Toggle details list" style="display:none;">
-          <span class="label">About</span>
-        </button>
-      </div>
-
-      <div class="live-player" data-stream-container data-youtube-container>
-        <iframe id="playerFrame" src="about:blank" data-youtube
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          title="Selected video player"></iframe>
-        <div id="player-container" class="radio-player" data-stream-container data-radio-container style="display:none;">
-            <div class="station-info">
-              <img id="station-logo" src="/images/default_radio.png" alt="Station logo" loading="lazy">
-              <h3 id="current-station" class="station-title">Select a station</h3>
-              <div id="live-badge" class="live-badge" hidden><span class="dot"></span>Live</div>
-              <div id="not-live-badge" class="not-live-badge"><span class="dot"></span>Not live</div>
-            </div>
-            <div class="controls">
-              <button id="favorite-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Toggle favorite" disabled>favorite_border</button>
-              <button id="prev-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Previous station" disabled>skip_previous</button>
-              <button id="play-pause-btn" class="play-pause-btn" type="button" aria-label="Play or pause" disabled>
-                <span class="material-symbols-outlined label">play_arrow</span>
-                <span class="spinner"></span>
-              </button>
-              <button id="next-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Next station" disabled>skip_next</button>
-              <button id="mute-btn" class="mute-btn material-symbols-outlined" type="button" aria-label="Mute" disabled>volume_up</button>
-              <button id="share-btn" class="fav-btn material-symbols-outlined" type="button" aria-label="Share">share</button>
-              <audio id="radio-player" data-radio autoplay></audio>
-            </div>
-        </div>
-      </div>
-
-      <!-- NEW: real latest videos list for the selected channel -->
-      <div id="videoList" class="video-list"></div>
-    </div>
-
-    <!-- RIGHT RAIL -->
-    <div class="details-container">
-      <div class="details-list" style="display:none;"></div>
-    </div>
-  </section>
+  
 
   {% include footer.html %}
-  <script src="/js/error-overlay.js" defer></script>
-  <script src="/js/stream-state.js" defer></script>
-  <script src="/js/radio.js" defer></script>
-  <script src="/js/youtube.js" defer></script>
-  <script src="/js/ui/toast.js" defer></script>
-
-  <!-- Keep order to preserve swipe/lock behavior from your site -->
-  <script src="/js/media-hub.js"></script>
-  <script src="/js/leftmenu.js"></script>
-  <script type="module" src="/js/fullscreen-orientation.js"></script>
-  <script defer src="/js/discovery.js"></script>
-  <script src="/js/pwa.js" defer></script>
-  <script defer src="/js/main.js"></script>
-  <script src="/assets/js/carousel.js" defer></script>
-  <script src="/assets/js/mh-featured.js" defer></script>
-</body>
+  <script defer="" src="/js/error-overlay.js"></script>
+<script defer="" src="/js/stream-state.js"></script>
+<script defer="" src="/js/radio.js"></script>
+<script defer="" src="/js/youtube.js"></script>
+<script defer="" src="/js/ui/toast.js"></script>
+<!-- Keep order to preserve swipe/lock behavior from your site -->
+<script defer="True" src="/js/media-hub.js"></script>
+<script defer="True" src="/js/leftmenu.js"></script>
+<script defer="True" src="/js/fullscreen-orientation.js" type="module"></script>
+<script defer="" src="/js/discovery.js"></script>
+<script defer="" src="/js/pwa.js"></script>
+<script defer="" src="/js/main.js"></script>
+<script defer="" src="/assets/js/carousel.js"></script>
+<script defer="" src="/assets/js/mh-featured.js"></script>
+<main id="main"><h1>Media Hub</h1><section class="youtube-section media-hub-section">
+<div class="mode-tabs">
+<button class="tab-btn" data-mode="all">All</button>
+<button class="tab-btn" data-mode="favorites">Favorites</button>
+<button class="tab-btn" data-mode="tv">Live TV</button>
+<button class="tab-btn" data-mode="freepress">Free Press</button>
+<button class="tab-btn" data-mode="creator">Creators</button>
+<button class="tab-btn" data-mode="radio">Radio</button>
+</div>
+<!-- LEFT RAIL -->
+<div class="channel-list open" id="left-rail">
+<!-- NEW: search at the top of left menu -->
+<div class="left-rail-header">
+<div class="search-wrap">
+<input aria-label="Search" id="mh-search-input" placeholder="Search all..." type="text"/>
+</div>
+</div>
+<!-- list gets injected here -->
+</div>
+<!-- CENTER -->
+<div class="video-section">
+<div class="button-row">
+<button aria-label="Toggle channel list" class="channel-toggle btn btn-primary" id="toggle-channels" onclick="toggleChannelList()">
+<span class="label">Channels</span>
+</button>
+<div class="spacer"></div>
+<button aria-label="Toggle details list" class="details-toggle btn btn-primary" id="toggle-details" onclick="toggleDetailsList()" style="display:none;">
+<span class="label">About</span>
+</button>
+</div>
+<div class="live-player" data-stream-container="" data-youtube-container="">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" data-youtube="" id="playerFrame" loading="lazy" src="about:blank" title="Selected video player"></iframe>
+<div class="radio-player" data-radio-container="" data-stream-container="" id="player-container" style="display:none;">
+<div class="station-info">
+<img alt="Station logo" height="1024" id="station-logo" loading="lazy" src="/images/default_radio.png" width="1024"/>
+<h3 class="station-title" id="current-station">Select a station</h3>
+<div class="live-badge" hidden="" id="live-badge"><span class="dot"></span>Live</div>
+<div class="not-live-badge" id="not-live-badge"><span class="dot"></span>Not live</div>
+</div>
+<div class="controls">
+<button aria-label="Toggle favorite" class="fav-btn material-symbols-outlined" disabled="" id="favorite-btn" type="button">favorite_border</button>
+<button aria-label="Previous station" class="fav-btn material-symbols-outlined" disabled="" id="prev-btn" type="button">skip_previous</button>
+<button aria-label="Play or pause" class="play-pause-btn" disabled="" id="play-pause-btn" type="button">
+<span class="material-symbols-outlined label">play_arrow</span>
+<span class="spinner"></span>
+</button>
+<button aria-label="Next station" class="fav-btn material-symbols-outlined" disabled="" id="next-btn" type="button">skip_next</button>
+<button aria-label="Mute" class="mute-btn material-symbols-outlined" disabled="" id="mute-btn" type="button">volume_up</button>
+<button aria-label="Share" class="fav-btn material-symbols-outlined" id="share-btn" type="button">share</button>
+<audio autoplay="" data-radio="" id="radio-player"></audio>
+</div>
+</div>
+</div>
+<!-- NEW: real latest videos list for the selected channel -->
+<div class="video-list" id="videoList"></div>
+</div>
+<!-- RIGHT RAIL -->
+<div class="details-container">
+<div class="details-list" style="display:none;"></div>
+</div>
+</section></main></body>
 </html>
