@@ -40,14 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
     results.className = 'search-results';
     searchForm.appendChild(results);
 
-    input.addEventListener('focus', function () {
-      searchForm.classList.add('active');
-    });
-
-    input.addEventListener('blur', function () {
-      searchForm.classList.remove('active');
-    });
-
     var center = topBar.querySelector('.top-bar-center');
     if (center) {
       center.appendChild(searchForm);
@@ -60,6 +52,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (searchForm && input && results) {
+    function activateSearch() {
+      searchForm.classList.add('active');
+    }
+
+    function deactivateSearch() {
+      // Slight delay so quick refocus won't drop the active state
+      setTimeout(function () {
+        if (document.activeElement !== input) {
+          searchForm.classList.remove('active');
+        }
+      }, 100);
+    }
+
+    input.addEventListener('focus', activateSearch);
+    input.addEventListener('blur', deactivateSearch);
+
     var searchData = [];
     var loaded = false;
     function loadData() {
@@ -83,6 +91,15 @@ document.addEventListener('DOMContentLoaded', function () {
           return searchData;
         });
     }
+
+    // Ensure the first interaction focuses the input immediately
+    input.addEventListener('pointerdown', function (e) {
+      if (document.activeElement !== input) {
+        activateSearch();
+        e.preventDefault();
+        input.focus({ preventScroll: true });
+      }
+    });
 
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
