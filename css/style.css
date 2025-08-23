@@ -1064,9 +1064,10 @@ button:hover,
   display: inline-flex;
   align-items: center;
   margin-top: 4px;
-  padding: 2px 6px;
-  border-radius: 12px;
-  background: var(--surface-variant);
+  padding: 2px 8px;
+  border: 2px solid currentColor;
+  border-radius: 9999px;
+  background: transparent;
   color: var(--on-surface);
   font-size: 0.75rem;
   font-weight: 600;
@@ -1075,7 +1076,7 @@ button:hover,
 .not-live-badge .dot {
   width: 8px;
   height: 8px;
-  background: var(--on-surface);
+  background: currentColor;
   border-radius: 50%;
   margin-right: 4px;
 }
