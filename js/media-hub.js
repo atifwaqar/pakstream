@@ -67,13 +67,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       muteBtn.textContent = muted ? 'volume_off' : 'volume_up';
     }
     if (playerIF && playerIF.contentWindow) {
+      const id = playerIF.id || 'playerFrame';
       playerIF.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }),
+        JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [], id }),
         '*'
       );
       if (!muted) {
         playerIF.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+          JSON.stringify({ event: 'command', func: 'playVideo', args: [], id }),
           '*'
         );
       }
@@ -82,8 +83,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   window.setPlaying = function(playing) {
     if (playerIF && playerIF.contentWindow) {
+      const id = playerIF.id || 'playerFrame';
       playerIF.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: playing ? 'playVideo' : 'pauseVideo', args: [] }),
+        JSON.stringify({ event: 'command', func: playing ? 'playVideo' : 'pauseVideo', args: [], id }),
         '*'
       );
     }
