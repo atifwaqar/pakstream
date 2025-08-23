@@ -541,7 +541,7 @@ section {
 }
 
 .blog-post-item a {
-  color: var(--primary);
+  color: #fff;
   text-decoration: none;
   font-weight: 500;
 }
