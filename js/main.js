@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deactivateSearch() {
-      // Delay to allow any script-triggered refocus to occur
+      // Slight delay so quick refocus won't drop the active state
       setTimeout(function () {
         if (document.activeElement !== input) {
           searchForm.classList.remove('active');
@@ -92,18 +92,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Ensure the search input keeps focus even if other scripts steal it
-    function ensureSearchFocus(e) {
+
+    // Ensure the first interaction focuses the input immediately
+    input.addEventListener('pointerdown', function (e) {
       if (document.activeElement !== input) {
         activateSearch();
-        if (e) e.preventDefault();
-        setTimeout(function () {
-          input.focus();
-        }, 0);
+        e.preventDefault();
+        input.focus({ preventScroll: true });
       }
-    }
-    input.addEventListener('mousedown', ensureSearchFocus);
-    input.addEventListener('touchstart', ensureSearchFocus, { passive: false });
+    });
 
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
