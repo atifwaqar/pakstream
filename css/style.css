@@ -170,10 +170,6 @@ footer nav a:hover {
               0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
-.search-form.active {
-  max-width: none;
-}
-
 @media (max-width: 600px) {
   .search-form {
     margin: 0 8px;
