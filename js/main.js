@@ -51,7 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (logoTitle) logoTitle.removeAttribute('hidden');
     });
 
-    topBar.appendChild(searchForm);
+    var center = topBar.querySelector('.top-bar-center');
+    if (center) {
+      center.appendChild(searchForm);
+    } else {
+      topBar.appendChild(searchForm);
+    }
   } else if (searchForm) {
     input = searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]');
     results = searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results');
