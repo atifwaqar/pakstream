@@ -7,6 +7,48 @@ if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
   // initAds();
 }
 
+// Cross-iframe scroll lock coordination
+(function () {
+  let overlay = document.getElementById('mh-parent-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'mh-parent-overlay';
+    overlay.className = 'site-overlay';
+    overlay.style.zIndex = '998';
+    document.body.appendChild(overlay);
+  }
+
+  let sourceWindow = null;
+
+  overlay.addEventListener('click', () => {
+    if (sourceWindow) {
+      sourceWindow.postMessage({ type: 'mh-close' }, '*');
+    }
+  });
+
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'mh-lock') {
+      const locked = !!event.data.locked;
+      document.body.classList.toggle('no-scroll', locked);
+      overlay.classList.toggle('is-active', locked);
+      if (locked) {
+        sourceWindow = event.source;
+        if (sourceWindow && sourceWindow.frameElement) {
+          const frame = sourceWindow.frameElement;
+          frame.style.position = 'relative';
+          frame.style.zIndex = '999';
+          overlay.style.zIndex = '998';
+        }
+      } else {
+        if (sourceWindow && sourceWindow.frameElement) {
+          sourceWindow.frameElement.style.zIndex = '';
+        }
+        sourceWindow = null;
+      }
+    }
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
   var topBar = document.querySelector('.top-bar');
   var btn = document.querySelector('[data-nav-toggle]');
