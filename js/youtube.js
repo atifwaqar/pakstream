@@ -5,6 +5,12 @@
 
   const YT_IFRAME_SRC = 'https://www.youtube.com/iframe_api';
   let apiReady = false, pending = [];
+  let lastFocusedEl = null;
+  let prevFocusedEl = null;
+  document.addEventListener('focusin', (e) => {
+    prevFocusedEl = lastFocusedEl;
+    lastFocusedEl = e.target;
+  });
 
   function loadYT() {
     if (window.YT && window.YT.Player) { apiReady = true; flush(); return; }
@@ -117,7 +123,19 @@
             // Hide any previous error overlay once the player state changes
             try { window.PAKSTREAM?.ErrorOverlay?.hide(container); } catch {}
             // 1 = playing, 2 = paused, 0 = ended
-            if (e.data === 1) { SS.play(id); container?.classList.add('is-playing'); }
+            if (e.data === 1) {
+              SS.play(id);
+              container?.classList.add('is-playing');
+              if (
+                document.activeElement === iframe &&
+                prevFocusedEl &&
+                prevFocusedEl !== iframe &&
+                prevFocusedEl.isConnected &&
+                typeof prevFocusedEl.focus === 'function'
+              ) {
+                prevFocusedEl.focus({ preventScroll: true });
+              }
+            }
             if (e.data === 2) { container?.classList.remove('is-playing'); }
             if (e.data === 0) { container?.classList.remove('is-playing'); if (SS.getCurrentId() === id) SS.stopAll(null); }
           },
