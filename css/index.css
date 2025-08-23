@@ -191,6 +191,12 @@ body.no-scroll {
   cursor: pointer;
 }
 
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
 .brand {
   display: flex;
   gap: 10px;
