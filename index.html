@@ -87,27 +87,23 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
        data-ad-type="leaderboard"
        data-placeholder="Advertisement — 728×90 / 320×50"></div>
 
-  <!-- Hero section with image and tagline -->
-  <section class="hero-banner">
-    <picture>
-      <source
-        type="image/webp"
-        srcset="/images/pakistan-abstract-380.webp 380w, /images/pakistan-abstract-760.webp 760w"
-        sizes="(max-width: 420px) 80vw, 380px" />
-      <img
-        src="/images/pakistan-abstract-380.webp"
-        width="380"
-        height="380"
-        alt="Abstract Pakistan crescent and star"
-        decoding="async"
-        fetchpriority="high"
-        style="aspect-ratio: 1 / 1; object-fit: cover;" />
-    </picture>
-    <div class="hero-text">
-      <h2>Your Gateway to Pakistani Media</h2>
-      <p>Stay Connected to Pakistan News, Radio &amp; More</p>
-    </div>
-  </section>
+   <!-- Hero section with prominent search -->
+   <section class="landing-hero">
+     <h1>Stream Pakistani TV, Radio &amp; Independent Voices</h1>
+     <p>Search by channel, show, or creator — fast, free, and worldwide. No sign‑up required.</p>
+     <form id="search-form" class="search-xl" role="search" autocomplete="off">
+       <input id="search-input" type="search" placeholder="Try: Geo News, ARY News, Mera FM, Coke Studio" aria-label="Search" autocomplete="off">
+       <a class="btn btn-ghost" href="/media-hub.html">Browse All</a>
+       <button class="btn btn-primary" type="submit">Search</button>
+       <div id="search-results" class="search-results"></div>
+     </form>
+     <div class="suggest">
+       <span class="chip">🔥 Geo News – Live</span>
+       <span class="chip">📻 Mera FM 107.4</span>
+       <span class="chip">🎵 Coke Studio</span>
+       <span class="chip">📰 Wajahat Saeed Khan</span>
+     </div>
+   </section>
 
   <!-- Inline rectangle -->
   <div class="ad-slot"
@@ -248,14 +244,6 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
     <div class="ad-container"> -->
       <!-- Google AdSense: Insert your ad code here -->
     </div>
-    <section class="mh-wrap" data-mh>
-      <div class="mh-row mh-search">
-        <label for="mh-q" class="visually-hidden">Search channels</label>
-        <input id="mh-q" data-mh-search-input type="search" placeholder="Search channels…">
-      </div>
-
-      <div class="mh-grid" data-mh-list></div>
-    </section>
 
     <!-- Footer -->
     <footer class="site-footer">
