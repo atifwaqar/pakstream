@@ -22,12 +22,12 @@
     if (channelList?.classList.contains("open")) {
       channelList.classList.remove("open");
       if (removeChannelFocusTrap) removeChannelFocusTrap();
-      channelToggleBtn?.focus();
+      restoreFocus(channelToggleBtn);
     }
     if (detailsList?.classList.contains("open")) {
       detailsList.classList.remove("open");
       if (removeDetailsFocusTrap) removeDetailsFocusTrap();
-      detailsToggleBtn?.focus();
+      restoreFocus(detailsToggleBtn);
     }
     if (typeof updateScrollLock === "function") updateScrollLock();
   });
@@ -94,6 +94,14 @@
   let removeChannelFocusTrap = null;
   let removeDetailsFocusTrap = null;
 
+  function restoreFocus(btn) {
+    if (!btn) return;
+    btn.focus();
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+      btn.blur();
+    }
+  }
+
   function toggleChannelList() {
     if (!channelList || !channelToggleBtn) return;
     if (window.innerWidth <= 768) {
@@ -104,7 +112,7 @@
         removeChannelFocusTrap = trapFocus(channelList);
       } else if (removeChannelFocusTrap) {
         removeChannelFocusTrap();
-        channelToggleBtn.focus();
+        restoreFocus(channelToggleBtn);
       }
     } else {
       channelList.classList.toggle("collapsed");
@@ -131,7 +139,7 @@
       channelList.classList.remove("open");
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeChannelFocusTrap) removeChannelFocusTrap();
-      channelToggleBtn.focus();
+      restoreFocus(channelToggleBtn);
     }
   });
 
@@ -142,7 +150,7 @@
         channelList.classList.remove("open");
         if (typeof updateScrollLock === "function") updateScrollLock();
         if (removeChannelFocusTrap) removeChannelFocusTrap();
-        channelToggleBtn.focus();
+        restoreFocus(channelToggleBtn);
       }
     });
 
@@ -161,7 +169,7 @@
         channelList.classList.remove("open");
         if (typeof updateScrollLock === "function") updateScrollLock();
         if (removeChannelFocusTrap) removeChannelFocusTrap();
-        channelToggleBtn.focus();
+        restoreFocus(channelToggleBtn);
       }
       touchStartX = null;
       touchFromModeTabs = false;
@@ -207,7 +215,7 @@
           removeDetailsFocusTrap = trapFocus(detailsList);
         } else if (removeDetailsFocusTrap) {
           removeDetailsFocusTrap();
-          detailsToggleBtn.focus();
+          restoreFocus(detailsToggleBtn);
         }
       } else {
         if (!detailsContainer) return;
@@ -232,12 +240,12 @@
         e.preventDefault();
         e.stopPropagation();
       }
-      detailsList.classList.remove("open");
-      if (typeof updateScrollLock === "function") updateScrollLock();
-      if (removeDetailsFocusTrap) removeDetailsFocusTrap();
-      detailsToggleBtn.focus();
-    }
-  });
+        detailsList.classList.remove("open");
+        if (typeof updateScrollLock === "function") updateScrollLock();
+        if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+        restoreFocus(detailsToggleBtn);
+      }
+    });
 
   if (detailsList && detailsToggleBtn) {
     let detailsTouchStartX = null;
@@ -249,13 +257,13 @@
       if (detailsTouchStartX === null) return;
       const touchEndX = e.changedTouches[0].clientX;
       if (touchEndX - detailsTouchStartX > 50) {
-          detailsList.classList.remove("open");
-          if (typeof updateScrollLock === "function") updateScrollLock();
-          if (removeDetailsFocusTrap) removeDetailsFocusTrap();
-          detailsToggleBtn.focus();
-        }
-        detailsTouchStartX = null;
-      });
+            detailsList.classList.remove("open");
+            if (typeof updateScrollLock === "function") updateScrollLock();
+            if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+            restoreFocus(detailsToggleBtn);
+          }
+          detailsTouchStartX = null;
+        });
 
     let detailsOpenStartX = null;
     document.addEventListener("touchstart", (e) => {

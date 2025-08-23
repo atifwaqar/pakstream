@@ -170,10 +170,6 @@ footer nav a:hover {
               0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
-.search-form.active {
-  max-width: none;
-}
-
 @media (max-width: 600px) {
   .search-form {
     margin: 0 8px;
@@ -181,6 +177,25 @@ footer nav a:hover {
   }
   .logo-title {
     display: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .top-bar-left,
+  .top-bar nav {
+    flex: 0 0 auto;
+  }
+
+  .top-bar nav {
+    margin-left: auto;
+  }
+
+  .top-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
   }
 }
 
