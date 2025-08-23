@@ -19,23 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  var homePaths = ['/', '/'];
-  if (topBar && btn && homePaths.indexOf(currentPath) === -1) {
-    var backBtn = document.createElement('a');
-    backBtn.href = '/';
-    backBtn.className = 'back-button';
-    backBtn.textContent = '←';
-    backBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = '/';
-      }
-    });
-    topBar.insertBefore(backBtn, btn.nextSibling);
-  }
-
   // Search form setup: use existing form if present, otherwise inject into top bar.
   var searchForm = document.getElementById('search-form');
   var input, results;
