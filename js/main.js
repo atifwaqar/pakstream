@@ -40,14 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
     results.className = 'search-results';
     searchForm.appendChild(results);
 
-    input.addEventListener('focus', function () {
-      searchForm.classList.add('active');
-    });
-
-    input.addEventListener('blur', function () {
-      searchForm.classList.remove('active');
-    });
-
     var center = topBar.querySelector('.top-bar-center');
     if (center) {
       center.appendChild(searchForm);
@@ -60,6 +52,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (searchForm && input && results) {
+    function activateSearch() {
+      searchForm.classList.add('active');
+    }
+
+    function deactivateSearch() {
+      searchForm.classList.remove('active');
+    }
+
+    input.addEventListener('focus', activateSearch);
+    input.addEventListener('blur', deactivateSearch);
+
     var searchData = [];
     var loaded = false;
     function loadData() {
@@ -83,6 +86,15 @@ document.addEventListener('DOMContentLoaded', function () {
           return searchData;
         });
     }
+
+    // Ensure the first interaction focuses the input without losing focus
+    input.addEventListener('pointerdown', function (e) {
+      if (document.activeElement !== input) {
+        e.preventDefault();
+        activateSearch();
+        input.focus({ preventScroll: true });
+      }
+    });
 
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
@@ -114,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
       if (!searchForm.contains(e.target)) {
         results.innerHTML = '';
+        deactivateSearch();
       }
     });
   }
