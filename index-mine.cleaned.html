@@ -57,9 +57,6 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
     ]
   }
   </script>
-
-
-
 <meta content="dark light" name="color-scheme"/><style>
 /* --- Critical base to prevent white flash and match target immediately --- */
 @layer reset, base, components, utilities;
@@ -132,7 +129,30 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
     .feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
 
     footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
-  </style></head>
+  
+
+/* Ensure Material Symbols show icons instead of raw text */
+.material-symbols-outlined{
+  font-family:'Material Symbols Outlined';
+  font-weight:normal;
+  font-style:normal;
+  font-size:24px; /* Adjusted by parent as needed */
+  line-height:1;
+  letter-spacing:normal;
+  text-transform:none;
+  display:inline-block;
+  white-space:nowrap;
+  word-wrap:normal;
+  direction:ltr;
+  -webkit-font-feature-settings:'liga';
+  -webkit-font-smoothing:antialiased;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+</style><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/></head>
 <body>
 {% include google-tag-manager-body.html %}
 {% include top-bar.html %}
@@ -250,7 +270,6 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   <!-- Placeholder for advertising or additional content
     <div class="ad-container"> -->
 <!-- Google AdSense: Insert your ad code here -->
-
 <!-- Footer -->
 <footer class="site-footer">
 <div class="footer-inner">
