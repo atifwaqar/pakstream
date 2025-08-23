@@ -103,6 +103,14 @@
 
   /* Footer */
   footer{padding:16px; font-size:13px}
+
+    footer{background:var(--bg2);border-top:1px solid var(--hair);color:var(--muted);padding:28px 24px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:16px}
+    .footer-links a{color:var(--muted);font-size:14px}
+    .footer-links a:hover{color:var(--brand)}
+    .copy{font-size:13px;color:var(--muted)}
+
 }
 
   </style>
@@ -186,7 +194,18 @@
     </div>
   </section>
 
-  <footer>© 2025 PakStream • All rights reserved.</footer>
+  <footer>
+    <div class="footer-inner">
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/about.html">About Us</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/history.html">History</a>
+        <a href="/terms.html">Terms</a>
+      </nav>
+      <div class="copy">© PakStream • All rights reserved.</div>
+    </div>
+  </footer>
 
   <script src="/assets/js/mh-core.js" defer></script>
   <script src="/assets/js/mh-search.js" defer></script>
