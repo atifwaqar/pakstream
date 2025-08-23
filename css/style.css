@@ -82,7 +82,7 @@ body.no-scroll {
 .top-bar-left {
   display: flex;
   align-items: center;
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .brand {
@@ -102,7 +102,7 @@ body.no-scroll {
 }
 
 .top-bar-center {
-  flex: 2;
+  flex: 1;
   display: flex;
   justify-content: center;
 }
@@ -144,9 +144,9 @@ footer nav a:hover {
 
 
 .search-form {
-  margin: 0 16px;
+  margin: 0 auto;
   position: relative;
-  flex: 1;
+  width: 100%;
   max-width: 500px;
   min-width: 0;
 }
@@ -170,10 +170,6 @@ footer nav a:hover {
               0 10px 24px rgba(0, 0, 0, 0.45);
 }
 
-.search-form.active {
-  max-width: none;
-}
-
 @media (max-width: 600px) {
   .search-form {
     margin: 0 8px;
@@ -181,6 +177,25 @@ footer nav a:hover {
   }
   .logo-title {
     display: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .top-bar-left,
+  .top-bar nav {
+    flex: 0 0 auto;
+  }
+
+  .top-bar nav {
+    margin-left: auto;
+  }
+
+  .top-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
   }
 }
 
