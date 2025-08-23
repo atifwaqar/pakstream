@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (document.activeElement !== input) {
           searchForm.classList.remove('active');
         }
-      }, 100);
+      }, 0);
     }
 
     input.addEventListener('focus', activateSearch);
@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
           return searchData;
         });
     }
+
 
     // Ensure the first interaction focuses the input immediately
     input.addEventListener('pointerdown', function (e) {
