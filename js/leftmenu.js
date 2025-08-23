@@ -8,6 +8,53 @@
     ".youtube-section, .media-hub-section",
   );
 
+  let overlay = document.getElementById("mh-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "mh-overlay";
+    overlay.className = "site-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  overlay.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (channelList?.classList.contains("open")) {
+      channelList.classList.remove("open");
+      if (removeChannelFocusTrap) removeChannelFocusTrap();
+      channelToggleBtn?.focus();
+    }
+    if (detailsList?.classList.contains("open")) {
+      detailsList.classList.remove("open");
+      if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+      detailsToggleBtn?.focus();
+    }
+    if (typeof updateScrollLock === "function") updateScrollLock();
+  });
+  overlay.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+    },
+    { passive: false },
+  );
+  overlay.addEventListener(
+    "touchmove",
+    (e) => {
+      e.preventDefault();
+    },
+    { passive: false },
+  );
+
+  function updateScrollLock() {
+    const locked =
+      (channelList && channelList.classList.contains("open")) ||
+      (detailsList && detailsList.classList.contains("open"));
+    document.body.classList.toggle("no-scroll", locked);
+    overlay.classList.toggle("is-active", locked);
+  }
+  window.updateScrollLock = updateScrollLock;
+
 
   const FOCUSABLE_SELECTOR =
     'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -77,6 +124,8 @@
       !channelList.contains(e.target) &&
       !channelToggleBtn.contains(e.target)
     ) {
+      e.preventDefault();
+      e.stopPropagation();
       channelList.classList.remove("open");
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeChannelFocusTrap) removeChannelFocusTrap();
@@ -177,6 +226,8 @@
       !detailsList.contains(e.target) &&
       !detailsToggleBtn.contains(e.target)
     ) {
+      e.preventDefault();
+      e.stopPropagation();
       detailsList.classList.remove("open");
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeDetailsFocusTrap) removeDetailsFocusTrap();
