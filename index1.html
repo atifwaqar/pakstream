@@ -34,6 +34,10 @@
     .hero h1{font-size:48px;line-height:1.15}
     .hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
     .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px;position:relative}
+    .search-xl:focus-within{border-color:var(--brand);box-shadow:0 0 0 6px var(--ring),var(--shadow)}
+    .search-xl input:focus-visible{outline:none}
+    .search-xl{transition:box-shadow .2s ease,border-color .2s ease}
+    .search-xl:focus-within input::placeholder{color:#d6f5e6}
     .search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
     .search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
     .search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
