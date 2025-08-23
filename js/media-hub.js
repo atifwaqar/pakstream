@@ -1133,16 +1133,6 @@ async function renderLatestVideosRSS(channelId) {
     history.replaceState(null, "", "?" + params.toString());
     updateActiveUI();
     renderList(searchEl ? (searchEl.value || "") : "");
-    if (window.innerWidth <= 768) {
-      const channelList = document.querySelector(".channel-list");
-      if (
-        channelList &&
-        !channelList.classList.contains("open") &&
-        typeof toggleChannelList === "function"
-      ) {
-        toggleChannelList();
-      }
-    }
   }));
   if (searchEl) {
     searchEl.addEventListener("input", e => renderList(e.target.value));
