@@ -69,7 +69,9 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/index.css">
+  {% unless page.ads == false %}
   <link rel="stylesheet" href="/css/ads.css">
+  {% endunless %}
   <link rel="stylesheet" href="/assets/css/carousel.css">
   <link rel="stylesheet" href="/css/toast.css">
   <link rel="stylesheet" href="/assets/css/mh-lite.css">
@@ -80,11 +82,13 @@
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
 
+  {% unless page.ads == false %}
   <!-- Top banner (responsive) -->
   <div class="ad-slot"
        data-ad-slot
        data-ad-type="leaderboard"
        data-placeholder="Advertisement — 728×90 / 320×50"></div>
+  {% endunless %}
 
   <main>
     {{ content }}
@@ -99,8 +103,10 @@
   <script src="/js/pwa.js" defer></script>
   <script src="/js/utils/flags.js" defer></script>
   <script src="/js/diagnostics.js" defer></script>
+  {% unless page.ads == false %}
   <script src="/js/ads/config.js" defer></script>
   <script src="/js/ads/ads.js" defer></script>
+  {% endunless %}
   <script defer src="/js/main.js"></script>
   <script src="/assets/js/carousel.js" defer></script>
   <script src="/assets/js/mh-featured.js" defer></script>
@@ -108,6 +114,7 @@
   <script src="/assets/js/mh-core.js" defer></script>
   <script src="/assets/js/mh-search.js" defer></script>
   <script src="/assets/js/mh-channels.js" defer></script>
+  {% unless page.ads == false %}
   <!--
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-CA-PUB-ID"
           crossorigin="anonymous"></script>
@@ -117,12 +124,13 @@
     // and call: (adsbygoogle = window.adsbygoogle || []).push({});
   }
   </script>
-  
+
   <noscript>
     <div class="ad-slot" aria-hidden="true" style="min-height:120px">
       <div class="ad-placeholder">Ads require JavaScript.</div>
     </div>
   </noscript>
   -->
+  {% endunless %}
 </body>
 </html>
