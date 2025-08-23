@@ -124,8 +124,10 @@
       !channelList.contains(e.target) &&
       !channelToggleBtn.contains(e.target)
     ) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (!e.target.closest(".top-bar")) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       channelList.classList.remove("open");
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeChannelFocusTrap) removeChannelFocusTrap();
@@ -226,8 +228,10 @@
       !detailsList.contains(e.target) &&
       !detailsToggleBtn.contains(e.target)
     ) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (!e.target.closest(".top-bar")) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       detailsList.classList.remove("open");
       if (typeof updateScrollLock === "function") updateScrollLock();
       if (removeDetailsFocusTrap) removeDetailsFocusTrap();
