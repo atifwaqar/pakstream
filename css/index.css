@@ -249,12 +249,6 @@ footer nav a:hover {
   }
 
 
-.top-bar-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
 .search-form {
   margin: 0 auto;
   position: relative;
@@ -303,11 +297,6 @@ footer nav a:hover {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-link) 25%, transparent), 0 10px 24px rgba(0,0,0,.45);
 }
 
-.top-bar-center .search-wrap {
-  width: 100%;
-  max-width: 400px;
-}
-
 @media (max-width: 600px) {
   .search-form {
     margin: 0 8px;
@@ -326,14 +315,6 @@ footer nav a:hover {
 
   .top-bar nav {
     margin-left: auto;
-  }
-
-  .top-bar-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 500px;
   }
 }
 
