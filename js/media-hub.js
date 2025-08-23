@@ -1044,6 +1044,8 @@ async function renderLatestVideosRSS(channelId) {
       if (playPauseLabel) playPauseLabel.textContent = 'play_arrow';
       if (playPauseBtn) playPauseBtn.setAttribute('aria-label', 'Play');
       if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+      if (liveBadge) liveBadge.hidden = true;
+      if (notLiveBadge) notLiveBadge.hidden = false;
       if (currentBtn) {
         const lbl = currentBtn.querySelector('.label'); if (lbl) lbl.textContent = 'play_arrow';
         currentBtn.setAttribute('aria-label', 'Play');
@@ -1054,6 +1056,8 @@ async function renderLatestVideosRSS(channelId) {
       if (playPauseLabel) playPauseLabel.textContent = 'play_arrow';
       if (playPauseBtn) playPauseBtn.setAttribute('aria-label', 'Play');
       if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'none';
+      if (liveBadge) liveBadge.hidden = true;
+      if (notLiveBadge) notLiveBadge.hidden = false;
       if (currentBtn) resetButton(currentBtn);
     });
   }
