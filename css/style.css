@@ -1680,3 +1680,26 @@ footer nav a:hover {
 }
 
 /* --- END PATCH --- */
+/* --- FINAL EMBED FIX: make the radio card wrap header + badges + controls --- */
+.media-hub-section #player-container.radio-player {
+  /* kill the flex behavior & spacing that collapses the card */
+  display: block !important;
+  justify-content: initial !important;
+  align-items: stretch !important;
+
+  /* ensure natural height */
+  aspect-ratio: auto !important;
+  height: auto !important;
+  min-height: unset !important;
+  overflow: visible !important;
+
+  /* keep your padding/visuals */
+  padding: var(--card-pad);
+}
+
+/* the controls are inside the card now—give them a little top space and prevent clipping */
+.media-hub-section #player-container.radio-player .controls {
+  margin-top: 12px;
+  grid-auto-rows: min-content !important;
+  overflow: visible !important;
+}
