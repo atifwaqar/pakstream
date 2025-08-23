@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     input = document.createElement('input');
     input.type = 'search';
     input.id = 'search-input';
-    input.placeholder = 'Search...';
+    input.placeholder = 'Search anything...';
     input.setAttribute('aria-label', 'Search');
     input.setAttribute('autocomplete', 'off');
     searchForm.appendChild(input);
