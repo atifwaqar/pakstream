@@ -9,7 +9,6 @@ if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
 
 document.addEventListener('DOMContentLoaded', function () {
   var topBar = document.querySelector('.top-bar');
-  var themeToggle = document.getElementById('theme-toggle');
   var btn = document.querySelector('[data-nav-toggle]');
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
@@ -42,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var input, results;
 
   if (!searchForm && topBar) {
-    var themeBtn = themeToggle;
     var logoTitle = document.querySelector('.logo-title');
     searchForm = document.createElement('form');
     searchForm.id = 'search-form';
@@ -70,11 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (logoTitle) logoTitle.removeAttribute('hidden');
     });
 
-    if (themeBtn) {
-      topBar.insertBefore(searchForm, themeBtn);
-    } else {
-      topBar.appendChild(searchForm);
-    }
+    topBar.appendChild(searchForm);
   } else if (searchForm) {
     input = searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]');
     results = searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results');
@@ -139,16 +133,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  if (themeToggle) {
-    var savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeToggle.addEventListener('click', function () {
-      var current = document.documentElement.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-  }
+  var savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
 
   // Maintain 16:9 aspect ratio for live-player iframes and radio players
   function resizeLivePlayers() {
