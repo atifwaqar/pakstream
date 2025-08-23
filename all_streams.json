@@ -1515,7 +1515,7 @@
         "youtube_channel_id": "UCaxR-D8FjZ-2otbU0_Y2grg"
       },
       "status": {
-        "active": false
+        "active": true
       }
     },
     {
@@ -1557,7 +1557,7 @@
         {
           "kind": "embed",
           "provider": "youtube",
-          "url": "https://www.youtube-nocookie.com/embed/eNyj_nSxXBE"
+          "url": "https://www.youtube-nocookie.com/embed/ztRhg65jXN8"
         },
         {
           "kind": "channel",
@@ -1569,7 +1569,7 @@
         "youtube_channel_id": "UCTur7oM6mLL0rM2k0znuZpQ"
       },
       "status": {
-        "active": false
+        "active": true
       }
     },
     {
@@ -1854,7 +1854,7 @@
         {
           "kind": "embed",
           "provider": "youtube",
-          "url": "https://www.youtube-nocookie.com/embed/live_stream?channel=UCkFGjasXNw-1MlcIW8LSTVQ"
+          "url": "https://www.youtube-nocookie.com/embed/2ZVq6Ain15E"
         },
         {
           "kind": "channel",
