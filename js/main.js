@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var input, results;
 
   if (!searchForm && topBar) {
-    var logoTitle = document.querySelector('.logo-title');
     searchForm = document.createElement('form');
     searchForm.id = 'search-form';
     searchForm.className = 'search-form';
@@ -43,12 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('focus', function () {
       searchForm.classList.add('active');
-      if (logoTitle) logoTitle.setAttribute('hidden', '');
     });
 
     input.addEventListener('blur', function () {
       searchForm.classList.remove('active');
-      if (logoTitle) logoTitle.removeAttribute('hidden');
     });
 
     var center = topBar.querySelector('.top-bar-center');
