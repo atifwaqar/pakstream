@@ -40,14 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
     results.className = 'search-results';
     searchForm.appendChild(results);
 
-    input.addEventListener('focus', function () {
-      searchForm.classList.add('active');
-    });
-
-    input.addEventListener('blur', function () {
-      searchForm.classList.remove('active');
-    });
-
     var center = topBar.querySelector('.top-bar-center');
     if (center) {
       center.appendChild(searchForm);
@@ -60,6 +52,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (searchForm && input && results) {
+    function activateSearch() {
+      searchForm.classList.add('active');
+    }
+
+    function deactivateSearch() {
+      // Delay to allow any script-triggered refocus to occur
+      setTimeout(function () {
+        if (document.activeElement !== input) {
+          searchForm.classList.remove('active');
+        }
+      }, 0);
+    }
+
+    input.addEventListener('focus', activateSearch);
+    input.addEventListener('blur', deactivateSearch);
+
     var searchData = [];
     var loaded = false;
     function loadData() {
@@ -83,6 +91,19 @@ document.addEventListener('DOMContentLoaded', function () {
           return searchData;
         });
     }
+
+    // Ensure the search input keeps focus even if other scripts steal it
+    function ensureSearchFocus(e) {
+      if (document.activeElement !== input) {
+        activateSearch();
+        if (e) e.preventDefault();
+        setTimeout(function () {
+          input.focus();
+        }, 0);
+      }
+    }
+    input.addEventListener('mousedown', ensureSearchFocus);
+    input.addEventListener('touchstart', ensureSearchFocus, { passive: false });
 
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
