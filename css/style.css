@@ -1703,3 +1703,25 @@ footer nav a:hover {
   grid-auto-rows: min-content !important;
   overflow: visible !important;
 }
+
+/* --- EMBED FIX: unstick the radio card and ensure it forms its own BFC --- */
+.media-hub-section #player-container {
+  position: static !important;   /* undo global sticky */
+  display: flow-root !important; /* new block formatting context */
+  overflow: visible !important;
+  height: auto !important;
+  min-height: max-content !important;
+}
+
+/* keep the card wrapping header + badges + controls */
+.media-hub-section #player-container.radio-player {
+  aspect-ratio: auto !important;
+  padding: var(--card-pad);
+}
+
+/* controls inside the card */
+.media-hub-section #player-container .controls {
+  grid-auto-rows: min-content !important;
+  overflow: visible !important;
+  margin-top: 12px;
+}
