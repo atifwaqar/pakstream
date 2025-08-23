@@ -52,6 +52,9 @@
       (detailsList && detailsList.classList.contains("open"));
     document.body.classList.toggle("no-scroll", locked);
     overlay.classList.toggle("is-active", locked);
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "mh-lock", locked }, "*");
+    }
   }
   window.updateScrollLock = updateScrollLock;
 
@@ -93,6 +96,25 @@
 
   let removeChannelFocusTrap = null;
   let removeDetailsFocusTrap = null;
+
+  window.addEventListener("message", (e) => {
+    if (e.data && e.data.type === "mh-close") {
+      let changed = false;
+      if (channelList?.classList.contains("open")) {
+        channelList.classList.remove("open");
+        if (removeChannelFocusTrap) removeChannelFocusTrap();
+        channelToggleBtn?.focus();
+        changed = true;
+      }
+      if (detailsList?.classList.contains("open")) {
+        detailsList.classList.remove("open");
+        if (removeDetailsFocusTrap) removeDetailsFocusTrap();
+        detailsToggleBtn?.focus();
+        changed = true;
+      }
+      if (changed && typeof updateScrollLock === "function") updateScrollLock();
+    }
+  });
 
   function toggleChannelList() {
     if (!channelList || !channelToggleBtn) return;
