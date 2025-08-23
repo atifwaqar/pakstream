@@ -1339,10 +1339,11 @@ table tbody tr.favorite {
 
   .top-bar nav {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
     bottom: 0;
-    width: 250px;
+    width: 80%;
+    max-width: 300px;
     background: var(--surface);
     color: var(--on-surface);
     transform: translateX(-100%);
@@ -1353,6 +1354,7 @@ table tbody tr.favorite {
     flex-direction: column;
     padding: 16px;
     gap: 8px;
+    overflow-y: auto;
   }
 
   .top-bar nav a {
