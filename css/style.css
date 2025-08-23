@@ -393,13 +393,14 @@ section {
 .feature-card {
   background: var(--surface);
   border-radius: 12px;
-  padding: 20px;
   box-shadow: var(--shadow-md);
-  text-align: center;
   flex: 1 1 250px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .feature-card:hover,
@@ -408,20 +409,15 @@ section {
   box-shadow: var(--shadow-lg);
 }
 
-.feature-card .material-symbols-outlined {
-  font-size: 48px;
-  color: var(--primary);
-  margin-bottom: 10px;
+.feature-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .feature-card p {
-  min-height: 3rem;
-}
-
-.feature-card .right-menu {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  flex: 1;
 }
 
 .media-hub-embed {
@@ -429,10 +425,11 @@ section {
   aspect-ratio: 16 / 9;
   height: auto;
   border: none;
-  border-radius: 0.75rem;
+  display: block;
 }
 
 .feature-card .cta-btn {
+  align-self: flex-start;
   display: inline-block;
   margin-top: 0.75rem;
   padding: 0.5rem 1rem;
