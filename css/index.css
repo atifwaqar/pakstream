@@ -194,7 +194,7 @@ body.no-scroll {
 .top-bar-left {
   display: flex;
   align-items: center;
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .brand {
