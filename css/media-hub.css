@@ -1,5 +1,11 @@
 /* Layout: mode tabs on top, channel list and video section below */
 .media-hub-section {
+  background: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  max-width: none;
   display: grid;
   grid-template-columns: 220px 1fr 300px;
   grid-template-rows: auto 1fr;
