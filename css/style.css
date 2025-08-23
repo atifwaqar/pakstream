@@ -196,15 +196,6 @@ footer nav a:hover {
 /* The rest of the existing style.css remains the same... */
 
 
-.theme-toggle {
-  background: none;
-  border: none;
-  color: var(--on-primary);
-  cursor: pointer;
-  font-size: 1.25rem;
-  margin-left: 16px;
-}
-
 /* Generic sections */
 section {
   background: var(--surface);
