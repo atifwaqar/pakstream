@@ -1,0 +1,82 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include google-tag-manager-head.html %}
+  <meta charset="UTF-8">
+  <title>PakStream - Stream Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Automated checker for PakStream streams.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  {% include google-tag-manager-body.html %}
+  {% include top-bar.html %}
+    <main class="container">
+      <h2>Stream status</h2>
+      <p id="progress"></p>
+      <pre id="log">Loading…</pre>
+    </main>
+    <script>
+    async function testStream(url, type) {
+    const el = document.createElement(type === 'audio' ? 'audio' : 'video');
+    el.src = url;
+    el.muted = true;
+    el.playsInline = true;
+    return new Promise(resolve => {
+      const cleanup = (result) => {
+        clearTimeout(timer);
+        // stop and release the stream so only one plays at a time
+        el.pause();
+        el.removeAttribute('src');
+        el.load();
+        resolve(result);
+      };
+      const timer = setTimeout(() => cleanup(false), 8000);
+      el.addEventListener('playing', () => cleanup(true), { once: true });
+      el.addEventListener('error', () => cleanup(false), { once: true });
+      el.play().catch(() => cleanup(false));
+    });
+  }
+  (async () => {
+    const log = document.getElementById('log');
+    const progress = document.getElementById('progress');
+    try {
+      const res = await fetch('/all_streams.json');
+      const data = await res.json();
+      const total = data.items.length;
+      let checked = 0;
+      progress.textContent = `Checked 0 of ${total} streams`;
+      const results = [];
+      for (const item of data.items) {
+        const endpoint = item.endpoints && item.endpoints[0];
+        results.push(`Checking ${item.name}...`);
+        log.textContent = results.join('\n');
+        if (!endpoint) {
+          results[results.length - 1] = `${item.name}: offline`;
+        } else {
+          const type = item.platform === 'audio' ? 'audio' : 'video';
+          const ok = await testStream(endpoint.url, type);
+          results[results.length - 1] = `${item.name}: ${ok ? 'online' : 'offline'}`;
+        }
+        checked++;
+        progress.textContent = `Checked ${checked} of ${total} streams (${total - checked} remaining)`;
+        log.textContent = results.join('\n');
+      }
+      progress.textContent = `Finished checking ${total} streams`;
+      log.textContent = results.join('\n');
+    } catch (err) {
+      progress.textContent = '';
+      log.textContent = 'Error loading stream list.';
+      console.error(err);
+    }
+  })();
+    </script>
+  </body>
+  </html>
