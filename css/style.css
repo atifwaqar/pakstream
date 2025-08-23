@@ -180,6 +180,25 @@ footer nav a:hover {
   }
 }
 
+@media (min-width: 600px) {
+  .top-bar-left,
+  .top-bar nav {
+    flex: 0 0 auto;
+  }
+
+  .top-bar nav {
+    margin-left: auto;
+  }
+
+  .top-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
 .search-results {
   position: absolute;
   top: 100%;

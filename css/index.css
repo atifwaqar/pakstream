@@ -191,6 +191,12 @@ body.no-scroll {
   cursor: pointer;
 }
 
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
 .brand {
   display: flex;
   gap: 10px;
@@ -208,11 +214,12 @@ body.no-scroll {
 }
 
 .top-bar nav {
-  flex-grow: 1;
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   transition: transform 0.4s ease-in-out;
+  justify-content: flex-end;
 }
 
 .top-bar nav a {
@@ -281,6 +288,25 @@ footer nav a:hover {
   }
   .logo-title {
     display: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .top-bar-left,
+  .top-bar nav {
+    flex: 0 0 auto;
+  }
+
+  .top-bar nav {
+    margin-left: auto;
+  }
+
+  .top-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
   }
 }
 
