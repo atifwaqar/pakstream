@@ -331,6 +331,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isActive = t.dataset.mode === mode;
       t.classList.toggle("active", isActive);
       t.setAttribute("aria-pressed", isActive ? "true" : "false");
+      if (isActive && searchEl) {
+        const tabName = t.textContent.trim().toLowerCase();
+        searchEl.placeholder = `Search ${tabName}...`;
+      }
     });
 
     const videoPlaying = playerIF && playerIF.src && playerIF.src !== "about:blank";
