@@ -68,9 +68,6 @@ body.no-scroll {
   font-size: 1.125rem;
   margin: 0;
   color: var(--on-primary);
-  font-weight: 800;
-  letter-spacing: .3px;
-  line-height: 1;
 }
 
 .nav-toggle {
@@ -1749,14 +1746,11 @@ footer.site-footer .copy {
   font-size: 48px;
   line-height: 1.15;
   margin: 0;
-  font-weight: 800;
 }
 .landing-hero p {
   margin: 8px auto 16px;
   color: var(--on-surface-variant);
   max-width: 760px;
-  font-size: 16px;
-  font-weight: 400;
 }
 .search-xl {
   margin: 16px auto 0;
@@ -1784,16 +1778,12 @@ footer.site-footer .copy {
   color: var(--on-surface);
   font-size: 17px;
   padding: 12px;
-  font-family: inherit;
 }
 .search-xl input::placeholder {
   color: var(--on-surface-variant);
 }
-.search-xl input:focus-visible {
-  outline: none;
-}
 .search-xl:focus-within input::placeholder {
-  color: #d6f5e6;
+  color: color-mix(in srgb, var(--on-surface) 85%, white);
 }
 .search-xl .search-results {
   position: absolute;
