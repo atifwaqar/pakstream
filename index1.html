@@ -33,8 +33,11 @@
     .hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
     .hero h1{font-size:48px;line-height:1.15}
     .hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
-    .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px}
+    .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px;position:relative}
     .search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
+    .search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
+    .search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
+    .search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
     .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
     .btn-primary{background:var(--brand);color:#03130c}
     .btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
@@ -118,8 +121,8 @@
   <section class="hero">
     <h1>Stream Pakistani TV, Radio &amp; Independent Voices</h1>
     <p>Search by channel, show, or creator — fast, free, and worldwide. No sign‑up required.</p>
-    <form class="search-xl" role="search" onsubmit="event.preventDefault()">
-      <input data-mh-search-input placeholder="Try: Geo News, ARY News, Mera FM, Coke Studio" />
+    <form class="search-xl" role="search">
+      <input type="search" data-mh-search-input placeholder="Try: Geo News, ARY News, Mera FM, Coke Studio" />
       <a class="btn btn-ghost" href="/media-hub.html">Browse All</a>
       <button class="btn btn-primary" type="submit">Search</button>
     </form>
@@ -189,6 +192,64 @@
   <script src="/assets/js/mh-search.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      const searchForm = document.querySelector('.search-xl');
+      const searchInput = searchForm?.querySelector('[data-mh-search-input]');
+      if (searchForm && searchInput) {
+        const results = document.createElement('div');
+        results.className = 'search-results';
+        searchForm.appendChild(results);
+        let searchData = [];
+        let loaded = false;
+        function loadData() {
+          if (loaded) return Promise.resolve(searchData);
+          return fetch('/all_streams.json')
+            .then(r => r.json())
+            .then(data => {
+              const items = Array.isArray(data.items) ? data.items : [];
+              const typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
+              searchData = items.map(it => {
+                const mode = typeToMode[it.type] || 'tv';
+                const channelId = it.type === 'radio' && it.ids && it.ids.internal_id ? it.ids.internal_id : it.key;
+                return {
+                  name: it.name,
+                  link: `/media-hub.html?c=${encodeURIComponent(channelId)}&m=${mode}`
+                };
+              });
+              loaded = true;
+              return searchData;
+            });
+        }
+        searchInput.addEventListener('input', function () {
+          const q = searchInput.value.trim().toLowerCase();
+          results.innerHTML = '';
+          if (!q) return;
+          loadData().then(() => {
+            searchData.filter(item => item.name.toLowerCase().includes(q)).slice(0, 10).forEach(item => {
+              const a = document.createElement('a');
+              a.href = item.link;
+              a.textContent = item.name;
+              results.appendChild(a);
+            });
+          });
+        });
+        searchForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const q = searchInput.value.trim().toLowerCase();
+          if (!q) return;
+          loadData().then(() => {
+            const match = searchData.find(item => item.name.toLowerCase().includes(q));
+            if (match) {
+              window.location.href = match.link;
+            }
+          });
+        });
+        document.addEventListener('click', function (e) {
+          if (!searchForm.contains(e.target)) {
+            results.innerHTML = '';
+          }
+        });
+      }
+
       const cards = document.querySelectorAll('.feature-card');
       const sendMuteMessage = (iframe, muted) => {
         if (iframe.contentWindow) {
