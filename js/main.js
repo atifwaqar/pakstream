@@ -84,18 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Ensure the search input keeps focus even if other scripts steal it
-    function ensureSearchFocus(e) {
-      if (document.activeElement !== input) {
-        if (e) e.preventDefault();
-        setTimeout(function () {
-          input.focus();
-        }, 0);
-      }
-    }
-    input.addEventListener('mousedown', ensureSearchFocus);
-    input.addEventListener('touchstart', ensureSearchFocus, { passive: false });
-
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
       results.innerHTML = '';
