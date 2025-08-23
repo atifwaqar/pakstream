@@ -37,21 +37,28 @@ document.addEventListener('DOMContentLoaded', function () {
     topBar.insertBefore(backBtn, btn.nextSibling);
   }
 
-  // Add top-bar search on all pages, including the media hub.
-  if (topBar) {
+  // Search form setup: use existing form if present, otherwise inject into top bar.
+  var searchForm = document.getElementById('search-form');
+  var input, results;
+
+  if (!searchForm && topBar) {
     var themeBtn = themeToggle;
     var logoTitle = document.querySelector('.logo-title');
-    var searchForm = document.createElement('form');
+    searchForm = document.createElement('form');
     searchForm.id = 'search-form';
     searchForm.className = 'search-form';
     searchForm.setAttribute('autocomplete', 'off');
-    var input = document.createElement('input');
+    input = document.createElement('input');
     input.type = 'search';
     input.id = 'search-input';
     input.placeholder = 'Search...';
     input.setAttribute('aria-label', 'Search');
     input.setAttribute('autocomplete', 'off');
     searchForm.appendChild(input);
+    results = document.createElement('div');
+    results.id = 'search-results';
+    results.className = 'search-results';
+    searchForm.appendChild(results);
 
     input.addEventListener('focus', function () {
       searchForm.classList.add('active');
@@ -63,11 +70,17 @@ document.addEventListener('DOMContentLoaded', function () {
       if (logoTitle) logoTitle.removeAttribute('hidden');
     });
 
-    var results = document.createElement('div');
-    results.id = 'search-results';
-    results.className = 'search-results';
-    searchForm.appendChild(results);
+    if (themeBtn) {
+      topBar.insertBefore(searchForm, themeBtn);
+    } else {
+      topBar.appendChild(searchForm);
+    }
+  } else if (searchForm) {
+    input = searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]');
+    results = searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results');
+  }
 
+  if (searchForm && input && results) {
     var searchData = [];
     var loaded = false;
     function loadData() {
@@ -124,12 +137,6 @@ document.addEventListener('DOMContentLoaded', function () {
         results.innerHTML = '';
       }
     });
-
-    if (themeBtn) {
-      topBar.insertBefore(searchForm, themeBtn);
-    } else {
-      topBar.appendChild(searchForm);
-    }
   }
 
   if (themeToggle) {

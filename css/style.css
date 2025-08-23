@@ -1743,3 +1743,146 @@ footer.site-footer .copy {
     padding: 16px;
   }
 }
+
+/* Landing hero with search */
+.landing-hero {
+  padding: 56px 20px 36px;
+  text-align: center;
+  border-bottom: 1px solid var(--outline);
+  background: radial-gradient(circle at top, var(--surface), var(--background) 80%);
+}
+.landing-hero h1 {
+  font-size: 48px;
+  line-height: 1.15;
+  margin: 0;
+}
+.landing-hero p {
+  margin: 8px auto 16px;
+  color: var(--on-surface-variant);
+  max-width: 760px;
+}
+.search-xl {
+  margin: 16px auto 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--outline);
+  border-radius: 18px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-lg);
+  max-width: 720px;
+  position: relative;
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.search-xl:focus-within {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--secondary) 35%, transparent), var(--shadow-lg);
+}
+.search-xl input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--on-surface);
+  font-size: 17px;
+  padding: 12px;
+}
+.search-xl input::placeholder {
+  color: var(--on-surface-variant);
+}
+.search-xl:focus-within input::placeholder {
+  color: color-mix(in srgb, var(--on-surface) 85%, white);
+}
+.search-xl .search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--outline);
+  border-radius: 12px;
+  margin-top: 4px;
+  box-shadow: var(--shadow-lg);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.search-xl .search-results a {
+  display: block;
+  padding: 8px 12px;
+  color: var(--on-surface);
+  text-decoration: none;
+}
+.search-xl .search-results a:hover {
+  background: color-mix(in srgb, var(--on-surface) 12%, transparent);
+}
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--secondary);
+  color: var(--on-secondary);
+}
+.btn-ghost {
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  color: var(--on-surface);
+  border: 1px solid var(--outline);
+}
+.suggest {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+.chip {
+  border: 1px solid var(--outline);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .landing-hero {
+    padding: 36px 16px 24px;
+  }
+  .landing-hero h1 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+  .landing-hero p {
+    font-size: 14px;
+    max-width: 100%;
+  }
+  .search-xl {
+    max-width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    border-radius: 14px;
+    padding: 10px;
+  }
+  .search-xl input {
+    padding: 12px 10px;
+    font-size: 16px;
+  }
+  .search-xl .btn {
+    width: 100%;
+  }
+  .suggest {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 2px;
+    gap: 8px;
+  }
+  .suggest .chip {
+    white-space: nowrap;
+  }
+}
