@@ -1818,13 +1818,13 @@ nav a{color:var(--muted);margin-left:14px}
 .chip{border:1px solid var(--hair);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 12px;font-size:14px}
 
 /* Feature Grid */
-.features{max-width:1200px;margin:40px auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.features{max-width:1200px;margin:40px auto;padding:0;background:none;box-shadow:none;border-radius:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
 .feature-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--hair);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
 .feature-card iframe{width:100%;aspect-ratio:16/9;border:0;border-bottom:1px solid var(--hair)}
 .feature-card-content{padding:16px;display:flex;flex-direction:column;flex:1}
 .feature-card h3{margin:0 0 6px;font-size:18px;color:var(--ink)}
 .feature-card p{margin:0 0 12px;color:var(--muted);font-size:14px;flex:1}
-.feature-card a{box-sizing:border-box;max-width:100%;align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
+.feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
 
 footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
 
@@ -1865,7 +1865,7 @@ footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
   .features{
     grid-template-columns:1fr;
     gap:16px;
-    padding:0 16px;
+    padding:0;
     margin:28px auto;
   }
   .feature-card{border-radius:16px}
@@ -2080,56 +2080,56 @@ footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
   </section>
   
   <!-- Featured cards -->
-  <section class="features">
-    <div class="feature-card" data-m="freepress" data-c="wajahatsaeedkhan">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1&list=0&about=0" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>Free Press</h3>
-        <p>Diverse perspectives from Pakistani creators.</p>
-        <a href="/media-hub.html?m=freepress&c=wajahatsaeedkhan">Watch Now</a>
+    <section class="features">
+      <div class="feature-card" id="freepress">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1&list=0&channels=0&about=0" title="Free Press"></iframe>
+        <div class="feature-card-content">
+          <h3>Free Press</h3>
+          <p>Diverse perspectives from Pakistani creators.</p>
+          <a href="#">Explore</a>
+        </div>
       </div>
-    </div>
-    <div class="feature-card" data-m="radio" data-c="audio35">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=radio&c=audio35&muted=1&list=0&about=0" title="PakStream Radio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>Live Pakistani Radio</h3>
-        <p>Stream Mera FM, City FM89, Mast FM & more.</p>
-        <a href="/media-hub.html?m=radio&c=audio35">Listen</a>
+      <div class="feature-card" id="radio">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=radio&c=merafm&muted=1&list=0&channels=0&about=0" title="Mera FM"></iframe>
+        <div class="feature-card-content">
+          <h3>Live Pakistani Radio</h3>
+          <p>Stream Mera FM, City FM89, Mast FM & more.</p>
+          <a href="#">Listen Live</a>
+        </div>
       </div>
-    </div>
-    <div class="feature-card" data-m="tv" data-c="24news">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=tv&c=geo&muted=1&list=0&about=0" title="PakStream Live TV" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>Live TV Channels</h3>
-        <p>Watch Pakistani news, dramas, and morning shows.</p>
-        <a href="/media-hub.html?m=tv&c=24news">Watch Now</a>
+      <div class="feature-card" id="tv">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=tv&c=geo&muted=1&list=0&channels=0&about=0" title="Geo News"></iframe>
+        <div class="feature-card-content">
+          <h3>Live News & TV</h3>
+          <p>Watch Pakistani news, dramas, and morning shows.</p>
+          <a href="#">Watch Now</a>
+        </div>
       </div>
-    </div>
-    <div class="feature-card" data-m="creator" data-c="zeeshanusmani">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1&list=0&about=0" title="PakStream Creators" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>Trending Creators</h3>
-        <p>Drama serials and entertainment shows.</p>
-        <a href="/media-hub.html?m=creator&c=zeeshanusmani">Watch Now</a>
+      <div class="feature-card">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=creator&c=zeeshanusmani&muted=1&list=0&channels=0&about=0" title="Hum TV"></iframe>
+        <div class="feature-card-content">
+          <h3>Trending Creators</h3>
+          <p>Drama serials and entertainment shows.</p>
+          <a href="#">Watch Now</a>
+        </div>
       </div>
-    </div>
-    <div class="feature-card" data-m="all" data-c="geo">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=all&c=geo&muted=1&list=0&about=0" title="PakStream Media Hub" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>All Streams</h3>
-        <p>Explore the full library of Pakistani TV, radio, and creator channels, all organized in one place for easy browsing.</p>
-        <a href="/media-hub.html?m=all&c=geo">Browse</a>
+      <div class="feature-card">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=all&c=aftabiqbal&muted=1&list=0&channels=0&about=0" title="City FM89"></iframe>
+        <div class="feature-card-content">
+          <h3>All Streams</h3>
+          <p>Explore the full library of Pakistani TV, radio, and creator channels, all organized in one place for easy browsing.</p>
+          <a href="#">Listen Now</a>
+        </div>
       </div>
-    </div>
-    <div class="feature-card" data-m="favorites" data-c="wajahatsaeedkhan">
-      <iframe class="media-hub-embed" src="/media-hub-embed.html?m=favorites&c=wajahatsaeedkhan&muted=1&list=0&about=0" title="PakStream Favorites" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      <div class="feature-card-content">
-        <h3>Your Favorites</h3>
-        <p>Pin your go‑to channels for one‑tap playback.</p>
-        <a href="/media-hub.html?m=favorites&c=wajahatsaeedkhan">View</a>
+      <div class="feature-card" id="favorites">
+        <iframe src="https://pakstream.com/media-hub-embed.html?m=favorites&c=imranriazkhan&muted=1&list=0&channels=1&about=0" title="Favorites"></iframe>
+        <div class="feature-card-content">
+          <h3>Your Favorites</h3>
+          <p>Pin your go‑to channels for one‑tap playback.</p>
+          <a href="#">Open Favorites</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   </div>
   <!-- Footer -->
   <footer class="site-footer">
