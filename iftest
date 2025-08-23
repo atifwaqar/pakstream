@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0">
+<script>
+const channelId = "UCaszgR2TH3qNw_CxLHAd2S"; // Imran Riaz Khan
+fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+  .then(r => r.text())
+  .then(str => new DOMParser().parseFromString(str, "application/xml"))
+  .then(data => {
+    const vid = data.getElementsByTagName("yt:videoId")[0].textContent;
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube.com/embed/${vid}`;
+    iframe.style.width = "100%";
+    iframe.style.height = "100vh";
+    iframe.style.border = "0";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    document.body.appendChild(iframe);
+  });
+</script>
+</body>
+</html>
