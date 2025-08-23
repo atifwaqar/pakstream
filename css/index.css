@@ -2057,3 +2057,44 @@ footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
 .ad-slot.noscript-placeholder {
   min-height: 120px;
 }
+
+/* Media hub embed essential styles migrated from style.css */
+.youtube-section .button-row,
+.media-hub-section .button-row {
+  display: flex;
+  gap: 8px;
+  margin: 8px;
+}
+
+.button-row .spacer {
+  flex: 1;
+}
+
+.channel-toggle,
+.details-toggle {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover,
+.channel-toggle:hover,
+.details-toggle:hover {
+  background: var(--primary-container);
+}
+
+button:hover,
+.channel-toggle:hover {
+  transform: scale(1.03);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: var(--shadow-xxl);
+}
+
+.live-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
