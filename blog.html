@@ -4,20 +4,19 @@ title: PakStream Blog - News for Overseas Pakistanis
 description: Insightful blogs covering Pakistani media, culture, and diaspora life abroad.
 ---
 
-<link rel="manifest" href="/manifest.webmanifest" type="application/manifest+json">
-<meta name="theme-color" content="#ffffff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="/images/icons/icon-192-maskable.png">
+<link href="/manifest.webmanifest" rel="manifest" type="application/manifest+json"/>
+<meta content="#ffffff" name="theme-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<link href="/images/icons/icon-192-maskable.png" rel="apple-touch-icon"/>
 <section class="blog-list">
-  <h1>Latest Blog Posts</h1>
-
-  <ul>
+<h1>Latest Blog Posts</h1>
+<ul>
     {% for post in site.posts %}
       <li class="blog-post-item">
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
-      </li>
+<a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+<span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+</li>
     {% endfor %}
   </ul>
 </section>
-<script src="/js/pwa.js" defer></script>
+<script defer="" src="/js/pwa.js"></script>
