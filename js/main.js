@@ -57,16 +57,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deactivateSearch() {
-      // Delay to allow other scripts to refocus the input if needed
+      // Slight delay so quick refocus won't drop the active state
       setTimeout(function () {
-        var active = document.activeElement;
-        if (!active || active === document.body) {
-          // Refocus the input if nothing else was focused
-          input.focus({ preventScroll: true });
-        } else if (active !== input && !searchForm.contains(active)) {
+        if (document.activeElement !== input) {
           searchForm.classList.remove('active');
         }
-      }, 100);
+      }, 0);
     }
 
     input.addEventListener('focus', activateSearch);
@@ -96,10 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
     // Ensure the first interaction focuses the input immediately
-    input.addEventListener('pointerdown', function () {
+    input.addEventListener('pointerdown', function (e) {
       if (document.activeElement !== input) {
         activateSearch();
+        e.preventDefault();
         input.focus({ preventScroll: true });
       }
     });
