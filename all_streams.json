@@ -1335,13 +1335,13 @@
       "type": "livetv",
       "platform": "youtube",
       "media": {
-        "thumbnail_url": "https://yt3.ggpht.com/85BoRJ9uzPi3sV8cHNC6u-APNVwFYBjD1XEjYpOR7GkQcmiadrtwL72tUKf99Vy1DgGCxmN6yw=s88-c-k-c0x00ffffff-no-rj"
+        "thumbnail_url": "https://yt3.ggpht.com/HqeB6-ZxZ6K_sT9iuv6qIHCxdYeIMZoRVbIcQSfQ8bmAii6m1XIM96ht9UvpjHOjLJfRGLyxog=s88-c-k-c0x00ffffff-no-rj"
       },
       "endpoints": [
         {
           "kind": "embed",
           "provider": "youtube",
-          "url": "https://www.youtube-nocookie.com/embed/tG2nE5C5TUk"
+          "url": "https://www.youtube-nocookie.com/embed/DgAsjQNztZE"
         },
         {
           "kind": "channel",
