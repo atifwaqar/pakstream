@@ -51,30 +51,46 @@ body.no-scroll {
 
 /* Top app bar */
 .top-bar {
-  background: var(--primary);
+  background: linear-gradient(180deg, rgba(11, 26, 20, 0.9), rgba(11, 26, 20, 0.55) 60%, transparent);
   color: var(--on-primary);
   display: flex;
   align-items: center;
   padding: 0 16px;
   height: 56px;
-  box-shadow: var(--shadow-md);
-  border-bottom: 2px solid var(--primary-container);
-  position: relative;
+  border-bottom: 1px solid var(--outline);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
   z-index: 1002;
 }
 
 .logo-title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   margin: 0;
-  line-height: 56px;
   color: var(--on-primary);
 }
 
-.nav-toggle-label {
-  color: var(--on-primary);
+.nav-toggle {
+  background: none;
+  border: 0;
+  color: var(--on-surface-variant);
   font-size: 1.5rem;
   margin-right: 16px;
   cursor: pointer;
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: conic-gradient(from 140deg, #23e08c, #0f6b45, #0b1a14);
+  box-shadow: inset 0 0 0 2px #0b1a14, 0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .back-button {
@@ -93,7 +109,7 @@ body.no-scroll {
 }
 
 .top-bar nav a {
-  color: var(--on-primary);
+  color: var(--on-surface-variant);
   text-decoration: none;
   font-weight: 500;
   padding: 12px 14px;
@@ -179,13 +195,6 @@ footer nav a:hover {
 /* Keep existing styles untouched below here */
 /* The rest of the existing style.css remains the same... */
 
-#nav-toggle {
-  display: none;
-}
-
-.nav-overlay {
-  display: none;
-}
 
 .theme-toggle {
   background: none;
@@ -1264,10 +1273,6 @@ table tbody tr.favorite {
     gap: 8px;
   }
 
-  #nav-toggle:checked ~ nav {
-    transform: translateX(0);
-  }
-
   .top-bar nav a {
     color: var(--on-surface);
     display: block;
@@ -1280,24 +1285,10 @@ table tbody tr.favorite {
     color: var(--accent-link);
   }
 
-  .nav-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--overlay-bg);
-    display: none;
-    z-index: 1003;
-  }
-
-  .nav-overlay.active {
-    display: block;
-  }
 }
 
 @media (min-width: 601px) {
-  .nav-toggle-label {
+  .nav-toggle {
     display: none;
   }
   .back-button {
