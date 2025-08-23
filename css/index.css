@@ -243,10 +243,10 @@ footer nav a:hover {
 
 
 .search-form {
-  margin: 0 16px;
+  margin-left: 16px;
   position: relative;
   flex: 1;
-  max-width: 500px;
+  max-width: 300px;
   min-width: 0;
 }
 
@@ -254,18 +254,8 @@ footer nav a:hover {
   width: 100%;
   box-sizing: border-box;
   padding: 6px 8px;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent-link) 25%, transparent);
-  color: var(--on-surface);
-  outline: none;
-  box-shadow: 0 2px 10px rgba(0,0,0,.35);
-  transition: box-shadow .2s ease, border-color .2s ease;
-}
-
-.search-form input:focus, .search-form input:focus-visible {
-  border-color: var(--accent-link);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-link) 25%, transparent), 0 10px 24px rgba(0,0,0,.45);
+  border-radius: 4px;
+  border: 1px solid var(--primary-container);
 }
 
 .search-form.active {
@@ -274,7 +264,7 @@ footer nav a:hover {
 
 @media (max-width: 600px) {
   .search-form {
-    margin: 0 8px;
+    margin-left: 8px;
     max-width: none;
   }
   .logo-title {
@@ -1750,70 +1740,14 @@ nav a{color:var(--muted);margin-left:14px}
 .hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%);margin:0;max-width:100%;border-radius:0;box-shadow:none}
 .hero h1{font-size:48px;line-height:1.15}
 .hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
-.search-xl {
-  margin: 16px auto 0;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  background: linear-gradient(180deg,#0b1a14,#0f221a);
-  border: 1px solid rgba(25,195,125,.25);
-  border-radius: 18px;
-  padding: 10px 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.35);
-  max-width: 820px;
-  position: relative;
-  transition: box-shadow .2s ease, border-color .2s ease;
-}
-
-.search-xl:focus-within {
-  border-color: #19c37d;
-  box-shadow: 0 0 0 4px rgba(25,195,125,.25), 0 10px 24px rgba(0,0,0,.45);
-}
-
-.search-xl input:focus, .search-xl input:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-.search-xl:focus-within input::placeholder {
-  color: #d6f5e6;
-}
-
-.search-xl input {
-  flex: 1;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: #eaf5ef;
-  font-size: 17px;
-  padding: 12px 14px;
-  border-radius: 12px;
-}
-
-.search-xl .search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--bg2);
-  border: 1px solid var(--hair);
-  border-radius: 12px;
-  margin-top: 4px;
-  box-shadow: var(--shadow);
-  max-height: 240px;
-  overflow-y: auto;
-  z-index: 100;
-}
-
-.search-xl .search-results a {
-  display: block;
-  padding: 8px 12px;
-  color: var(--ink);
-}
-
-.search-xl .search-results a:hover {
-  background: rgba(255,255,255,.08);
-}
+.search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px;position:relative;transition:box-shadow .2s ease,border-color .2s ease}
+.search-xl:focus-within{border-color:var(--brand);box-shadow:0 0 0 6px var(--ring),var(--shadow)}
+.search-xl input:focus, .search-xl input:focus-visible{outline:none;box-shadow:none}
+.search-xl:focus-within input::placeholder{color:#d6f5e6}
+.search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
+.search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
+.search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
+.search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
 .btn{box-sizing:border-box;max-width:100%;appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
 .btn-primary{background:var(--brand);color:#03130c}
 .btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
