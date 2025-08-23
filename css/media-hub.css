@@ -121,6 +121,16 @@
   border-color: var(--primary);
   color: var(--on-primary-container);
 }
+.search-wrap input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--outline);
+  background: var(--surface);
+  color: var(--on-surface);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
 /* Responsive keeps your existing behavior */
 
 .mode-tabs {
@@ -182,28 +192,15 @@
 }
 .search-wrap {
   margin: 6px 0 10px;
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent-link) 25%, transparent);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-  transition: box-shadow .2s ease, border-color .2s ease;
 }
-
-.search-wrap:focus-within {
-  border-color: var(--accent-link);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-link) 25%, transparent),
-              0 10px 24px rgba(0,0,0,0.45);
-}
-
 .search-wrap input {
   width: 100%;
   padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  background: transparent;
+  border: 1px solid var(--outline);
+  background: var(--surface);
   color: var(--on-surface);
-  border-radius: inherit;
-  outline: none;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 /* reuse your card list visuals */
