@@ -1,84 +1,84 @@
-/* ===== Material Design Inspired Theme ===== */
+/* ===== Elegant Emerald Theme ===== */
 
 /* -------- Light Theme -------- */
 :root {
-  --primary: #0F5132;
-  --on-primary: #FFFFFF;
-  --primary-container: #D7F2E3;
-  --on-primary-container: #0B3A23;
+  --primary: #0e221a;
+  --on-primary: #eaf5ef;
+  --primary-container: rgba(255,255,255,0.06);
+  --on-primary-container: #eaf5ef;
 
-  --secondary: #E0B100;
-  --on-secondary: #1A1A1A;
+  --secondary: #19c37d;
+  --on-secondary: #03130c;
 
-  --background: #FAFAFA;
-  --on-background: #1F2937;
+  --background: #0b1a14;
+  --on-background: #eaf5ef;
 
-  --surface: #FFFFFF;
-  --on-surface: #1F2937;
+  --surface: #0e221a;
+  --on-surface: #eaf5ef;
 
   --error: #B3261E;
   --on-error: #FFFFFF;
-  --error-container: #F9DEDC;
-  --on-error-container: #410E0B;
+  --error-container: #8C1D18;
+  --on-error-container: #FFDAD6;
 
-  --outline: #D1D5DB;
-  --surface-variant: #F3F4F6;
-  --on-surface-variant: #4B5563;
+  --outline: rgba(255,255,255,0.06);
+  --surface-variant: #0e221a;
+  --on-surface-variant: #a8c7b6;
 
-  --accent-link: #2563EB;
-  --accent-link-visited: #1D4ED8;
-  --accent-live: #DC2626;
-  --accent-success: #43A047;
-  --accent-info: #4FC3F7;
+  --accent-link: #19c37d;
+  --accent-link-visited: #0f6b45;
+  --accent-live: #19c37d;
+  --accent-success: #19c37d;
+  --accent-info: #a8c7b6;
   --favorite-row: var(--primary);
   --active-row: color-mix(in srgb, var(--primary) 10%, transparent);
   --hover-primary: color-mix(in srgb, var(--primary) 85%, var(--on-primary));
   --hover-link: color-mix(in srgb, var(--accent-link) 85%, var(--on-surface));
   --scrollbar-track: var(--surface-variant);
   --scrollbar-thumb: var(--outline);
-  --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.07);
-  --shadow-md: 0 4px 10px rgba(0,0,0,.08);
-  --shadow-lg: 0 10px 20px rgba(0,0,0,.12);
-  --shadow-xl: 0 4px 6px rgba(0,0,0,0.3);
-  --shadow-side-right: 2px 0 5px rgba(0,0,0,0.3);
-  --shadow-side-left: -2px 0 5px rgba(0,0,0,0.3);
-  --overlay-bg: rgba(0,0,0,0.4);
-  --overlay-strong: rgba(0,0,0,0.6);
-  --shadow-hover: 0 4px 12px rgba(0,0,0,0.3);
-  --shadow-xxl: 0 8px 20px rgba(0,0,0,0.15);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 10px rgba(0,0,0,0.45);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.55);
+  --shadow-xl: 0 4px 6px rgba(0,0,0,0.7);
+  --shadow-side-right: 2px 0 5px rgba(0,0,0,0.7);
+  --shadow-side-left: -2px 0 5px rgba(0,0,0,0.7);
+  --overlay-bg: rgba(0,0,0,0.6);
+  --overlay-strong: rgba(0,0,0,0.8);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
+  --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 /* -------- Dark Theme -------- */
 [data-theme="dark"] {
-  --primary: #7EE2B8;
-  --on-primary: #0D1B16;
-  --primary-container: #1A3A2B;
-  --on-primary-container: #CFF6E7;
+  --primary: #0e221a;
+  --on-primary: #eaf5ef;
+  --primary-container: rgba(255,255,255,0.06);
+  --on-primary-container: #eaf5ef;
 
-  --secondary: #F4C44E;
-  --on-secondary: #171717;
+  --secondary: #19c37d;
+  --on-secondary: #03130c;
 
-  --background: #0B0F0E;
-  --on-background: #E5E7EB;
+  --background: #0b1a14;
+  --on-background: #eaf5ef;
 
-  --surface: #111615;
-  --on-surface: #E5E7EB;
+  --surface: #0e221a;
+  --on-surface: #eaf5ef;
 
-  --error: #F2B8B5;
-  --on-error: #601410;
+  --error: #B3261E;
+  --on-error: #FFFFFF;
   --error-container: #8C1D18;
   --on-error-container: #FFDAD6;
 
-  --outline: #374151;
-  --surface-variant: #111827;
-  --on-surface-variant: #9CA3AF;
+  --outline: rgba(255,255,255,0.06);
+  --surface-variant: #0e221a;
+  --on-surface-variant: #a8c7b6;
 
-  --accent-link: #93C5FD;
-  --accent-link-visited: #60A5FA;
-  --accent-live: #F87171;
-  --accent-success: #66BB6A;
-  --accent-info: #81D4FA;
+  --accent-link: #19c37d;
+  --accent-link-visited: #0f6b45;
+  --accent-live: #19c37d;
+  --accent-success: #19c37d;
+  --accent-info: #a8c7b6;
   --favorite-row: var(--primary);
   --active-row: color-mix(in srgb, var(--primary) 30%, transparent);
   --hover-primary: color-mix(in srgb, var(--primary) 80%, var(--on-primary));
@@ -86,9 +86,9 @@
   --scrollbar-track: var(--surface);
   --scrollbar-thumb: var(--outline);
   --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-  --shadow-md: 0 4px 10px rgba(0,0,0,.45);
-  --shadow-lg: 0 10px 20px rgba(0,0,0,.55);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 10px rgba(0,0,0,0.45);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.55);
   --shadow-xl: 0 4px 6px rgba(0,0,0,0.7);
   --shadow-side-right: 2px 0 5px rgba(0,0,0,0.7);
   --shadow-side-left: -2px 0 5px rgba(0,0,0,0.7);
