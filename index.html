@@ -117,6 +117,15 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   --overlay-strong: rgba(0,0,0,0.8);
   --shadow-hover: 0 4px 12px rgba(0,0,0,0.8);
   --shadow-xxl: 0 8px 20px rgba(0,0,0,0.4);
+  --bg: #0b1a14;
+  --bg2: #0e221a;
+  --ink: #eaf5ef;
+  --muted: #a8c7b6;
+  --brand: #19c37d;
+  --ring: rgba(25,195,125,.35);
+  --radius: 16px;
+  --shadow: 0 12px 32px rgba(0,0,0,.35);
+  --hair: rgba(255,255,255,.06);
 }
 
 /* -------- Dark Theme -------- */
@@ -187,12 +196,7 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   display: none !important;
 }
 
-a {
-  color: var(--accent-link);
-}
-a:visited {
-  color: var(--accent-link-visited);
-}
+a{text-decoration:none;color:var(--ink)}
 
 
 /* Scrollbar styling */
@@ -213,9 +217,9 @@ a:visited {
 
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--background);
-  color: var(--on-surface);
+  font:16px/1.6 'Inter',system-ui,sans-serif;
+  background: var(--bg);
+  color: var(--ink);
   padding: 0;
   margin: 0;
   transition: background 0.3s, color 0.3s;
@@ -553,99 +557,6 @@ section {
 @media (prefers-reduced-motion: reduce) {
   .station-scroller .scroller-track {
     transition: none;
-  }
-}
-
-/* Feature card layout */
-.feature-cards {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-.feature-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid var(--outline);
-  border-radius: 20px;
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.feature-card iframe {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border: 0;
-  border-bottom: 1px solid var(--outline);
-}
-
-.feature-card-content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.feature-card h3 {
-  margin: 0 0 6px;
-  font-size: 18px;
-  color: var(--on-surface);
-}
-
-.feature-card p {
-  margin: 0 0 12px;
-  color: var(--on-surface-variant);
-  font-size: 14px;
-  flex: 1;
-}
-
-.feature-card .cta-btn {
-  align-self: flex-start;
-  background: var(--secondary);
-  color: var(--on-secondary);
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: background 0.2s ease;
-}
-
-.feature-card .cta-btn:hover {
-  background: color-mix(in srgb, var(--secondary) 85%, black);
-}
-
-@media (max-width: 768px) {
-  .feature-cards {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 0 16px;
-    margin: 28px auto;
-  }
-
-  .feature-card {
-    border-radius: 16px;
-  }
-
-  .feature-card-content {
-    padding: 12px;
-  }
-
-  .feature-card h3 {
-    font-size: 16px;
-  }
-
-  .feature-card p {
-    font-size: 13px;
-  }
-
-  .feature-card .cta-btn {
-    width: 100%;
-    text-align: center;
   }
 }
 
@@ -1863,195 +1774,101 @@ footer nav a:hover {
 
 /* --- END PATCH --- */
 
-/* Footer (index.html) */
-footer.site-footer {
-  background: var(--surface);
-  border-top: 1px solid var(--outline);
-  color: var(--on-surface-variant);
-  padding: 28px 24px;
-  margin: 34px 0 20px;
-  text-align: center;
-}
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--hair);color:var(--muted);padding:28px 24px}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px}
+.footer-links a{color:var(--muted);font-size:14px}
+.footer-links a:hover{color:var(--brand)}
+.copy{font-size:13px;color:var(--muted)}
 
-footer.site-footer .footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+@media (max-width: 768px){
+  footer{padding:16px}
 }
-
-footer.site-footer .footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-}
-
-footer.site-footer .footer-links a {
-  color: var(--on-surface-variant);
-  font-size: 14px;
-  text-decoration: none;
-}
-
-footer.site-footer .footer-links a:hover {
-  color: var(--accent-link);
-}
-
-footer.site-footer .copy {
-  font-size: 13px;
-  color: var(--on-surface-variant);
-}
-
-@media (max-width: 768px) {
-  footer.site-footer {
-    padding: 16px;
-  }
-}
+header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,26,20,.9),rgba(11,26,20,.55) 60%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.top{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 24px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(from 140deg,#23e08c,#0f6b45,#0b1a14);box-shadow:inset 0 0 0 2px #0b1a14,0 8px 20px rgba(0,0,0,.35)}
+.brand h1{font-size:18px;letter-spacing:.3px}
+nav a{color:var(--muted);margin-left:14px}
 
 /* Landing hero with search */
-.landing-hero {
-  padding: 56px 20px 36px;
-  text-align: center;
-  border-bottom: 1px solid var(--outline);
-  background: radial-gradient(circle at top, var(--surface), var(--background) 80%);
-}
-.landing-hero h1 {
-  font-size: 48px;
-  line-height: 1.15;
-  margin: 0;
-}
-.landing-hero p {
-  margin: 8px auto 16px;
-  color: var(--on-surface-variant);
-  max-width: 760px;
-}
-.search-xl {
-  margin: 16px auto 0;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
-  border: 1px solid var(--outline);
-  border-radius: 18px;
-  padding: 10px 12px;
-  box-shadow: var(--shadow-lg);
-  max-width: 720px;
-  position: relative;
-  transition: box-shadow .2s ease, border-color .2s ease;
-}
-.search-xl:focus-within {
-  border-color: var(--secondary);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--secondary) 35%, transparent), var(--shadow-lg);
-}
-.search-xl input {
-  flex: 1;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--on-surface);
-  font-size: 17px;
-  padding: 12px;
-}
-.search-xl input::placeholder {
-  color: var(--on-surface-variant);
-}
-.search-xl:focus-within input::placeholder {
-  color: color-mix(in srgb, var(--on-surface) 85%, white);
-}
-.search-xl .search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--surface);
-  border: 1px solid var(--outline);
-  border-radius: 12px;
-  margin-top: 4px;
-  box-shadow: var(--shadow-lg);
-  max-height: 240px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-.search-xl .search-results a {
-  display: block;
-  padding: 8px 12px;
-  color: var(--on-surface);
-  text-decoration: none;
-}
-.search-xl .search-results a:hover {
-  background: color-mix(in srgb, var(--on-surface) 12%, transparent);
-}
-.btn {
-  appearance: none;
-  border: 0;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.btn-primary {
-  background: var(--secondary);
-  color: var(--on-secondary);
-}
-.btn-ghost {
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  color: var(--on-surface);
-  border: 1px solid var(--outline);
-}
-.suggest {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 12px;
-}
-.chip {
-  border: 1px solid var(--outline);
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 14px;
-}
+.hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
+.hero h1{font-size:48px;line-height:1.15}
+.hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
+.search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px;position:relative;transition:box-shadow .2s ease,border-color .2s ease}
+.search-xl:focus-within{border-color:var(--brand);box-shadow:0 0 0 6px var(--ring),var(--shadow)}
+.search-xl input:focus-visible{outline:none}
+.search-xl:focus-within input::placeholder{color:#d6f5e6}
+.search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
+.search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
+.search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
+.search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
+.btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
+.btn-primary{background:var(--brand);color:#03130c}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
+.suggest{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.chip{border:1px solid var(--hair);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 12px;font-size:14px}
 
-@media (max-width: 768px) {
-  .landing-hero {
-    padding: 36px 16px 24px;
+/* Feature Grid */
+.features{max-width:1200px;margin:40px auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.feature-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--hair);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.feature-card iframe{width:100%;aspect-ratio:16/9;border:0;border-bottom:1px solid var(--hair)}
+.feature-card-content{padding:16px;display:flex;flex-direction:column;flex:1}
+.feature-card h3{margin:0 0 6px;font-size:18px;color:var(--ink)}
+.feature-card p{margin:0 0 12px;color:var(--muted);font-size:14px;flex:1}
+.feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
+
+footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
+
+/* ===================== */
+/* Mobile adjustments    */
+/* ===================== */
+@media (max-width: 768px){
+  /* Header */
+  .top{padding:12px 16px}
+  .brand h1{font-size:16px}
+  nav a{margin-left:12px; font-size:14px}
+
+  /* Hero */
+  .hero{padding:36px 16px 24px}
+  .hero h1{font-size:32px; line-height:1.2}
+  .hero p{font-size:14px; max-width:100%}
+
+  /* Search: stack vertically */
+  .search-xl{
+    max-width:100%;
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
+    border-radius:14px;
+    padding:10px;
   }
-  .landing-hero h1 {
-    font-size: 32px;
-    line-height: 1.2;
+  .search-xl input{padding:12px 10px; font-size:16px}
+  .search-xl .btn{width:100%}
+
+  /* Suggestion chips: horizontal scroll */
+  .suggest{justify-content:flex-start; overflow-x:auto; padding:0 2px; gap:8px}
+  .suggest .chip{white-space:nowrap}
+
+  /* Feature grid: single column */
+  .features{
+    grid-template-columns:1fr;
+    gap:16px;
+    padding:0 16px;
+    margin:28px auto;
   }
-  .landing-hero p {
-    font-size: 14px;
-    max-width: 100%;
-  }
-  .search-xl {
-    max-width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    border-radius: 14px;
-    padding: 10px;
-  }
-  .search-xl input {
-    padding: 12px 10px;
-    font-size: 16px;
-  }
-  .search-xl .btn {
-    width: 100%;
-  }
-  .suggest {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding: 0 2px;
-    gap: 8px;
-  }
-  .suggest .chip {
-    white-space: nowrap;
-  }
+  .feature-card{border-radius:16px}
+  .feature-card-content{padding:12px}
+  .feature-card h3{font-size:16px}
+  .feature-card p{font-size:13px}
+  .feature-card a{width:100%; text-align:center}
+
+  /* Iframes: keep aspect; lighter shadows for perf */
+  .feature-card iframe{box-shadow:none}
+
+  /* Footer */
+  footer{padding:16px; font-size:13px}
 }
 /* Ads: CLS-safe placeholders (additive) */
 .ad-slot {
@@ -2176,231 +1993,6 @@ footer.site-footer .copy {
   background: var(--ps-color-primary,#1e88e5); color: #fff; cursor: pointer;
 }
 .mh-empty { padding: 24px; text-align: center; opacity: .75; }
-/* Auto-generated overrides to apply Elegant Emerald theme onto current markup */
-
-    :root{
-      --bg:#0b1a14;
-      --bg2:#0e221a;
-      --ink:#eaf5ef;
-      --muted:#a8c7b6;
-      --brand:#19c37d;
-      --ring:rgba(25,195,125,.35);
-      --radius:16px;
-      --shadow:0 12px 32px rgba(0,0,0,.35);
-      --hair:rgba(255,255,255,.06);
-    }
-
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Inter',system-ui,sans-serif}
-    a{text-decoration:none;color:var(--ink)}
-    h1,h2,h3{margin:0;font-weight:800}
-
-    header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,26,20,.9),rgba(11,26,20,.55) 60%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
-    .top{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 24px}
-    .brand{display:flex;gap:10px;align-items:center}
-    .logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(from 140deg,#23e08c,#0f6b45,#0b1a14);box-shadow:inset 0 0 0 2px #0b1a14,0 8px 20px rgba(0,0,0,.35)}
-    .brand h1{font-size:18px;letter-spacing:.3px}
-    nav a{color:var(--muted);margin-left:14px}
-
-    /* HERO */
-    .hero,.landing-hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
-    body .hero h1, body .landing-hero h1{font-size:64px;line-height:1.05;font-weight:800;letter-spacing:.2px;margin:0 0 12px}
-    body .hero p, body .landing-hero p{margin:8px auto 12px;color:#a8c7b6;max-width:840px;font-size:18px}
-    body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
-    body .search-xl:focus-within{border-color:#19c37d;box-shadow:0 0 0 4px rgba(25,195,125,.25),0 10px 24px rgba(0,0,0,.45)}
-    .search-xl input:focus-visible{outline:none}
-    body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
-    .search-xl:focus-within input::placeholder{color:#d6f5e6}
-    body .search-xl input{flex:1;border:0;outline:0;background:transparent;font:500 18px/1.2 'Inter',system-ui,sans-serif;color:#eaf5ef;padding:12px 14px;border-radius:12px}
-    .search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
-    .search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
-    .search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
-    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
-    .btn-primary{background:var(--brand);color:#03130c}
-    .btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
-    .suggest{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
-    .chip{border:1px solid var(--hair);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 12px;font-size:14px}
-
-    /* Feature Grid */
-    .features{max-width:1200px;margin:40px auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-    .feature-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--hair);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
-    .feature-card iframe{width:100%;aspect-ratio:16/9;border:0;border-bottom:1px solid var(--hair)}
-    .feature-card-content{padding:16px;display:flex;flex-direction:column;flex:1}
-    .feature-card h3{margin:0 0 6px;font-size:18px;color:var(--ink)}
-    .feature-card p{margin:0 0 12px;color:var(--muted);font-size:14px;flex:1}
-    .feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
-
-    footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
-
-    /* ===================== */
-/* Mobile adjustments    */
-/* ===================== */
-@media (max-width: 768px){
-  /* Header */
-  .top{padding:12px 16px}
-  .brand h1{font-size:16px}
-  nav a{margin-left:12px; font-size:14px}
-
-  /* Hero */
-  .hero,.landing-hero{padding:36px 16px 24px}
-  body .hero h1, body .landing-hero h1{font-size:64px;line-height:1.05;font-weight:800;letter-spacing:.2px;margin:0 0 12px}
-  body .hero p, body .landing-hero p{margin:8px auto 12px;color:#a8c7b6;max-width:840px;font-size:18px}
-
-  /* Search: stack vertically */
-  body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
-  body .search-xl input{flex:1;border:0;outline:0;background:transparent;font:500 18px/1.2 'Inter',system-ui,sans-serif;color:#eaf5ef;padding:12px 14px;border-radius:12px}
-  .search-xl .btn{width:100%}
-
-  /* Suggestion chips: horizontal scroll */
-  .suggest{justify-content:flex-start; overflow-x:auto; padding:0 2px; gap:8px}
-  .suggest .chip{white-space:nowrap}
-
-  /* Feature grid: single column */
-  .features{
-    grid-template-columns:1fr;
-    gap:16px;
-    padding:0 16px;
-    margin:28px auto;
-  }
-  .feature-card{border-radius:16px}
-  .feature-card-content{padding:12px}
-  .feature-card h3{font-size:16px}
-  .feature-card p{font-size:13px}
-  .feature-card a{width:100%; text-align:center}
-
-  /* Iframes: keep aspect; lighter shadows for perf */
-  .feature-card iframe{box-shadow:none}
-
-  /* Footer */
-  footer{padding:16px; font-size:13px}
-}
-    footer{background:var(--bg2);border-top:1px solid var(--hair);color:var(--muted);padding:28px 24px}
-    .footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
-    .footer-links{display:flex;flex-wrap:wrap;gap:16px}
-    .footer-links a{color:var(--muted);font-size:14px}
-    .footer-links a:hover{color:var(--brand)}
-    .copy{font-size:13px;color:var(--muted)}
-
-  
-.search-xl .btn-browse{min-width:160px;border-radius:14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-weight:600;color:#e4f1ea}
-
-.quick-tags{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:16px}
-.quick-tags .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#152721;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 10px rgba(0,0,0,.25)}
-
-/* v3 overrides with higher specificity */
-/* --- Top hero + search: force match to index1.html --- */
-
-/* Headline + subhead (match index1 scale/spacing) */
-body .landing-hero h1,
-body .hero h1{
-  font-size: 56px;          /* was larger; match mock */
-  line-height: 1.06;
-  font-weight: 800;
-  letter-spacing: .2px;
-  margin: 0 0 12px;
-}
-
-body .landing-hero p,
-body .hero p{
-  margin: 8px auto 12px;
-  color: #a8c7b6;
-  max-width: 840px;
-  font-size: 18px;
-}
-
-/* Outer search container is the ONLY thing with border/ring */
-body .search-xl{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  max-width: 820px;
-  margin: 16px auto 0;
-  padding: 10px;
-  border-radius: 18px;
-  background: linear-gradient(180deg,#0b1a14,#0f221a);
-  border: 1px solid rgba(25,195,125,.25);
-  box-shadow: 0 2px 10px rgba(0,0,0,.35);
-  position: relative;
-}
-
-/* Kill any decorative lines previously added via pseudo elements */
-body .search-xl::before,
-body .search-xl::after{
-  content: none !important;
-}
-
-/* Nuke ALL inner borders/shadows/outlines so they don't stack */
-body .search-xl input,
-body .search-xl select,
-body .search-xl textarea,
-body .search-xl a,
-body .search-xl button,
-body .search-xl .btn,
-body .search-xl > *{
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: transparent;
-}
-
-/* Input text + placeholder */
-body .search-xl input{
-  flex: 1;
-  padding: 12px 14px;
-  border-radius: 12px;
-  color: #eaf5ef;
-  font: 500 18px/1.2 'Inter',system-ui,sans-serif;
-}
-body .search-xl input::placeholder{ color:#86a79a; }
-
-/* Secondary "Browse All" pill */
-body .search-xl a{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 160px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08) !important;
-  color: #e4f1ea;
-  font-weight: 600;
-}
-
-/* Primary "Search" button */
-body .search-xl button{
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-weight: 700;
-  background: #19c37d;
-  color: #0b1a14;
-  box-shadow: 0 6px 16px rgba(0,0,0,.35);
-}
-
-/* Focus ring ONLY on the container (not on the input) */
-body .search-xl:focus-within{
-  border-color: #19c37d;
-  box-shadow: 0 0 0 4px rgba(25,195,125,.25), 0 10px 24px rgba(0,0,0,.45);
-}
-
-/* --- Hero headline: force identical typography to index1.html --- */
-body .landing-hero h1,
-body .hero h1{
-  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif !important;
-  font-weight: 800 !important;                 /* exact weight from mock */
-  font-variation-settings: "wght" 800;         /* for variable Inter */
-  font-size: 56px;                              /* match mock */
-  line-height: 1.06;
-  letter-spacing: 0.2px;
-  color: #EAF5EF;
-  text-shadow: none !important;                 /* kill any glow */
-  font-synthesis-weight: none;                  /* don't fake bold */
-  font-synthesis-style: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 @font-face {
       font-family: 'Material Symbols Outlined';
       font-style: normal;
@@ -2433,7 +2025,7 @@ body .hero h1{
        data-placeholder="Advertisement — 728×90 / 320×50"></div> -->
 
    <!-- Hero section with prominent search -->
-   <section class="landing-hero">
+   <section class="hero">
      <h1>Stream Pakistani TV, Radio &amp; Independent Voices</h1>
      <p>Search by channel, show, or creator — fast, free, and worldwide. No sign‑up required.</p>
      <form id="search-form" class="search-xl" role="search" autocomplete="off">
@@ -2478,13 +2070,13 @@ body .hero h1{
   </section>
   
   <!-- Featured cards -->
-  <section class="feature-cards">
+  <section class="features">
     <div class="feature-card" data-m="freepress" data-c="wajahatsaeedkhan">
       <iframe class="media-hub-embed" src="/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1&list=0&about=0" title="PakStream Free Press" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       <div class="feature-card-content">
         <h3>Free Press</h3>
         <p>Diverse perspectives from Pakistani creators.</p>
-        <a href="/media-hub.html?m=freepress&c=wajahatsaeedkhan" class="cta-btn">Watch Now</a>
+        <a href="/media-hub.html?m=freepress&c=wajahatsaeedkhan">Watch Now</a>
       </div>
     </div>
     <div class="feature-card" data-m="radio" data-c="audio35">
@@ -2492,7 +2084,7 @@ body .hero h1{
       <div class="feature-card-content">
         <h3>Live Pakistani Radio</h3>
         <p>Stream Mera FM, City FM89, Mast FM & more.</p>
-        <a href="/media-hub.html?m=radio&c=audio35" class="cta-btn">Listen</a>
+        <a href="/media-hub.html?m=radio&c=audio35">Listen</a>
       </div>
     </div>
     <div class="feature-card" data-m="tv" data-c="24news">
@@ -2500,7 +2092,7 @@ body .hero h1{
       <div class="feature-card-content">
         <h3>Live TV Channels</h3>
         <p>Watch Pakistani news, dramas, and morning shows.</p>
-        <a href="/media-hub.html?m=tv&c=24news" class="cta-btn">Watch Now</a>
+        <a href="/media-hub.html?m=tv&c=24news">Watch Now</a>
       </div>
     </div>
     <div class="feature-card" data-m="creator" data-c="zeeshanusmani">
@@ -2508,7 +2100,7 @@ body .hero h1{
       <div class="feature-card-content">
         <h3>Trending Creators</h3>
         <p>Drama serials and entertainment shows.</p>
-        <a href="/media-hub.html?m=creator&c=zeeshanusmani" class="cta-btn">Watch Now</a>
+        <a href="/media-hub.html?m=creator&c=zeeshanusmani">Watch Now</a>
       </div>
     </div>
     <div class="feature-card" data-m="all" data-c="geo">
@@ -2516,7 +2108,7 @@ body .hero h1{
       <div class="feature-card-content">
         <h3>All Streams</h3>
         <p>Explore the full library of Pakistani TV, radio, and creator channels, all organized in one place for easy browsing.</p>
-        <a href="/media-hub.html?m=all&c=geo" class="cta-btn">Browse</a>
+        <a href="/media-hub.html?m=all&c=geo">Browse</a>
       </div>
     </div>
     <div class="feature-card" data-m="favorites" data-c="wajahatsaeedkhan">
@@ -2524,7 +2116,7 @@ body .hero h1{
       <div class="feature-card-content">
         <h3>Your Favorites</h3>
         <p>Pin your go‑to channels for one‑tap playback.</p>
-        <a href="/media-hub.html?m=favorites&c=wajahatsaeedkhan" class="cta-btn">View</a>
+        <a href="/media-hub.html?m=favorites&c=wajahatsaeedkhan">View</a>
       </div>
     </div>
   </section>
