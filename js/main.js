@@ -8,7 +8,6 @@ if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  var topBar = document.querySelector('.top-bar');
   var btn = document.querySelector('[data-nav-toggle]');
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
@@ -19,37 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Search form setup: use existing form if present, otherwise inject into top bar.
+  // Search form setup: use existing form if present
   var searchForm = document.getElementById('search-form');
-  var input, results;
-
-  if (!searchForm && topBar) {
-    searchForm = document.createElement('form');
-    searchForm.id = 'search-form';
-    searchForm.className = 'search-form';
-    searchForm.setAttribute('autocomplete', 'off');
-    input = document.createElement('input');
-    input.type = 'search';
-    input.id = 'search-input';
-    input.placeholder = 'Search anything...';
-    input.setAttribute('aria-label', 'Search');
-    input.setAttribute('autocomplete', 'off');
-    searchForm.appendChild(input);
-    results = document.createElement('div');
-    results.id = 'search-results';
-    results.className = 'search-results';
-    searchForm.appendChild(results);
-
-    var center = topBar.querySelector('.top-bar-center');
-    if (center) {
-      center.appendChild(searchForm);
-    } else {
-      topBar.appendChild(searchForm);
-    }
-  } else if (searchForm) {
-    input = searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]');
-    results = searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results');
-  }
+  var input = searchForm ? (searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]')) : null;
+  var results = searchForm ? (searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results')) : null;
 
   if (searchForm && input && results) {
     function activateSearch() {
@@ -57,12 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deactivateSearch() {
-      // Slight delay so quick refocus won't drop the active state
-      setTimeout(function () {
-        if (document.activeElement !== input) {
-          searchForm.classList.remove('active');
-        }
-      }, 0);
+      searchForm.classList.remove('active');
     }
 
     input.addEventListener('focus', activateSearch);
@@ -132,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
       if (!searchForm.contains(e.target)) {
         results.innerHTML = '';
+        deactivateSearch();
       }
     });
   }
