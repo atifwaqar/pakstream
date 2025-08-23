@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (leftRail) leftRail.style.display = "none";
     if (channelsBtn) channelsBtn.style.display = "none";
     if (mediaHubSection) mediaHubSection.classList.add("no-channels");
+  } else {
+    if (channelsBtn) channelsBtn.style.display = "";
   }
   const listEl = showChannels ? leftRail : null; // left menu is the list container
   const playerIF  = document.getElementById("playerFrame");
