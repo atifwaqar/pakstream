@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const items = Array.isArray(data.items) ? data.items : [];
 
   // ===== Helpers =====
-  const thumbOf = it => it.media?.thumbnail_url || it.media?.logo_url || "/assets/avatar-fallback.png";
+  const thumbOf = it => it.media?.thumbnail_url || "/assets/avatar-fallback.png";
   const ytEmbed = it => (it.endpoints||[]).find(e => e.kind === "embed" && e.provider === "youtube");
   const radioEndpoint = it => (it.endpoints||[]).find(e => (e.kind==="stream"||e.kind==="audio") && e.url);
   const uploadsId = cid => cid && cid.startsWith("UC") ? "UU" + cid.slice(2) : null;

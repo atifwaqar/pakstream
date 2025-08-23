@@ -40,7 +40,7 @@
 
   window.historyService = historyService;
 
-  function thumbOf(it){ return it.media && (it.media.thumbnail_url || it.media.logo_url) || '/assets/avatar-fallback.png'; }
+  function thumbOf(it){ return it.media && it.media.thumbnail_url || '/assets/avatar-fallback.png'; }
   function displayName(it){ return it.name || it.title || it.key || 'Untitled'; }
 
   document.addEventListener('DOMContentLoaded', function(){

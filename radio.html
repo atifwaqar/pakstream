@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
       card.appendChild(audio);
       list.appendChild(card);
 
-      getChannelThumbnail(st.id, st.logo).then(url => {
+      getChannelThumbnail(st.id, st.thumbnail).then(url => {
         const finalLogo = url || defaultLogo;
         img.src = finalLogo;
         audio.dataset.logo = finalLogo;
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .map(item => ({
           id: item.ids?.internal_id || item.key,
           name: item.name,
-          logo: item.media?.logo_url,
+          thumbnail: item.media?.thumbnail_url,
           src: item.endpoints?.find(e => e.kind === 'stream')?.url
         }));
       buildStationList(stations);
