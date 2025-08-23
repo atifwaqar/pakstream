@@ -205,3 +205,20 @@ body .search-xl:focus-within{
   box-shadow: 0 0 0 4px rgba(25,195,125,.25), 0 10px 24px rgba(0,0,0,.45);
 }
 
+/* --- Hero headline: force identical typography to index1.html --- */
+body .landing-hero h1,
+body .hero h1{
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif !important;
+  font-weight: 800 !important;                 /* exact weight from mock */
+  font-variation-settings: "wght" 800;         /* for variable Inter */
+  font-size: 56px;                              /* match mock */
+  line-height: 1.06;
+  letter-spacing: 0.2px;
+  color: #EAF5EF;
+  text-shadow: none !important;                 /* kill any glow */
+  font-synthesis-weight: none;                  /* don't fake bold */
+  font-synthesis-style: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
