@@ -1932,3 +1932,111 @@ footer.site-footer .copy {
     white-space: nowrap;
   }
 }
+
+
+/* Accessibility: visible focus ring */
+:focus-visible {
+  outline: 2px solid var(--brand, #19c37d);
+  outline-offset: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position:absolute;
+  left:-999px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+.skip-link:focus {
+  position:fixed;
+  left:1rem;
+  top:1rem;
+  width:auto;
+  height:auto;
+  padding:.5rem .75rem;
+  background:rgba(0,0,0,.8);
+  color:#fff;
+  border-radius:.5rem;
+  z-index:10000;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* === Consistency Overrides (UX pass) === */
+:root{
+  --font-sans: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --brand: var(--secondary, #19c37d);
+  --ink: var(--on-background, #eaf5ef);
+  --ink-muted: rgba(234,245,239,.78);
+  --radius: 12px;
+}
+
+/* Base typography */
+html { font-size: 16px; }
+body { font-family: var(--font-sans); line-height: 1.6; color: var(--ink); }
+
+/* Headings scale */
+h1 { font-weight: 800; line-height: 1.15; letter-spacing: .2px; }
+h2 { font-weight: 700; line-height: 1.2;  margin-top: 1.2em; }
+h3 { font-weight: 700; line-height: 1.25; margin-top: 1.1em; }
+
+/* Layout container */
+.container, .top, .footer-inner, .mh-wrap, .blog-wrap, .page-wrap, .content-wrap {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Constrain typical sections within main unless explicitly full-bleed */
+main > section:not(.full-bleed) { 
+  max-width: 1200px; 
+  margin-left: auto; 
+  margin-right: auto; 
+  padding-left: 16px; 
+  padding-right: 16px;
+}
+
+/* Links */
+a { color: var(--ink); }
+a:hover, a:focus-visible { color: var(--brand); }
+
+/* Buttons */
+.btn { border-radius: var(--radius); }
+.btn-primary { background: var(--brand); color: var(--on-secondary, #03130c); }
+.btn-primary:hover, .btn-primary:focus-visible { filter: brightness(1.08); }
+.btn-ghost { border: 1px solid var(--hair, rgba(255,255,255,.06)); color: var(--ink); }
+.btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--brand); color: var(--brand); }
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--hair, rgba(255,255,255,.06)); padding: 32px 0; }
+.site-footer .copy { color: var(--ink-muted); }
+
+
+/* Heading sizes */
+h1 { font-size: clamp(28px, 3vw, 42px); }
+h2 { font-size: clamp(22px, 2.2vw, 32px); }
+h3 { font-size: clamp(18px, 1.8vw, 24px); }
+
+
+/* Blog article layout */
+.post-container { max-width: 840px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+.post { font-size: 1rem; line-height: 1.75; }
+.post p { margin: 1em 0; }
+.post h2 { margin-top: 1.6em; font-size: clamp(20px, 2vw, 28px); }
+.post h3 { margin-top: 1.2em; font-size: clamp(18px, 1.6vw, 24px); }
+.post img { display: block; max-width: 100%; height: auto; margin: 1.25rem auto; border-radius: 8px; }
+.post blockquote { margin: 1.2em 0; padding: .75em 1em; border-left: 3px solid var(--brand); background: rgba(255,255,255,.04); border-radius: 6px; }
+.post ul, .post ol { padding-left: 1.25rem; }

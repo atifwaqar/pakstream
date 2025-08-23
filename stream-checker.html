@@ -30,18 +30,10 @@
     el.muted = true;
     el.playsInline = true;
     return new Promise(resolve => {
-      const cleanup = (result) => {
-        clearTimeout(timer);
-        // stop and release the stream so only one plays at a time
-        el.pause();
-        el.removeAttribute('src');
-        el.load();
-        resolve(result);
-      };
-      const timer = setTimeout(() => cleanup(false), 8000);
-      el.addEventListener('playing', () => cleanup(true), { once: true });
-      el.addEventListener('error', () => cleanup(false), { once: true });
-      el.play().catch(() => cleanup(false));
+      const timer = setTimeout(() => resolve(false), 8000);
+      el.addEventListener('playing', () => { clearTimeout(timer); resolve(true); }, { once: true });
+      el.addEventListener('error', () => { clearTimeout(timer); resolve(false); }, { once: true });
+      el.play().catch(() => { clearTimeout(timer); resolve(false); });
     });
   }
   (async () => {
@@ -56,18 +48,15 @@
       const results = [];
       for (const item of data.items) {
         const endpoint = item.endpoints && item.endpoints[0];
-        results.push(`Checking ${item.name}...`);
-        log.textContent = results.join('\n');
         if (!endpoint) {
-          results[results.length - 1] = `${item.name}: offline`;
+          results.push(`${item.name}: offline`);
         } else {
           const type = item.platform === 'audio' ? 'audio' : 'video';
           const ok = await testStream(endpoint.url, type);
-          results[results.length - 1] = `${item.name}: ${ok ? 'online' : 'offline'}`;
+          results.push(`${item.name}: ${ok ? 'online' : 'offline'}`);
         }
         checked++;
         progress.textContent = `Checked ${checked} of ${total} streams (${total - checked} remaining)`;
-        log.textContent = results.join('\n');
       }
       progress.textContent = `Finished checking ${total} streams`;
       log.textContent = results.join('\n');
