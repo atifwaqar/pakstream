@@ -58,7 +58,6 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/index.css">
-  <link rel="stylesheet" href="/css/ads.css">
   <link rel="stylesheet" href="/assets/css/carousel.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   
@@ -70,12 +69,6 @@
 <body>
 {% include google-tag-manager-body.html %}
   {% include top-bar.html %}
-
-  <!-- Top banner (responsive) -->
-  <div class="ad-slot"
-       data-ad-slot
-       data-ad-type="leaderboard"
-       data-placeholder="Advertisement — 728×90 / 320×50"></div>
 
   <main class="post-container hero-bg">
     <article class="post">
@@ -102,14 +95,6 @@
         {{ content }}
       </div>
 
-      <!-- Inline rectangle -->
-      <div class="ad-slot"
-           data-ad-slot
-           data-ad-type="rectangle"
-           data-ad-width="300"
-           data-ad-height="250"
-           data-placeholder="Advertisement — 300×250"></div>
-
       <!-- Social Sharing -->
       <div class="post-share">
         <p>Share:</p>
@@ -134,26 +119,9 @@
 
   {% include footer.html %}
   <script defer src="/js/main.js"></script>
-  <script src="/js/ads/config.js" defer></script>
-  <script src="/js/ads/ads.js" defer></script>
   <script src="/assets/js/carousel.js" defer></script>
   <script src="/assets/js/mh-featured.js" defer></script>
   <script src="/js/maintenance.js" defer></script>
-  <!--
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-CA-PUB-ID"
-          crossorigin="anonymous"></script>
-  <script>
-  if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
-    // When integrating, replace each .ad-slot innerHTML with your <ins class="adsbygoogle">...</ins>
-    // and call: (adsbygoogle = window.adsbygoogle || []).push({});
-  }
-  </script>
-  -->
-  <noscript>
-    <div class="ad-slot" aria-hidden="true" style="min-height:120px">
-      <div class="ad-placeholder">Ads require JavaScript.</div>
-    </div>
-  </noscript>
 <script src="/js/pwa.js" defer></script>
 </body>
 </html>
