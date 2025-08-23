@@ -8,7 +8,6 @@ if (window.PAKSTREAM?.Flags?.isOn('adsEnabled')) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  var topBar = document.querySelector('.top-bar');
   var btn = document.querySelector('[data-nav-toggle]');
   var currentPath = window.location.pathname;
   var links = document.querySelectorAll('.nav-links a');
@@ -19,47 +18,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Search form setup: use existing form if present, otherwise inject into top bar.
+  // Search form setup: use existing form if present
   var searchForm = document.getElementById('search-form');
-  var input, results;
-
-  if (!searchForm && topBar) {
-    searchForm = document.createElement('form');
-    searchForm.id = 'search-form';
-    searchForm.className = 'search-form';
-    searchForm.setAttribute('autocomplete', 'off');
-    input = document.createElement('input');
-    input.type = 'search';
-    input.id = 'search-input';
-    input.placeholder = 'Search anything...';
-    input.setAttribute('aria-label', 'Search');
-    input.setAttribute('autocomplete', 'off');
-    searchForm.appendChild(input);
-    results = document.createElement('div');
-    results.id = 'search-results';
-    results.className = 'search-results';
-    searchForm.appendChild(results);
-
-    input.addEventListener('focus', function () {
-      searchForm.classList.add('active');
-    });
-
-    input.addEventListener('blur', function () {
-      searchForm.classList.remove('active');
-    });
-
-    var center = topBar.querySelector('.top-bar-center');
-    if (center) {
-      center.appendChild(searchForm);
-    } else {
-      topBar.appendChild(searchForm);
-    }
-  } else if (searchForm) {
-    input = searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]');
-    results = searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results');
-  }
+  var input = searchForm ? (searchForm.querySelector('#search-input') || searchForm.querySelector('input[type="search"]')) : null;
+  var results = searchForm ? (searchForm.querySelector('#search-results') || searchForm.querySelector('.search-results')) : null;
 
   if (searchForm && input && results) {
+    function activateSearch() {
+      searchForm.classList.add('active');
+    }
+
+    function deactivateSearch() {
+      searchForm.classList.remove('active');
+    }
+
+    input.addEventListener('focus', activateSearch);
+    input.addEventListener('blur', deactivateSearch);
+
     var searchData = [];
     var loaded = false;
     function loadData() {
@@ -114,6 +89,51 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
       if (!searchForm.contains(e.target)) {
         results.innerHTML = '';
+        deactivateSearch();
+      }
+    });
+  }
+
+  // Fallback top-bar search for pages without a dedicated form
+  var topSearch = document.querySelector('.top-bar .mh-search-input');
+  if (topSearch && !document.getElementById('left-rail')) {
+    var topSearchData = [];
+    var topLoaded = false;
+    function loadTopData() {
+      if (topLoaded) return Promise.resolve(topSearchData);
+      return fetch('/all_streams.json')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var items = Array.isArray(data.items) ? data.items : [];
+          var typeToMode = { livetv: 'tv', tv: 'tv', radio: 'radio', freepress: 'freepress', creator: 'creator' };
+          topSearchData = items.map(function (it) {
+            var mode = typeToMode[it.type] || 'tv';
+            var channelId = it.type === 'radio' && it.ids && it.ids.internal_id
+              ? it.ids.internal_id
+              : it.key;
+            return {
+              name: it.name,
+              link: '/media-hub.html?c=' + encodeURIComponent(channelId) + '&m=' + mode
+            };
+          });
+          topLoaded = true;
+          return topSearchData;
+        });
+    }
+
+    topSearch.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var q = topSearch.value.trim().toLowerCase();
+        if (!q) return;
+        loadTopData().then(function () {
+          var match = topSearchData.find(function (item) {
+            return item.name.toLowerCase().includes(q);
+          });
+          if (match) {
+            window.location.href = match.link;
+          }
+        });
       }
     });
   }
