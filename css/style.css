@@ -1704,3 +1704,51 @@ footer nav a:hover {
 }
 
 /* --- END PATCH --- */
+
+/* Footer (index.html) */
+footer.site-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--outline);
+  color: var(--on-surface-variant);
+  padding: 28px 24px;
+  margin: 34px 0 20px;
+  text-align: center;
+}
+
+footer.site-footer .footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+footer.site-footer .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+footer.site-footer .footer-links a {
+  color: var(--on-surface-variant);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+footer.site-footer .footer-links a:hover {
+  color: var(--accent-link);
+}
+
+footer.site-footer .copy {
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+
+@media (max-width: 768px) {
+  footer.site-footer {
+    padding: 16px;
+  }
+}
