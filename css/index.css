@@ -1823,6 +1823,7 @@ nav a{color:var(--muted);margin-left:14px}
 .hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%);margin:0;max-width:100%;border-radius:0;box-shadow:none}
 .hero h1{font-size:48px;line-height:1.15}
 .hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
+.hero-bg{background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
 .search-xl {
   margin: 16px auto 0;
   display: flex;
