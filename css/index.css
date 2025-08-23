@@ -345,6 +345,12 @@ footer nav a:hover {
 /* The rest of the existing style.css remains the same... */
 
 
+main {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
 /* Generic sections */
 section {
   background: var(--surface);
@@ -531,6 +537,11 @@ section {
 }
 
 /* Blog list styling */
+.blog-list {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
 .blog-list ul {
   list-style: none;
   margin: 0;
@@ -1464,8 +1475,15 @@ footer nav a:hover {
 }
 
 .ad-container {
-  margin: 20px 0;
+  margin: 20px auto;
   text-align: center;
+  max-width: 960px;
+}
+
+.source-note {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 0 16px;
 }
 
 #stream-list {
