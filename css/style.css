@@ -102,7 +102,7 @@ body.no-scroll {
 }
 
 .top-bar-center {
-  flex: 2;
+  flex: 1;
   display: flex;
   justify-content: center;
 }
@@ -144,9 +144,9 @@ footer nav a:hover {
 
 
 .search-form {
-  margin: 0 16px;
+  margin: 0 auto;
   position: relative;
-  flex: 1;
+  width: 100%;
   max-width: 500px;
   min-width: 0;
 }
