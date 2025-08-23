@@ -57,7 +57,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deactivateSearch() {
-      searchForm.classList.remove('active');
+      // Slight delay so quick refocus won't drop the active state
+      setTimeout(function () {
+        if (document.activeElement !== input) {
+          searchForm.classList.remove('active');
+        }
+      }, 0);
     }
 
     input.addEventListener('focus', activateSearch);
@@ -87,11 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Ensure the first interaction focuses the input without losing focus
+
+    // Ensure the first interaction focuses the input immediately
     input.addEventListener('pointerdown', function (e) {
       if (document.activeElement !== input) {
-        e.preventDefault();
         activateSearch();
+        e.preventDefault();
         input.focus({ preventScroll: true });
       }
     });
@@ -126,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
       if (!searchForm.contains(e.target)) {
         results.innerHTML = '';
-        deactivateSearch();
       }
     });
   }
