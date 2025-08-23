@@ -110,3 +110,98 @@
 .quick-tags .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#152721;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 10px rgba(0,0,0,.25)}
 
 /* v3 overrides with higher specificity */
+/* --- Top hero + search: force match to index1.html --- */
+
+/* Headline + subhead (match index1 scale/spacing) */
+body .landing-hero h1,
+body .hero h1{
+  font-size: 56px;          /* was larger; match mock */
+  line-height: 1.06;
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin: 0 0 12px;
+}
+
+body .landing-hero p,
+body .hero p{
+  margin: 8px auto 12px;
+  color: #a8c7b6;
+  max-width: 840px;
+  font-size: 18px;
+}
+
+/* Outer search container is the ONLY thing with border/ring */
+body .search-xl{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  max-width: 820px;
+  margin: 16px auto 0;
+  padding: 10px;
+  border-radius: 18px;
+  background: linear-gradient(180deg,#0b1a14,#0f221a);
+  border: 1px solid rgba(25,195,125,.25);
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
+  position: relative;
+}
+
+/* Kill any decorative lines previously added via pseudo elements */
+body .search-xl::before,
+body .search-xl::after{
+  content: none !important;
+}
+
+/* Nuke ALL inner borders/shadows/outlines so they don't stack */
+body .search-xl input,
+body .search-xl select,
+body .search-xl textarea,
+body .search-xl a,
+body .search-xl button,
+body .search-xl .btn,
+body .search-xl > *{
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+/* Input text + placeholder */
+body .search-xl input{
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #eaf5ef;
+  font: 500 18px/1.2 'Inter',system-ui,sans-serif;
+}
+body .search-xl input::placeholder{ color:#86a79a; }
+
+/* Secondary "Browse All" pill */
+body .search-xl a{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: #e4f1ea;
+  font-weight: 600;
+}
+
+/* Primary "Search" button */
+body .search-xl button{
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  background: #19c37d;
+  color: #0b1a14;
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+
+/* Focus ring ONLY on the container (not on the input) */
+body .search-xl:focus-within{
+  border-color: #19c37d;
+  box-shadow: 0 0 0 4px rgba(25,195,125,.25), 0 10px 24px rgba(0,0,0,.45);
+}
+
