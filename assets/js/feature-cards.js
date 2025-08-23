@@ -13,6 +13,16 @@
         window.location.href = url;
       });
     });
+
+    window.addEventListener('message', e => {
+      if (e.data?.type === 'media-hub-height') {
+        const iframe = Array.from(document.querySelectorAll('.feature-card iframe'))
+          .find(f => f.contentWindow === e.source);
+        if (iframe) {
+          iframe.style.height = `${e.data.height}px`;
+        }
+      }
+    });
     const sendMuteMessage = (iframe, muted) => {
       if (iframe.contentWindow) {
         iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
