@@ -355,29 +355,44 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
             sendPlayMessage(iframe, false);
           });
         });
-      } else if ('IntersectionObserver' in window) {
-        cards.forEach(card => {
-          const iframe = card.querySelector('iframe');
-          if (!iframe) return;
+      } else {
+        const items = Array.from(cards)
+          .map(card => ({ card, iframe: card.querySelector('iframe') }))
+          .filter(({ iframe }) => !!iframe);
 
-          let inView = false;
-          const applyState = () => {
-            sendMuteMessage(iframe, !inView);
-            sendPlayMessage(iframe, inView);
-          };
+        const update = () => {
+          const center = window.innerHeight / 2;
+          let activeIndex = -1;
+          let minDist = Infinity;
 
-          const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-              if (entry.target !== card) return;
-              inView = entry.isIntersecting;
-              applyState();
-            });
-          }, { threshold: 0.5 });
+          items.forEach(({ card }, idx) => {
+            const rect = card.getBoundingClientRect();
+            const visible = rect.bottom > 0 && rect.top < window.innerHeight;
+            if (!visible) return;
+            const cardCenter = (rect.top + rect.bottom) / 2;
+            const dist = Math.abs(cardCenter - center);
+            if (dist < minDist) {
+              minDist = dist;
+              activeIndex = idx;
+            }
+          });
 
-          observer.observe(card);
+          items.forEach(({ iframe }, idx) => {
+            const playing = idx === activeIndex;
+            sendMuteMessage(iframe, !playing);
+            sendPlayMessage(iframe, playing);
+          });
+        };
 
-          iframe.addEventListener('load', applyState);
+        ['scroll', 'resize'].forEach(evt =>
+          window.addEventListener(evt, update, { passive: true })
+        );
+
+        items.forEach(({ iframe }) => {
+          iframe.addEventListener('load', update);
         });
+
+        update();
       }
     });
   </script>
