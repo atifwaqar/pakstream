@@ -59,6 +59,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
+    // Ensure the first interaction focuses the input immediately
+    input.addEventListener('pointerdown', function (e) {
+      if (document.activeElement !== input) {
+        activateSearch();
+        e.preventDefault();
+        input.focus({ preventScroll: true });
+      }
+    });
+
     input.addEventListener('input', function () {
       var q = input.value.trim().toLowerCase();
       results.innerHTML = '';
