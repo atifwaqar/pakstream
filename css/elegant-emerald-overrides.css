@@ -26,14 +26,14 @@
 
     /* HERO */
     .hero,.landing-hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
-    .hero h1,.landing-hero h1{font-size:48px;line-height:1.15}
-    .hero p,.landing-hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
-    .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px;position:relative}
-    .search-xl:focus-within{border-color:var(--brand);box-shadow:0 0 0 6px var(--ring),var(--shadow)}
+    body .hero h1, body .landing-hero h1{font-size:64px;line-height:1.05;font-weight:800;letter-spacing:.2px;margin:0 0 12px}
+    body .hero p, body .landing-hero p{margin:8px auto 12px;color:#a8c7b6;max-width:840px;font-size:18px}
+    body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
+    body .search-xl:focus-within{border-color:#19c37d;box-shadow:0 0 0 4px rgba(25,195,125,.25),0 10px 24px rgba(0,0,0,.45)}
     .search-xl input:focus-visible{outline:none}
-    .search-xl{transition:box-shadow .2s ease,border-color .2s ease}
+    body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
     .search-xl:focus-within input::placeholder{color:#d6f5e6}
-    .search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
+    body .search-xl input{flex:1;border:0;outline:0;background:transparent;font:500 18px/1.2 'Inter',system-ui,sans-serif;color:#eaf5ef;padding:12px 14px;border-radius:12px}
     .search-xl .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;margin-top:4px;box-shadow:var(--shadow);max-height:240px;overflow-y:auto;z-index:100}
     .search-xl .search-results a{display:block;padding:8px 12px;color:var(--ink)}
     .search-xl .search-results a:hover{background:rgba(255,255,255,.08)}
@@ -65,19 +65,12 @@
 
   /* Hero */
   .hero,.landing-hero{padding:36px 16px 24px}
-  .hero h1,.landing-hero h1{font-size:32px; line-height:1.2}
-  .hero p,.landing-hero p{font-size:14px; max-width:100%}
+  body .hero h1, body .landing-hero h1{font-size:64px;line-height:1.05;font-weight:800;letter-spacing:.2px;margin:0 0 12px}
+  body .hero p, body .landing-hero p{margin:8px auto 12px;color:#a8c7b6;max-width:840px;font-size:18px}
 
   /* Search: stack vertically */
-  .search-xl{
-    max-width:100%;
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-    border-radius:14px;
-    padding:10px;
-  }
-  .search-xl input{padding:12px 10px; font-size:16px}
+  body .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:linear-gradient(180deg,#0b1a14,#0f221a);border:1px solid rgba(25,195,125,.25);border-radius:18px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.35);max-width:820px;position:relative}
+  body .search-xl input{flex:1;border:0;outline:0;background:transparent;font:500 18px/1.2 'Inter',system-ui,sans-serif;color:#eaf5ef;padding:12px 14px;border-radius:12px}
   .search-xl .btn{width:100%}
 
   /* Suggestion chips: horizontal scroll */
@@ -111,3 +104,9 @@
     .copy{font-size:13px;color:var(--muted)}
 
   
+.search-xl .btn-browse{min-width:160px;border-radius:14px;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-weight:600;color:#e4f1ea}
+
+.quick-tags{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.quick-tags .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#152721;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+
+/* v3 overrides with higher specificity */
