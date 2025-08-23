@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PakStream – Elegant Emerald · Feature Grid Variation</title>
+  <style>
+    :root{
+      --bg:#0b1a14;
+      --bg2:#0e221a;
+      --ink:#eaf5ef;
+      --muted:#a8c7b6;
+      --brand:#19c37d;
+      --ring:rgba(25,195,125,.35);
+      --radius:16px;
+      --shadow:0 12px 32px rgba(0,0,0,.35);
+      --hair:rgba(255,255,255,.06);
+    }
+
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'Inter',system-ui,sans-serif}
+    a{text-decoration:none;color:var(--ink)}
+    h1,h2,h3{margin:0;font-weight:800}
+
+    header{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(11,26,20,.9),rgba(11,26,20,.55) 60%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+    .top{max-width:1200px;margin:auto;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:16px 24px}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:38px;height:38px;border-radius:12px;background:conic-gradient(from 140deg,#23e08c,#0f6b45,#0b1a14);box-shadow:inset 0 0 0 2px #0b1a14,0 8px 20px rgba(0,0,0,.35)}
+    .brand h1{font-size:18px;letter-spacing:.3px}
+    nav a{color:var(--muted);margin-left:14px}
+
+    /* HERO */
+    .hero{padding:56px 20px 36px;border-bottom:1px solid var(--hair);text-align:center;background:radial-gradient(circle at top,var(--bg2),var(--bg) 80%)}
+    .hero h1{font-size:48px;line-height:1.15}
+    .hero p{margin:8px auto 16px;color:var(--muted);max-width:760px}
+    .search-xl{margin:16px auto 0;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--hair);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);max-width:720px}
+    .search-xl input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:17px;padding:12px}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--brand);color:#03130c}
+    .btn-ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--hair)}
+    .suggest{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+    .chip{border:1px solid var(--hair);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 12px;font-size:14px}
+
+    /* Feature Grid */
+    .features{max-width:1200px;margin:40px auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+    .feature-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--hair);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+    .feature-card iframe{width:100%;aspect-ratio:16/9;border:0;border-bottom:1px solid var(--hair)}
+    .feature-card-content{padding:16px;display:flex;flex-direction:column;flex:1}
+    .feature-card h3{margin:0 0 6px;font-size:18px;color:var(--ink)}
+    .feature-card p{margin:0 0 12px;color:var(--muted);font-size:14px;flex:1}
+    .feature-card a{align-self:flex-start;background:var(--brand);color:#03130c;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none}
+
+    footer{margin:34px 0 20px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body data-mh>
+  <header>
+    <div class="top">
+      <div class="brand"><div class="logo"></div><h1>PakStream</h1></div>
+      <nav>
+        <a href="#tv">TV</a>
+        <a href="#radio">Radio</a>
+        <a href="#freepress">Free Press</a>
+        <a href="#favorites">Favorites</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Stream Pakistani TV, Radio &amp; Independent Voices</h1>
+    <p>Search by channel, show, or creator — fast, free, and worldwide. No sign‑up required.</p>
+    <form class="search-xl" role="search" onsubmit="event.preventDefault()">
+      <input data-mh-search-input placeholder="Try: Geo News, ARY News, Mera FM, Coke Studio" />
+      <a class="btn btn-ghost" href="/media-hub.html">Browse All</a>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <div class="suggest">
+      <span class="chip">🔥 Geo News – Live</span>
+      <span class="chip">📻 Mera FM 107.4</span>
+      <span class="chip">🎵 Coke Studio</span>
+      <span class="chip">📰 Wajahat Saeed Khan</span>
+    </div>
+  </section>
+
+  <!-- Feature Grid with 6 Cards -->
+  <section class="features" data-mh-list>
+    <div class="feature-card" id="tv" data-mh-card data-search="geo news live tv">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=tv&c=geonews&muted=1&list=0&channels=0&about=0" title="Geo News"></iframe>
+      <div class="feature-card-content">
+        <h3>Live News &amp; TV</h3>
+        <p>Watch Pakistani news, dramas, and morning shows.</p>
+        <a href="#">Watch Now</a>
+      </div>
+    </div>
+    <div class="feature-card" id="radio" data-mh-card data-search="mera fm radio cityfm89 mast fm">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=radio&c=merafm&muted=1&list=0&channels=0&about=0" title="Mera FM"></iframe>
+      <div class="feature-card-content">
+        <h3>Pakistani Radio</h3>
+        <p>Stream Mera FM, City FM89, Mast FM &amp; more.</p>
+        <a href="#">Listen Live</a>
+      </div>
+    </div>
+    <div class="feature-card" id="freepress" data-mh-card data-search="free press wajahat saeed khan">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=freepress&c=wajahatsaeedkhan&muted=1&list=0&channels=0&about=0" title="Free Press"></iframe>
+      <div class="feature-card-content">
+        <h3>Free Press</h3>
+        <p>Diverse perspectives from Pakistani creators.</p>
+        <a href="#">Explore</a>
+      </div>
+    </div>
+    <div class="feature-card" id="favorites" data-mh-card data-search="favorites channels">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=favorites&c=sample&muted=1&list=0&channels=0&about=0" title="Favorites"></iframe>
+      <div class="feature-card-content">
+        <h3>Your Favorites</h3>
+        <p>Pin your go‑to channels for one‑tap playback.</p>
+        <a href="#">Open Favorites</a>
+      </div>
+    </div>
+    <div class="feature-card" data-mh-card data-search="hum tv drama">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=tv&c=humtv&muted=1&list=0&channels=0&about=0" title="Hum TV"></iframe>
+      <div class="feature-card-content">
+        <h3>Hum TV</h3>
+        <p>Drama serials and entertainment shows.</p>
+        <a href="#">Watch Now</a>
+      </div>
+    </div>
+    <div class="feature-card" data-mh-card data-search="city fm89 radio english">
+      <iframe src="https://pakstream.com/media-hub-embed.html?m=radio&c=cityfm89&muted=1&list=0&channels=0&about=0" title="City FM89"></iframe>
+      <div class="feature-card-content">
+        <h3>City FM89</h3>
+        <p>English hits and talk shows.</p>
+        <a href="#">Listen Now</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© PakStream • Elegant Emerald Layout</footer>
+
+  <script src="/assets/js/mh-core.js" defer></script>
+  <script src="/assets/js/mh-search.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cards = document.querySelectorAll('.feature-card');
+      const sendMuteMessage = (iframe, muted) => {
+        if (iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'media-hub-set-muted', muted }, '*');
+        }
+      };
+      const sendPlayMessage = (iframe, playing) => {
+        if (iframe.contentWindow) {
+          iframe.contentWindow.postMessage({ type: 'media-hub-set-playing', playing }, '*');
+        }
+      };
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
+      if (canHover) {
+        const cardArray = Array.from(cards);
+        cardArray.forEach(card => {
+          const iframe = card.querySelector('iframe');
+          if (!iframe) return;
+          card.addEventListener('mouseenter', () => {
+            cardArray.forEach(c => {
+              const ifr = c.querySelector('iframe');
+              if (!ifr) return;
+              const isCurrent = c === card;
+              sendMuteMessage(ifr, !isCurrent);
+              sendPlayMessage(ifr, isCurrent);
+            });
+          });
+          card.addEventListener('mouseleave', () => {
+            sendMuteMessage(iframe, true);
+            sendPlayMessage(iframe, false);
+          });
+        });
+      } else if ('IntersectionObserver' in window) {
+        cards.forEach(card => {
+          const iframe = card.querySelector('iframe');
+          if (!iframe) return;
+          let inView = false;
+          const applyState = () => {
+            sendMuteMessage(iframe, !inView);
+            sendPlayMessage(iframe, inView);
+          };
+          const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.target !== card) return;
+              inView = entry.isIntersecting;
+              applyState();
+            });
+          }, { threshold: 0.5 });
+          observer.observe(card);
+          iframe.addEventListener('load', applyState);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
