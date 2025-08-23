@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const detailsContainer = document.querySelector(".details-container");
   const details   = showDetails ? document.querySelector(".details-list") : null;
   const tabs      = document.querySelectorAll(".tab-btn");
-  const searchEl  = document.getElementById("mh-search-input");
+  const searchEls = Array.from(document.querySelectorAll('.mh-search-input'));
   const toggleDetailsBtn = document.getElementById("toggle-details");
   if (!showDetails) {
     if (detailsContainer) detailsContainer.style.display = "none";
@@ -331,9 +331,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isActive = t.dataset.mode === mode;
       t.classList.toggle("active", isActive);
       t.setAttribute("aria-pressed", isActive ? "true" : "false");
-      if (isActive && searchEl) {
+      if (isActive && searchEls.length) {
         const tabName = t.textContent.trim().toLowerCase();
-        searchEl.placeholder = `Search ${tabName}...`;
+        searchEls.forEach(el => { el.placeholder = `Search ${tabName}...`; });
       }
     });
 
@@ -548,7 +548,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else if (itemMode === mode) {
         favorites = favArr;
       }
-      if (mode === 'favorites') renderList(searchEl ? (searchEl.value || '') : '');
+      if (mode === 'favorites') renderList(searchEls[0] ? (searchEls[0].value || '') : '');
       else updateFavoritesUI();
     }
 
@@ -1089,7 +1089,7 @@ async function renderLatestVideosRSS(channelId) {
         if (idx >= 0) favArr.splice(idx, 1); else favArr.push(id);
         localStorage.setItem(storeKey, JSON.stringify(favArr));
         if (mode === 'radio') favorites = favArr;
-        if (mode === 'favorites') renderList(searchEl ? (searchEl.value || '') : '');
+        if (mode === 'favorites') renderList(searchEls[0] ? (searchEls[0].value || '') : '');
         updateFavoritesUI();
       });
     }
@@ -1145,7 +1145,7 @@ async function renderLatestVideosRSS(channelId) {
       params.set("m", mode);
       history.replaceState(null, "", "?" + params.toString());
       updateActiveUI();
-      renderList(searchEl ? (searchEl.value || "") : "");
+      renderList(searchEls[0] ? (searchEls[0].value || "") : "");
       if (window.innerWidth <= 768) {
         setTimeout(() => {
           const channelList = document.querySelector(".channel-list");
@@ -1160,19 +1160,32 @@ async function renderLatestVideosRSS(channelId) {
       }
     })
   );
-  if (searchEl) {
-    searchEl.addEventListener("input", e => renderList(e.target.value));
-    searchEl.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        renderList(searchEl.value);
-        const firstCard = listEl.querySelector('.channel-card');
-        if (firstCard) {
-          firstCard.click();
-          searchEl.value = '';
-          renderList('');
+  function handleSearchInput(value) {
+    renderList(value);
+  }
+
+  function syncInputs(src, val) {
+    searchEls.forEach(el => { if (el !== src) el.value = val; });
+  }
+
+  if (searchEls.length) {
+    searchEls.forEach(el => {
+      el.addEventListener("input", e => {
+        syncInputs(e.target, e.target.value);
+        handleSearchInput(e.target.value);
+      });
+      el.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSearchInput(el.value);
+          const firstCard = listEl.querySelector('.channel-card');
+          if (firstCard) {
+            firstCard.click();
+            searchEls.forEach(s => s.value = '');
+            handleSearchInput('');
+          }
         }
-      }
+      });
     });
   }
 
@@ -1184,7 +1197,7 @@ async function renderLatestVideosRSS(channelId) {
       history.replaceState(null, "", "?" + params.toString());
     }
   updateActiveUI();
-  renderList(searchEl ? (searchEl.value || "") : "");
+  renderList(searchEls[0] ? (searchEls[0].value || "") : "");
 
   // If no channels are rendered but a specific radio channel is requested,
   // load it directly so primary controls remain enabled.
