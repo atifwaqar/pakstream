@@ -1030,6 +1030,13 @@ button:hover,
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  #player-container.radio-player .station-info {
+    align-self: flex-start;
+    text-align: left;
+  }
+}
+
 /* Station header: flex aligns title with avatar center */
 .station-header {
   display: flex;
