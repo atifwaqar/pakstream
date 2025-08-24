@@ -213,7 +213,6 @@
 /* reuse your card list visuals */
 /* Match height with Free Press channel list */
 .channel-list {
-  height: calc(100vh - 120px);
   overflow-y: auto;
 }
 .channel-card {

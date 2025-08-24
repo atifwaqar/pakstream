@@ -42,6 +42,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     buttonRow.style.display = "none";
   }
 
+  function setLeftRailHeight() {
+    if (!leftRail) return;
+    if (window.innerWidth > 768 && videoList) {
+      leftRail.style.height = `${videoList.offsetHeight}px`;
+    } else {
+      leftRail.style.height = '';
+    }
+  }
+
+  setLeftRailHeight();
+  window.addEventListener('resize', setLeftRailHeight);
+  if (videoList) {
+    const observer = new MutationObserver(setLeftRailHeight);
+    observer.observe(videoList, { childList: true, subtree: true });
+    const resizeObserver = new ResizeObserver(setLeftRailHeight);
+    resizeObserver.observe(videoList);
+    window.addEventListener('load', setLeftRailHeight);
+  }
+
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
   const mainPlayer = document.getElementById("radio-player");
