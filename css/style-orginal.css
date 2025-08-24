@@ -1771,6 +1771,7 @@ footer nav a:hover {
   grid-auto-rows: min-content !important;
   overflow: visible !important;
   padding-bottom: var(--controls-gap);
+  margin-top: auto; /* Ensure controls stay at the bottom */
 }
 
 /* --- END PATCH --- */
