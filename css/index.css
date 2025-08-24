@@ -1041,7 +1041,6 @@ button:hover,
   display: flex;
   align-items: center;   /* vertical alignment */
   gap: 12px;
-  padding: 0.5rem 0;
   min-width: 0;          /* enables text truncation */
 }
 
