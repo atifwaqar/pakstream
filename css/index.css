@@ -716,7 +716,7 @@ section {
   margin-top: 0;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
+  min-height: calc(100vh - 120px);
 }
 
 .video-section iframe {
@@ -729,6 +729,19 @@ section {
 .video-section .video-list {
   flex: 1 1 auto;
   overflow-y: auto;
+}
+
+/* Maintain 16:9 ratio when videos are present */
+#videoList:not(:empty) {
+  flex: none;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow-y: auto;
+}
+
+/* Collapse container when empty */
+#videoList:empty {
+  display: none;
 }
 
 .video-list .video-item {
