@@ -42,6 +42,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     buttonRow.style.display = "none";
   }
 
+  const videoSection = document.querySelector('.video-section');
+
+  function setLeftRailHeight() {
+    if (!leftRail) return;
+    if (window.innerWidth <= 768 && videoSection) {
+      leftRail.style.bottom = 'auto';
+      leftRail.style.height = `${videoSection.offsetHeight}px`;
+    } else {
+      leftRail.style.height = '';
+      leftRail.style.bottom = '';
+    }
+  }
+
+  setLeftRailHeight();
+  window.addEventListener('resize', setLeftRailHeight);
+  if (videoSection) {
+    const observer = new MutationObserver(setLeftRailHeight);
+    observer.observe(videoSection, { childList: true, subtree: true });
+    const resizeObserver = new ResizeObserver(setLeftRailHeight);
+    resizeObserver.observe(videoSection);
+    window.addEventListener('load', setLeftRailHeight);
+  }
+
   // Radio player elements
   const radioContainer = document.getElementById("player-container");
   const mainPlayer = document.getElementById("radio-player");
