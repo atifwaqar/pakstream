@@ -793,16 +793,12 @@ section {
   .youtube-section > * + * {
     margin-left: 0;
   }
-  .youtube-section .video-section,
-  .media-hub-section .video-section {
-    min-height: auto;
-  }
   .youtube-section .channel-list,
   .media-hub-section .channel-list {
     position: fixed;
     top: 56px;
     left: 0;
-    bottom: auto;
+    bottom: 0;
     width: 260px;
     max-width: 80%;
     background: var(--surface);
