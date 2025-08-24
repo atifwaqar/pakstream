@@ -1015,15 +1015,11 @@ button:hover,
 }
 
 .station-info {
-  text-align: left;
-  align-self: flex-start;
-  width: 100%;
+  text-align: center;
 }
 
 .station-live-status {
-  text-align: left;
-  align-self: flex-start;
-  width: 100%;
+  text-align: center;
 }
 
 /* Station header: flex aligns title with avatar center */
