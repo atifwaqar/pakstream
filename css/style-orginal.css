@@ -1022,11 +1022,6 @@ button:hover,
 
 .station-live-status {
   text-align: center;
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Station header: flex aligns title with avatar center */
@@ -1084,40 +1079,30 @@ button:hover,
   margin-top: 0;
 }
 
-
 .radio-player.compact .live-badge,
 .radio-player.compact .not-live-badge {
   display: none;
 }
 
-.live-badge,
-.not-live-badge {
-  display: flex;
+.live-badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 0;
-  width: 100%;
-  height: 100%;
+  margin-top: 4px;
+  padding: 2px 8px;
   border: 2px solid currentColor;
-  border-radius: 12px;
+  border-radius: 9999px;
   background: transparent;
-  font-size: clamp(1rem, 8vh, 3rem);
+  color: #ff0000;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
-.live-badge { color: #ff0000; }
-.not-live-badge { color: var(--on-surface); }
-
-.live-badge .dot,
-.not-live-badge .dot {
-  width: 0.8em;
-  height: 0.8em;
+.live-badge .dot {
+  width: 8px;
+  height: 8px;
   background: currentColor;
   border-radius: 50%;
-  margin-right: 0.5em;
-}
-
-.live-badge .dot {
+  margin-right: 4px;
   animation: live-pulse 1.5s infinite;
 }
 
@@ -1133,6 +1118,26 @@ button:hover,
   }
 }
 
+.not-live-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border: 2px solid currentColor;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--on-surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.not-live-badge .dot {
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 50%;
+  margin-right: 4px;
+}
 
 :root {
   --radio-btn-size: clamp(36px, 8vw, 54px);
