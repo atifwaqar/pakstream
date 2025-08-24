@@ -1684,7 +1684,6 @@ footer nav a:hover {
 
 .radio-player .controls {
   overflow: visible;
-  padding-bottom: var(--controls-gap);
 }
 
 /* Uniform circular buttons that can shrink */
@@ -1770,7 +1769,6 @@ footer nav a:hover {
 #player-container.radio-player .controls {
   grid-auto-rows: min-content !important;
   overflow: visible !important;
-  padding-bottom: var(--controls-gap);
   margin-top: auto; /* Ensure controls stay at the bottom */
 }
 
