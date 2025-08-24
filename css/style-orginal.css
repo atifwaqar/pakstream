@@ -719,18 +719,6 @@ section {
   overflow-y: auto;
 }
 
-/* Maintain 16:9 ratio when videos are present */
-#videoList:not(:empty) {
-  flex: none;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-/* Collapse container when empty */
-#videoList:empty {
-  display: none;
-}
-
 .video-list .video-item {
   display: flex;
   align-items: center;
