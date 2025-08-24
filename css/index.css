@@ -1030,6 +1030,10 @@ button:hover,
   text-align: center;
 }
 
+.station-live-status {
+  text-align: center;
+}
+
 /* Station header: flex aligns title with avatar center */
 .station-header {
   display: flex;
