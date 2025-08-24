@@ -1742,7 +1742,7 @@ footer nav a:hover {
 .media-hub-section .radio-container,
 .media-hub-section .radio-player,
 .media-hub-section [data-radio-container]{
-  aspect-ratio: auto !important;
+  aspect-ratio: 16/9 !important;
   overflow: visible !important;
 }
 .media-hub-section .radio-player { 
