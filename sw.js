@@ -26,6 +26,7 @@ const PRECACHE_URLS = [
   "/images/icons/icon-192-maskable.png",
   "/images/icons/icon-512-maskable.png",
   "/index.html",
+  "/404.html",
   "/js/404.js",
   "/manifest.webmanifest",
   "/offline.html"
@@ -71,8 +72,12 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       try {
         const fresh = await fetch(req);
-        // Optionally update cache
         const cache = await caches.open(CACHE_NAME);
+        if (fresh.status === 404) {
+          const notFound = await cache.match('/404.html');
+          return notFound || fresh;
+        }
+        // Optionally update cache
         cache.put(req, fresh.clone());
         return fresh;
       } catch (e) {
