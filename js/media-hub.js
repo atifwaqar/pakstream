@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const videoListEl = document.getElementById("videoList");
   if (!showVideoList && videoListEl) videoListEl.style.display = "none";
   const videoList = showVideoList ? videoListEl : null;
+  const videoSection = document.querySelector(".video-section");
   const detailsContainer = document.querySelector(".details-container");
   const details   = showDetails ? document.querySelector(".details-list") : null;
   const tabs      = document.querySelectorAll(".tab-btn");
@@ -40,6 +41,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (!showChannels && !showDetails && buttonRow) {
     buttonRow.style.display = "none";
+  }
+
+  function setLeftRailHeight() {
+    if (!leftRail || !videoSection) return;
+    if (window.innerWidth <= 768) {
+      leftRail.style.height = `${videoSection.offsetHeight}px`;
+      leftRail.style.bottom = 'auto';
+    } else {
+      leftRail.style.height = '';
+      leftRail.style.bottom = '';
+    }
+  }
+
+  setLeftRailHeight();
+  window.addEventListener('load', setLeftRailHeight);
+  window.addEventListener('resize', setLeftRailHeight);
+  if (videoSection) {
+    const observer = new MutationObserver(setLeftRailHeight);
+    observer.observe(videoSection, { childList: true, subtree: true });
+    const resizeObserver = new ResizeObserver(setLeftRailHeight);
+    resizeObserver.observe(videoSection);
   }
 
   // Radio player elements
