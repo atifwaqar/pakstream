@@ -798,7 +798,7 @@ section {
     position: fixed;
     top: 56px;
     left: 0;
-    bottom: auto;
+    bottom: 0;
     width: 260px;
     max-width: 80%;
     background: var(--surface);
