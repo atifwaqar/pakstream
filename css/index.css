@@ -1756,7 +1756,6 @@ footer nav a:hover {
 /* Ensure the control row itself never clips inside the embed */
 .media-hub-section .controls { 
   overflow: visible !important;
-  padding-bottom: var(--controls-gap); /* a little breathing room */
 }
 
 /* Make grid rows size to content so circles never get cropped */
