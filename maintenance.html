@@ -1,4 +1,5 @@
 ---
+robots: noindex,nofollow
 ---
 <!doctype html>
 <html lang="en">
@@ -7,7 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>PakStream — Maintenance</title>
   <meta name="robots" content="noindex,nofollow"/>
+{%- unless page.robots and page.robots contains 'noindex' -%}
   {% include canonical.html %}
+{%- endunless -%}
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/a11y-focus.css">

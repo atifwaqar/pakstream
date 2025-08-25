@@ -1,9 +1,13 @@
 ---
+robots: "noindex, nofollow"
 ---
 <!DOCTYPE html>
 <html>
 <head>
-  {% include canonical.html %}
+    {%- unless page.robots and page.robots contains 'noindex' -%}
+      {% include canonical.html %}
+    {%- endunless -%}
+    <meta name="robots" content="noindex, nofollow">
 </head>
 <body style="margin:0">
 <script>
