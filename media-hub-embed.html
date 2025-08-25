@@ -8,7 +8,11 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="theme-color" content="#ffffff">
-  {% include canonical.html %}
+  {%- unless page.robots and page.robots contains 'noindex' -%}
+    {% include canonical.html %}
+  {%- endunless -%}
+  <meta property="og:url" content="{{ canon }}">
+  <meta name="twitter:url" content="{{ canon }}">
   <title>PakStream Media Hub Embed</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
