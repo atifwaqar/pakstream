@@ -25,6 +25,7 @@ jobs:
 
       - name: Build site
         run: |
+          export JEKYLL_ENV=production
           if [ -f Gemfile ]; then
             bundle exec jekyll build --trace
           else
