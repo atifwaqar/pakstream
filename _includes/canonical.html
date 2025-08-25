@@ -1,0 +1,6 @@
+{%- assign base = "https://pakstream.com" -%}
+{%- capture page_path -%}
+  {%- if page.url == "/" -%}/{%- else -%}{{ page.url | replace: "index.html", "" | replace: "//", "/" }}{%- endif -%}
+{%- endcapture -%}
+{%- assign canon = base | append: page_path -%}
+<link rel="canonical" href="{{ canon }}" />
