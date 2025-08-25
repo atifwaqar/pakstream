@@ -10,5 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run SEO checks
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Jekyll deps (if Gemfile)
+        run: |
+          if [ -f Gemfile ]; then
+            bundle install --path vendor/bundle
+          fi
+
+      - name: Build site
+        run: |
+          if [ -f Gemfile ]; then
+            bundle exec jekyll build --trace
+          else
+            gem install jekyll -N
+            jekyll build --trace
+          fi
+
+      - name: Run SEO checks on built site
         run: ./scripts/seo-check.sh
+
