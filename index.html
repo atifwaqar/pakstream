@@ -22,14 +22,14 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
   <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani Free Press, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
   <meta name="author" content="PakStream by Chatdroid AB">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://pakstream.com/" />
+  {% include canonical.html %}
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="theme-color" content="#ffffff">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pakstream.com/">
+  <meta property="og:url" content="{{ canon }}">
   <meta property="og:title" content="PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press">
   <meta property="og:description" content="Stream Pakistani TV channels, radio stations, and independent Free Press talk shows, everything in one place. Stay connected wherever you are.">
   <meta property="og:image" content="https://pakstream.com/assets/pakstream-banner.jpg">
@@ -37,7 +37,7 @@ window.__PAKSTREAM_FLAGS = Object.assign(window.__PAKSTREAM_FLAGS || {}, {
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://pakstream.com/">
+  <meta name="twitter:url" content="{{ canon }}">
   <meta name="twitter:title" content="PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press">
   <meta name="twitter:description" content="Stream Pakistani TV channels, radio stations, and independent Free Press talk shows, everything in one place. Stay connected wherever you are.">
   <meta name="twitter:image" content="https://pakstream.com/assets/pakstream-banner.jpg">

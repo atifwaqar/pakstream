@@ -21,12 +21,12 @@
   <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani Free Press, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows" />
   <meta name="author" content="PakStream by Chatdroid AB" />
   <meta name="robots" content="{{ page.robots | default: 'index, follow' }}" />
-  <link rel="canonical" href="{{ page.url | absolute_url }}" />
+  {% include canonical.html %}
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="{{ page.url | absolute_url }}" />
+  <meta property="og:url" content="{{ canon }}" />
   <meta property="og:title" content="{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press' }}" />
   <meta property="og:description" content="{{ page.description | default: 'Stream Pakistani TV channels, radio stations, and independent Free Press talk shows—everything in one place. Stay connected wherever you are.' }}" />
   <meta property="og:image" content="/assets/pakstream-banner.jpg" />
@@ -34,7 +34,7 @@
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="{{ page.url | absolute_url }}" />
+  <meta name="twitter:url" content="{{ canon }}" />
   <meta name="twitter:title" content="{{ page.title | default: 'PakStream - Your Gateway to Pakistani TV, Radio &amp; Free Press' }}" />
   <meta name="twitter:description" content="{{ page.description | default: 'Stream Pakistani TV channels, radio stations, and independent Free Press talk shows—everything in one place. Stay connected wherever you are.' }}" />
   <meta name="twitter:image" content="/assets/pakstream-banner.jpg" />
