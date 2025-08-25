@@ -30,7 +30,9 @@
   <meta name="keywords" content="Pakistani TV, Pakistani Radio, Pakistani Free Press, Pakistan News, Urdu Channels, Pakistani Media Abroad, Live Pakistani News, Watch Pakistani TV Online, Pakistani Talk Shows">
   <meta name="author" content="PakStream by Chatdroid AB">
   <meta name="robots" content="{{ page.robots | default: 'index, follow' }}">
-  {% include canonical.html %}
+  {%- unless page.robots and page.robots contains 'noindex' -%}
+    {% include canonical.html %}
+  {%- endunless -%}
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="theme-color" content="#ffffff">
