@@ -867,9 +867,12 @@ async function renderLatestVideosRSS(channelId) {
     if (isSame) return;
 
     currentVideoKey = item.key;
-    params.set("m", mode);
-    params.set("c", item.key);
-    history.replaceState(null, "", "?" + params.toString());
+      params.set("m", mode);
+      params.set("c", item.key);
+      history.replaceState(null, "", "?" + params.toString());
+      if (window.parent !== window) {
+        parent.postMessage({ type: 'c-change', value: params.get('c') }, location.origin);
+      }
 
     if (videoList) videoList.innerHTML = "";
     currentVideoChannelId = null;
@@ -1023,8 +1026,11 @@ async function renderLatestVideosRSS(channelId) {
     if (currentLabel) currentLabel.textContent = name;
 
       params.set('m', mode === 'favorites' ? 'favorites' : mode);
-    params.set('c', audio.id);
-    history.replaceState(null, '', '?' + params.toString());
+      params.set('c', audio.id);
+      history.replaceState(null, '', '?' + params.toString());
+      if (window.parent !== window) {
+        parent.postMessage({ type: 'c-change', value: params.get('c') }, location.origin);
+      }
 
     if (window.innerWidth <= 768) {
       const list = document.querySelector('.channel-list');

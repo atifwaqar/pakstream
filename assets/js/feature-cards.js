@@ -21,6 +21,18 @@
         if (iframe) {
           iframe.style.height = `${e.data.height}px`;
         }
+      } else if (e.origin === location.origin && e.data?.type === 'c-change') {
+        const iframe = Array.from(document.querySelectorAll('.feature-card iframe'))
+          .find(f => f.contentWindow === e.source);
+        if (iframe) {
+          const card = iframe.closest('.feature-card');
+          const link = card?.querySelector('a[href^="/media-hub.html"]');
+          if (link) {
+            const url = new URL(link.getAttribute('href'), location.origin);
+            url.searchParams.set('c', e.data.value);
+            link.setAttribute('href', url.pathname + url.search);
+          }
+        }
       }
     });
     const sendMuteMessage = (iframe, muted) => {
