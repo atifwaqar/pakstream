@@ -1,3 +1,6 @@
 title: PakStream Blog
 baseurl: ""
 url: "https://pakstream.com"
+plugins:
+  - jekyll-sitemap
+  - jekyll-redirect-from
