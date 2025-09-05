@@ -145,15 +145,23 @@
     const LS_KEYS = {
       playlist: 'ps_playlist_v1',
       idx: 'ps_current_index_v1',
-      t: 'ps_current_time_v1'
+      tmap: 'ps_time_by_src_v1',
+      lastsrc: 'ps_last_src_v1'
     };
     const throttle = (fn, ms) => { let t=0; return (...a)=>{ const n=Date.now(); if(n-t>ms){ t=n; fn(...a); } } };
+
+    // per-src time map helpers
+    function getTimeMap(){ try{ return JSON.parse(localStorage.getItem(LS_KEYS.tmap) || '{}'); }catch(e){ return {}; } }
+    function setTimeFor(src, sec){ const m=getTimeMap(); m[src]=sec; localStorage.setItem(LS_KEYS.tmap, JSON.stringify(m)); }
+    function getTimeFor(src){ const m=getTimeMap(); return m[src]||0; }
 
     function savePlaylist(){
       localStorage.setItem(LS_KEYS.playlist, JSON.stringify(playlist));
     }
     function saveIndex(){
       localStorage.setItem(LS_KEYS.idx, String(current));
+      const ep = playlist[current];
+      if(ep) localStorage.setItem(LS_KEYS.lastsrc, ep.src);
     }
     const saveTime = throttle((sec)=>{
       localStorage.setItem(LS_KEYS.t, String(Math.floor(sec)));
@@ -168,8 +176,8 @@
       }catch(e){}
     }
 
-    function clearTime(){ localStorage.removeItem(LS_KEYS.t); }
-    function getSavedTime(){ const v = localStorage.getItem(LS_KEYS.t); return v? parseInt(v,10) : 0; }
+    function clearTime(){ const ep = playlist[current]; if(!ep) return; const m=getTimeMap(); delete m[ep.src]; localStorage.setItem(LS_KEYS.tmap, JSON.stringify(m)); }
+    function getSavedTime(){ const ep = playlist[current]; if(!ep) return 0; return getTimeFor(ep.src); }
 
     // ---------- UI & Player ----------
     const tip = document.getElementById('tip');
@@ -277,22 +285,34 @@
     }
 
     function handleResume(src, resumeIfSame){
+      const lastSrc = localStorage.getItem(LS_KEYS.lastsrc);
       const lastIdx = parseInt(localStorage.getItem(LS_KEYS.idx)||'-1',10);
-      const lastTime = getSavedTime();
-      // Only resume if we're playing the same entry index and we have a time
-      if(resumeIfSame && lastIdx===current && lastTime>0){
-        try{
-          // don't resume if near the end (< 30s remaining)
-          const trySeek = ()=>{
-            const duration = plyr.duration || video.duration || 0;
-            if(duration && duration - lastTime < 30){ clearTime(); return; }
-            video.currentTime = Math.max(0, lastTime - 2); // small rewind
-            tip.textContent = `Resumed at ${fmtTime(video.currentTime)}`;
-          };
-          // If metadata already loaded, seek now, else on loadedmetadata
-          if(video.readyState>=1){ trySeek(); }
-          else video.addEventListener('loadedmetadata', trySeek, {once:true});
-        }catch(e){}
+      const saved = getTimeFor(src);
+      const sameItem = (src===lastSrc) && (current===lastIdx);
+
+      if(resumeIfSame && saved>0 && sameItem){
+        const showOverlay = ()=>{
+          const duration = plyr.duration || video.duration || 0;
+          if(duration && duration - saved < 30){ clearTime(); return; }
+          // Build resume overlay
+          let ov = document.getElementById('resumeOverlay');
+          if(!ov){
+            ov = document.createElement('div');
+            ov.id = 'resumeOverlay';
+            ov.style.position='absolute'; ov.style.inset='0'; ov.style.display='flex'; ov.style.alignItems='center'; ov.style.justifyContent='center'; ov.style.pointerEvents='none';
+            ov.innerHTML = `<div style="pointer-events:auto;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);padding:16px 18px;border-radius:12px;display:flex;gap:10px;align-items:center;">`+
+                           `<span>Resume from <b>${fmtTime(saved)}</b>?</span>`+
+                           `<button id="resumeYes" class="btn">Resume</button>`+
+                           `<button id="resumeNo" class="btn ghost">Start Over</button>`+
+                           `</div>`;
+            video.parentElement.style.position='relative';
+            video.parentElement.appendChild(ov);
+            document.getElementById('resumeYes').onclick = ()=>{ video.currentTime=Math.max(0,saved-2); plyr.play(); ov.remove(); };
+            document.getElementById('resumeNo').onclick = ()=>{ clearTime(); plyr.play(); ov.remove(); };
+          }
+        };
+        if(video.readyState>=1){ showOverlay(); }
+        else video.addEventListener('loadedmetadata', showOverlay, {once:true});
       }
     }
 
@@ -304,9 +324,9 @@
 
     video.addEventListener('ended', playNext);
 
-    // Persist current time every second
-    video.addEventListener('timeupdate', ()=>{ if(!isNaN(video.currentTime)) saveTime(video.currentTime); });
-    window.addEventListener('beforeunload', ()=>{ if(!isNaN(video.currentTime)) localStorage.setItem(LS_KEYS.t, String(Math.floor(video.currentTime))); });
+    // Persist current time every second (per-src)
+    video.addEventListener('timeupdate', ()=>{ if(!isNaN(video.currentTime) && playlist[current]) setTimeFor(playlist[current].src, Math.floor(video.currentTime)); });
+    window.addEventListener('beforeunload', ()=>{ if(!isNaN(video.currentTime) && playlist[current]) setTimeFor(playlist[current].src, Math.floor(video.currentTime)); }); });
 
     // Modal controls
     const modal = document.getElementById('modal');
@@ -346,7 +366,6 @@
     loadState();
     renderPlaylist();
     if(playlist.length){
-      // If we had a previous index, start it and resume position
       if(current>=0 && current<playlist.length){ playIndex(current, {resumeIfSame:true}); }
     } else {
       // Seed a starter card so the page looks alive
