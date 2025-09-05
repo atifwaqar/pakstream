@@ -105,6 +105,13 @@
       autoplay: false
     });
 
+    // Display an error message and reset loading state
+    const showError = (msg) => {
+      tip.textContent = msg;
+      tip.style.color = '#ffb4b4';
+      video.classList.remove('skeleton');
+    };
+
     // Load media based on URL (supports MP4/WebM/HLS)
     async function loadAndPlay(){
       const src = urlInput.value.trim();
@@ -176,22 +183,24 @@
             tip.textContent = 'Playing via HLS';
           });
           hls.on(Hls.Events.ERROR, (evt, data)=>{
-            if(data.fatal){ tip.textContent = 'HLS fatal error: '+data.type; }
+            showError('HLS error: ' + data.type);
           });
         } else if(isHls && video.canPlayType('application/vnd.apple.mpegurl')){
           // Safari can play HLS natively
           video.src = src;
           video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing HLS (native)'; }, {once:true});
+          video.addEventListener('error', ()=>{ showError('Could not load media. This server may block cross‑origin (CORS) playback.'); }, {once:true});
+          video.load();
         } else {
           // Assume direct MP4/WebM, etc.
           video.src = src;
           video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing file'; }, {once:true});
+          video.addEventListener('error', ()=>{ showError('Could not load media. This server may block cross‑origin (CORS) playback.'); }, {once:true});
+          video.load();
         }
       }catch(err){
         console.error(err);
-        tip.textContent = 'Could not load media. This server may block cross‑origin (CORS) playback.';
-        tip.style.color = '#ffb4b4';
-        video.classList.remove('skeleton');
+        showError('Could not load media. This server may block cross‑origin (CORS) playback.');
       }
     }
 
