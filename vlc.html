@@ -269,7 +269,7 @@
       if(video.readyState>=1) show(); else video.addEventListener('loadedmetadata', show, {once:true});
     }
 
-    function playIndex(idx, {resumeIfSame=true}={}){
+    function playIndex(idx, {resumeIfSame=true, startTime=null}={}){
       if(idx<0 || idx>=playlist.length) return;
       current = idx; saveIndex();
       const {src, poster, subs, name} = playlist[idx];
@@ -289,6 +289,7 @@
       }
 
       const isHls = /\.m3u8($|\?)/i.test(src);
+      const startAt = startTime!=null ? Math.max(0, startTime-2) : null;
       try{
         if(isHls && window.Hls && Hls.isSupported()){
           video.setAttribute('crossorigin','anonymous');
@@ -297,15 +298,15 @@
           window._hls = hls;
           hls.loadSource(src);
           hls.attachMedia(video);
-          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ setQualityMenuFromHls(hls); tip.textContent='Playing via HLS'; handleResume(src, resumeIfSame); plyr.play(); });
+          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ setQualityMenuFromHls(hls); tip.textContent='Playing via HLS'; if(startAt!==null){ video.currentTime = startAt; } handleResume(src, resumeIfSame); plyr.play(); });
           hls.on(Hls.Events.ERROR, (evt, data)=>{ if(data.fatal){ tip.textContent='HLS fatal error: '+data.type; }});
         } else if(isHls && video.canPlayType('application/vnd.apple.mpegurl')){
           video.setAttribute('crossorigin','anonymous');
-          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing HLS (native)'; handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing HLS (native)'; if(startAt!==null){ video.currentTime = startAt; } handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
         } else {
           // MP4/WebM — avoid CORS mode
           video.removeAttribute('crossorigin');
-          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing file'; handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing file'; if(startAt!==null){ video.currentTime = startAt; } handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
         }
       }catch(e){ tip.textContent = 'Could not load media (possible CORS).'; }
 
@@ -356,7 +357,24 @@
     loadState();
     renderPlaylist();
     if(playlist.length){
-      if(current>=0 && current<playlist.length){ playIndex(current, {resumeIfSame:true}); }
+      if(current>=0 && current<playlist.length){
+        const ep = playlist[current];
+        const lastSrc = localStorage.getItem(LS_KEYS.lastsrc);
+        const lastIdx = parseInt(localStorage.getItem(LS_KEYS.idx)||'-1',10);
+        const saved = getTimeFor(ep.src);
+        const sameItem = ep.src===lastSrc && current===lastIdx && saved>0;
+        if(sameItem){
+          const resume = confirm(`Resume from ${fmtTime(saved)}?`);
+          if(resume){
+            playIndex(current, {resumeIfSame:false, startTime:saved});
+          } else {
+            clearTimeForCurrent();
+            playIndex(current, {resumeIfSame:false});
+          }
+        } else {
+          playIndex(current, {resumeIfSame:true});
+        }
+      }
     } else {
       // Seed a starter card so the page looks alive
       addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
