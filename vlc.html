@@ -23,6 +23,14 @@
     .btn:active{transform:translateY(1px)}
     .ghost{background:transparent;border:1px solid rgba(255,255,255,.16)}
 
+    /* Search */
+    .search-form{position:relative}
+    .search-form input{width:220px;padding:8px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:var(--panel2);color:var(--text)}
+    .search-results{position:absolute;top:100%;left:0;right:0;background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:12px;margin-top:4px;max-height:240px;overflow:auto;display:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+    .search-results a{display:block;padding:8px 12px}
+    .search-results a:hover{background:rgba(255,255,255,.08)}
+    .search-form.active .search-results{display:block}
+
     .layout{max-width:1200px;margin:14px auto;padding:0 16px;}
 
     .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden}
@@ -60,6 +68,10 @@
 <body>
   <nav class="nav">
     <div class="brand">PakStream<span class="dot">•</span>Player</div>
+    <form id="search-form" class="search-form" role="search" autocomplete="off">
+      <input id="search-input" type="search" placeholder="Search..." aria-label="Search" autocomplete="off" />
+      <div id="search-results" class="search-results"></div>
+    </form>
     <div class="spacer"></div>
     <button class="btn ghost" id="addUrl">+ Add From URL</button>
   </nav>
@@ -167,6 +179,71 @@
       if(e.key==='ArrowLeft'){ skipBack(); }
       if(e.key.toLowerCase()==='n'){ playNext(); }
     });
+
+    // ---------- Search ----------
+    (function(){
+      const searchForm = document.getElementById('search-form');
+      const input = document.getElementById('search-input');
+      const results = document.getElementById('search-results');
+      if(!(searchForm && input && results)) return;
+
+      function activate(){ searchForm.classList.add('active'); }
+      function deactivate(){ searchForm.classList.remove('active'); }
+
+      input.addEventListener('focus', activate);
+      input.addEventListener('blur', deactivate);
+
+      let searchData = [];
+      let loaded = false;
+      function loadData(){
+        if(loaded) return Promise.resolve(searchData);
+        return fetch('/all_streams.json')
+          .then(r=>r.json())
+          .then(data=>{
+            const items = Array.isArray(data.items)?data.items:[];
+            const typeToMode = {livetv:'tv', tv:'tv', radio:'radio', freepress:'freepress', creator:'creator'};
+            searchData = items.map(it=>{
+              const mode = typeToMode[it.type] || 'tv';
+              const channelId = it.type==='radio' && it.ids && it.ids.internal_id ? it.ids.internal_id : it.key;
+              return {name: it.name, link: '/media-hub.html?c='+encodeURIComponent(channelId)+'&m='+mode};
+            });
+            loaded = true;
+            return searchData;
+          });
+      }
+
+      input.addEventListener('input', ()=>{
+        const q = input.value.trim().toLowerCase();
+        results.innerHTML='';
+        if(!q) return;
+        loadData().then(()=>{
+          const matches = searchData.filter(item=>item.name.toLowerCase().includes(q));
+          matches.slice(0,10).forEach(item=>{
+            const a=document.createElement('a');
+            a.href=item.link;
+            a.textContent=item.name;
+            results.appendChild(a);
+          });
+        });
+      });
+
+      searchForm.addEventListener('submit', e=>{
+        e.preventDefault();
+        const q = input.value.trim().toLowerCase();
+        if(!q) return;
+        loadData().then(()=>{
+          const matches = searchData.filter(item=>item.name.toLowerCase().includes(q));
+          if(matches.length>0){ window.location.href = matches[0].link; }
+        });
+      });
+
+      document.addEventListener('click', e=>{
+        if(!searchForm.contains(e.target)){
+          results.innerHTML='';
+          deactivate();
+        }
+      });
+    })();
 
     // ---------- Playlist Model ----------
     let playlist = [];
