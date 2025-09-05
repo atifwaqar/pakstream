@@ -114,13 +114,35 @@
     resetArrowSeek();
   }
 
+  function lockLandscape() {
+    try {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+      } else if (screen.lockOrientation) {
+        screen.lockOrientation('landscape');
+      }
+    } catch (_) {}
+  }
+
+  function unlockOrientation() {
+    try {
+      if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+      } else if (screen.unlockOrientation) {
+        screen.unlockOrientation();
+      }
+    } catch (_) {}
+  }
+
   function handleFsChange() {
     syncFsIcon();
     if (isFullscreen()) {
+      lockLandscape();
       onEnterFullscreenUI();
       // Some Samsungs steal focus during FS transition
       setTimeout(ensureFocusForTv, 0);
     } else {
+      unlockOrientation();
       onExitFullscreenUI();
     }
   }
