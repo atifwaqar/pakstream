@@ -1,7 +1,8 @@
 (function(){
   let video, plyr, wrap, controls,
       centerBtn, backBtn, fwdBtn, toolbarPlay, fsBtn, progress,
-      hideTimer;
+      hideTimer,
+      lastArrow, arrowCount = 0, arrowTimer;
 
   const playIcon = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
   const pauseIcon = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>';
@@ -53,6 +54,41 @@
     hideTimer = setTimeout(()=>controls.classList.remove('show'),2000);
   }
 
+  function isFullscreen(){
+    return document.fullscreenElement || document.webkitFullscreenElement ||
+      document.mozFullScreenElement || document.msFullscreenElement;
+  }
+
+  function resetArrowSeek(){
+    lastArrow = null;
+    arrowCount = 0;
+    clearTimeout(arrowTimer);
+  }
+
+  function handleArrowKeys(e){
+    const key = e.key || e.code;
+    const isLeft = key === 'ArrowLeft' || key === 'Left' || e.keyCode === 37;
+    const isRight = key === 'ArrowRight' || key === 'Right' || e.keyCode === 39;
+    if(!isLeft && !isRight) return;
+    if(!isFullscreen()) return;
+    e.preventDefault();
+    const dir = isRight ? 'right' : 'left';
+    if(lastArrow === dir){
+      arrowCount++;
+    } else {
+      arrowCount = 1;
+      lastArrow = dir;
+    }
+    const seek = arrowCount * 10;
+    if(isRight){
+      video.currentTime = Math.min(video.currentTime + seek, video.duration || Infinity);
+    } else {
+      video.currentTime = Math.max(0, video.currentTime - seek);
+    }
+    clearTimeout(arrowTimer);
+    arrowTimer = setTimeout(resetArrowSeek,1000);
+  }
+
   function init(opts){
     video = opts.video; plyr = opts.plyr; wrap = opts.wrap;
     plyr.togglePlay = togglePlay;
@@ -71,6 +107,9 @@
     fsBtn.addEventListener('click', toggleFullscreen);
     progress.addEventListener('input', seek);
     document.addEventListener('fullscreenchange', syncFsIcon);
+    ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','msfullscreenchange'].forEach(evt=>{
+      document.addEventListener(evt, resetArrowSeek);
+    });
 
     video.addEventListener('timeupdate', updateProgress);
     video.addEventListener('loadedmetadata', updateProgress);
@@ -79,6 +118,7 @@
 
     document.addEventListener('mousemove', showControls);
     document.addEventListener('keydown', showControls);
+    document.addEventListener('keydown', handleArrowKeys);
 
     syncButtons();
     syncFsIcon();
