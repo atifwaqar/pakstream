@@ -6,6 +6,7 @@
   <title>PakStream • Player</title>
   <link rel="preconnect" href="https://cdn.plyr.io" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <link rel="stylesheet" href="assets/css/vlc-fullscreen.css" />
   <style>
     :root{
       --bg:#0b0f14; --panel:#11151d; --panel2:#0e141c; --text:#e6edf3; --muted:#93a4ba; --accent:#e50914; --pill:#2a3342; --ok:#27d49a;
@@ -98,7 +99,21 @@
     <!-- RIGHT: Player -->
     <section class="card player-card">
       <div class="player-wrap" id="playerWrap">
-        <video id="player" playsinline controls></video>
+        <video id="player" playsinline></video>
+        <div class="fs-controls" id="fsControls">
+          <button id="centerPlay" class="play-center" aria-label="Play/Pause"></button>
+          <button id="skipBack" class="skip-back" aria-label="Back 10 seconds">
+            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8zm-1.1 11h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.28-1.76c0 .32-.03.6-.1.82s-.17.42-.29.57-.28.26-.45.33-.37.1-.59.1-.41-.03-.59-.1-.33-.18-.46-.33-.23-.34-.3-.57-.11-.5-.11-.82v-.74c0-.32.03-.6.1-.82s.17-.42.29-.57.28-.26.45-.33.37-.1.59-.1.41.03.59.1.33.18.46.33.23.34.3.57.11.5.11.82v.74zm-.85-.86c0-.19-.01-.35-.04-.48s-.07-.23-.12-.31-.11-.14-.19-.17-.16-.05-.25-.05-.18.02-.25.05-.14.09-.19.17-.09.18-.12.31-.04.29-.04.48v.97c0 .19.01.35.04.48s.07.24.12.32.11.14.19.17.16.05.25.05.18-.02.25-.05.14-.09.19-.17.09-.19.11-.32.04-.29.04-.48v-.97z"/></svg>
+          </button>
+          <button id="skipForward" class="skip-forward" aria-label="Forward 10 seconds">
+            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M18 13c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6v4l5-5-5-5v4c-4.42 0-8 3.58-8 8 0 4.42 3.58 8 8 8s8-3.58 8-8h-2z"/><polygon points="10.9,16 10.9,11.73 10.81,11.73 9.04,12.36 9.04,13.05 10.05,12.74 10.05,16"/><path d="M14.32 11.78c-.18-.07-.37-.1-.59-.1s-.41.03-.59.1-.33.18-.45.33-.23.34-.29.57-.1.5-.1.82v.74c0 .32.04.6.11.82s.17.42.3.57.28.26.46.33.37.1.59.1.41-.03.59-.1.33-.18.45-.33.22-.34.29-.57.1-.5.1-.82V13.5c0-.32-.04-.6-.11-.82s-.17-.42-.3-.57-.28-.26-.46-.33zM14.33 14.35c0 .19-.01.35-.04.48s-.06.24-.11.32-.11.14-.19.17-.16.05-.25.05-.18-.02-.25-.05-.14-.09-.19-.17-.09-.19-.12-.32-.04-.29-.04-.48v-.97c0-.19.01-.35.04-.48s.06-.23.12-.31.11-.14.19-.17.16-.05.25-.05.18.02.25.05.14.09.19.17.09.18.12.31.04.29.04.48v.97z"/></svg>
+          </button>
+          <div class="toolbar">
+            <button id="toolbarPlay" aria-label="Play/Pause"></button>
+            <input type="range" id="progress" value="0" min="0" step="0.1">
+            <button id="fsToggle" aria-label="Toggle Fullscreen"></button>
+          </div>
+        </div>
       </div>
       <div class="hero-actions">
         <button class="btn" id="playDemo">▶ Play Demo</button>
@@ -144,6 +159,7 @@
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
+  <script src="assets/js/vlc-fullscreen.js"></script>
   <script>
     // ---------- Persistence Keys ----------
     const LS_KEYS = {
@@ -184,17 +200,18 @@
     const video = document.getElementById('player');
     const plyr = new Plyr(video, {
       ratio: '16:9',
-      controls: ['play-large','play','progress','current-time','duration','mute','volume','captions','settings','pip','airplay','fullscreen'],
+      controls: [],
       settings: ['captions','speed','quality','loop']
     });
+    initVlcFullscreen({ video, plyr, wrap: playerWrap });
 
     // Keyboard shortcuts
     window.addEventListener('keydown', (e)=>{
       if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-      if(e.key===' '){ e.preventDefault(); plyr.togglePlay(); }
-      if(e.key==='f'){ plyr.fullscreen.toggle(); }
-      if(e.key==='ArrowRight'){ plyr.forward(10); }
-      if(e.key==='ArrowLeft'){ plyr.rewind(10); }
+      if(e.key===' '){ e.preventDefault(); togglePlay(); }
+      if(e.key==='f'){ toggleFullscreen(); }
+      if(e.key==='ArrowRight'){ skipForward(); }
+      if(e.key==='ArrowLeft'){ skipBack(); }
       if(e.key.toLowerCase()==='n'){ playNext(); }
     });
 
