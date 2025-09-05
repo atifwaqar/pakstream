@@ -6,7 +6,6 @@
   <title>PakStream • Player</title>
   <link rel="preconnect" href="https://cdn.plyr.io" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-  <link rel="stylesheet" href="assets/css/vlc-fullscreen.css" />
   <style>
     :root{
       --bg:#0b0f14; --panel:#11151d; --panel2:#0e141c; --text:#e6edf3; --muted:#93a4ba; --accent:#e50914; --pill:#2a3342; --ok:#27d49a;
@@ -99,25 +98,7 @@
     <!-- RIGHT: Player -->
     <section class="card player-card">
       <div class="player-wrap" id="playerWrap">
-        <video id="player" playsinline></video>
-        <div class="fs-controls" id="fsControls">
-          <button id="centerPlay" class="play-center">▶</button>
-          <button id="skipBack" class="skip-back">⏪ 10s</button>
-          <button id="skipForward" class="skip-forward">10s ⏩</button>
-          <div class="toolbar">
-            <div class="left">
-              <button id="btnEpisodes">Episodes</button>
-              <button id="btnAudio">Audio &amp; Subtitles</button>
-              <button id="btnShare">Share</button>
-              <button id="btnNext">Next Episode</button>
-            </div>
-            <input type="range" id="progress" value="0" min="0" step="0.1">
-            <div class="right">
-              <button id="toolbarPlay">▶</button>
-              <button id="fsToggle">⛶</button>
-            </div>
-          </div>
-        </div>
+        <video id="player" playsinline controls></video>
       </div>
       <div class="hero-actions">
         <button class="btn" id="playDemo">▶ Play Demo</button>
@@ -163,7 +144,6 @@
 
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
-  <script src="assets/js/vlc-fullscreen.js"></script>
   <script>
     // ---------- Persistence Keys ----------
     const LS_KEYS = {
@@ -204,18 +184,17 @@
     const video = document.getElementById('player');
     const plyr = new Plyr(video, {
       ratio: '16:9',
-      controls: [],
+      controls: ['play-large','play','progress','current-time','duration','mute','volume','captions','settings','pip','airplay','fullscreen'],
       settings: ['captions','speed','quality','loop']
     });
-    initVlcFullscreen({ video, plyr, wrap: playerWrap });
 
     // Keyboard shortcuts
     window.addEventListener('keydown', (e)=>{
       if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-      if(e.key===' '){ e.preventDefault(); togglePlay(); }
-      if(e.key==='f'){ toggleFullscreen(); }
-      if(e.key==='ArrowRight'){ skipForward(); }
-      if(e.key==='ArrowLeft'){ skipBack(); }
+      if(e.key===' '){ e.preventDefault(); plyr.togglePlay(); }
+      if(e.key==='f'){ plyr.fullscreen.toggle(); }
+      if(e.key==='ArrowRight'){ plyr.forward(10); }
+      if(e.key==='ArrowLeft'){ plyr.rewind(10); }
       if(e.key.toLowerCase()==='n'){ playNext(); }
     });
 
