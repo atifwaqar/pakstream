@@ -49,8 +49,14 @@
         <span class="badge">MP4 • WebM • HLS (m3u8) • Subtitles</span>
       </header>
 
+      <div style="display:flex; gap:10px; align-items:center; padding:0 22px 10px 22px; flex-wrap:wrap">
+        <button class="btn" id="demoMp4" type="button" style="background:#94f7c6;">Load Demo MP4</button>
+        <button class="btn" id="demoHls" type="button" style="background:#f7f094;">Load Demo HLS</button>
+        <small style="color:#93a4ba">If these play, the player works. If your own URL fails, it’s likely CORS on that host.</small>
+      </div>
+
       <div class="player-wrap">
-        <video id="player" playsinline controls crossorigin="anonymous"></video>
+        <video id="player" playsinline controls></video>
       </div>
 
       <p class="notice" id="tip">Paste a direct media URL (e.g. https://example.com/video.mp4 or https://…/index.m3u8). Optional: add a poster and a WebVTT subtitle.</p>
@@ -104,13 +110,6 @@
       keyboard: { focused: true, global: true },
       autoplay: false
     });
-
-    // Display an error message and reset loading state
-    const showError = (msg) => {
-      tip.textContent = msg;
-      tip.style.color = '#ffb4b4';
-      video.classList.remove('skeleton');
-    };
 
     // Load media based on URL (supports MP4/WebM/HLS)
     async function loadAndPlay(){
@@ -183,28 +182,52 @@
             tip.textContent = 'Playing via HLS';
           });
           hls.on(Hls.Events.ERROR, (evt, data)=>{
-            showError('HLS error: ' + data.type);
+            if(data.fatal){ tip.textContent = 'HLS fatal error: '+data.type; }
           });
         } else if(isHls && video.canPlayType('application/vnd.apple.mpegurl')){
           // Safari can play HLS natively
           video.src = src;
           video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing HLS (native)'; }, {once:true});
-          video.addEventListener('error', ()=>{ showError('Could not load media. This server may block cross‑origin (CORS) playback.'); }, {once:true});
-          video.load();
         } else {
           // Assume direct MP4/WebM, etc.
           video.src = src;
           video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing file'; }, {once:true});
-          video.addEventListener('error', ()=>{ showError('Could not load media. This server may block cross‑origin (CORS) playback.'); }, {once:true});
-          video.load();
         }
       }catch(err){
         console.error(err);
-        showError('Could not load media. This server may block cross‑origin (CORS) playback.');
+        tip.textContent = 'Could not load media. This server may block cross‑origin (CORS) playback.';
+        tip.style.color = '#ffb4b4';
+        video.classList.remove('skeleton');
       }
     }
 
     document.getElementById('loadBtn').addEventListener('click', loadAndPlay);
+
+    // Error diagnostics for MP4/WebM
+    function humanMediaError(v){
+      const me = v.error; if(!me) return 'Unknown media error';
+      const map = {1:'Aborted',2:'Network',3:'Decode',4:'SRC not supported'};
+      return `MediaError ${me.code} (${map[me.code]||'Unknown'})`;
+    }
+    video.addEventListener('error', ()=>{
+      tip.textContent = `Video error: ${humanMediaError(video)}. If this is a cross-origin file, the host may block playback (CORS).`;
+      tip.style.color = '#ffb4b4';
+      video.classList.remove('skeleton');
+    });
+
+    // Demo buttons
+    document.getElementById('demoMp4').addEventListener('click', ()=>{
+      urlInput.value = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+      posterInput.value = 'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg';
+      subsInput.value = '';
+      loadAndPlay();
+    });
+    document.getElementById('demoHls').addEventListener('click', ()=>{
+      urlInput.value = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+      posterInput.value = '';
+      subsInput.value = '';
+      loadAndPlay();
+    });
 
     // Enter to load
     urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ loadAndPlay(); }});
