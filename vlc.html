@@ -242,6 +242,22 @@
       });
     }
 
+    async function loadDefaults(){
+      try{
+        const res = await fetch('assets/default_playlist.json');
+        const list = await res.json();
+        if(Array.isArray(list)){
+          list.forEach(ep=>{
+            if(!playlist.some(p=>p.src===ep.src)){
+              const id='ep'+Math.random().toString(36).slice(2);
+              playlist.push({id, name: ep.name || ep.src.split('/').pop(), src: ep.src, poster: ep.poster||'', subs: ep.subs||''});
+            }
+          });
+          savePlaylist();
+        }
+      }catch(e){}
+    }
+
     function setQualityMenuFromHls(hls){
       const levels = hls.levels.map(l=>l.height).filter(Boolean).sort((a,b)=>a-b);
       plyr.options.quality = {
@@ -371,31 +387,35 @@
     });
 
     // ---------- Boot: restore previous session ----------
-    loadState();
-    renderPlaylist();
-    if(playlist.length){
-      if(current>=0 && current<playlist.length){
-        const ep = playlist[current];
-        const lastSrc = localStorage.getItem(LS_KEYS.lastsrc);
-        const lastIdx = parseInt(localStorage.getItem(LS_KEYS.idx)||'-1',10);
-        const saved = getTimeFor(ep.src);
-        const sameItem = ep.src===lastSrc && current===lastIdx && saved>0;
-        if(sameItem){
-          const resume = confirm(`Resume from ${fmtTime(saved)}?`);
-          if(resume){
-            playIndex(current, {resumeIfSame:false, startTime:saved});
+    async function init(){
+      loadState();
+      await loadDefaults();
+      renderPlaylist();
+      if(playlist.length){
+        if(current>=0 && current<playlist.length){
+          const ep = playlist[current];
+          const lastSrc = localStorage.getItem(LS_KEYS.lastsrc);
+          const lastIdx = parseInt(localStorage.getItem(LS_KEYS.idx)||'-1',10);
+          const saved = getTimeFor(ep.src);
+          const sameItem = ep.src===lastSrc && current===lastIdx && saved>0;
+          if(sameItem){
+            const resume = confirm(`Resume from ${fmtTime(saved)}?`);
+            if(resume){
+              playIndex(current, {resumeIfSame:false, startTime:saved});
+            } else {
+              clearTimeForCurrent();
+              playIndex(current, {resumeIfSame:false});
+            }
           } else {
-            clearTimeForCurrent();
-            playIndex(current, {resumeIfSame:false});
+            playIndex(current, {resumeIfSame:true});
           }
-        } else {
-          playIndex(current, {resumeIfSame:true});
         }
+      } else {
+        // Seed a starter card so the page looks alive
+        addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
       }
-    } else {
-      // Seed a starter card so the page looks alive
-      addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
     }
+    init();
   </script>
 </body>
 </html>
