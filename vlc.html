@@ -88,7 +88,7 @@
           <span class="pill">2h 7m</span>
           <span class="pill">Drama</span>
         </div>
-        <div class="row">Press <b>Space</b> to play/pause • <b>F</b> fullscreen • <b>→/←</b> seek</div>
+        <div class="row">Press <b>Space</b> to play/pause • <b>F</b> fullscreen • <b>→/←</b> seek • <b>N</b> next</div>
         <div class="row hint">Add your own link with <b>+ Add From URL</b>. MP4/WebM work best. HLS needs CORS.</div>
       </div>
     </aside>
@@ -141,6 +141,37 @@
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
   <script>
+    // ---------- Utilities & Persistence ----------
+    const LS_KEYS = {
+      playlist: 'ps_playlist_v1',
+      idx: 'ps_current_index_v1',
+      t: 'ps_current_time_v1'
+    };
+    const throttle = (fn, ms) => { let t=0; return (...a)=>{ const n=Date.now(); if(n-t>ms){ t=n; fn(...a); } } };
+
+    function savePlaylist(){
+      localStorage.setItem(LS_KEYS.playlist, JSON.stringify(playlist));
+    }
+    function saveIndex(){
+      localStorage.setItem(LS_KEYS.idx, String(current));
+    }
+    const saveTime = throttle((sec)=>{
+      localStorage.setItem(LS_KEYS.t, String(Math.floor(sec)));
+    }, 1000);
+
+    function loadState(){
+      try{
+        const p = JSON.parse(localStorage.getItem(LS_KEYS.playlist) || '[]');
+        if(Array.isArray(p) && p.length){ playlist = p; }
+        const idxStr = localStorage.getItem(LS_KEYS.idx);
+        if(idxStr!==null){ current = parseInt(idxStr, 10); }
+      }catch(e){}
+    }
+
+    function clearTime(){ localStorage.removeItem(LS_KEYS.t); }
+    function getSavedTime(){ const v = localStorage.getItem(LS_KEYS.t); return v? parseInt(v,10) : 0; }
+
+    // ---------- UI & Player ----------
     const tip = document.getElementById('tip');
     const posterEl = document.getElementById('poster');
     const titleEl = document.getElementById('title');
@@ -153,7 +184,7 @@
       settings: ['captions','speed','quality','loop']
     });
 
-    // Basic Netflix-y keyboard shortcuts
+    // Keyboard shortcuts
     window.addEventListener('keydown', (e)=>{
       if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
       if(e.key===' '){ e.preventDefault(); plyr.togglePlay(); }
@@ -170,6 +201,7 @@
     function addToPlaylist({name, src, poster='', subs=''}){
       const id = 'ep'+Math.random().toString(36).slice(2);
       playlist.push({id,name,src,poster,subs});
+      savePlaylist();
       renderPlaylist();
     }
 
@@ -182,12 +214,14 @@
           <div class="thumb" style="background-image:url('${ep.poster||'https://picsum.photos/seed/'+idx+'/400/225'}')"></div>
           <div class="txt">
             <div class="name">${ep.name}</div>
-            <div class="sub">${new URL(ep.src).hostname}</div>
+            <div class="sub">${safeHost(ep.src)}</div>
           </div>`;
         el.addEventListener('click', ()=> playIndex(idx));
         epList.appendChild(el);
       });
     }
+
+    function safeHost(u){ try{return new URL(u).hostname;}catch(e){return '';} }
 
     function setQualityMenuFromHls(hls){
       const levels = hls.levels.map(l => l.height).filter(Boolean).sort((a,b)=>a-b);
@@ -195,16 +229,13 @@
         default: levels[levels.length-1]||0,
         options: [...new Set(levels)],
         forced: true,
-        onChange: (q)=>{
-          const idx = hls.levels.findIndex(l=>l.height===q);
-          hls.currentLevel = idx;
-        }
+        onChange: (q)=>{ const idx = hls.levels.findIndex(l=>l.height===q); hls.currentLevel = idx; }
       };
     }
 
-    function playIndex(idx){
+    function playIndex(idx, {resumeIfSame=true}={}){
       if(idx<0 || idx>=playlist.length) return;
-      current = idx;
+      current = idx; saveIndex();
       const {src, poster, subs, name} = playlist[idx];
       titleEl.textContent = name || 'Untitled';
       posterEl.style.backgroundImage = `url('${poster||'https://picsum.photos/seed/p'+idx+'/600/900'}')`;
@@ -230,24 +261,52 @@
           window._hls = hls;
           hls.loadSource(src);
           hls.attachMedia(video);
-          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ setQualityMenuFromHls(hls); tip.textContent='Playing via HLS'; plyr.play(); });
+          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ setQualityMenuFromHls(hls); tip.textContent='Playing via HLS'; handleResume(src, resumeIfSame); plyr.play(); });
           hls.on(Hls.Events.ERROR, (evt, data)=>{ if(data.fatal){ tip.textContent = 'HLS fatal error: '+data.type; }});
         } else if(isHls && video.canPlayType('application/vnd.apple.mpegurl')){
           video.setAttribute('crossorigin','anonymous');
-          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing HLS (native)'; plyr.play(); }, {once:true});
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing HLS (native)'; handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
         } else {
           // MP4/WebM — avoid CORS mode
           video.removeAttribute('crossorigin');
-          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing file'; plyr.play(); }, {once:true});
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing file'; handleResume(src, resumeIfSame); plyr.play(); }, {once:true});
         }
       }catch(e){ tip.textContent = 'Could not load media (possible CORS).'; }
 
       renderPlaylist();
     }
 
-    function playNext(){ if(current+1 < playlist.length){ playIndex(current+1); } }
+    function handleResume(src, resumeIfSame){
+      const lastIdx = parseInt(localStorage.getItem(LS_KEYS.idx)||'-1',10);
+      const lastTime = getSavedTime();
+      // Only resume if we're playing the same entry index and we have a time
+      if(resumeIfSame && lastIdx===current && lastTime>0){
+        try{
+          // don't resume if near the end (< 30s remaining)
+          const trySeek = ()=>{
+            const duration = plyr.duration || video.duration || 0;
+            if(duration && duration - lastTime < 30){ clearTime(); return; }
+            video.currentTime = Math.max(0, lastTime - 2); // small rewind
+            tip.textContent = `Resumed at ${fmtTime(video.currentTime)}`;
+          };
+          // If metadata already loaded, seek now, else on loadedmetadata
+          if(video.readyState>=1){ trySeek(); }
+          else video.addEventListener('loadedmetadata', trySeek, {once:true});
+        }catch(e){}
+      }
+    }
+
+    function fmtTime(sec){
+      sec = Math.floor(sec); const m = Math.floor(sec/60); const s = sec%60; return `${m}:${String(s).padStart(2,'0')}`;
+    }
+
+    function playNext(){ if(current+1 < playlist.length){ clearTime(); playIndex(current+1, {resumeIfSame:false}); } }
 
     video.addEventListener('ended', playNext);
+
+    // Persist current time every second
+    video.addEventListener('timeupdate', ()=>{ if(!isNaN(video.currentTime)) saveTime(video.currentTime); });
+    window.addEventListener('beforeunload', ()=>{ if(!isNaN(video.currentTime)) localStorage.setItem(LS_KEYS.t, String(Math.floor(video.currentTime))); });
 
     // Modal controls
     const modal = document.getElementById('modal');
@@ -276,15 +335,23 @@
     // Demo items
     document.getElementById('playDemo').addEventListener('click', ()=>{
       addToPlaylist({name:'Big Buck Bunny (Demo MP4)', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', poster:'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg'});
-      playIndex(playlist.length-1);
+      playIndex(playlist.length-1, {resumeIfSame:false});
     });
     document.getElementById('playDemoHls').addEventListener('click', ()=>{
       addToPlaylist({name:'MUX Test (Demo HLS)', src:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'});
-      playIndex(playlist.length-1);
+      playIndex(playlist.length-1, {resumeIfSame:false});
     });
 
-    // Seed a starter card so the page looks alive
-    addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
+    // ---------- Boot: restore previous session ----------
+    loadState();
+    renderPlaylist();
+    if(playlist.length){
+      // If we had a previous index, start it and resume position
+      if(current>=0 && current<playlist.length){ playIndex(current, {resumeIfSame:true}); }
+    } else {
+      // Seed a starter card so the page looks alive
+      addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
+    }
   </script>
 </body>
 </html>
