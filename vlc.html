@@ -3,243 +3,288 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stream‑from‑URL Player</title>
+  <title>PakStream • Player</title>
   <link rel="preconnect" href="https://cdn.plyr.io" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     :root{
-      --bg:#0b0f14; --panel:#121821; --text:#e6edf3; --muted:#8091a7; --accent:#6ee7ff;
-      --radius:20px;
+      --bg:#0b0f14; --panel:#11151d; --panel2:#0e141c; --text:#e6edf3; --muted:#93a4ba; --accent:#e50914; --pill:#2a3342; --ok:#27d49a;
+      --radius:18px;
     }
     *{box-sizing:border-box}
-    body{margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:var(--text);}    
-    .container{max-width:1100px; margin:24px auto; padding:0 16px;}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    header{display:flex; justify-content:space-between; align-items:center; padding:20px 22px}
-    header h1{margin:0; font-size:20px; letter-spacing:.5px}
-    header .badge{font-size:12px; color:var(--bg); background:var(--accent); padding:6px 10px; border-radius:999px}
-    .controls{display:grid; grid-template-columns:1.2fr .8fr .8fr auto; gap:12px; padding:16px 22px 22px; border-top:1px solid rgba(255,255,255,0.06)}
-    .controls label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
-    .controls input{width:100%; padding:12px 12px; background:#0e141c; color:var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:12px; outline:none}
-    .controls input::placeholder{color:#5a6a80}
-    .controls .btn{align-self:end; padding:12px 18px; border-radius:12px; background:var(--accent); color:#00222b; font-weight:700; border:none; cursor:pointer}
-    .controls .btn:active{transform:translateY(1px)}
+    body{margin:0;font-family:Inter, ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    .nav{display:flex;align-items:center;gap:18px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0));position:sticky;top:0;z-index:10}
+    .brand{font-weight:800;letter-spacing:.5px}
+    .brand .dot{color:var(--accent)}
+    .nav .spacer{flex:1}
+    .btn{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,.16)}
 
-    .player-wrap{padding:18px;}
-    .notice{padding:12px 16px; margin:0 22px 18px; border-radius:12px; background:#0e141c; color:#b9c6d2; font-size:13px; border:1px solid rgba(255,255,255,0.08)}
+    .layout{max-width:1200px;margin:14px auto;padding:0 16px;display:grid;grid-template-columns:350px 1fr;gap:16px}
+    @media (max-width:1000px){.layout{grid-template-columns:1fr}}
 
-    /* Netflix-y poster glow */
-    .plyr--video{border-radius:16px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,.5)}
+    /* LEFT: details */
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden}
+    .poster{aspect-ratio:2/3;background:var(--panel2) center/cover no-repeat}
+    .meta{padding:16px}
+    .title{font-size:22px;font-weight:800;margin:0 0 6px}
+    .row{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px;margin-bottom:8px}
+    .pill{background:var(--pill);padding:4px 8px;border-radius:999px;color:#cfe0ff}
 
-    /* Loading shimmer */
-    .skeleton{position:relative; overflow:hidden; background:#0e141c}
-    .skeleton::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent); transform:translateX(-100%); animation:shimmer 1.75s infinite}
-    @keyframes shimmer{100%{transform:translateX(100%)}}
+    /* RIGHT: player + rail */
+    .player-card{padding:12px}
+    .plyr--video{border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+    .hero-actions{display:flex;gap:10px;align-items:center;margin:12px 4px 0}
+    .hint{color:var(--muted);font-size:12px}
 
-    @media (max-width:900px){
-      .controls{grid-template-columns:1fr;}
-    }
+    /* Episodes / playlist */
+    .episodes{margin:14px 0 0;padding:0 12px 16px}
+    .episodes h3{margin:8px 0 10px;font-size:16px}
+    .ep-list{display:flex;overflow:auto;gap:12px;padding-bottom:6px}
+    .ep{min-width:240px;background:var(--panel2);border:1px solid rgba(255,255,255,.08);border-radius:14px;cursor:pointer}
+    .thumb{height:120px;border-bottom:1px solid rgba(255,255,255,.06);background:#0a0f14 center/cover no-repeat}
+    .ep .txt{padding:10px}
+    .ep .name{font-weight:700}
+    .ep .sub{color:var(--muted);font-size:12px}
+    .ep.active{outline:2px solid var(--accent)}
+
+    /* Rail */
+    .rail{padding:8px 12px 20px}
+    .rail h3{margin:10px 0}
+    .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    @media (max-width:1100px){.tiles{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:700px){.tiles{grid-template-columns:repeat(2,1fr)}}
+    .tile{aspect-ratio:16/9;background:#0e141c center/cover no-repeat;border-radius:12px;border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
+    .tile::after{content:"";position:absolute;inset:0;box-shadow:inset 0 -60px 100px rgba(0,0,0,.6)}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px}
+    .sheet{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;max-width:560px;width:100%;padding:16px}
+    .sheet h3{margin:0 0 8px}
+    .grid{display:grid;gap:10px}
+    .grid-2{grid-template-columns:1fr 1fr}
+    .input{width:100%;padding:12px;background:#0e141c;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text)}
+
+    .ok{color:var(--ok);font-weight:700}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <header>
-        <h1>Drop a direct media URL and play</h1>
-        <span class="badge">MP4 • WebM • HLS (m3u8) • Subtitles</span>
-      </header>
+  <nav class="nav">
+    <div class="brand">PakStream<span class="dot">•</span>Player</div>
+    <div class="spacer"></div>
+    <button class="btn ghost" id="addUrl">+ Add From URL</button>
+  </nav>
 
-      <div style="display:flex; gap:10px; align-items:center; padding:0 22px 10px 22px; flex-wrap:wrap">
-        <button class="btn" id="demoMp4" type="button" style="background:#94f7c6;">Load Demo MP4</button>
-        <button class="btn" id="demoHls" type="button" style="background:#f7f094;">Load Demo HLS</button>
-        <small style="color:#93a4ba">If these play, the player works. If your own URL fails, it’s likely CORS on that host.</small>
+  <div class="layout">
+    <!-- LEFT: Poster + meta -->
+    <aside class="card">
+      <div id="poster" class="poster" style="background-image:url('https://image.tmdb.org/t/p/w500/9KQgG8GMDIS9ZhDJW60TrNRXS6a.jpg');"></div>
+      <div class="meta">
+        <h2 class="title" id="title">The Legend of Bagger Vance</h2>
+        <div class="row">
+          <span class="pill">2000</span>
+          <span class="pill">2h 7m</span>
+          <span class="pill">Drama</span>
+        </div>
+        <div class="row">Press <b>Space</b> to play/pause • <b>F</b> fullscreen • <b>→/←</b> seek</div>
+        <div class="row hint">Add your own link with <b>+ Add From URL</b>. MP4/WebM work best. HLS needs CORS.</div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Player -->
+    <section class="card player-card">
+      <video id="player" playsinline controls></video>
+      <div class="hero-actions">
+        <button class="btn" id="playDemo">▶ Play Demo</button>
+        <button class="btn ghost" id="playDemoHls">▶ Play Demo (HLS)</button>
+        <span class="hint" id="tip">Ready.</span>
       </div>
 
-      <div class="player-wrap">
-        <video id="player" playsinline controls></video>
+      <div class="episodes">
+        <h3>Playlist</h3>
+        <div id="epList" class="ep-list"></div>
       </div>
 
-      <p class="notice" id="tip">Paste a direct media URL (e.g. https://example.com/video.mp4 or https://…/index.m3u8). Optional: add a poster and a WebVTT subtitle.</p>
+      <div class="rail">
+        <h3>Because you watched</h3>
+        <div class="tiles">
+          <div class="tile" style="background-image:url('https://picsum.photos/seed/ps1/800/450')"></div>
+          <div class="tile" style="background-image:url('https://picsum.photos/seed/ps2/800/450')"></div>
+          <div class="tile" style="background-image:url('https://picsum.photos/seed/ps3/800/450')"></div>
+          <div class="tile" style="background-image:url('https://picsum.photos/seed/ps4/800/450')"></div>
+          <div class="tile" style="background-image:url('https://picsum.photos/seed/ps5/800/450')"></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-      <div class="controls">
-        <div>
-          <label for="url">Media URL</label>
-          <input id="url" type="url" placeholder="https://host/path/video.mp4 or https://host/stream/index.m3u8" />
+  <!-- Modal: Add URL -->
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <h3>Add stream</h3>
+      <div class="grid">
+        <input class="input" id="m_url" placeholder="https://host/path/video.mp4 or https://host/stream/index.m3u8" />
+        <div class="grid grid-2">
+          <input class="input" id="m_poster" placeholder="Poster (optional)" />
+          <input class="input" id="m_subs" placeholder="Subtitles .vtt (optional)" />
         </div>
-        <div>
-          <label for="poster">Poster (optional)</label>
-          <input id="poster" type="url" placeholder="https://host/path/poster.jpg" />
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button class="btn ghost" id="m_cancel">Cancel</button>
+          <button class="btn" id="m_add">Add to Playlist</button>
         </div>
-        <div>
-          <label for="subs">Subtitles .vtt (optional)</label>
-          <input id="subs" type="url" placeholder="https://host/path/subs.vtt" />
-        </div>
-        <button class="btn" id="loadBtn" type="button">Load & Play</button>
       </div>
     </div>
   </div>
 
-  <!-- Plyr & HLS.js -->
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
   <script>
-    // --- Utilities ---
-    const $ = sel => document.querySelector(sel);
-    const urlInput = $('#url');
-    const posterInput = $('#poster');
-    const subsInput = $('#subs');
-    const tip = $('#tip');
+    const tip = document.getElementById('tip');
+    const posterEl = document.getElementById('poster');
+    const titleEl = document.getElementById('title');
+    const epList = document.getElementById('epList');
 
-    // Restore last session
-    try{
-      urlInput.value = localStorage.getItem('last_url') || '';
-      posterInput.value = localStorage.getItem('last_poster') || '';
-      subsInput.value = localStorage.getItem('last_subs') || '';
-    }catch(e){}
-
-    // Init Plyr
     const video = document.getElementById('player');
     const plyr = new Plyr(video, {
       ratio: '16:9',
-      controls: [
-        'play-large', 'play', 'progress', 'current-time', 'duration',
-        'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'
-      ],
-      settings: ['captions', 'quality', 'speed', 'loop'],
-      clickToPlay: true,
-      keyboard: { focused: true, global: true },
-      autoplay: false
+      controls: ['play-large','play','progress','current-time','duration','mute','volume','captions','settings','pip','airplay','fullscreen'],
+      settings: ['captions','speed','quality','loop']
     });
 
-    // Load media based on URL (supports MP4/WebM/HLS)
-    async function loadAndPlay(){
-      const src = urlInput.value.trim();
-      const poster = posterInput.value.trim();
-      const subs = subsInput.value.trim();
-      if(!src){
-        tip.textContent = 'Please paste a direct media URL first.';
-        tip.style.color = '#ffb4b4';
-        return;
-      }
+    // Basic Netflix-y keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+      if(e.key===' '){ e.preventDefault(); plyr.togglePlay(); }
+      if(e.key==='f'){ plyr.fullscreen.toggle(); }
+      if(e.key==='ArrowRight'){ plyr.forward(10); }
+      if(e.key==='ArrowLeft'){ plyr.rewind(10); }
+      if(e.key.toLowerCase()==='n'){ playNext(); }
+    });
 
-      // Persist inputs
-      try{
-        localStorage.setItem('last_url', src);
-        localStorage.setItem('last_poster', poster);
-        localStorage.setItem('last_subs', subs);
-      }catch(e){}
+    // Playlist model
+    let playlist = [];
+    let current = -1;
 
-      // Reset
+    function addToPlaylist({name, src, poster='', subs=''}){
+      const id = 'ep'+Math.random().toString(36).slice(2);
+      playlist.push({id,name,src,poster,subs});
+      renderPlaylist();
+    }
+
+    function renderPlaylist(){
+      epList.innerHTML = '';
+      playlist.forEach((ep, idx)=>{
+        const el = document.createElement('div');
+        el.className = 'ep' + (idx===current?' active':'');
+        el.innerHTML = `
+          <div class="thumb" style="background-image:url('${ep.poster||'https://picsum.photos/seed/'+idx+'/400/225'}')"></div>
+          <div class="txt">
+            <div class="name">${ep.name}</div>
+            <div class="sub">${new URL(ep.src).hostname}</div>
+          </div>`;
+        el.addEventListener('click', ()=> playIndex(idx));
+        epList.appendChild(el);
+      });
+    }
+
+    function setQualityMenuFromHls(hls){
+      const levels = hls.levels.map(l => l.height).filter(Boolean).sort((a,b)=>a-b);
+      plyr.options.quality = {
+        default: levels[levels.length-1]||0,
+        options: [...new Set(levels)],
+        forced: true,
+        onChange: (q)=>{
+          const idx = hls.levels.findIndex(l=>l.height===q);
+          hls.currentLevel = idx;
+        }
+      };
+    }
+
+    function playIndex(idx){
+      if(idx<0 || idx>=playlist.length) return;
+      current = idx;
+      const {src, poster, subs, name} = playlist[idx];
+      titleEl.textContent = name || 'Untitled';
+      posterEl.style.backgroundImage = `url('${poster||'https://picsum.photos/seed/p'+idx+'/600/900'}')`;
       tip.textContent = 'Loading…';
-      tip.style.color = '#b9c6d2';
-      video.classList.add('skeleton');
+
+      // reset
       plyr.stop();
+      video.removeAttribute('src');
+      ;[...video.querySelectorAll('track')].forEach(t=>t.remove());
+      video.load();
 
-      // Clear old tracks
-      [...video.querySelectorAll('track')].forEach(t => t.remove());
-
-      // Poster
-      video.poster = poster || '';
-
-      // Subtitles if provided
       if(subs){
         const track = document.createElement('track');
-        track.kind = 'subtitles';
-        track.label = 'Subtitles';
-        track.srclang = 'en';
-        track.default = true;
-        track.src = subs;
-        video.appendChild(track);
+        track.kind = 'subtitles'; track.label = 'Subtitles'; track.srclang = 'en'; track.default = true; track.src = subs; video.appendChild(track);
       }
 
-      // HLS detection
       const isHls = /\.m3u8($|\?)/i.test(src);
-
       try{
         if(isHls && window.Hls && Hls.isSupported()){
-          // Use hls.js for widest support
+          video.setAttribute('crossorigin','anonymous');
           if(window._hls){ window._hls.destroy(); }
-          const hls = new Hls({
-            xhrSetup: (xhr)=>{xhr.withCredentials = false;}
-          });
+          const hls = new Hls({ xhrSetup: (xhr)=>{ xhr.withCredentials = false; } });
           window._hls = hls;
           hls.loadSource(src);
           hls.attachMedia(video);
-          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{
-            // Map HLS levels to Plyr quality menu
-            const levels = hls.levels.map(l => l.height).filter(Boolean).sort((a,b)=>a-b);
-            plyr.options.quality = {
-              default: levels[levels.length-1] || 0,
-              options: [...new Set(levels)],
-              forced: true,
-              onChange: (q)=>{
-                const levelIndex = hls.levels.findIndex(l=>l.height===q);
-                hls.currentLevel = levelIndex;
-              }
-            };
-            video.classList.remove('skeleton');
-            plyr.play();
-            tip.textContent = 'Playing via HLS';
-          });
-          hls.on(Hls.Events.ERROR, (evt, data)=>{
-            if(data.fatal){ tip.textContent = 'HLS fatal error: '+data.type; }
-          });
+          hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ setQualityMenuFromHls(hls); tip.textContent='Playing via HLS'; plyr.play(); });
+          hls.on(Hls.Events.ERROR, (evt, data)=>{ if(data.fatal){ tip.textContent = 'HLS fatal error: '+data.type; }});
         } else if(isHls && video.canPlayType('application/vnd.apple.mpegurl')){
-          // Safari can play HLS natively
-          video.src = src;
-          video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing HLS (native)'; }, {once:true});
+          video.setAttribute('crossorigin','anonymous');
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing HLS (native)'; plyr.play(); }, {once:true});
         } else {
-          // Assume direct MP4/WebM, etc.
-          video.src = src;
-          video.addEventListener('loadedmetadata', ()=>{ video.classList.remove('skeleton'); plyr.play(); tip.textContent='Playing file'; }, {once:true});
+          // MP4/WebM — avoid CORS mode
+          video.removeAttribute('crossorigin');
+          video.src = src; video.addEventListener('loadedmetadata', ()=>{ tip.textContent='Playing file'; plyr.play(); }, {once:true});
         }
-      }catch(err){
-        console.error(err);
-        tip.textContent = 'Could not load media. This server may block cross‑origin (CORS) playback.';
-        tip.style.color = '#ffb4b4';
-        video.classList.remove('skeleton');
-      }
+      }catch(e){ tip.textContent = 'Could not load media (possible CORS).'; }
+
+      renderPlaylist();
     }
 
-    document.getElementById('loadBtn').addEventListener('click', loadAndPlay);
+    function playNext(){ if(current+1 < playlist.length){ playIndex(current+1); } }
 
-    // Error diagnostics for MP4/WebM
-    function humanMediaError(v){
-      const me = v.error; if(!me) return 'Unknown media error';
-      const map = {1:'Aborted',2:'Network',3:'Decode',4:'SRC not supported'};
-      return `MediaError ${me.code} (${map[me.code]||'Unknown'})`;
-    }
-    video.addEventListener('error', ()=>{
-      tip.textContent = `Video error: ${humanMediaError(video)}. If this is a cross-origin file, the host may block playback (CORS).`;
-      tip.style.color = '#ffb4b4';
-      video.classList.remove('skeleton');
+    video.addEventListener('ended', playNext);
+
+    // Modal controls
+    const modal = document.getElementById('modal');
+    const addBtn = document.getElementById('addUrl');
+    const m_url = document.getElementById('m_url');
+    const m_poster = document.getElementById('m_poster');
+    const m_subs = document.getElementById('m_subs');
+    const m_cancel = document.getElementById('m_cancel');
+    const m_add = document.getElementById('m_add');
+
+    function openModal(){ modal.style.display='flex'; setTimeout(()=>m_url.focus(),0); }
+    function closeModal(){ modal.style.display='none'; }
+
+    addBtn.addEventListener('click', openModal);
+    m_cancel.addEventListener('click', closeModal);
+    m_add.addEventListener('click', ()=>{
+      const url = m_url.value.trim(); if(!url) return;
+      const poster = m_poster.value.trim();
+      const subs = m_subs.value.trim();
+      addToPlaylist({name: url.split('/').pop(), src: url, poster, subs});
+      closeModal();
+      m_url.value = m_poster.value = m_subs.value = '';
+      if(current===-1) playIndex(0);
     });
 
-    // Demo buttons
-    document.getElementById('demoMp4').addEventListener('click', ()=>{
-      urlInput.value = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-      posterInput.value = 'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg';
-      subsInput.value = '';
-      loadAndPlay();
+    // Demo items
+    document.getElementById('playDemo').addEventListener('click', ()=>{
+      addToPlaylist({name:'Big Buck Bunny (Demo MP4)', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', poster:'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg'});
+      playIndex(playlist.length-1);
     });
-    document.getElementById('demoHls').addEventListener('click', ()=>{
-      urlInput.value = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
-      posterInput.value = '';
-      subsInput.value = '';
-      loadAndPlay();
+    document.getElementById('playDemoHls').addEventListener('click', ()=>{
+      addToPlaylist({name:'MUX Test (Demo HLS)', src:'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'});
+      playIndex(playlist.length-1);
     });
 
-    // Enter to load
-    urlInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ loadAndPlay(); }});
-
-    // Media Session API for nicer OS controls
-    if('mediaSession' in navigator){
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: 'Stream‑from‑URL',
-        artist: 'Plyr',
-        album: 'Web',
-      });
-    }
+    // Seed a starter card so the page looks alive
+    addToPlaylist({name:'Sample Trailer', src:'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4', poster:'https://picsum.photos/seed/poster1/600/900'});
   </script>
 </body>
 </html>
