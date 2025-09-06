@@ -23,8 +23,8 @@
     if (video.paused) { plyr.play(); } else { plyr.pause(); }
   }
 
-  function skipBack() { video.currentTime = Math.max(0, (video.currentTime || 0) - 10); }
-  function skipForward() { video.currentTime = Math.min((video.currentTime || 0) + 10, video.duration || Infinity); }
+  function skipBack()  { video.currentTime = Math.max(0, (video.currentTime || 0) - 10); }
+  function skipForward(){ video.currentTime = Math.min((video.currentTime || 0) + 10, video.duration || Infinity); }
 
   function updateProgress() {
     if (!isNaN(video.duration)) {
@@ -45,8 +45,8 @@
     }
   }
 
+  /* ===== Fullscreen detection (robust) ===== */
   function getFullscreenElement() {
-    // Cover vendor variants and Samsung’s quirk with webkitDisplayingFullscreen
     return document.fullscreenElement ||
            document.webkitFullscreenElement ||
            document.mozFullScreenElement ||
@@ -62,22 +62,44 @@
     fsBtn.innerHTML = isFullscreen() ? fsExitIcon : fsEnterIcon;
   }
 
-  function toggleFullscreen() {
-    // Prefer making the <video> fullscreen on TVs
-    const target = (video.requestFullscreen || video.webkitRequestFullscreen || video.msRequestFullscreen) ? video : wrap;
+  /* ===== Enter/Exit Fullscreen (safe on laptop) ===== */
+  function isDesktopLike() {
+    const ua = (navigator.userAgent || '').toLowerCase();
+    return ua.includes('mac') || ua.includes('win') || ua.includes('linux');
+  }
 
+  function isTvOrMobileLike() {
+    const ua = (navigator.userAgent || '').toLowerCase();
+    return /(tizen|smarttv|samsungbrowser|samsung tv|web0s|android|iphone|ipad|ipod)/i.test(ua);
+  }
+
+  function requestFsOn(el) {
+    if (el.requestFullscreen) return el.requestFullscreen();
+    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+    if (el.msRequestFullscreen) return el.msRequestFullscreen();
+    // Only try video.webkitEnterFullscreen on TV/mobile-like devices; avoid on laptops (black screen issue)
+    if (!isDesktopLike() && el === video && typeof video.webkitEnterFullscreen === 'function') {
+      try { return video.webkitEnterFullscreen(); } catch (_) {}
+    }
+  }
+
+  function exitFs() {
+    if (document.exitFullscreen) return document.exitFullscreen();
+    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+    if (document.msExitFullscreen) return document.msExitFullscreen();
+    if (video && typeof video.webkitExitFullscreen === 'function') {
+      try { return video.webkitExitFullscreen(); } catch (_) {}
+    }
+  }
+
+  function toggleFullscreen() {
+    // Prefer making the <video> fullscreen on TVs for better key routing
+    const preferVideo = isTvOrMobileLike();
+    const target = preferVideo ? video : (video.requestFullscreen ? video : wrap);
     if (isFullscreen()) {
-      if (document.exitFullscreen) document.exitFullscreen();
-      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      else if (document.msExitFullscreen) document.msExitFullscreen();
-      // Some Samsung browsers expose these on video:
-      else if (video && video.webkitExitFullscreen) try { video.webkitExitFullscreen(); } catch (_) {}
+      exitFs();
     } else {
-      if (target.requestFullscreen) target.requestFullscreen();
-      else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
-      else if (target.msRequestFullscreen) target.msRequestFullscreen();
-      // Fallback seen on some Samsung WebKit builds:
-      else if (video && video.webkitEnterFullscreen) try { video.webkitEnterFullscreen(); } catch (_) {}
+      requestFsOn(target || wrap || document.documentElement);
     }
   }
 
@@ -97,7 +119,6 @@
   function ensureFocusForTv() {
     // TVs often only deliver remote keys to the focused element
     if (!wrap.hasAttribute('tabindex')) wrap.setAttribute('tabindex', '-1');
-    // Prefer focusing the video; fallback to wrapper
     const target = (video && typeof video.focus === 'function') ? video : wrap;
     try { target.focus({ preventScroll: true }); } catch (_) { try { target.focus(); } catch (__) {} }
   }
@@ -135,18 +156,31 @@
     showControls();
   }
 
-  function handleArrowCore(e) {
-    // Normalize keys across TV browsers
+  function isLeftRightKey(e) {
+    // Normalize keys across legacy WebKit/TV browsers
     const k = (e.key || e.code || '').toLowerCase();
-    const kc = e.keyCode;
-    const isLeft  = k === 'arrowleft'  || k === 'left'  || kc === 37;
-    const isRight = k === 'arrowright' || k === 'right' || kc === 39;
+    const id = (e.keyIdentifier || '').toLowerCase(); // e.g., "Left", "Right" on old WebKit
+    const kc = e.keyCode || e.which;
+    const isLeft  = k === 'arrowleft' || k === 'left' || id === 'left'  || kc === 37;
+    const isRight = k === 'arrowright'|| k === 'right'|| id === 'right' || kc === 39;
+    return { isLeft, isRight };
+  }
+
+  function isFKey(e) {
+    const k = (e.key || e.code || '').toLowerCase();
+    const kc = e.keyCode || e.which;
+    // 'f' or 'KeyF'
+    return k === 'f' || k === 'keyf' || kc === 70;
+  }
+
+  function handleArrowCore(e) {
+    const { isLeft, isRight } = isLeftRightKey(e);
     if (!isLeft && !isRight) return;
 
     if (!isFullscreen()) return;
 
-    // Prevent the browser from moving the virtual cursor / focusing other elements
     if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
 
     const dir = isRight ? 'right' : 'left';
     if (lastArrow === dir) {
@@ -163,8 +197,15 @@
     return false;
   }
 
-  function handleArrowKeys(e) {
-    // Some TVs only fire keyup; handle both
+  function handleKey(e) {
+    // Exit/enter fullscreen with 'f'
+    if (isFKey(e)) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (isFullscreen()) exitFs(); else toggleFullscreen();
+      return false;
+    }
+    // Arrow seek
     return handleArrowCore(e);
   }
 
@@ -203,14 +244,21 @@
     document.addEventListener('mousemove', showControls);
     document.addEventListener('keydown', showControls);
 
-    // Key events — listen on multiple targets for TV coverage
-    const keyHandler = (e) => handleArrowKeys(e);
-    window.addEventListener('keydown', keyHandler);
-    document.addEventListener('keydown', keyHandler);
-    video.addEventListener('keydown', keyHandler);
-    window.addEventListener('keyup', keyHandler);
-    document.addEventListener('keyup', keyHandler);
-    video.addEventListener('keyup', keyHandler);
+    // Key events — listen on multiple targets AND in capture phase for TVs
+    const optsCapture = { capture: true };
+    const keyHandler = (e) => handleKey(e);
+    window.addEventListener('keydown', keyHandler, optsCapture);
+    document.addEventListener('keydown', keyHandler, optsCapture);
+    document.body && document.body.addEventListener('keydown', keyHandler, optsCapture);
+    wrap && wrap.addEventListener('keydown', keyHandler, optsCapture);
+    video.addEventListener('keydown', keyHandler, optsCapture);
+
+    // Some firmwares only fire keyup
+    window.addEventListener('keyup', keyHandler, optsCapture);
+    document.addEventListener('keyup', keyHandler, optsCapture);
+    document.body && document.body.addEventListener('keyup', keyHandler, optsCapture);
+    wrap && wrap.addEventListener('keyup', keyHandler, optsCapture);
+    video.addEventListener('keyup', keyHandler, optsCapture);
 
     // Initial UI
     syncButtons();
