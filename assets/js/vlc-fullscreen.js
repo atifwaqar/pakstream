@@ -65,82 +65,13 @@
     clearTimeout(arrowTimer);
   }
 
-  function ensureFocusForTv() {
-    // TVs often only deliver remote keys to the focused element
-    if (!wrap.hasAttribute('tabindex')) wrap.setAttribute('tabindex', '-1');
-    // Prefer focusing the video; fallback to wrapper
-    const target = (video && typeof video.focus === 'function') ? video : wrap;
-    try { target.focus({ preventScroll: true }); } catch (_) { try { target.focus(); } catch (__) {} }
-  }
-
-  function onEnterFullscreenUI() {
-    // Hide cursor only in fullscreen
-    document.documentElement.style.cursor = 'none';
-    ensureFocusForTv();
-    resetArrowSeek();
-  }
-
-  function onExitFullscreenUI() {
-    document.documentElement.style.cursor = '';
-    resetArrowSeek();
-  }
-
-  function lockLandscape() {
-    try {
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock('landscape').catch(() => {});
-      } else if (screen.lockOrientation) {
-        screen.lockOrientation('landscape');
-      }
-    } catch (_) {}
-  }
-
-  function unlockOrientation() {
-    try {
-      if (screen.orientation && screen.orientation.unlock) {
-        screen.orientation.unlock();
-      } else if (screen.unlockOrientation) {
-        screen.unlockOrientation();
-      }
-    } catch (_) {}
-  }
-
-  function handleFsChange() {
-    syncFsIcon();
-    if (isFullscreen()) {
-      lockLandscape();
-      onEnterFullscreenUI();
-      // Some Samsungs steal focus during FS transition
-      setTimeout(ensureFocusForTv, 0);
-    } else {
-      unlockOrientation();
-      onExitFullscreenUI();
-    }
-  }
-
-  function stepSeek(dir /* 'left' | 'right' */) {
-    const amount = Math.max(1, arrowCount) * 10; // 10s, 20s, 30s...
-    if (dir === 'right') {
-      video.currentTime = Math.min((video.currentTime || 0) + amount, video.duration || Infinity);
-    } else {
-      video.currentTime = Math.max(0, (video.currentTime || 0) - amount);
-    }
-    showControls();
-  }
-
-  function handleArrowCore(e) {
-    // Normalize keys across TV browsers
-    const k = (e.key || e.code || '').toLowerCase();
-    const kc = e.keyCode;
-    const isLeft  = k === 'arrowleft'  || k === 'left'  || kc === 37;
-    const isRight = k === 'arrowright' || k === 'right' || kc === 39;
-    if (!isLeft && !isRight) return;
-
-    if (!isFullscreen()) return;
-
-    // Prevent the browser from moving the virtual cursor / focusing other elements
-    if (typeof e.preventDefault === 'function') e.preventDefault();
-
+  function handleArrowKeys(e){
+    const key = e.key || e.code;
+    const isLeft = key === 'ArrowLeft' || key === 'Left' || e.keyCode === 37;
+    const isRight = key === 'ArrowRight' || key === 'Right' || e.keyCode === 39;
+    if(!isLeft && !isRight) return;
+    if(!isFullscreen()) return;
+    e.preventDefault();
     const dir = isRight ? 'right' : 'left';
     if(lastArrow === dir){
       arrowCount++;
