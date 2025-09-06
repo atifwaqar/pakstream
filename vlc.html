@@ -58,6 +58,17 @@
   </style>
 </head>
 <body>
+
+  <!-- Archive.org Search -->
+  <section class="card" style="max-width:1200px;margin:14px auto;padding:12px 16px">
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <input id="archQuery" class="input" placeholder='Search Archive.org videos (e.g. "Charlie Chaplin")' style="flex:1; min-width:240px" />
+      <button id="archSearchBtn" class="btn">Search Archive.org</button>
+      <small class="hint">Video-only, shows duration when available. Uses Archive.org public API.</small>
+    </div>
+    <div id="archResults" style="margin-top:12px; display:grid; gap:10px"></div>
+  </section>
+
   <nav class="nav">
     <div class="brand">PakStream<span class="dot">•</span>Player</div>
     <div class="spacer"></div>
@@ -67,7 +78,7 @@
   <div class="layout">
     <section class="card player-card">
       <div class="player-wrap" id="playerWrap">
-        <video id="player" playsinline></video>
+        <video id="player" playsinline crossorigin="anonymous"></video>
         <div class="fs-controls" id="fsControls">
           <button id="centerPlay" class="play-center" aria-label="Play/Pause"></button>
           <button id="skipBack" class="skip-back" aria-label="Back 10 seconds">
@@ -370,5 +381,130 @@
     }
     init();
   </script>
+
+<script>
+// === Archive.org search integration (robust) ===
+(function(){
+  const VIDEO_EXT=/\.(mp4|webm|mkv|avi|m4v|mov|ts|m2ts|mts|3gp|3g2|mpe?g|mpg|wmv|m3u8)$/i;
+  const fmtHMS=(sec)=>{sec=Math.floor(sec||0);const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`};
+
+  const ARCH_ADV='https://archive.org/advancedsearch.php';
+  const ARCH_META=(id)=>`https://archive.org/metadata/${encodeURIComponent(id)}`;
+
+  let archQuery, archBtn, archResults;
+  function cacheEls(){
+    archQuery=document.getElementById('archQuery');
+    archBtn=document.getElementById('archSearchBtn');
+    archResults=document.getElementById('archResults');
+  }
+  function ensureEls(){ if(!(archQuery&&archBtn&&archResults)) cacheEls(); return !!(archQuery&&archBtn&&archResults); }
+
+  function renderArchResults(groups){
+    if(!ensureEls()) return;
+    archResults.innerHTML='';
+    if(!groups.length){ archResults.textContent='No results.'; return; }
+    const frag=document.createDocumentFragment();
+    groups.forEach(g=>{
+      if(!(g.files&&g.files.length)) return;
+      const card=document.createElement('div');
+      card.className='card';
+      const filesHtml=(g.files||[]).map(f=>{
+        const name=f.name||f.url.split('/').pop();
+        const dur=(typeof f.lengthSec==='number'&&!isNaN(f.lengthSec))?fmtHMS(f.lengthSec):'';
+        return `<div style="display:flex;justify-content:space-between;gap:8px;padding:8px;border-top:1px solid rgba(255,255,255,.06)">
+          <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:65%">${name}</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            ${dur?`<span class="pill" style="background:#1b2433;color:#cfe0ff">${dur}</span>`:''}
+            <button class="btn ghost" data-url="${f.url}" data-title="${(g.title||g.identifier)}">Preview</button>
+            <a class="btn" href="${f.url}" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>`;
+      }).join('');
+      card.innerHTML=`<div style="padding:12px 14px">
+        <div style="font-weight:800">${g.title||g.identifier}</div>
+        <a href="https://archive.org/details/${g.identifier}" target="_blank" rel="noopener" style="color:#93a4ba;font-size:12px">archive.org/details/${g.identifier}</a>
+        <div style="color:#93a4ba;font-size:12px;margin-top:6px">${g.description||''}</div>
+      </div>${filesHtml}`;
+      frag.appendChild(card);
+    });
+    archResults.appendChild(frag);
+
+    // hook preview buttons into existing playlist
+    archResults.querySelectorAll('button[data-url]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const url=btn.getAttribute('data-url');
+        const title=btn.getAttribute('data-title')||url.split('/').pop();
+        try{
+          addToPlaylist({name:`${title} • ${url.split('/').pop()}`, src:url});
+          playIndex(playlist.length-1);
+        }catch(err){ console.error('[PakStream] preview failed', err); }
+      });
+    });
+  }
+
+  async function fetchItemFiles(identifier){
+    try{
+      const r=await fetch(ARCH_META(identifier));
+      if(!r.ok) return [];
+      const data=await r.json();
+      const d1 = (data.d1 || 'archive.org').replace(/^https?:\/\//,'').replace(/\/+$/,'');
+      const dir = (data.dir || `/download/${identifier}`);
+      const files=(data.files||[]).filter(f=>{
+        const name=f.name||'';
+        const fmt=(f.format||'').toLowerCase();
+        const looksVideo=/video|mpeg-4|matroska|quicktime|wmv|ogg video|webm/.test(fmt);
+        return VIDEO_EXT.test(name)||looksVideo;
+      }).map(f=>({ name:f.name, url:`https://${d1}${dir}/${encodeURIComponent(f.name)}`, lengthSec:(f.length?Number(f.length):undefined) }));
+      return files;
+    }catch(e){
+      console.error('[PakStream] fetchItemFiles error', e);
+      return [];
+    }
+  }
+
+  async function searchArchive(term){
+    if(!ensureEls()) return;
+    archResults.textContent='Searching…';
+    try{
+      const url=`${ARCH_ADV}?q=${encodeURIComponent(term)}&fl[]=identifier&fl[]=title&fl[]=description&output=json`;
+      const r=await fetch(url);
+      const data=await r.json();
+      const docs=data && data.response && data.response.docs ? data.response.docs : [];
+      const groups=[];
+      for(const d of docs.slice(0,10)){
+        const files=await fetchItemFiles(d.identifier);
+        groups.push({identifier:d.identifier,title:d.title,description:d.description,files});
+      }
+      renderArchResults(groups);
+    }catch(e){
+      archResults.textContent='Search failed.';
+      console.error('[PakStream] searchArchive error', e);
+    }
+  }
+
+  function init(){
+    if(!ensureEls()) return;
+    archBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const t=(archQuery.value||'').trim();
+      if(t) searchArchive(t);
+    });
+    archQuery.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){
+        e.preventDefault();
+        const t=(archQuery.value||'').trim();
+        if(t) searchArchive(t);
+      }
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', init, {once:true});
+  }else{
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
