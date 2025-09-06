@@ -23,14 +23,6 @@
     .btn:active{transform:translateY(1px)}
     .ghost{background:transparent;border:1px solid rgba(255,255,255,.16)}
 
-    /* Search */
-    .search-form{position:relative}
-    .search-form input{width:220px;padding:8px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:var(--panel2);color:var(--text)}
-    .search-results{position:absolute;top:100%;left:0;right:0;background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:12px;margin-top:4px;max-height:240px;overflow:auto;display:none;box-shadow:0 2px 10px rgba(0,0,0,.45)}
-    .search-results a{display:block;padding:8px 12px}
-    .search-results a:hover{background:rgba(255,255,255,.08)}
-    .search-form.active .search-results{display:block}
-
     .layout{max-width:1200px;margin:14px auto;padding:0 16px;}
 
     .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden}
@@ -68,10 +60,6 @@
 <body>
   <nav class="nav">
     <div class="brand">PakStream<span class="dot">•</span>Player</div>
-    <form id="search-form" class="search-form" role="search" autocomplete="off">
-      <input id="search-input" type="search" placeholder="Search..." aria-label="Search" autocomplete="off" />
-      <div id="search-results" class="search-results"></div>
-    </form>
     <div class="spacer"></div>
     <button class="btn ghost" id="addUrl">+ Add From URL</button>
   </nav>
@@ -179,61 +167,6 @@
       if(e.key==='ArrowLeft'){ skipBack(); }
       if(e.key.toLowerCase()==='n'){ playNext(); }
     });
-
-    // ---------- Search ----------
-    (function(){
-      const searchForm = document.getElementById('search-form');
-      const input = document.getElementById('search-input');
-      const results = document.getElementById('search-results');
-      if(!(searchForm && input && results)) return;
-
-      function activate(){ searchForm.classList.add('active'); }
-      function deactivate(){ searchForm.classList.remove('active'); }
-
-      let controller = null;
-      async function queryArchive(q){
-        if(controller) controller.abort();
-        controller = new AbortController();
-        const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(q)}&fl[]=identifier&fl[]=title&sort[]=downloads desc&rows=10&page=1&output=json`;
-        try{
-          const res = await fetch(url,{signal:controller.signal});
-          const json = await res.json();
-          return (json.response && Array.isArray(json.response.docs)) ? json.response.docs : [];
-        }catch(e){ return []; }
-      }
-
-      input.addEventListener('input', ()=>{
-        const q = input.value.trim();
-        results.innerHTML='';
-        deactivate();
-        if(!q) return;
-        queryArchive(q).then(docs=>{
-          if(docs.length){
-            activate();
-            docs.forEach(doc=>{
-              const a=document.createElement('a');
-              a.href=`https://archive.org/details/${encodeURIComponent(doc.identifier)}`;
-              a.textContent=doc.title || doc.identifier;
-              a.target='_blank';
-              results.appendChild(a);
-            });
-          }
-        });
-      });
-
-      searchForm.addEventListener('submit', e=>{
-        e.preventDefault();
-        const first = results.querySelector('a');
-        if(first){ window.location.href = first.href; }
-      });
-
-      document.addEventListener('click', e=>{
-        if(!searchForm.contains(e.target)){
-          results.innerHTML='';
-          deactivate();
-        }
-      });
-    })();
 
     // ---------- Playlist Model ----------
     let playlist = [];
