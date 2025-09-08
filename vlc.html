@@ -55,6 +55,9 @@
 
     .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
     .overlay .box{background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);padding:16px 18px;border-radius:12px;display:flex;gap:10px;align-items:center}
+    #suggestions{position:absolute;background:var(--panel2);border:1px solid rgba(255,255,255,.16);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.4);max-height:240px;overflow-y:auto;display:none;z-index:1000;}
+    #suggestions .item{padding:8px 10px;cursor:pointer;}
+    #suggestions .item:hover,#suggestions .item.active{background:rgba(255,255,255,.08);}
   </style>
 </head>
 <body>
@@ -62,7 +65,8 @@
   <!-- Archive.org Search -->
   <section class="card" style="max-width:1200px;margin:14px auto;padding:12px 16px">
     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-      <input id="archQuery" class="input" placeholder='Search Archive.org videos (e.g. "Charlie Chaplin")' style="flex:1; min-width:240px" />
+      <input id="searchBox" class="input" placeholder='Search Archive.org videos (e.g. "Charlie Chaplin")' style="flex:1; min-width:240px" />
+      <div id="suggestions"></div>
       <button id="archSearchBtn" class="btn">Search Archive.org</button>
       <small class="hint">Video-only, shows duration when available. Uses Archive.org public API.</small>
     </div>
@@ -408,13 +412,13 @@
   const ARCH_ADV='https://archive.org/advancedsearch.php';
   const ARCH_META=(id)=>`https://archive.org/metadata/${encodeURIComponent(id)}`;
 
-  let archQuery, archBtn, archResults;
+  let searchInput, archBtn, archResults;
   function cacheEls(){
-    archQuery=document.getElementById('archQuery');
+    searchInput=document.getElementById('searchBox');
     archBtn=document.getElementById('archSearchBtn');
     archResults=document.getElementById('archResults');
   }
-  function ensureEls(){ if(!(archQuery&&archBtn&&archResults)) cacheEls(); return !!(archQuery&&archBtn&&archResults); }
+  function ensureEls(){ if(!(searchInput&&archBtn&&archResults)) cacheEls(); return !!(searchInput&&archBtn&&archResults); }
 
   function renderArchResults(groups){
     if(!ensureEls()) return;
@@ -503,13 +507,13 @@
     if(!ensureEls()) return;
     archBtn.addEventListener('click', (e)=>{
       e.preventDefault();
-      const t=(archQuery.value||'').trim();
+      const t=(searchInput.value||'').trim();
       if(t) searchArchive(t);
     });
-    archQuery.addEventListener('keydown', (e)=>{
+    searchInput.addEventListener('keydown', (e)=>{
       if(e.key==='Enter'){
         e.preventDefault();
-        const t=(archQuery.value||'').trim();
+        const t=(searchInput.value||'').trim();
         if(t) searchArchive(t);
       }
     });
@@ -520,6 +524,108 @@
   }else{
     init();
   }
+})();
+</script>
+
+<script>
+(()=>{
+  const TMDB_API_KEY = "YOUR_TMDB_API_KEY_HERE"; // TODO replace with real key
+  const findInput = () => {
+    let el = document.getElementById('searchBox');
+    if (el) return el;
+    el = document.querySelector('main input[type="search"], main input[type="text"], input[type="search"], input[type="text"]');
+    if (el && !el.id) el.id = 'searchBox';
+    return el;
+  };
+
+  const input = findInput();
+  if (!input) return;
+
+  let panel = document.getElementById('suggestions');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'suggestions';
+    input.insertAdjacentElement('afterend', panel);
+  }
+
+  let state = { items: [], index: -1, controller: null };
+
+  function debounce(fn, delay){
+    let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn.apply(null,args), delay); };
+  }
+
+  function buildSuggestions(items){
+    panel.innerHTML='';
+    const frag=document.createDocumentFragment();
+    items.forEach((txt,i)=>{
+      const div=document.createElement('div');
+      div.className='item';
+      div.textContent=txt;
+      div.addEventListener('mousedown',e=>{e.preventDefault();select(i);});
+      frag.appendChild(div);
+    });
+    panel.appendChild(frag);
+  }
+
+  function triggerSearch(text){
+    input.value=text;
+    hide();
+    if(typeof window.performSearch==='function'){
+      window.performSearch(text);
+    }else if(typeof window.onSearch==='function'){
+      window.onSearch(text);
+    }else if(input.form){
+      input.form.submit();
+    }else{
+      input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+    }
+  }
+
+  const position = ()=>{
+    const r=input.getBoundingClientRect();
+    panel.style.width=r.width+'px';
+    panel.style.left=(r.left+window.scrollX)+'px';
+    panel.style.top=(r.bottom+window.scrollY)+'px';
+  };
+
+  function show(){ if(!state.items.length) return; panel.style.display='block'; position(); }
+  function hide(){ panel.style.display='none'; state.index=-1; state.items=[]; if(state.controller) state.controller.abort(); }
+
+  async function fetchSuggest(q){
+    if(state.controller) state.controller.abort();
+    state.controller=new AbortController();
+    try{
+      const url=`https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(q)}&api_key=${TMDB_API_KEY}&include_adult=false`;
+      const r=await fetch(url,{signal:state.controller.signal});
+      if(!r.ok) throw new Error('bad');
+      const data=await r.json();
+      const items=(data.results||[]).filter(it=>it.media_type==='movie'||it.media_type==='tv').slice(0,8).map(it=>it.title||it.name);
+      if(!items.length){ hide(); return; }
+      state.items=items; buildSuggestions(items); show();
+    }catch(err){ if(err.name!=='AbortError') hide(); }
+  }
+
+  const debouncedFetch=debounce(fetchSuggest,250);
+
+  input.addEventListener('input',e=>{ const q=e.target.value.trim(); if(q) debouncedFetch(q); else hide(); });
+
+  function highlight(){
+    panel.querySelectorAll('.item').forEach((el,i)=>{ el.classList.toggle('active', i===state.index); });
+  }
+
+  function select(i){ const title=state.items[i]; if(title) triggerSearch(title); }
+
+  input.addEventListener('keydown',e=>{
+    if(panel.style.display==='none') return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); state.index=(state.index+1)%state.items.length; highlight(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); state.index=(state.index-1+state.items.length)%state.items.length; highlight(); }
+    else if(e.key==='Enter'){ if(state.index>-1){ e.preventDefault(); select(state.index); } }
+    else if(e.key==='Escape'){ hide(); }
+  });
+
+  document.addEventListener('click',e=>{ if(e.target===input||panel.contains(e.target)) return; hide(); });
+  window.addEventListener('resize',position);
+  window.addEventListener('scroll',position,true);
 })();
 </script>
 
