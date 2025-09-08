@@ -134,6 +134,7 @@
       tmap: 'ps_time_by_src_v1',
       lastsrc: 'ps_last_src_v1'
     };
+    const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/16kreaQ7lxmx4FzljUeWtb4AbBowcixXd5UyvediK7vI/export?format=csv';
 
     // ---------- Utilities ----------
     const throttle = (fn, ms) => { let t=0; return (...a)=>{ const n=Date.now(); if(n-t>ms){ t=n; fn(...a); } } };
@@ -235,6 +236,21 @@
           savePlaylist();
         }
       }catch(e){}
+    }
+
+    async function loadSheet(){
+      try{
+        const res = await fetch(SHEET_CSV);
+        const text = await res.text();
+        text.split(/\r?\n/).map(r=>r.trim()).forEach(url=>{
+          if(!url || !/^https?:/i.test(url)) return;
+          if(!playlist.some(p=>p.src===url)){
+            const id='ep'+Math.random().toString(36).slice(2);
+            playlist.push({id, name: cleanName(url.split('/').pop()), src:url, poster:'', subs:''});
+          }
+        });
+        savePlaylist();
+      }catch(e){ console.error('[PakStream] loadSheet error', e); }
     }
 
     function setQualityMenuFromHls(hls){
@@ -357,6 +373,7 @@
     async function init(){
       loadState();
       await loadDefaults();
+      await loadSheet();
       renderPlaylist();
       if(playlist.length){
         if(current>=0 && current<playlist.length){
