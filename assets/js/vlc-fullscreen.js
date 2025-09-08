@@ -39,8 +39,27 @@
     progress.style.setProperty('--progress', percent + '%');
   }
 
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   function syncFsIcon(){
-    fsBtn.innerHTML = document.fullscreenElement ? fsExitIcon : fsEnterIcon;
+    const isFs = !!document.fullscreenElement;
+    fsBtn.innerHTML = isFs ? fsExitIcon : fsEnterIcon;
+
+    if(!isMobile || !(screen.orientation)) return;
+
+    try{
+      if(isFs && screen.orientation.lock){
+        screen.orientation.lock('landscape').catch(()=>{});
+      }else if(!isFs){
+        if(screen.orientation.unlock){
+          screen.orientation.unlock();
+        }else if(screen.orientation.lock){
+          screen.orientation.lock('portrait').catch(()=>{});
+        }
+      }
+    }catch(err){
+      // ignore orientation errors
+    }
   }
 
   function toggleFullscreen(){
