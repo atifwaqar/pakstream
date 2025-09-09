@@ -211,6 +211,15 @@
     }
 
     function renderPlaylist(){
+      // Remove duplicate sources before rendering
+      const seen = new Set();
+      playlist = playlist.filter(ep=>{
+        if(seen.has(ep.src)) return false;
+        seen.add(ep.src);
+        return true;
+      });
+      savePlaylist();
+
       epList.innerHTML='';
       playlist.forEach((ep, idx)=>{
         const el=document.createElement('div');
