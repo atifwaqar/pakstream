@@ -599,7 +599,11 @@
       const r=await fetch(url,{signal:state.controller.signal});
       if(!r.ok) throw new Error('bad');
       const data=await r.json();
-      const items=(data.results||[]).filter(it=>it.media_type==='movie'||it.media_type==='tv').slice(0,8).map(it=>it.title||it.name);
+      const items=Array.from(new Set(
+        (data.results||[])
+          .filter(it=>it.media_type==='movie'||it.media_type==='tv')
+          .map(it=>it.title||it.name)
+      )).slice(0,8);
       if(!items.length){ hide(); return; }
       state.items=items; buildSuggestions(items); show();
     }catch(err){ if(err.name!=='AbortError') hide(); }
