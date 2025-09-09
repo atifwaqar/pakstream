@@ -216,6 +216,9 @@
       name = name.replace(/\.[^./]+$/, '');
       name = name.replace(/[._-]+/g, ' ');
       name = name.replace(/\[[^\]]*\]/g, ' ');
+      // remove year info like 2023 or (2023)
+      name = name.replace(/\(\s*(?:19|20)\d{2}\s*\)/g, ' ');
+      name = name.replace(/\b(?:19|20)\d{2}\b/g, ' ');
       const trash = ['WEBRip','WEB-DL','HDRip','BluRay','BRRip','DVDRip','x264','x265','h264','h265','YTS','YIFY','1080p','720p','480p','AAC','LAMA'];
       trash.forEach(t=>{
         const re = new RegExp('\\b'+t.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')+'\\b','gi');
