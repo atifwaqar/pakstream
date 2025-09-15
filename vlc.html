@@ -334,7 +334,12 @@
         const ov = makeResumeOverlay(saved);
         playerWrap.appendChild(ov);
         document.getElementById('resumeYes').onclick = ()=>{ video.currentTime=Math.max(0,saved-2); plyr.play(); ov.remove(); };
-        document.getElementById('resumeNo').onclick = ()=>{ clearTimeForCurrent(); plyr.play(); ov.remove(); };
+        document.getElementById('resumeNo').onclick = ()=>{
+          clearTimeForCurrent();
+          video.currentTime = 0;
+          plyr.play();
+          ov.remove();
+        };
       };
 
       if(video.readyState>=1) show(); else video.addEventListener('loadedmetadata', show, {once:true});
@@ -431,7 +436,13 @@
               playIndex(current, {resumeIfSame:false, startTime:saved});
             } else {
               clearTimeForCurrent();
-              playIndex(current, {resumeIfSame:false});
+              current = -1;
+              saveIndex();
+              renderPlaylist();
+              plyr.stop();
+              video.removeAttribute('src');
+              video.load();
+              tip.textContent = 'Resume cancelled. Select something to play.';
             }
           } else {
             playIndex(current, {resumeIfSame:true});
