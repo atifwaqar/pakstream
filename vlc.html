@@ -596,23 +596,23 @@
   function buildSuggestions(items){
     panel.innerHTML='';
     const frag=document.createDocumentFragment();
-    items.forEach((txt,i)=>{
+    items.forEach((item,i)=>{
       const div=document.createElement('div');
       div.className='item';
-      div.textContent=txt;
+      div.textContent=item.label;
       div.addEventListener('mousedown',e=>{e.preventDefault();select(i);});
       frag.appendChild(div);
     });
     panel.appendChild(frag);
   }
 
-  function triggerSearch(text){
-    input.value=text;
+  function triggerSearch(value, display){
+    input.value=display ?? value;
     hide();
     if(typeof window.performSearch==='function'){
-      window.performSearch(text);
+      window.performSearch(value);
     }else if(typeof window.onSearch==='function'){
-      window.onSearch(text);
+      window.onSearch(value);
     }else if(input.form){
       input.form.submit();
     }else{
@@ -638,11 +638,21 @@
       const r=await fetch(url,{signal:state.controller.signal});
       if(!r.ok) throw new Error('bad');
       const data=await r.json();
-      const items=Array.from(new Set(
-        (data.results||[])
-          .filter(it=>it.media_type==='movie'||it.media_type==='tv')
-          .map(it=>it.title||it.name)
-      )).slice(0,8);
+      const items=[];
+      const seen=new Set();
+      for(const it of (data.results||[])){
+        if(!(it.media_type==='movie'||it.media_type==='tv')) continue;
+        const title=it.title||it.name;
+        if(!title) continue;
+        const date=it.release_date||it.first_air_date||'';
+        const year=date ? String(date).slice(0,4) : '';
+        const key=`${title.toLowerCase()}-${year}`;
+        if(seen.has(key)) continue;
+        seen.add(key);
+        const label=year ? `${title} (${year})` : title;
+        items.push({title,label,year});
+        if(items.length>=8) break;
+      }
       if(!items.length){ hide(); return; }
       state.items=items; buildSuggestions(items); show();
     }catch(err){ if(err.name!=='AbortError') hide(); }
@@ -656,7 +666,12 @@
     panel.querySelectorAll('.item').forEach((el,i)=>{ el.classList.toggle('active', i===state.index); });
   }
 
-  function select(i){ const title=state.items[i]; if(title) triggerSearch(title); }
+  function select(i){
+    const item=state.items[i];
+    if(item){
+      triggerSearch(item.title, item.label);
+    }
+  }
 
   input.addEventListener('keydown',e=>{
     if(panel.style.display==='none') return;
