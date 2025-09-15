@@ -334,12 +334,7 @@
         const ov = makeResumeOverlay(saved);
         playerWrap.appendChild(ov);
         document.getElementById('resumeYes').onclick = ()=>{ video.currentTime=Math.max(0,saved-2); plyr.play(); ov.remove(); };
-        document.getElementById('resumeNo').onclick = ()=>{
-          clearTimeForCurrent();
-          video.currentTime = 0;
-          plyr.play();
-          ov.remove();
-        };
+        document.getElementById('resumeNo').onclick = ()=>{ clearTimeForCurrent(); plyr.play(); ov.remove(); };
       };
 
       if(video.readyState>=1) show(); else video.addEventListener('loadedmetadata', show, {once:true});
@@ -432,11 +427,12 @@
           const sameItem = ep.src===lastSrc && current===lastIdx && saved>0;
           if(sameItem){
             const resume = confirm(`Resume from ${fmtTime(saved)}?`);
-            const startFrom = resume ? saved : 0;
-            if(!resume){
+            if(resume){
+              playIndex(current, {resumeIfSame:false, startTime:saved});
+            } else {
               clearTimeForCurrent();
+              playIndex(current, {resumeIfSame:false});
             }
-            playIndex(current, {resumeIfSame:false, startTime:startFrom});
           } else {
             playIndex(current, {resumeIfSame:true});
           }
