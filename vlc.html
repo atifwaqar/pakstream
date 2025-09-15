@@ -569,6 +569,28 @@
 <script>
 (()=>{
   const TMDB_API_KEY = "5c0c73d3cff412c85960b7cd18601fc1"; // TODO replace with real key
+  const STREAM_URL_PREFIX = "https://vip-1-1-ip4.loadshare.org/slice/4/VideoID-lHcXhaSB/84Y9nI/S9JUdh/5RzdQ0/QCi4T1/1080?name=";
+  const STREAM_URL_SUFFIX = "&token=ip=213.89.*~st=1757959127~exp=1758045527~acl=/*~hmac=c9091b667c6148b23ca84d4c15e9cdb69f6287604110532fdb80596606fd4496";
+
+  function formatNameForStream(raw){
+    if(!raw) return "";
+    let slug = raw.trim().toLowerCase();
+    slug = slug.replace(/\s*\(\s*/g, "_");
+    slug = slug.replace(/\s*\)\s*/g, "");
+    slug = slug.replace(/["']/g, "");
+    slug = slug.replace(/[^a-z0-9_-]+/g, "-");
+    slug = slug.replace(/-+/g, "-");
+    slug = slug.replace(/_+/g, "_");
+    slug = slug.replace(/(^[-_]+)|([-_]+$)/g, "");
+    return slug;
+  }
+
+  function buildStreamUrl(label){
+    const nameParam = formatNameForStream(label);
+    if(!nameParam) return "";
+    return `${STREAM_URL_PREFIX}${encodeURIComponent(nameParam)}${STREAM_URL_SUFFIX}`;
+  }
+
   const findInput = () => {
     let el = document.getElementById('searchBox');
     if (el) return el;
@@ -669,7 +691,19 @@
   function select(i){
     const item=state.items[i];
     if(item){
-      triggerSearch(item.title, item.label);
+      const display = item.label;
+      let streamUrl = buildStreamUrl(display);
+      if(!streamUrl) streamUrl = buildStreamUrl(item.title);
+      if(!streamUrl) return;
+      input.value = display;
+      hide();
+      const existingIdx = playlist.findIndex(ep=>ep.src===streamUrl);
+      if(existingIdx>-1){
+        playIndex(existingIdx, {resumeIfSame:false});
+      }else{
+        addToPlaylist({name: display, src: streamUrl});
+        playIndex(playlist.length-1, {resumeIfSame:false});
+      }
     }
   }
 
