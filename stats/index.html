@@ -804,8 +804,9 @@ async function showNewShares(){
       }
       if(owners==null) return false;
       if(/^-?\d+(?:\.\d+)?$/.test(normalized)){
-        const cleaned = normalized.replace(/^0+/, '') || '0';
-        return String(owners).includes(cleaned);
+        const num = parseFloat(normalized);
+        if(Number.isNaN(num)) return true;
+        return owners >= num;
       }
       const shown = owners.toLocaleString('en-US').toLowerCase();
       return shown.includes(term.toLowerCase());
