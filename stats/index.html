@@ -289,7 +289,7 @@ if (location.protocol === 'file:') {
                     <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false">Hide/Show</button>
                     <button id="refreshBtn" class="pill-btn">Refresh</button>
 			  <button id="getLatestBtn" class="pill-btn desktop-only">Get Latest</button>
-			  <button id="newSharesBtn" class="pill-btn desktop-only">New Shares</button>
+			  <button id="newSharesBtn" class="pill-btn">New Shares</button>
 			</div>
 		</div>
 
@@ -955,7 +955,7 @@ async function showNewShares(){
       if(!togglePriceCurrencyBtn) return;
       document.body.classList.toggle('show-price-currency', showPriceCurrency);
       togglePriceCurrencyBtn.setAttribute('aria-pressed', String(showPriceCurrency));
-      togglePriceCurrencyBtn.textContent = showPriceCurrency ? 'Hide Price/Currency' : 'Show Price/Currency';
+      togglePriceCurrencyBtn.textContent = showPriceCurrency ? 'Hide' : 'Show';
       syncGridWidth();
       renderWindow();
     }
