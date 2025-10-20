@@ -17,14 +17,18 @@
 
       /* column minimums so content never smushes */
       --min-name: 10px;
+      --min-price: 70px;
+      --min-currency: 60px;
       --min-ret:  55px;
 
       /* growth ratios (desktop) */
-      --name-fr: 1.8fr; --ret-fr: .8fr;
+      --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --ret-fr: .8fr;
 
-      /* grid: NAME + 10 return columns (symbol removed) */
+      /* grid: NAME + PRICE + CURRENCY + 10 return columns (symbol removed) */
       --grid-template:
         minmax(var(--min-name), var(--name-fr))
+        minmax(var(--min-price), var(--price-fr))
+        minmax(var(--min-currency), var(--currency-fr))
         repeat(10, minmax(var(--min-ret), var(--ret-fr)));
 
       /* dynamic width to keep body rows aligned with header on horizontal scroll */
@@ -97,6 +101,7 @@
     .sortable{ cursor:pointer; display:inline-flex; gap:6px; align-items:center }
     .sort-mark{ font-size:11px; opacity:.5 }
     .right{ justify-content:flex-end; text-align:right }
+    .center{ justify-content:center; text-align:center }
 
     /* + / - / * filter input (numeric/tel keyboard) */
     .rule{
@@ -306,6 +311,13 @@ if (location.protocol === 'file:') {
             <span class="sortable" data-sort="name">Name <span id="sort-name" class="sort-mark"></span></span>
           </div>
 
+          <div class="cell right">
+            <span>Price</span>
+          </div>
+          <div class="cell center">
+            <span>Currency</span>
+          </div>
+
 
           <!-- numeric/tel keyboard; only + - * allowed. On small screens the input stacks ABOVE the label. -->
           <div class="cell right">
@@ -421,12 +433,17 @@ async function loadNormalized(url){
     const hr=r.historical_returns_info||{};
     const ex=r.exchange_info||{};
     const nnx=r.nnx_info||{};
+    const pi=r.price_info||{};
+    const last=pi.last||{};
     return{
       name:ii.long_name||ii.name||'',
       symbol:ii.symbol||'',
       isin:ii.isin||'',
       country:ex.exchange_country||'',
       display_slug:nnx.display_slug||'',
+      price:nval(last.price),
+      price_decimals:Number.isFinite(last.decimals)?last.decimals:null,
+      currency:ii.currency||ii.price_unit||'',
       yield_1d:nval(hr.yield_1d),
       yield_1w:nval(hr.yield_1w),
       yield_1m:nval(hr.yield_1m),
@@ -586,25 +603,35 @@ async function showNewShares(){
       return Number.isFinite(n) ? n : 44;
     }
 
-	function buildRow(r){
-	  const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
-	  const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
-	  const fmt = n => {
-  if (n == null) return '—';
-  const v = Math.round(Math.abs(n));
-  return v.toLocaleString('en-US'); // adds commas for thousands
-  // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
-};
+        function buildRow(r){
+          const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
+          const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
+          const fmt = n => {
+            if (n == null) return '—';
+            const v = Math.round(Math.abs(n));
+            return v.toLocaleString('en-US'); // adds commas for thousands
+            // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
+          };
+          const fmtPrice = (price, decimals) => {
+            if (price == null) return '—';
+            const d = Number.isFinite(decimals) ? Math.min(Math.max(decimals, 0), 6) : 2;
+            return Number(price).toLocaleString('en-US', {
+              minimumFractionDigits: d,
+              maximumFractionDigits: d,
+            });
+          };
 
 
-	  const aAttr = url ? `href="${url}" target="_blank" rel="noopener" class="row"` : `class="row"`;
-	  return `
-		<a ${aAttr} style="top:0">
-		  <div><div class="name">${esc(truncateName(r.name))}</div></div>
-		  <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
-		  <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
-		  <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
-		  <div class="right"><span class="val ${cls(r.yield_3m)}">${fmt(r.yield_3m)}</span></div>
+          const aAttr = url ? `href="${url}" target="_blank" rel="noopener" class="row"` : `class="row"`;
+          return `
+                <a ${aAttr} style="top:0">
+                  <div><div class="name">${esc(truncateName(r.name))}</div></div>
+                  <div class="right"><span class="val">${fmtPrice(r.price, r.price_decimals)}</span></div>
+                  <div class="center"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_3m)}">${fmt(r.yield_3m)}</span></div>
 		  <div class="right"><span class="val ${cls(r.yield_ytd)}">${fmt(r.yield_ytd)}</span></div>
 		  <div class="right"><span class="val ${cls(r.yield_1y)}">${fmt(r.yield_1y)}</span></div>
 		  <div class="right"><span class="val ${cls(r.yield_3y)}">${fmt(r.yield_3y)}</span></div>
@@ -694,12 +721,17 @@ async function showNewShares(){
         const hr=r.historical_returns_info||{};
         const ex=r.exchange_info||{};
         const nnx=r.nnx_info||{};
+        const pi=r.price_info||{};
+        const last=pi.last||{};
         return{
           name:ii.long_name||ii.name||'',
           symbol:ii.symbol||'',
           isin:ii.isin||'',
           country:ex.exchange_country||'',
           display_slug:nnx.display_slug||'',
+          price:nval(last.price),
+          price_decimals:Number.isFinite(last.decimals)?last.decimals:null,
+          currency:ii.currency||ii.price_unit||'',
           yield_1d:nval(hr.yield_1d),
           yield_1w:nval(hr.yield_1w),
           yield_1m:nval(hr.yield_1m),
