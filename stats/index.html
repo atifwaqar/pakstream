@@ -25,11 +25,18 @@
       --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --ret-fr: .8fr;
 
       /* grid: NAME + PRICE + CURRENCY + 10 return columns (symbol removed) */
-      --grid-template:
+      --grid-template-full:
         minmax(var(--min-name), var(--name-fr))
         minmax(var(--min-price), var(--price-fr))
         minmax(var(--min-currency), var(--currency-fr))
         repeat(10, minmax(var(--min-ret), var(--ret-fr)));
+
+      /* default (price + currency hidden) */
+      --grid-template-compact:
+        minmax(var(--min-name), var(--name-fr))
+        repeat(10, minmax(var(--min-ret), var(--ret-fr)));
+
+      --grid-template: var(--grid-template-compact);
 
       /* dynamic width to keep body rows aligned with header on horizontal scroll */
       --grid-width: 1200px; /* JS updates this to header scrollWidth */
@@ -92,6 +99,15 @@
       display:grid; grid-template-columns: var(--grid-template);
       padding:6px 12px;
       min-width:max-content; /* grow beyond container; wrapper provides scroll */
+    }
+
+    body.show-price-currency{
+      --grid-template: var(--grid-template-full);
+    }
+
+    body:not(.show-price-currency) .col-price,
+    body:not(.show-price-currency) .col-currency{
+      display:none;
     }
     .cell{
       display:flex; align-items:center; gap:8px;
@@ -304,8 +320,9 @@ if (location.protocol === 'file:') {
 		  <span id="countBadge" class="meta text-sm text-neutral-500"></span>
 
 			<div class="actions ml-auto flex gap-2">
-			  <button id="resetBtn" class="pill-btn">Reset</button>
-			  <button id="refreshBtn" class="pill-btn">Refresh</button>
+                          <button id="resetBtn" class="pill-btn">Reset</button>
+                          <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false">Hide/Show</button>
+                          <button id="refreshBtn" class="pill-btn">Refresh</button>
 			  <button id="getLatestBtn" class="pill-btn desktop-only">Get Latest</button>
 			  <button id="newSharesBtn" class="pill-btn desktop-only">New Shares</button>
 			</div>
@@ -320,13 +337,13 @@ if (location.protocol === 'file:') {
             <span class="sortable" data-sort="name">Name <span id="sort-name" class="sort-mark"></span></span>
           </div>
 
-          <div class="cell right">
+          <div class="cell right col-price">
             <input id="filter-price" class="rule filter" placeholder="Filter" inputmode="decimal" />
-            <span>Price</span>
+            <span class="sortable" data-sort="price">Price <span id="sort-price" class="sort-mark"></span></span>
           </div>
-          <div class="cell center">
+          <div class="cell center col-currency">
             <input id="filter-currency" class="rule filter filter-currency" placeholder="Filter" maxlength="6" />
-            <span>Currency</span>
+            <span class="sortable" data-sort="currency">Currency <span id="sort-currency" class="sort-mark"></span></span>
           </div>
 
 
@@ -509,6 +526,7 @@ async function showNewShares(){
     const esc  = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
     let all=[], base=[], view=[];
+    let showPriceCurrency=false;
     let sortKey='yield_ytd', sortDir='desc', q='';
     const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
@@ -537,6 +555,7 @@ async function showNewShares(){
     function hasColumnFilter(){
       return Boolean(columnFilters.price.trim() || columnFilters.currency.trim());
     }
+    const togglePriceCurrencyBtn=document.getElementById('togglePriceCurrencyBtn');
 
 	const controlsBar   = document.getElementById('controls');
 	const openSearchBtn = document.getElementById('openSearchBtn');
@@ -625,7 +644,7 @@ async function showNewShares(){
       apply();
     }
 
-    const sortIds=['name',...ruleFields];
+    const sortIds=['name','price','currency',...ruleFields];
     function setSortIndicator(){
       for(const id of sortIds){
         const el=document.getElementById('sort-'+id);
@@ -706,8 +725,8 @@ async function showNewShares(){
           return `
                 <a ${aAttr} style="top:0">
                   <div><div class="name">${esc(truncateName(r.name))}</div></div>
-                  <div class="right"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
-                  <div class="center"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
+                  <div class="right col-price"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
+                  <div class="center col-currency"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
@@ -747,18 +766,29 @@ async function showNewShares(){
       viewport.appendChild(wrap);
     }
 
+    const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
     function stableSort(arr,key,dir){
       const mult=dir==='asc'?1:-1;
       return arr.map((v,i)=>({v,i})).sort((a,b)=>{
-        let A=a.v[key],B=b.v[key];
-        if(A!==null&&A!==undefined)A=Number(A);
-        if(B!==null&&B!==undefined)B=Number(B);
-        const aNum=Number.isFinite(A),bNum=Number.isFinite(B);
-        if(!aNum&&!bNum)return a.i-b.i;
-        if(!aNum)return 1;
-        if(!bNum)return -1;
-        if(A===B)return a.i-b.i;
-        return(A<B?-1:1)*mult;
+        const A=a.v[key];
+        const B=b.v[key];
+
+        const aMissing=A==null||A==='';
+        const bMissing=B==null||B==='';
+        if(aMissing&&bMissing)return a.i-b.i;
+        if(aMissing)return 1;
+        if(bMissing)return -1;
+
+        const aNum=typeof A==='number';
+        const bNum=typeof B==='number';
+        if(aNum&&bNum){
+          if(A===B)return a.i-b.i;
+          return(A<B?-1:1)*mult;
+        }
+
+        const cmp=collator.compare(String(A),String(B));
+        if(cmp===0)return a.i-b.i;
+        return cmp*mult;
       }).map(x=>x.v);
     }
 
@@ -860,6 +890,8 @@ async function showNewShares(){
       if(currencyFilterEl) currencyFilterEl.value='';
       sortKey='yield_ytd'; sortDir='desc';
       base=all; apply();
+      showPriceCurrency=false;
+      updatePriceCurrencyVisibility();
     });
 	// refresh (reloads the whole page)
         document.getElementById('refreshBtn').addEventListener('click', () => {
@@ -870,12 +902,12 @@ async function showNewShares(){
 	  showNewShares();
 	});
 	// get latest (copy text then open Nordnet)
-	document.getElementById('getLatestBtn').addEventListener('click', async () => {
-	  try {
-		// Fetch TheScript.txt (must be in the same folder as index.html)
-		const res = await fetch('./TheScript.txt');
-		if (!res.ok) throw new Error('Could not load TheScript.txt');
-		const text = await res.text();
+        document.getElementById('getLatestBtn').addEventListener('click', async () => {
+          try {
+                // Fetch TheScript.txt (must be in the same folder as index.html)
+                const res = await fetch('./TheScript.txt');
+                if (!res.ok) throw new Error('Could not load TheScript.txt');
+                const text = await res.text();
 
 		// Copy text to clipboard
 		await navigator.clipboard.writeText(text);
@@ -886,7 +918,25 @@ async function showNewShares(){
 		alert('Failed to copy TheScript.txt: ' + err.message);
 		console.error(err);
 	  }
-	});
+        });
+
+    function updatePriceCurrencyVisibility(){
+      if(!togglePriceCurrencyBtn) return;
+      document.body.classList.toggle('show-price-currency', showPriceCurrency);
+      togglePriceCurrencyBtn.setAttribute('aria-pressed', String(showPriceCurrency));
+      togglePriceCurrencyBtn.textContent = showPriceCurrency ? 'Hide Price/Currency' : 'Show Price/Currency';
+      syncGridWidth();
+      renderWindow();
+    }
+
+    if(togglePriceCurrencyBtn){
+      togglePriceCurrencyBtn.addEventListener('click', ()=>{
+        showPriceCurrency=!showPriceCurrency;
+        updatePriceCurrencyVisibility();
+      });
+    }
+
+    updatePriceCurrencyVisibility();
 
     // Keep header right padding aligned with body vertical scrollbar width
     function syncHeaderPadding(){
