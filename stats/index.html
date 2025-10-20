@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stock List (Responsive, Clean)</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./tailwind-output.9f191f80.css" />
+
+  <style>
+    :root{
+      --row-h: 44px;          /* desktop row height */
+      --border:#E6E6E7; --border-soft:#F0F1F3; --focus:#2563eb33;
+
+      --pos:#1A7F37; --neg:#B42318; --neu:#6E6E73;
+
+      /* column minimums so content never smushes */
+      --min-name: 10px;
+      --min-ret:  55px;
+
+      /* growth ratios (desktop) */
+      --name-fr: 1.8fr; --ret-fr: .8fr;
+
+      /* grid: NAME + 10 return columns (symbol removed) */
+      --grid-template:
+        minmax(var(--min-name), var(--name-fr))
+        repeat(10, minmax(var(--min-ret), var(--ret-fr)));
+
+      /* dynamic width to keep body rows aligned with header on horizontal scroll */
+      --grid-width: 1200px; /* JS updates this to header scrollWidth */
+    }
+
+    html, body{
+      height:100%;
+      margin:0;
+      overflow:hidden; /* single scroll inside the card only */
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:#f5f6f8;
+      color:#0B0B0C;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .app{
+      height:100vh; width:100%;
+      display:flex; align-items:stretch; justify-content:center;
+    }
+
+    .card{
+      width:100%; height:100%; max-width:1800px; margin:0;
+      border:1px solid var(--border); border-radius:12px; background:#fff;
+      box-shadow:0 1px 3px rgba(0,0,0,0.08);
+      display:flex; flex-direction:column;
+    }
+
+    .controls{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+      padding:12px; border-bottom:1px solid var(--border);
+    }
+
+    .search{
+      width:360px; max-width:100%;
+      border:1px solid var(--border); border-radius:999px;
+      padding:10px 14px; font-size:14px;
+    }
+    .search:focus{ outline:none; box-shadow:0 0 0 4px var(--focus); }
+
+    .pill-btn{
+      border:1px solid var(--border);
+      background:#fff; padding:10px 14px;
+      border-radius:999px; font-weight:600; font-size:13px;
+    }
+
+    /* HORIZONTALLY SCROLLABLE AREA (single horizontal scrollbar here) */
+    .table-wrap{
+      flex:1; width:100%; position:relative;
+      overflow-x:auto;   /* horizontal scroll lives here */
+      overflow-y:hidden; /* vertical scroll is inside .viewport */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* sticky header aligned with body horizontally */
+    .header-grid{
+      position:sticky; top:0; z-index:3;
+      background:#fff; border-bottom:1px solid var(--border);
+      display:grid; grid-template-columns: var(--grid-template);
+      padding:6px 12px;
+      min-width:max-content; /* grow beyond container; wrapper provides scroll */
+    }
+    .cell{
+      display:flex; align-items:center; gap:8px;
+      font-weight:500; font-size:13px; color:#6E6E73;
+      white-space:nowrap;
+    }
+    .sortable{ cursor:pointer; display:inline-flex; gap:6px; align-items:center }
+    .sort-mark{ font-size:11px; opacity:.5 }
+    .right{ justify-content:flex-end; text-align:right }
+
+    /* + / - / * filter input (numeric/tel keyboard) */
+    .rule{
+      width:40px; text-align:center;
+      border:1px solid var(--border); border-radius:6px;
+      padding:3px 5px; font-size:12px; font-weight:600;
+      color:#6E6E73; background:#fafafa;
+    }
+
+    /* Vertical scrolling lives here; no horizontal scroll here */
+    .viewport{
+      position:relative;
+      height:calc(100% - 44px); /* ≈ header height; keeps a single vertical scrollbar */
+      overflow-y:auto;          /* vertical scroll */
+      overflow-x:hidden;        /* prevent second horizontal scrollbar */
+      min-width:max-content;    /* match header width so columns align */
+    }
+    .spacer{ height:0; width:var(--grid-width); }
+
+    /* Whole row is a link if URL exists */
+    .row{
+      position:absolute; left:0; height:var(--row-h);
+      width: var(--grid-width); /* keeps rows as wide as header */
+      display:grid; grid-template-columns: var(--grid-template);
+      border-bottom:1px solid var(--border-soft);
+      align-items:center; padding:0 12px;
+      background:#fff; color:inherit; text-decoration:none;
+    }
+    .row:hover{ background:#f6f7f8 }
+
+    /* Name: desktop = single line; small screens = up to 2 lines (clamped) */
+    .name{
+      font-weight:600; font-size:14px;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; /* desktop default */
+      max-width:100%;
+    }
+
+    .val{
+      display:inline-block; font-weight:500; font-size:13px;
+      font-variant-numeric:tabular-nums; white-space:nowrap;
+    }
+    .pos-text{ color:var(--pos); }
+    .neg-text{ color:var(--neg); }
+    .neu-text{ color:var(--neu); }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 768px){
+      :root{
+        --row-h: 56px;  /* taller to allow up to 2 lines for name */
+        --min-name: 10px;
+        --min-ret: 55px;
+      }
+	.search{
+		width: 220px;          /* compact inline size (like laptop) */
+		transition: width .2s ease;
+	  }
+	  /* when active, search takes full row; hide meta + buttons */
+	  .controls.search-active{
+		gap: 0;                /* reduce gaps while expanded */
+	  }
+	  .controls.search-active .search{
+		width: 100%;
+	  }
+	  .controls.search-active .meta,
+	  .controls.search-active .actions{
+		display: none;         /* temporarily hide “12,530 rows” + buttons */
+	  }
+
+      .controls{ padding:10px }
+      .header-grid{ padding:6px 10px }
+      .row{ padding:0 10px }
+
+      /* Stack filter box ABOVE label text */
+      .cell{ flex-direction:column; align-items:flex-end; gap:4px; }
+      .cell > .sortable{ order:2; }
+      .cell > .rule{ order:1; }
+
+      /* Name: allow wrapping up to 2 lines */
+      .name{
+        white-space:normal;                /* allow wrap */
+        display:-webkit-box;               /* clamp to two lines */
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;
+        line-height:1.2;
+        font-size:13px;
+      }
+
+      .val, .cell{ font-size:12.5px }
+    }
+
+    @media (max-width: 480px){
+      :root{
+        --row-h: 32px;  /* a bit taller on very small screens */
+        --min-name: 10px;
+        --min-ret: 55px;
+      }
+      .search{ width:100% }
+      .pill-btn{ padding:8px 12px; font-size:12px }
+    }
+	
+	/* Force left align for the Name header cell */
+	.cell.left{
+	  align-items: flex-start;
+	  text-align: left;
+	}
+
+	/* On small screens we flip header cells to column + right; keep Name left */
+	@media (max-width: 768px){
+	  .cell.left{
+		align-items: flex-start !important; /* override the mobile .cell rule */
+		text-align: left !important;
+	  }
+	}
+
+	html, body {
+	  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+	}
+	
+	/* layout for the search area */
+.search-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:1;
+  min-width:0;
+}
+
+/* default: desktop shows input; the "Search" button hidden */
+.search-toggle{ display:none; }
+
+/* keep your existing .search styles; they still apply */
+
+/* MOBILE BEHAVIOR */
+@media (max-width: 768px){
+  /* compact inline look */
+  .search{ width:100%; transition:width .2s ease; }
+
+  /* by default on mobile: show Search button, hide input row */
+  .search-toggle{ display:inline-flex; }
+  .search-wrap{ display:none; }
+
+  /* when opened: show input in the SAME ROW, hide count + action buttons + toggle */
+  .controls.search-open .search-wrap{ display:flex; }
+  .controls.search-open .meta,
+  .controls.search-open .actions,
+  .controls.search-open .search-toggle{ display:none; }
+
+  /* small "Cancel" next to the search only on mobile */
+  .sm-hide{ display:inline-flex; }
+}
+
+/* DESKTOP: always show search input, hide the mobile toggle & cancel */
+@media (min-width: 769px){
+  .search-wrap{ display:flex; }
+  .search-toggle{ display:none; }
+  .sm-hide{ display:none; }
+}
+
+
+/* Hide "Get Latest" on mobile screens */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+  </style>
+</head>
+<script>
+// Auto-redirect if opened via file://
+if (location.protocol === 'file:') {
+  const target = 'http://127.0.0.1:8000/index.html';
+  console.log('Opening via file:// is not supported. Redirecting to', target);
+  location.href = target;
+}
+</script>
+
+  <div class="app">
+    <div class="card">
+	  <!-- top controls -->
+	  <div id="controls" class="controls">
+		  <!-- Mobile: shows; Desktop: hidden -->
+		  <button id="openSearchBtn" class="pill-btn search-toggle" aria-expanded="false">Search</button>
+
+		  <!-- Desktop: shows; Mobile: hidden until opened -->
+		  <div class="search-wrap">
+			<input id="search" class="search" type="search" placeholder="Search by name, symbol, ISIN, country..." />
+			<button id="closeSearchBtn" class="pill-btn sm-hide" type="button" aria-label="Close search">Cancel</button>
+		  </div>
+
+		  <span id="countBadge" class="meta text-sm text-neutral-500"></span>
+
+			<div class="actions ml-auto flex gap-2">
+			  <button id="resetBtn" class="pill-btn">Reset</button>
+			  <button id="refreshBtn" class="pill-btn">Refresh</button>
+			  <button id="getLatestBtn" class="pill-btn desktop-only">Get Latest</button>
+			  <button id="newSharesBtn" class="pill-btn desktop-only">New Shares</button>
+			</div>
+		</div>
+
+
+      <!-- one horizontal scrollbar (here) -->
+      <div class="table-wrap" id="tableWrap">
+        <!-- header -->
+        <div id="headerGrid" class="header-grid">
+          <div class="cell left">
+            <span class="sortable" data-sort="name">Name <span id="sort-name" class="sort-mark"></span></span>
+          </div>
+
+
+          <!-- numeric/tel keyboard; only + - * allowed. On small screens the input stacks ABOVE the label. -->
+          <div class="cell right">
+            <input id="rule-yield_1d"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_1d">1D<span id="sort-yield_1d" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_1w"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_1w">1W<span id="sort-yield_1w" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_1m"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_1m">1M<span id="sort-yield_1m" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_3m"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_3m">3M<span id="sort-yield_3m" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_ytd" class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_ytd">YTD<span id="sort-yield_ytd" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_1y"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_1y">1Y<span id="sort-yield_1y" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_3y"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_3y">3Y<span id="sort-yield_3y" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right">
+            <input id="rule-yield_5y"  class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\\-*]" />
+            <span class="sortable" data-sort="yield_5y">5Y<span id="sort-yield_5y" class="sort-mark"></span></span>
+          </div>
+			<div class="cell right">
+			  <input id="rule-yield_10y" class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\-*]" />
+			  <span class="sortable" data-sort="yield_10y">10Y <span id="sort-yield_10y" class="sort-mark"></span></span>
+			</div>
+
+			<!-- Last column = Max (all-time) -->
+			<div class="cell right">
+			  <input id="rule-yield_max" class="rule" placeholder="+/-/*" maxlength="1" inputmode="tel" pattern="[+\-*]" />
+			  <span class="sortable" data-sort="yield_max">Max <span id="sort-yield_max" class="sort-mark"></span></span>
+			</div>
+
+        </div>
+
+        <!-- vertical scroll lives here -->
+        <div id="viewport" class="viewport">
+          <div id="spacer" class="spacer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let DATA_URL = './nordnet_stocklist_merged_full.json';
+// Attempt to discover the latest JSON in ./data/ by parsing the directory listing (python http.server)
+const LIST_DIR = './data/';
+const FILE_REGEX = /^stocklist_page-\d+_(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z)\.json$/;
+
+async function resolveLatestDataUrl(){
+  try{
+    // Fetch directory listing from ./data/ (works when no index.html exists in that folder)
+    const res = await fetch(LIST_DIR);
+    const html = await res.text();
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const links = Array.from(doc.querySelectorAll('a')).map(a => decodeURIComponent(a.getAttribute('href')||''));
+    const candidates = links.filter(name => FILE_REGEX.test(name));
+    if(!candidates.length) return DATA_URL; // no matching files, keep default
+    const latest = candidates
+      .map(name => ({
+        name,
+        // Convert 2025-10-20T10-36-55Z -> valid ISO 2025-10-20T10:36:55Z
+        date: new Date(FILE_REGEX.exec(name)[1].replace(/T(\d{2})-(\d{2})-(\d{2})Z/, 'T$1:$2:$3Z'))
+      }))
+      .sort((a,b)=> b.date - a.date)[0];
+    return LIST_DIR + latest.name;
+  }catch(err){
+    console.warn('Could not resolve latest JSON from ./data/. Falling back to default.', err);
+    return DATA_URL;
+  }
+}
+
+// --- New Shares helpers ---
+async function listStockFilesSorted(){
+  try{
+    const res = await fetch(LIST_DIR);
+    const html = await res.text();
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const links = Array.from(doc.querySelectorAll('a')).map(a => decodeURIComponent(a.getAttribute('href')||''));
+    const candidates = links.filter(name => FILE_REGEX.test(name)).map(name => {
+      const iso = FILE_REGEX.exec(name)[1].replace(/T(\d{2})-(\d{2})-(\d{2})Z/, 'T$1:$2:$3Z');
+      return { name, iso, date: new Date(iso) };
+    }).sort((a,b)=> b.date - a.date);
+    return candidates;
+  }catch(e){
+    console.warn('Could not list ./data directory.', e);
+    return [];
+  }
+}
+
+function keyOf(r){
+  return r.isin || r.symbol || (r.name ? r.name + '|' + (r.country||'') : '');
+}
+
+async function loadNormalized(url){
+  const res = await fetch(url);
+  const json = await res.json();
+  const results = Array.isArray(json?.results) ? json.results : Array.isArray(json) ? json : [];
+  return results.map(r=>{
+    const ii=r.instrument_info||{};
+    const hr=r.historical_returns_info||{};
+    const ex=r.exchange_info||{};
+    const nnx=r.nnx_info||{};
+    return{
+      name:ii.long_name||ii.name||'',
+      symbol:ii.symbol||'',
+      isin:ii.isin||'',
+      country:ex.exchange_country||'',
+      display_slug:nnx.display_slug||'',
+      yield_1d:nval(hr.yield_1d),
+      yield_1w:nval(hr.yield_1w),
+      yield_1m:nval(hr.yield_1m),
+      yield_3m:nval(hr.yield_3m),
+      yield_ytd:nval(hr.yield_ytd),
+      yield_1y:nval(hr.yield_1y),
+      yield_3y:nval(hr.yield_3y),
+      yield_5y:nval(hr.yield_5y),
+      yield_10y:nval(hr.yield_10y),
+      yield_max:nval(hr.yield_max)
+    };
+  });
+}
+
+async function showNewShares(){
+  // Discover latest two files
+  const files = await listStockFilesSorted();
+  if(files.length < 2){
+    alert('Not enough snapshots in ./data to compare. Need at least two.');
+    return;
+  }
+  const latest = LIST_DIR + files[0].name;
+  const prev   = LIST_DIR + files[1].name;
+
+  // Load both
+  const [a, b] = await Promise.all([loadNormalized(latest), loadNormalized(prev)]);
+  const prevKeys = new Set(b.map(keyOf));
+  const newestOnly = a.filter(item => !prevKeys.has(keyOf(item)));
+
+  // If none, inform and still show empty state
+  all = newestOnly;
+  base = all;
+  sortKey='yield_ytd'; sortDir='desc'; // default sort for clarity
+  apply();
+
+  // Update badge with a friendly message
+  const added = newestOnly.length;
+  const msg = added === 1 ? '1 new since last snapshot' : (added + ' new since last snapshot');
+  if (typeof countEl !== 'undefined' && countEl) {
+    countEl.textContent = msg;
+  }
+}
+
+
+
+    const BUFFER = 8;
+    const MAX_ROWS = 120;
+    const DEBOUNCE = 200;
+    const DEBOUNCE_RULE = 200;
+
+    const nval = n => Number.isFinite(n) ? n : null;
+    const esc  = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+    let all=[], base=[], view=[];
+    let sortKey='yield_ytd', sortDir='desc', q='';
+    const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
+
+
+    const tableWrap = document.getElementById('tableWrap');
+    const headerGrid = document.getElementById('headerGrid');
+    const viewport=document.getElementById('viewport');
+    const spacer=document.getElementById('spacer');
+    const countEl=document.getElementById('countBadge');
+    const searchEl=document.getElementById('search');
+    const ruleInputs=Object.fromEntries(ruleFields.map(f=>[f,document.getElementById('rule-'+f)]));
+
+	const controlsBar   = document.getElementById('controls');
+	const openSearchBtn = document.getElementById('openSearchBtn');
+	const closeSearchBtn= document.getElementById('closeSearchBtn');
+
+	function openSearch(){
+	  controlsBar.classList.add('search-open');
+	  openSearchBtn.setAttribute('aria-expanded','true');
+	  // Focus after paint so the keyboard opens reliably on mobile
+	  setTimeout(()=> searchEl.focus(), 0);
+	}
+	function closeSearch(){
+	  controlsBar.classList.remove('search-open');
+	  openSearchBtn.setAttribute('aria-expanded','false');
+	  searchEl.blur();
+	}
+
+	openSearchBtn.addEventListener('click', openSearch);
+	closeSearchBtn.addEventListener('click', closeSearch);
+
+	// Close with ESC
+	searchEl.addEventListener('keydown', (e)=>{
+	  if(e.key === 'Escape'){ closeSearch(); }
+	});
+
+	searchEl.addEventListener('focus', () => {
+	  // only apply on small screens
+	  if (window.matchMedia('(max-width: 768px)').matches) {
+		controlsBar.classList.add('search-active');
+	  }
+	});
+	searchEl.addEventListener('blur', () => {
+	  controlsBar.classList.remove('search-active');
+	});
+
+    /* ---------- Filter input sanitization: accept only + - * ---------- */
+    function sanitizeRuleInput(e){
+      const v = (e.target.value || '').replace(/[^+\-*]/g,'');
+      e.target.value = v.slice(0,1);
+    }
+    for(const f of ruleFields){
+      const el = ruleInputs[f];
+      el.addEventListener('input', sanitizeRuleInput);
+      el.addEventListener('input', debounce(()=>applyRuleAndRefresh(), DEBOUNCE_RULE));
+    }
+
+    function collectRule(){
+      const rule={};
+      for(const f of ruleFields){
+        const v=(ruleInputs[f]?.value||'').trim();
+        if(v==='+'||v==='-'||v==='*') rule[f]=v;
+      }
+      return rule;
+    }
+    function matchRule(row,rule){
+      for(const [key,val] of Object.entries(rule)){
+        const n=row[key];
+        if(val==='+'&&!(n>0))return false;
+        if(val==='-'&&!(n<0))return false;
+        if(val==='*'&&!(n==null))return false; // star => only show missing values (renders as —)
+      }
+      return true;
+    }
+    const ruleIsEmpty = r => Object.keys(r).length===0;
+    function applyRuleAndRefresh(){
+      const rule=collectRule();
+      base=ruleIsEmpty(rule)?all:all.filter(r=>matchRule(r,rule));
+      apply();
+    }
+
+    const sortIds=['name',...ruleFields];
+    function setSortIndicator(){
+      for(const id of sortIds){
+        const el=document.getElementById('sort-'+id);
+        if(el) el.textContent=(id===sortKey)?(sortDir==='asc'?'▲':'▼'):'';
+      }
+    }
+
+    /* Two-line name on small screens: lift the hard truncate to ~40 chars there */
+    function nameLimit(){
+      return window.matchMedia('(max-width: 768px)').matches ? 40 : 20;
+    }
+    function truncateName(name){
+      const s=String(name||'');
+      const max = nameLimit();
+      return s.length>max ? s.slice(0,max)+'…' : s;
+    }
+
+    function rowH(){
+      const v = getComputedStyle(document.documentElement).getPropertyValue('--row-h').trim();
+      const n = parseInt(v,10);
+      return Number.isFinite(n) ? n : 44;
+    }
+
+	function buildRow(r){
+	  const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
+	  const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
+	  const fmt = n => {
+  if (n == null) return '—';
+  const v = Math.round(Math.abs(n));
+  return v.toLocaleString('en-US'); // adds commas for thousands
+  // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
+};
+
+
+	  const aAttr = url ? `href="${url}" target="_blank" rel="noopener" class="row"` : `class="row"`;
+	  return `
+		<a ${aAttr} style="top:0">
+		  <div><div class="name">${esc(truncateName(r.name))}</div></div>
+		  <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_3m)}">${fmt(r.yield_3m)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_ytd)}">${fmt(r.yield_ytd)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_1y)}">${fmt(r.yield_1y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_3y)}">${fmt(r.yield_3y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_5y)}">${fmt(r.yield_5y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_10y)}">${fmt(r.yield_10y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_max)}">${fmt(r.yield_max)}</span></div>
+		</a>`;
+	}
+
+
+    function renderWindow(){
+      const RH = rowH();
+      const scrollTop=viewport.scrollTop;
+      const height=viewport.clientHeight;
+      const total=view.length;
+
+      spacer.style.height=(total*RH)+'px';
+
+      const first=Math.max(0,Math.floor(scrollTop/RH)-BUFFER);
+      const need=Math.ceil(height/RH)+BUFFER*2;
+      const count=Math.min(MAX_ROWS,Math.min(need,total-first));
+
+      let html='';
+      for(let i=0;i<count;i++){
+        const idx=first+i;
+        const r=view[idx]; if(!r) break;
+        html+=buildRow(r).replace('top:0',`top:${idx*RH}px`);
+      }
+
+      while(viewport.children.length>1) viewport.removeChild(viewport.lastChild);
+      const wrap=document.createElement('div');
+      wrap.innerHTML=html;
+      viewport.appendChild(wrap);
+    }
+
+    function stableSort(arr,key,dir){
+      const mult=dir==='asc'?1:-1;
+      return arr.map((v,i)=>({v,i})).sort((a,b)=>{
+        let A=a.v[key],B=b.v[key];
+        if(A!==null&&A!==undefined)A=Number(A);
+        if(B!==null&&B!==undefined)B=Number(B);
+        const aNum=Number.isFinite(A),bNum=Number.isFinite(B);
+        if(!aNum&&!bNum)return a.i-b.i;
+        if(!aNum)return 1;
+        if(!bNum)return -1;
+        if(A===B)return a.i-b.i;
+        return(A<B?-1:1)*mult;
+      }).map(x=>x.v);
+    }
+
+    function apply(){
+      const RH = rowH();
+      const term=(q||'').trim().toLowerCase();
+      const searched=term?base.filter(x=>
+        (x.name&&x.name.toLowerCase().includes(term))||
+        (x.symbol&&x.symbol.toLowerCase().includes(term))||
+        (x.isin&&x.isin.toLowerCase().includes(term))||
+        (x.country&&x.country.toLowerCase().includes(term))
+      ):base;
+
+      view=stableSort(searched,sortKey,sortDir);
+      countEl.textContent=`${view.length.toLocaleString()} rows${base!==all?' (filtered)':''}`;
+      spacer.style.height=(view.length*RH)+'px';
+      viewport.scrollTop=0;
+      renderWindow();
+      setSortIndicator();
+
+      // keep body width in sync with header width to prevent cut-offs on horizontal scroll
+      syncGridWidth();
+    }
+
+    function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
+
+    function syncGridWidth(){
+      // Read header's scrollWidth and push to CSS var so rows span the same width
+      const w = headerGrid.scrollWidth;
+      document.documentElement.style.setProperty('--grid-width', w + 'px');
+      spacer.style.width = w + 'px';
+    }
+
+    async function load(){
+      const res=await fetch(DATA_URL);
+      const json=await res.json();
+      const results=Array.isArray(json?.results)?json.results:Array.isArray(json)?json:[];
+      all=results.map(r=>{
+        const ii=r.instrument_info||{};
+        const hr=r.historical_returns_info||{};
+        const ex=r.exchange_info||{};
+        const nnx=r.nnx_info||{};
+        return{
+          name:ii.long_name||ii.name||'',
+          symbol:ii.symbol||'',
+          isin:ii.isin||'',
+          country:ex.exchange_country||'',
+          display_slug:nnx.display_slug||'',
+          yield_1d:nval(hr.yield_1d),
+          yield_1w:nval(hr.yield_1w),
+          yield_1m:nval(hr.yield_1m),
+          yield_3m:nval(hr.yield_3m),
+          yield_ytd:nval(hr.yield_ytd),
+          yield_1y:nval(hr.yield_1y),
+          yield_3y:nval(hr.yield_3y),
+          yield_5y:nval(hr.yield_5y),
+          yield_10y: nval(hr.yield_10y),
+          yield_max: nval(hr.yield_max),
+        };
+      });
+      base=all;
+      apply();
+      syncGridWidth();
+    }
+
+    // sorting (only Name + return columns)
+    document.querySelectorAll('[data-sort]').forEach(el=>{
+      el.addEventListener('click',()=>{
+        const key=el.getAttribute('data-sort');
+        if(sortKey===key){sortDir=(sortDir==='asc'?'desc':'asc');}
+        else{sortKey=key;sortDir=(key==='name')?'asc':'desc';}
+        apply();
+      });
+    });
+
+    // search
+    searchEl.addEventListener('input',debounce(()=>{
+      q=searchEl.value||'';
+      apply();
+    },DEBOUNCE));
+
+    // reset
+    document.getElementById('resetBtn').addEventListener('click',()=>{
+      q=''; searchEl.value='';
+      for(const f of ruleFields){ ruleInputs[f].value=''; }
+      sortKey='yield_ytd'; sortDir='desc';
+      base=all; apply();
+    });
+	// refresh (reloads the whole page)
+	document.getElementById('refreshBtn').addEventListener('click', () => {
+	  location.reload();
+	});
+	// new shares (diff latest vs previous)
+	document.getElementById('newSharesBtn').addEventListener('click', () => {
+	  showNewShares();
+	});
+	// get latest (copy text then open Nordnet)
+	document.getElementById('getLatestBtn').addEventListener('click', async () => {
+	  try {
+		// Fetch TheScript.txt (must be in the same folder as index.html)
+		const res = await fetch('./TheScript.txt');
+		if (!res.ok) throw new Error('Could not load TheScript.txt');
+		const text = await res.text();
+
+		// Copy text to clipboard
+		await navigator.clipboard.writeText(text);
+
+		// Open Nordnet site in new tab
+		window.open('https://www.nordnet.se/aktier/kurser', '_blank');
+	  } catch (err) {
+		alert('Failed to copy TheScript.txt: ' + err.message);
+		console.error(err);
+	  }
+	});
+
+    // Keep header right padding aligned with body vertical scrollbar width
+    function syncHeaderPadding(){
+      const sbw = viewport.offsetWidth - viewport.clientWidth;
+      headerGrid.style.paddingLeft  = '12px';
+      headerGrid.style.paddingRight = (12 + sbw) + 'px';
+    }
+
+    // listen for size changes
+    new ResizeObserver(()=>{ syncHeaderPadding(); syncGridWidth(); apply(); }).observe(viewport);
+    new ResizeObserver(()=>{ syncHeaderPadding(); syncGridWidth(); }).observe(headerGrid);
+    window.addEventListener('resize', ()=>{ syncHeaderPadding(); syncGridWidth(); apply(); });
+
+    // vertical virtualization
+    viewport.addEventListener('scroll', renderWindow);
+
+    // initial load (resolve latest JSON first)
+    (async ()=>{
+      try{ DATA_URL = await resolveLatestDataUrl(); } catch(_) {}
+      await load();
+    })();
+	
+viewport.addEventListener('click', (e) => {
+  const row = e.target.closest('.row');
+  if (!row) return;
+
+  // Get the name from the first column
+  const nameEl = row.querySelector('.name'); // NOT .cell
+  const textToCopy = nameEl ? nameEl.textContent.trim() : '';
+  if (!textToCopy) return;
+
+  // Copy (Clipboard API with fallback)
+  const copyWithFallback = (txt) => {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch {}
+    document.body.removeChild(ta);
+  };
+
+  const canUseClipboardAPI =
+    navigator?.clipboard &&
+    typeof navigator.clipboard.writeText === 'function' &&
+    window.isSecureContext;
+
+  if (canUseClipboardAPI) {
+    navigator.clipboard.writeText(textToCopy).catch(() => copyWithFallback(textToCopy));
+  } else {
+    copyWithFallback(textToCopy);
+  }
+
+  // Optional feedback
+  try {
+    countEl.textContent = `Copied: ${textToCopy}`;
+    setTimeout(apply, 1200);
+  } catch {}
+});
+
+  </script>
+</body>
+</html>
