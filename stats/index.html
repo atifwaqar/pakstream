@@ -397,15 +397,15 @@ async function loadNormalized(url){
     const ex=r.exchange_info||{};
     const nnx=r.nnx_info||{};
     const pi=r.price_info||{};
-    const last=pi.last||{};
+    const resolved=resolveDisplayPrice(pi);
     return{
       name:ii.long_name||ii.name||'',
       symbol:ii.symbol||'',
       isin:ii.isin||'',
       country:ex.exchange_country||'',
       display_slug:nnx.display_slug||'',
-      price:nval(last.price),
-      price_decimals:Number.isFinite(last.decimals)?last.decimals:null,
+      price:nval(resolved.price),
+      price_decimals:resolved.decimals,
       currency:ii.currency||ii.price_unit||'',
       yield_1d:nval(hr.yield_1d),
       yield_1w:nval(hr.yield_1w),
@@ -458,6 +458,49 @@ async function showNewShares(){
     const DEBOUNCE_RULE = 200;
 
     const nval = n => Number.isFinite(n) ? n : null;
+    function resolveDisplayPrice(pi){
+      if(!pi || typeof pi !== 'object'){
+        return { price:null, decimals:null };
+      }
+      const pick = entry => {
+        if(entry && Number.isFinite(entry.price) && entry.price > 0){
+          return {
+            price: entry.price,
+            decimals: Number.isFinite(entry.decimals) ? entry.decimals : null,
+          };
+        }
+        return null;
+      };
+
+      const last = pick(pi.last);
+      if(last) return last;
+
+      const close = pick(pi.close);
+      if(close) return close;
+
+      const bid = pick(pi.bid);
+      const ask = pick(pi.ask);
+      if(bid && ask){
+        const decimals = bid.decimals ?? ask.decimals ?? null;
+        return {
+          price: (bid.price + ask.price) / 2,
+          decimals,
+        };
+      }
+      if(bid) return bid;
+      if(ask) return ask;
+
+      const open = pick(pi.open);
+      if(open) return open;
+
+      const high = pick(pi.high);
+      if(high) return high;
+
+      const low = pick(pi.low);
+      if(low) return low;
+
+      return { price:null, decimals:null };
+    }
     const esc  = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
     let all=[], base=[], view=[];
@@ -749,15 +792,15 @@ async function showNewShares(){
         const ex=r.exchange_info||{};
         const nnx=r.nnx_info||{};
         const pi=r.price_info||{};
-        const last=pi.last||{};
+        const resolved=resolveDisplayPrice(pi);
         return{
           name:ii.long_name||ii.name||'',
           symbol:ii.symbol||'',
           isin:ii.isin||'',
           country:ex.exchange_country||'',
           display_slug:nnx.display_slug||'',
-          price:nval(last.price),
-          price_decimals:Number.isFinite(last.decimals)?last.decimals:null,
+          price:nval(resolved.price),
+          price_decimals:resolved.decimals,
           currency:ii.currency||ii.price_unit||'',
           yield_1d:nval(hr.yield_1d),
           yield_1w:nval(hr.yield_1w),
