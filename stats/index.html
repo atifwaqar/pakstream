@@ -127,6 +127,15 @@
       color:#6E6E73; background:#fafafa;
     }
 
+    .filter{
+      width:80px; text-align:left;
+      font-weight:500;
+    }
+    .filter-currency{
+      width:70px;
+      text-transform:uppercase;
+    }
+
     /* Vertical scrolling lives here; no horizontal scroll here */
     .viewport{
       position:relative;
@@ -329,9 +338,11 @@ if (location.protocol === 'file:') {
           </div>
 
           <div class="cell right col-price">
+            <input id="filter-price" class="rule filter" placeholder="Filter" inputmode="decimal" />
             <span class="sortable" data-sort="price">Price <span id="sort-price" class="sort-mark"></span></span>
           </div>
           <div class="cell center col-currency">
+            <input id="filter-currency" class="rule filter filter-currency" placeholder="Filter" maxlength="6" />
             <span class="sortable" data-sort="currency">Currency <span id="sort-currency" class="sort-mark"></span></span>
           </div>
 
@@ -519,6 +530,8 @@ async function showNewShares(){
     let sortKey='yield_ytd', sortDir='desc', q='';
     const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
+    const columnFilters = { price:'', currency:'' };
+
 
     const tableWrap = document.getElementById('tableWrap');
     const headerGrid = document.getElementById('headerGrid');
@@ -527,6 +540,21 @@ async function showNewShares(){
     const countEl=document.getElementById('countBadge');
     const searchEl=document.getElementById('search');
     const ruleInputs=Object.fromEntries(ruleFields.map(f=>[f,document.getElementById('rule-'+f)]));
+    const priceFilterEl = document.getElementById('filter-price');
+    const currencyFilterEl = document.getElementById('filter-currency');
+
+    function formatPrice(price, decimals){
+      if(price==null) return '—';
+      const d = Number.isFinite(decimals) ? Math.min(Math.max(decimals, 0), 6) : 2;
+      return Number(price).toLocaleString('en-US', {
+        minimumFractionDigits: d,
+        maximumFractionDigits: d,
+      });
+    }
+
+    function hasColumnFilter(){
+      return Boolean(columnFilters.price.trim() || columnFilters.currency.trim());
+    }
     const togglePriceCurrencyBtn=document.getElementById('togglePriceCurrencyBtn');
 
 	const controlsBar   = document.getElementById('controls');
@@ -572,6 +600,24 @@ async function showNewShares(){
       const el = ruleInputs[f];
       el.addEventListener('input', sanitizeRuleInput);
       el.addEventListener('input', debounce(()=>applyRuleAndRefresh(), DEBOUNCE_RULE));
+    }
+
+    if(priceFilterEl){
+      priceFilterEl.addEventListener('input', debounce(()=>{
+        const val = (priceFilterEl.value || '').trim();
+        priceFilterEl.value = val;
+        columnFilters.price = val;
+        apply();
+      }, DEBOUNCE));
+    }
+
+    if(currencyFilterEl){
+      currencyFilterEl.addEventListener('input', debounce(()=>{
+        const val = (currencyFilterEl.value || '').toUpperCase().trim();
+        currencyFilterEl.value = val;
+        columnFilters.currency = val;
+        apply();
+      }, DEBOUNCE));
     }
 
     function collectRule(){
@@ -622,6 +668,48 @@ async function showNewShares(){
       return Number.isFinite(n) ? n : 44;
     }
 
+    function matchesCurrency(row, filter){
+      const term = filter.trim().toLowerCase();
+      if(!term) return true;
+      const value = (row.currency || '').toLowerCase();
+      return value.includes(term);
+    }
+
+    function matchesPrice(row, filter){
+      const term = filter.trim();
+      if(!term) return true;
+      const price = row.price;
+      if(price==null) return false;
+      const normalized = term.replace(/,/g,'');
+      const range = normalized.match(/^(-?\d+(?:\.\d+)?)\s*-\s*(-?\d+(?:\.\d+)?)$/);
+      if(range){
+        const min = parseFloat(range[1]);
+        const max = parseFloat(range[2]);
+        if(Number.isNaN(min) || Number.isNaN(max)) return true;
+        const lo = Math.min(min, max);
+        const hi = Math.max(min, max);
+        return price >= lo && price <= hi;
+      }
+      const comp = normalized.match(/^(<=|>=|<|>|=)\s*(-?\d+(?:\.\d+)?)$/);
+      if(comp){
+        const op = comp[1];
+        const num = parseFloat(comp[2]);
+        if(Number.isNaN(num)) return true;
+        if(op==='>') return price > num;
+        if(op==='>=') return price >= num;
+        if(op==='<') return price < num;
+        if(op==='<=') return price <= num;
+        return price === num;
+      }
+      const numeric = parseFloat(normalized);
+      if(!Number.isNaN(numeric)){
+        const shown = formatPrice(price, row.price_decimals).replace(/,/g,'');
+        return shown.includes(normalized);
+      }
+      const shown = formatPrice(price, row.price_decimals).toLowerCase();
+      return shown.includes(term.toLowerCase());
+    }
+
         function buildRow(r){
           const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
           const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
@@ -631,21 +719,13 @@ async function showNewShares(){
             return v.toLocaleString('en-US'); // adds commas for thousands
             // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
           };
-          const fmtPrice = (price, decimals) => {
-            if (price == null) return '—';
-            const d = Number.isFinite(decimals) ? Math.min(Math.max(decimals, 0), 6) : 2;
-            return Number(price).toLocaleString('en-US', {
-              minimumFractionDigits: d,
-              maximumFractionDigits: d,
-            });
-          };
 
 
           const aAttr = url ? `href="${url}" target="_blank" rel="noopener" class="row"` : `class="row"`;
           return `
                 <a ${aAttr} style="top:0">
                   <div><div class="name">${esc(truncateName(r.name))}</div></div>
-                  <div class="right col-price"><span class="val">${fmtPrice(r.price, r.price_decimals)}</span></div>
+                  <div class="right col-price"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
                   <div class="center col-currency"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
@@ -722,8 +802,14 @@ async function showNewShares(){
         (x.country&&x.country.toLowerCase().includes(term))
       ):base;
 
-      view=stableSort(searched,sortKey,sortDir);
-      countEl.textContent=`${view.length.toLocaleString()} rows${base!==all?' (filtered)':''}`;
+      const filtered = searched.filter(row =>
+        matchesPrice(row, columnFilters.price) &&
+        matchesCurrency(row, columnFilters.currency)
+      );
+
+      view=stableSort(filtered,sortKey,sortDir);
+      const filteredMsg = base!==all || hasColumnFilter();
+      countEl.textContent=`${view.length.toLocaleString()} rows${filteredMsg?' (filtered)':''}`;
       spacer.style.height=(view.length*RH)+'px';
       viewport.scrollTop=0;
       renderWindow();
@@ -799,15 +885,18 @@ async function showNewShares(){
     document.getElementById('resetBtn').addEventListener('click',()=>{
       q=''; searchEl.value='';
       for(const f of ruleFields){ ruleInputs[f].value=''; }
+      columnFilters.price=''; columnFilters.currency='';
+      if(priceFilterEl) priceFilterEl.value='';
+      if(currencyFilterEl) currencyFilterEl.value='';
       sortKey='yield_ytd'; sortDir='desc';
       base=all; apply();
       showPriceCurrency=false;
       updatePriceCurrencyVisibility();
     });
 	// refresh (reloads the whole page)
-	document.getElementById('refreshBtn').addEventListener('click', () => {
-	  location.reload();
-	});
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+          location.reload();
+        });
 	// new shares (diff latest vs previous)
 	document.getElementById('newSharesBtn').addEventListener('click', () => {
 	  showNewShares();
