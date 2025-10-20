@@ -392,7 +392,7 @@ if (location.protocol === 'file:') {
             <span class="sortable" data-sort="currency">Currency <span id="sort-currency" class="sort-mark"></span></span>
           </div>
           <div class="cell right col-owners">
-            <input id="filter-owners" class="rule filter filter-owners" placeholder="Filter" inputmode="decimal" />
+            <input id="filter-owners" class="rule filter filter-owners" placeholder="Filter" inputmode="decimal" value="100" />
             <span class="sortable" data-sort="number_of_owners">Owners <span id="sort-number_of_owners" class="sort-mark"></span></span>
           </div>
 
@@ -628,7 +628,7 @@ async function showNewShares(){
     let sortKey='yield_ytd', sortDir='desc';
     const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
-    const columnFilters = { name:'', price:'', currency:'', owners:'' };
+    const columnFilters = { name:'', price:'', currency:'', owners:'100' };
 
 
     const tableWrap = document.getElementById('tableWrap');
@@ -645,6 +645,9 @@ async function showNewShares(){
     const priceFilterEl = document.getElementById('filter-price');
     const currencyFilterEl = document.getElementById('filter-currency');
     const ownersFilterEl = document.getElementById('filter-owners');
+    if(ownersFilterEl){
+      ownersFilterEl.value = columnFilters.owners;
+    }
 
     function formatPrice(price, decimals){
       if(price==null) return '—';
