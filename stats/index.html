@@ -440,6 +440,7 @@ async function showNewShares(){
   all = newestOnly;
   base = all;
   sortKey='yield_ytd'; sortDir='desc'; // default sort for clarity
+  pendingScrollTop=0;
   apply();
 
   // Update badge with a friendly message
@@ -514,6 +515,8 @@ async function showNewShares(){
     const tableWrap = document.getElementById('tableWrap');
     const headerGrid = document.getElementById('headerGrid');
     const viewport=document.getElementById('viewport');
+    const SCROLL_STORAGE_KEY='stats-scroll-top';
+    let pendingScrollTop=null;
     const spacer=document.getElementById('spacer');
     const countEl=document.getElementById('countBadge');
     const ruleInputs=Object.fromEntries(ruleFields.map(f=>[f,document.getElementById('rule-'+f)]));
@@ -551,6 +554,7 @@ async function showNewShares(){
         const val = (nameFilterEl.value || '').trim();
         nameFilterEl.value = val;
         columnFilters.name = val;
+        pendingScrollTop=0;
         apply();
       }, DEBOUNCE));
     }
@@ -560,6 +564,7 @@ async function showNewShares(){
         const val = (priceFilterEl.value || '').trim();
         priceFilterEl.value = val;
         columnFilters.price = val;
+        pendingScrollTop=0;
         apply();
       }, DEBOUNCE));
     }
@@ -569,6 +574,7 @@ async function showNewShares(){
         const val = (currencyFilterEl.value || '').toUpperCase().trim();
         currencyFilterEl.value = val;
         columnFilters.currency = val;
+        pendingScrollTop=0;
         apply();
       }, DEBOUNCE));
     }
@@ -594,6 +600,7 @@ async function showNewShares(){
     function applyRuleAndRefresh(){
       const rule=collectRule();
       base=ruleIsEmpty(rule)?all:all.filter(r=>matchRule(r,rule));
+      pendingScrollTop=0;
       apply();
     }
 
@@ -768,7 +775,11 @@ async function showNewShares(){
       const filteredMsg = base!==all || hasColumnFilter();
       countEl.textContent=`${view.length.toLocaleString()} rows${filteredMsg?' (filtered)':''}`;
       spacer.style.height=(view.length*RH)+'px';
-      viewport.scrollTop=0;
+      const maxScroll = Math.max(0, view.length * RH - viewport.clientHeight);
+      let targetScrollTop = pendingScrollTop;
+      if(targetScrollTop==null) targetScrollTop = viewport.scrollTop;
+      viewport.scrollTop = Math.min(Math.max(targetScrollTop, 0), maxScroll);
+      pendingScrollTop=null;
       renderWindow();
       setSortIndicator();
 
@@ -818,6 +829,13 @@ async function showNewShares(){
         };
       });
       base=all;
+      try{
+        const stored=sessionStorage.getItem(SCROLL_STORAGE_KEY);
+        const parsed=stored==null?null:Number.parseInt(stored,10);
+        pendingScrollTop=Number.isFinite(parsed)?parsed:null;
+      }catch{
+        pendingScrollTop=null;
+      }
       apply();
       syncGridWidth();
     }
@@ -828,6 +846,7 @@ async function showNewShares(){
         const key=el.getAttribute('data-sort');
         if(sortKey===key){sortDir=(sortDir==='asc'?'desc':'asc');}
         else{sortKey=key;sortDir=(key==='name')?'asc':'desc';}
+        pendingScrollTop=0;
         apply();
       });
     });
@@ -840,7 +859,7 @@ async function showNewShares(){
       if(priceFilterEl) priceFilterEl.value='';
       if(currencyFilterEl) currencyFilterEl.value='';
       sortKey='yield_ytd'; sortDir='desc';
-      base=all; apply();
+      base=all; pendingScrollTop=0; apply();
       showPriceCurrency=false;
       updatePriceCurrencyVisibility();
     });
@@ -902,7 +921,18 @@ async function showNewShares(){
     window.addEventListener('resize', ()=>{ syncHeaderPadding(); syncGridWidth(); apply(); });
 
     // vertical virtualization
-    viewport.addEventListener('scroll', renderWindow);
+    function saveScrollPosition(){
+      try{
+        sessionStorage.setItem(SCROLL_STORAGE_KEY, String(Math.round(viewport.scrollTop)));
+      }catch{}
+    }
+    const debouncedSaveScroll=debounce(saveScrollPosition,150);
+    viewport.addEventListener('scroll',()=>{
+      renderWindow();
+      debouncedSaveScroll();
+    });
+    window.addEventListener('pagehide', saveScrollPosition);
+    window.addEventListener('beforeunload', saveScrollPosition);
 
     // initial load (resolve latest JSON first)
     (async ()=>{
@@ -918,6 +948,10 @@ viewport.addEventListener('click', (e) => {
   const nameEl = row.querySelector('.name'); // NOT .cell
   const textToCopy = nameEl ? nameEl.textContent.trim() : '';
   if (!textToCopy) return;
+
+  try {
+    sessionStorage.setItem(SCROLL_STORAGE_KEY, String(Math.round(viewport.scrollTop)));
+  } catch {}
 
   // Copy (Clipboard API with fallback)
   const copyWithFallback = (txt) => {
