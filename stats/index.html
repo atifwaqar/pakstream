@@ -664,6 +664,9 @@ async function showNewShares(){
       const numeric = parseFloat(normalized);
       if(!Number.isNaN(numeric)){
         const shown = formatPrice(price, row.price_decimals).replace(/,/g,'');
+        if(/^[-+]?\d*\.?\d*$/.test(normalized) && normalized.includes('.')){
+          return shown.startsWith(normalized);
+        }
         return shown.includes(normalized);
       }
       const shown = formatPrice(price, row.price_decimals).toLowerCase();
