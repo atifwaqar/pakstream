@@ -312,10 +312,10 @@ if (location.protocol === 'file:') {
           </div>
 
           <div class="cell right">
-            <span>Price</span>
+            <span class="sortable" data-sort="price">Price <span id="sort-price" class="sort-mark"></span></span>
           </div>
           <div class="cell center">
-            <span>Currency</span>
+            <span class="sortable" data-sort="currency">Currency <span id="sort-currency" class="sort-mark"></span></span>
           </div>
 
 
@@ -579,7 +579,7 @@ async function showNewShares(){
       apply();
     }
 
-    const sortIds=['name',...ruleFields];
+    const sortIds=['name','price','currency',...ruleFields];
     function setSortIndicator(){
       for(const id of sortIds){
         const el=document.getElementById('sort-'+id);
@@ -667,18 +667,29 @@ async function showNewShares(){
       viewport.appendChild(wrap);
     }
 
+    const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
     function stableSort(arr,key,dir){
       const mult=dir==='asc'?1:-1;
       return arr.map((v,i)=>({v,i})).sort((a,b)=>{
-        let A=a.v[key],B=b.v[key];
-        if(A!==null&&A!==undefined)A=Number(A);
-        if(B!==null&&B!==undefined)B=Number(B);
-        const aNum=Number.isFinite(A),bNum=Number.isFinite(B);
-        if(!aNum&&!bNum)return a.i-b.i;
-        if(!aNum)return 1;
-        if(!bNum)return -1;
-        if(A===B)return a.i-b.i;
-        return(A<B?-1:1)*mult;
+        const A=a.v[key];
+        const B=b.v[key];
+
+        const aMissing=A==null||A==='';
+        const bMissing=B==null||B==='';
+        if(aMissing&&bMissing)return a.i-b.i;
+        if(aMissing)return 1;
+        if(bMissing)return -1;
+
+        const aNum=typeof A==='number';
+        const bNum=typeof B==='number';
+        if(aNum&&bNum){
+          if(A===B)return a.i-b.i;
+          return(A<B?-1:1)*mult;
+        }
+
+        const cmp=collator.compare(String(A),String(B));
+        if(cmp===0)return a.i-b.i;
+        return cmp*mult;
       }).map(x=>x.v);
     }
 
