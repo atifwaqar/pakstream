@@ -20,7 +20,7 @@
       --min-price: 70px;
       --min-currency: 60px;
       --min-owners: 80px;
-      --min-ret:  110px;
+      --min-ret:  55px;
 
       /* growth ratios (desktop) */
       --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --owners-fr: .9fr; --ret-fr: .8fr;
@@ -244,35 +244,12 @@
     .neg-text{ color:var(--neg); }
     .neu-text{ color:var(--neu); }
 
-    .spark-wrap{
-      display:flex; flex-direction:column; align-items:flex-end;
-      gap:4px; min-width:110px;
-    }
-    .spark-wrap.spark-pos{ color:var(--pos); }
-    .spark-wrap.spark-neg{ color:var(--neg); }
-    .spark-wrap.spark-neu{ color:var(--neu); }
-    .spark{
-      width:110px; height:36px;
-    }
-    .spark svg{
-      display:block; width:100%; height:100%; pointer-events:none;
-    }
-    .spark-area{ stroke:none; }
-    .spark-line{ fill:none; stroke:currentColor; stroke-width:1.6; }
-    .spark-zero{ stroke:rgba(11,11,12,0.18); stroke-width:0.6; }
-    .spark-empty{
-      border-radius:6px;
-      background-image:linear-gradient(135deg, rgba(11,11,12,0.05) 25%, transparent 25%, transparent 50%, rgba(11,11,12,0.05) 50%, rgba(11,11,12,0.05) 75%, transparent 75%, transparent);
-      background-size:6px 6px;
-      border:1px dashed rgba(11,11,12,0.1);
-    }
-
     /* ---------- Small screens ---------- */
     @media (max-width: 768px){
       :root{
         --row-h: 56px;  /* taller to allow up to 2 lines for name */
         --min-name: 10px;
-        --min-ret: 90px;
+        --min-ret: 55px;
       }
       .controls{ padding:10px }
       .header-grid{ padding:6px 10px }
@@ -297,9 +274,6 @@
         font-size:13px;
       }
 
-      .spark-wrap{ min-width:90px; }
-      .spark{ width:90px; }
-
       .val, .cell{ font-size:12.5px }
     }
 
@@ -307,15 +281,12 @@
         :root{
           --row-h: 32px;  /* a bit taller on very small screens */
           --min-name: 10px;
-          --min-ret: 90px;
+          --min-ret: 55px;
         }
         .pill-btn{
           width:34px;
           height:34px;
         }
-
-        .spark-wrap{ min-width:84px; }
-        .spark{ width:84px; }
       }
 	
 	/* Force left align for the Name header cell */
@@ -607,140 +578,6 @@ async function showNewShares(){
     const DEBOUNCE_RULE = 200;
 
     const nval = n => Number.isFinite(n) ? n : null;
-
-    const RETURN_FIELDS = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
-
-    function returnClass(n){
-      if(n==null) return 'neu-text';
-      return n>0 ? 'pos-text' : 'neg-text';
-    }
-
-    function formatReturn(n){
-      if(n==null) return '—';
-      const v=Math.round(Math.abs(n));
-      return v.toLocaleString('en-US');
-    }
-
-    function hashSeed(str){
-      let h=1779033703 ^ str.length;
-      for(let i=0;i<str.length;i++){
-        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
-        h = (h << 13) | (h >>> 19);
-      }
-      h = Math.imul(h ^ (h >>> 16), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909);
-      return (h ^ (h >>> 16)) >>> 0;
-    }
-
-    const SPARK_DEPENDENCIES = {
-      yield_1d: ['yield_1d'],
-      yield_1w: ['yield_1d', 'yield_1w'],
-      yield_1m: ['yield_1d', 'yield_1w', 'yield_1m'],
-      yield_3m: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m'],
-      yield_ytd: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd'],
-      yield_1y: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd', 'yield_1y'],
-      yield_3y: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd', 'yield_1y', 'yield_3y'],
-      yield_5y: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd', 'yield_1y', 'yield_3y', 'yield_5y'],
-      yield_10y: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd', 'yield_1y', 'yield_3y', 'yield_5y', 'yield_10y'],
-      yield_max: ['yield_1d', 'yield_1w', 'yield_1m', 'yield_3m', 'yield_ytd', 'yield_1y', 'yield_3y', 'yield_5y', 'yield_10y', 'yield_max'],
-    };
-
-    function sparkSeriesForField(row, field){
-      const dependencies = SPARK_DEPENDENCIES[field] || [field];
-      const series = [0];
-      dependencies.forEach(key => {
-        const value = row[key];
-        if(Number.isFinite(value)){
-          if(series[series.length-1] !== value){
-            series.push(value);
-          }
-        }
-      });
-      if(series.length < 2){
-        return null;
-      }
-      if(series[series.length-1] !== row[field] && Number.isFinite(row[field])){
-        series.push(row[field]);
-      }
-      return series.length > 1 ? series : null;
-    }
-
-    function buildSparkSvg(points, gradientId){
-      if(!points || !points.length) return '';
-      const width = 110;
-      const height = 36;
-      let min = Math.min(...points, 0);
-      let max = Math.max(...points, 0);
-      if(!Number.isFinite(min) || !Number.isFinite(max)) return '';
-      if(Math.abs(max - min) < 0.001){
-        const adjust = Math.max(1, Math.abs(max) || 1);
-        min -= adjust;
-        max += adjust;
-      }
-      const scaleY = value => {
-        const ratio = (value - min) / (max - min);
-        return height - (ratio * height);
-      };
-      const stepX = points.length > 1 ? width / (points.length - 1) : width;
-      let linePath = '';
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        linePath += (i===0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
-      }
-      const zeroY = scaleY(0);
-      let areaPath = `M0 ${zeroY.toFixed(2)} `;
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        areaPath += `L${x.toFixed(2)} ${y.toFixed(2)} `;
-      }
-      areaPath += `L${width.toFixed(2)} ${zeroY.toFixed(2)} Z`;
-      const zeroLine = zeroY >=0 && zeroY <= height
-        ? `<line class="spark-zero" x1="0" y1="${zeroY.toFixed(2)}" x2="${width.toFixed(2)}" y2="${zeroY.toFixed(2)}"></line>`
-        : '';
-      const markup = `
-        <div class="spark" aria-hidden="true">
-          <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="currentColor" stop-opacity="0.25"></stop>
-                <stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
-              </linearGradient>
-            </defs>
-            ${zeroLine}
-            <path class="spark-area" d="${areaPath.trim()}" fill="url(#${gradientId})"></path>
-            <path class="spark-line" d="${linePath.trim()}" vector-effect="non-scaling-stroke"></path>
-          </svg>
-        </div>
-      `;
-      return markup.trim();
-    }
-
-    function renderSpark(row, field){
-      const value = row[field];
-      if(value==null){
-        const emptyMarkup = `
-        <div class="spark-wrap spark-neu">
-          <div class="spark spark-empty" aria-hidden="true"></div>
-          <span class="val neu-text">—</span>
-        </div>
-        `;
-        return emptyMarkup.trim();
-      }
-      const baseKey = row._key || row.isin || row.symbol || row.name || '';
-      const gradientId = `spark-${hashSeed(String(baseKey)+'|'+field).toString(36)}`;
-      const series = sparkSeriesForField(row, field);
-      const svg = series ? buildSparkSvg(series, gradientId) : '';
-      if(!svg) return `<span class="val ${returnClass(value)}">${formatReturn(value)}</span>`;
-      const tone = value>0 ? 'spark-pos' : value<0 ? 'spark-neg' : 'spark-neu';
-      const markup = `
-        <div class="spark-wrap ${tone}">
-          ${svg}
-          <span class="val ${returnClass(value)}">${formatReturn(value)}</span>
-        </div>
-      `;
-      return markup.trim();
-    }
     function resolveDisplayPrice(pi){
       if(!pi || typeof pi !== 'object'){
         return { price:null, decimals:null };
@@ -789,7 +626,7 @@ async function showNewShares(){
     let all=[], base=[], view=[];
     let showPriceCurrency=false;
     let sortKey='yield_ytd', sortDir='desc';
-    const ruleFields = [...RETURN_FIELDS];
+    const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
     const columnFilters = { name:'', price:'', currency:'', owners:'10000' };
 
@@ -1018,6 +855,14 @@ async function showNewShares(){
 
         function buildRow(r){
           const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
+          const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
+          const fmt = n => {
+            if (n == null) return '—';
+            const v = Math.round(Math.abs(n));
+            return v.toLocaleString('en-US'); // adds commas for thousands
+            // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
+          };
+
           const classes = ['row'];
           if (r._key && visitedKeys.has(r._key)) classes.push('row-visited');
           if (r._key && r._key === lastClickedKey) classes.push('row-active');
@@ -1032,16 +877,16 @@ async function showNewShares(){
                   <div class="right col-price"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
                   <div class="center col-currency"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
                   <div class="right col-owners"><span class="val">${r.number_of_owners!=null ? Number(r.number_of_owners).toLocaleString('en-US') : '—'}</span></div>
-                  <div class="right">${renderSpark(r,'yield_1d')}</div>
-                  <div class="right">${renderSpark(r,'yield_1w')}</div>
-                  <div class="right">${renderSpark(r,'yield_1m')}</div>
-                  <div class="right">${renderSpark(r,'yield_3m')}</div>
-                  <div class="right">${renderSpark(r,'yield_ytd')}</div>
-                  <div class="right">${renderSpark(r,'yield_1y')}</div>
-                  <div class="right">${renderSpark(r,'yield_3y')}</div>
-                  <div class="right">${renderSpark(r,'yield_5y')}</div>
-                  <div class="right">${renderSpark(r,'yield_10y')}</div>
-                  <div class="right">${renderSpark(r,'yield_max')}</div>
+                  <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_3m)}">${fmt(r.yield_3m)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_ytd)}">${fmt(r.yield_ytd)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_1y)}">${fmt(r.yield_1y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_3y)}">${fmt(r.yield_3y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_5y)}">${fmt(r.yield_5y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_10y)}">${fmt(r.yield_10y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_max)}">${fmt(r.yield_max)}</span></div>
                 </a>`;
         }
 
