@@ -71,13 +71,6 @@
       padding:12px; border-bottom:1px solid var(--border);
     }
 
-    .search{
-      width:360px; max-width:100%;
-      border:1px solid var(--border); border-radius:999px;
-      padding:10px 14px; font-size:14px;
-    }
-    .search:focus{ outline:none; box-shadow:0 0 0 4px var(--focus); }
-
     .pill-btn{
       border:1px solid var(--border);
       background:#fff; padding:10px 14px;
@@ -135,6 +128,10 @@
       width:70px;
       text-transform:uppercase;
     }
+    .filter-name{
+      width:180px;
+      max-width:100%;
+    }
 
     /* Vertical scrolling lives here; no horizontal scroll here */
     .viewport{
@@ -179,22 +176,6 @@
         --min-name: 10px;
         --min-ret: 55px;
       }
-	.search{
-		width: 220px;          /* compact inline size (like laptop) */
-		transition: width .2s ease;
-	  }
-	  /* when active, search takes full row; hide meta + buttons */
-	  .controls.search-active{
-		gap: 0;                /* reduce gaps while expanded */
-	  }
-	  .controls.search-active .search{
-		width: 100%;
-	  }
-	  .controls.search-active .meta,
-	  .controls.search-active .actions{
-		display: none;         /* temporarily hide “12,530 rows” + buttons */
-	  }
-
       .controls{ padding:10px }
       .header-grid{ padding:6px 10px }
       .row{ padding:0 10px }
@@ -203,6 +184,10 @@
       .cell{ flex-direction:column; align-items:flex-end; gap:4px; }
       .cell > .sortable{ order:2; }
       .cell > .rule{ order:1; }
+
+      .cell.left .filter-name{
+        width:100%;
+      }
 
       /* Name: allow wrapping up to 2 lines */
       .name{
@@ -223,7 +208,6 @@
         --min-name: 10px;
         --min-ret: 55px;
       }
-      .search{ width:100% }
       .pill-btn{ padding:8px 12px; font-size:12px }
     }
 	
@@ -245,47 +229,6 @@
 	  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 	}
 	
-	/* layout for the search area */
-.search-wrap{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex:1;
-  min-width:0;
-}
-
-/* default: desktop shows input; the "Search" button hidden */
-.search-toggle{ display:none; }
-
-/* keep your existing .search styles; they still apply */
-
-/* MOBILE BEHAVIOR */
-@media (max-width: 768px){
-  /* compact inline look */
-  .search{ width:100%; transition:width .2s ease; }
-
-  /* by default on mobile: show Search button, hide input row */
-  .search-toggle{ display:inline-flex; }
-  .search-wrap{ display:none; }
-
-  /* when opened: show input in the SAME ROW, hide count + action buttons + toggle */
-  .controls.search-open .search-wrap{ display:flex; }
-  .controls.search-open .meta,
-  .controls.search-open .actions,
-  .controls.search-open .search-toggle{ display:none; }
-
-  /* small "Cancel" next to the search only on mobile */
-  .sm-hide{ display:inline-flex; }
-}
-
-/* DESKTOP: always show search input, hide the mobile toggle & cancel */
-@media (min-width: 769px){
-  .search-wrap{ display:flex; }
-  .search-toggle{ display:none; }
-  .sm-hide{ display:none; }
-}
-
-
 /* Hide "Get Latest" on mobile screens */
 @media (max-width: 768px) {
   .desktop-only {
@@ -307,22 +250,13 @@ if (location.protocol === 'file:') {
   <div class="app">
     <div class="card">
 	  <!-- top controls -->
-	  <div id="controls" class="controls">
-		  <!-- Mobile: shows; Desktop: hidden -->
-		  <button id="openSearchBtn" class="pill-btn search-toggle" aria-expanded="false">Search</button>
+          <div id="controls" class="controls">
+                  <span id="countBadge" class="meta text-sm text-neutral-500"></span>
 
-		  <!-- Desktop: shows; Mobile: hidden until opened -->
-		  <div class="search-wrap">
-			<input id="search" class="search" type="search" placeholder="Search by name, symbol, ISIN, country..." />
-			<button id="closeSearchBtn" class="pill-btn sm-hide" type="button" aria-label="Close search">Cancel</button>
-		  </div>
-
-		  <span id="countBadge" class="meta text-sm text-neutral-500"></span>
-
-			<div class="actions ml-auto flex gap-2">
-                          <button id="resetBtn" class="pill-btn">Reset</button>
-                          <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false">Hide/Show</button>
-                          <button id="refreshBtn" class="pill-btn">Refresh</button>
+                  <div class="actions ml-auto flex gap-2">
+                    <button id="resetBtn" class="pill-btn">Reset</button>
+                    <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false">Hide/Show</button>
+                    <button id="refreshBtn" class="pill-btn">Refresh</button>
 			  <button id="getLatestBtn" class="pill-btn desktop-only">Get Latest</button>
 			  <button id="newSharesBtn" class="pill-btn desktop-only">New Shares</button>
 			</div>
@@ -334,6 +268,7 @@ if (location.protocol === 'file:') {
         <!-- header -->
         <div id="headerGrid" class="header-grid">
           <div class="cell left">
+            <input id="filter-name" class="rule filter filter-name" placeholder="Filter" />
             <span class="sortable" data-sort="name">Name <span id="sort-name" class="sort-mark"></span></span>
           </div>
 
@@ -527,10 +462,10 @@ async function showNewShares(){
 
     let all=[], base=[], view=[];
     let showPriceCurrency=false;
-    let sortKey='yield_ytd', sortDir='desc', q='';
+    let sortKey='yield_ytd', sortDir='desc';
     const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
-    const columnFilters = { price:'', currency:'' };
+    const columnFilters = { name:'', price:'', currency:'' };
 
 
     const tableWrap = document.getElementById('tableWrap');
@@ -538,8 +473,8 @@ async function showNewShares(){
     const viewport=document.getElementById('viewport');
     const spacer=document.getElementById('spacer');
     const countEl=document.getElementById('countBadge');
-    const searchEl=document.getElementById('search');
     const ruleInputs=Object.fromEntries(ruleFields.map(f=>[f,document.getElementById('rule-'+f)]));
+    const nameFilterEl = document.getElementById('filter-name');
     const priceFilterEl = document.getElementById('filter-price');
     const currencyFilterEl = document.getElementById('filter-currency');
 
@@ -553,43 +488,9 @@ async function showNewShares(){
     }
 
     function hasColumnFilter(){
-      return Boolean(columnFilters.price.trim() || columnFilters.currency.trim());
+      return Object.values(columnFilters).some(val => (val || '').trim());
     }
     const togglePriceCurrencyBtn=document.getElementById('togglePriceCurrencyBtn');
-
-	const controlsBar   = document.getElementById('controls');
-	const openSearchBtn = document.getElementById('openSearchBtn');
-	const closeSearchBtn= document.getElementById('closeSearchBtn');
-
-	function openSearch(){
-	  controlsBar.classList.add('search-open');
-	  openSearchBtn.setAttribute('aria-expanded','true');
-	  // Focus after paint so the keyboard opens reliably on mobile
-	  setTimeout(()=> searchEl.focus(), 0);
-	}
-	function closeSearch(){
-	  controlsBar.classList.remove('search-open');
-	  openSearchBtn.setAttribute('aria-expanded','false');
-	  searchEl.blur();
-	}
-
-	openSearchBtn.addEventListener('click', openSearch);
-	closeSearchBtn.addEventListener('click', closeSearch);
-
-	// Close with ESC
-	searchEl.addEventListener('keydown', (e)=>{
-	  if(e.key === 'Escape'){ closeSearch(); }
-	});
-
-	searchEl.addEventListener('focus', () => {
-	  // only apply on small screens
-	  if (window.matchMedia('(max-width: 768px)').matches) {
-		controlsBar.classList.add('search-active');
-	  }
-	});
-	searchEl.addEventListener('blur', () => {
-	  controlsBar.classList.remove('search-active');
-	});
 
     /* ---------- Filter input sanitization: accept only + - * ---------- */
     function sanitizeRuleInput(e){
@@ -600,6 +501,15 @@ async function showNewShares(){
       const el = ruleInputs[f];
       el.addEventListener('input', sanitizeRuleInput);
       el.addEventListener('input', debounce(()=>applyRuleAndRefresh(), DEBOUNCE_RULE));
+    }
+
+    if(nameFilterEl){
+      nameFilterEl.addEventListener('input', debounce(()=>{
+        const val = (nameFilterEl.value || '').trim();
+        nameFilterEl.value = val;
+        columnFilters.name = val;
+        apply();
+      }, DEBOUNCE));
     }
 
     if(priceFilterEl){
@@ -668,15 +578,22 @@ async function showNewShares(){
       return Number.isFinite(n) ? n : 44;
     }
 
+    function matchesName(row, filter){
+      const term = (filter || '').trim().toLowerCase();
+      if(!term) return true;
+      const value = (row.name || '').toLowerCase();
+      return value.includes(term);
+    }
+
     function matchesCurrency(row, filter){
-      const term = filter.trim().toLowerCase();
+      const term = (filter || '').trim().toLowerCase();
       if(!term) return true;
       const value = (row.currency || '').toLowerCase();
       return value.includes(term);
     }
 
     function matchesPrice(row, filter){
-      const term = filter.trim();
+      const term = (filter || '').trim();
       if(!term) return true;
       const price = row.price;
       if(price==null) return false;
@@ -794,15 +711,9 @@ async function showNewShares(){
 
     function apply(){
       const RH = rowH();
-      const term=(q||'').trim().toLowerCase();
-      const searched=term?base.filter(x=>
-        (x.name&&x.name.toLowerCase().includes(term))||
-        (x.symbol&&x.symbol.toLowerCase().includes(term))||
-        (x.isin&&x.isin.toLowerCase().includes(term))||
-        (x.country&&x.country.toLowerCase().includes(term))
-      ):base;
 
-      const filtered = searched.filter(row =>
+      const filtered = base.filter(row =>
+        matchesName(row, columnFilters.name) &&
         matchesPrice(row, columnFilters.price) &&
         matchesCurrency(row, columnFilters.currency)
       );
@@ -875,17 +786,11 @@ async function showNewShares(){
       });
     });
 
-    // search
-    searchEl.addEventListener('input',debounce(()=>{
-      q=searchEl.value||'';
-      apply();
-    },DEBOUNCE));
-
     // reset
     document.getElementById('resetBtn').addEventListener('click',()=>{
-      q=''; searchEl.value='';
       for(const f of ruleFields){ ruleInputs[f].value=''; }
-      columnFilters.price=''; columnFilters.currency='';
+      columnFilters.name=''; columnFilters.price=''; columnFilters.currency='';
+      if(nameFilterEl) nameFilterEl.value='';
       if(priceFilterEl) priceFilterEl.value='';
       if(currencyFilterEl) currencyFilterEl.value='';
       sortKey='yield_ytd'; sortDir='desc';
