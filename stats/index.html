@@ -19,16 +19,18 @@
       --min-name: 10px;
       --min-price: 70px;
       --min-currency: 60px;
+      --min-owners: 80px;
       --min-ret:  55px;
 
       /* growth ratios (desktop) */
-      --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --ret-fr: .8fr;
+      --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --owners-fr: .9fr; --ret-fr: .8fr;
 
-      /* grid: NAME + PRICE + CURRENCY + 10 return columns (symbol removed) */
+      /* grid: NAME + PRICE + CURRENCY + OWNERS + 10 return columns (symbol removed) */
       --grid-template-full:
         minmax(var(--min-name), var(--name-fr))
         minmax(var(--min-price), var(--price-fr))
         minmax(var(--min-currency), var(--currency-fr))
+        minmax(var(--min-owners), var(--owners-fr))
         repeat(10, minmax(var(--min-ret), var(--ret-fr)));
 
       /* default (price + currency hidden) */
@@ -137,7 +139,8 @@
     }
 
     body:not(.show-price-currency) .col-price,
-    body:not(.show-price-currency) .col-currency{
+    body:not(.show-price-currency) .col-currency,
+    body:not(.show-price-currency) .col-owners{
       display:none;
     }
     .cell{
@@ -165,6 +168,9 @@
     .filter-currency{
       width:70px;
       text-transform:uppercase;
+    }
+    .filter-owners{
+      width:90px;
     }
     .filter-name{
       width:180px;
@@ -334,8 +340,8 @@ if (location.protocol === 'file:') {
                         <path d="M5.64 18.36A9 9 0 1 1 18 6" />
                       </svg>
                     </button>
-                    <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false" aria-label="Toggle price and currency columns">
-                      <span class="sr-only">Toggle price and currency columns</span>
+                    <button id="togglePriceCurrencyBtn" class="pill-btn" aria-pressed="false" aria-label="Toggle price, currency, and owners columns">
+                      <span class="sr-only">Toggle price, currency, and owners columns</span>
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M1.5 12s3.5-6 10.5-6 10.5 6 10.5 6-3.5 6-10.5 6-10.5-6-10.5-6Z" />
                         <circle cx="12" cy="12" r="3" />
@@ -384,6 +390,10 @@ if (location.protocol === 'file:') {
           <div class="cell center col-currency">
             <input id="filter-currency" class="rule filter filter-currency" placeholder="Filter" maxlength="6" />
             <span class="sortable" data-sort="currency">Currency <span id="sort-currency" class="sort-mark"></span></span>
+          </div>
+          <div class="cell right col-owners">
+            <input id="filter-owners" class="rule filter filter-owners" placeholder="Filter" inputmode="decimal" />
+            <span class="sortable" data-sort="number_of_owners">Owners <span id="sort-number_of_owners" class="sort-mark"></span></span>
           </div>
 
 
@@ -501,6 +511,7 @@ async function loadNormalized(url){
     const hr=r.historical_returns_info||{};
     const ex=r.exchange_info||{};
     const nnx=r.nnx_info||{};
+    const si=r.statistical_info||{};
     const pi=r.price_info||{};
     const resolved=resolveDisplayPrice(pi);
     const normalized={
@@ -512,6 +523,7 @@ async function loadNormalized(url){
       price:nval(resolved.price),
       price_decimals:resolved.decimals,
       currency:ii.currency||ii.price_unit||'',
+      number_of_owners:nval(si.number_of_owners),
       yield_1d:nval(hr.yield_1d),
       yield_1w:nval(hr.yield_1w),
       yield_1m:nval(hr.yield_1m),
@@ -616,7 +628,7 @@ async function showNewShares(){
     let sortKey='yield_ytd', sortDir='desc';
     const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
-    const columnFilters = { name:'', price:'', currency:'' };
+    const columnFilters = { name:'', price:'', currency:'', owners:'' };
 
 
     const tableWrap = document.getElementById('tableWrap');
@@ -632,6 +644,7 @@ async function showNewShares(){
     const nameFilterEl = document.getElementById('filter-name');
     const priceFilterEl = document.getElementById('filter-price');
     const currencyFilterEl = document.getElementById('filter-currency');
+    const ownersFilterEl = document.getElementById('filter-owners');
 
     function formatPrice(price, decimals){
       if(price==null) return '—';
@@ -688,6 +701,16 @@ async function showNewShares(){
       }, DEBOUNCE));
     }
 
+    if(ownersFilterEl){
+      ownersFilterEl.addEventListener('input', debounce(()=>{
+        const val = (ownersFilterEl.value || '').trim();
+        ownersFilterEl.value = val;
+        columnFilters.owners = val;
+        pendingScrollTop=0;
+        apply();
+      }, DEBOUNCE));
+    }
+
     function collectRule(){
       const rule={};
       for(const f of ruleFields){
@@ -713,7 +736,7 @@ async function showNewShares(){
       apply();
     }
 
-    const sortIds=['name','price','currency',...ruleFields];
+    const sortIds=['name','price','currency','number_of_owners',...ruleFields];
     function setSortIndicator(){
       for(const id of sortIds){
         const el=document.getElementById('sort-'+id);
@@ -749,6 +772,43 @@ async function showNewShares(){
       if(!term) return true;
       const value = (row.currency || '').toLowerCase();
       return value.includes(term);
+    }
+
+    function matchesOwners(row, filter){
+      const term = (filter || '').trim();
+      if(!term) return true;
+      const owners = row.number_of_owners;
+      if(term === '*') return owners == null;
+      const normalized = term.replace(/,/g,'');
+      const range = normalized.match(/^(-?\d+(?:\.\d+)?)\s*-\s*(-?\d+(?:\.\d+)?)$/);
+      if(range){
+        if(owners==null) return false;
+        const min = parseFloat(range[1]);
+        const max = parseFloat(range[2]);
+        if(Number.isNaN(min) || Number.isNaN(max)) return true;
+        const lo = Math.min(min, max);
+        const hi = Math.max(min, max);
+        return owners >= lo && owners <= hi;
+      }
+      const comp = normalized.match(/^(<=|>=|<|>|=)\s*(-?\d+(?:\.\d+)?)$/);
+      if(comp){
+        if(owners==null) return false;
+        const op = comp[1];
+        const num = parseFloat(comp[2]);
+        if(Number.isNaN(num)) return true;
+        if(op==='>') return owners > num;
+        if(op==='>=') return owners >= num;
+        if(op==='<') return owners < num;
+        if(op==='<=') return owners <= num;
+        return owners === num;
+      }
+      if(owners==null) return false;
+      if(/^-?\d+(?:\.\d+)?$/.test(normalized)){
+        const cleaned = normalized.replace(/^0+/, '') || '0';
+        return String(owners).includes(cleaned);
+      }
+      const shown = owners.toLocaleString('en-US').toLowerCase();
+      return shown.includes(term.toLowerCase());
     }
 
     function matchesPrice(row, filter){
@@ -812,6 +872,7 @@ async function showNewShares(){
                   <div><div class="name">${esc(truncateName(r.name))}</div></div>
                   <div class="right col-price"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
                   <div class="center col-currency"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
+                  <div class="right col-owners"><span class="val">${r.number_of_owners!=null ? Number(r.number_of_owners).toLocaleString('en-US') : '—'}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
                   <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
@@ -901,7 +962,8 @@ async function showNewShares(){
       const filtered = base.filter(row =>
         matchesName(row, columnFilters.name) &&
         matchesPrice(row, columnFilters.price) &&
-        matchesCurrency(row, columnFilters.currency)
+        matchesCurrency(row, columnFilters.currency) &&
+        matchesOwners(row, columnFilters.owners)
       );
 
       view=stableSort(filtered,sortKey,sortDir);
@@ -938,6 +1000,7 @@ async function showNewShares(){
         const hr=r.historical_returns_info||{};
         const ex=r.exchange_info||{};
         const nnx=r.nnx_info||{};
+        const si=r.statistical_info||{};
         const pi=r.price_info||{};
         const resolved=resolveDisplayPrice(pi);
         const normalized={
@@ -949,6 +1012,7 @@ async function showNewShares(){
           price:nval(resolved.price),
           price_decimals:resolved.decimals,
           currency:ii.currency||ii.price_unit||'',
+          number_of_owners:nval(si.number_of_owners),
           yield_1d:nval(hr.yield_1d),
           yield_1w:nval(hr.yield_1w),
           yield_1m:nval(hr.yield_1m),
@@ -989,10 +1053,11 @@ async function showNewShares(){
     // reset
     document.getElementById('resetBtn').addEventListener('click',()=>{
       for(const f of ruleFields){ ruleInputs[f].value=''; }
-      columnFilters.name=''; columnFilters.price=''; columnFilters.currency='';
+      columnFilters.name=''; columnFilters.price=''; columnFilters.currency=''; columnFilters.owners='';
       if(nameFilterEl) nameFilterEl.value='';
       if(priceFilterEl) priceFilterEl.value='';
       if(currencyFilterEl) currencyFilterEl.value='';
+      if(ownersFilterEl) ownersFilterEl.value='';
       sortKey='yield_ytd'; sortDir='desc';
       base=all; pendingScrollTop=0; apply();
       showPriceCurrency=false;
