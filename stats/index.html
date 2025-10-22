@@ -830,15 +830,19 @@ async function showNewShares(){
 
     function downsampleSeries(series, maxPoints){
       if(!Array.isArray(series)) return [];
-      const pts = series.filter(n => Number.isFinite(n));
-      if(pts.length <= maxPoints) return pts.slice();
+      const pts = series.filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.value));
+      if(pts.length <= maxPoints) return pts.map(pt => ({ t: pt.t, value: pt.value }));
       const step = Math.ceil(pts.length / maxPoints);
       const out = [];
       for(let i=0;i<pts.length;i+=step){
-        out.push(pts[i]);
+        const pt = pts[i];
+        if(pt){
+          out.push({ t: pt.t, value: pt.value });
+        }
       }
-      if(out[out.length-1] !== pts[pts.length-1]){
-        out.push(pts[pts.length-1]);
+      const last = pts[pts.length-1];
+      if(last && (out.length === 0 || out[out.length-1].t !== last.t)){
+        out.push({ t: last.t, value: last.value });
       }
       return out;
     }
@@ -848,17 +852,21 @@ async function showNewShares(){
       const cleaned = history.filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.p));
       if(cleaned.length < 2) return null;
       let subset = cleaned;
+      let anchorTime = subset[0]?.t ?? null;
       if(cfg?.type === 'max'){
-        subset = cleaned;
+        anchorTime = subset[0]?.t ?? null;
       }else if(cfg?.type === 'ytd'){
         const start = new Date(new Date().getFullYear(), 0, 1).getTime();
         let idx = cleaned.findIndex(pt => pt.t >= start);
         if(idx === -1){
-          idx = Math.max(0, cleaned.length - 260);
-        }else if(idx > 0){
-          idx -= 1;
+          const fallback = Math.max(0, cleaned.length - 260);
+          subset = cleaned.slice(fallback);
+          anchorTime = subset[0]?.t ?? null;
+        }else{
+          anchorTime = cleaned[idx]?.t ?? null;
+          const sliceIdx = idx > 0 ? idx - 1 : idx;
+          subset = cleaned.slice(Math.max(0, sliceIdx));
         }
-        subset = cleaned.slice(Math.max(0, idx));
       }else if(Number.isFinite(cfg?.days)){
         const last = cleaned[cleaned.length - 1]?.t;
         const windowStart = last - cfg.days * ONE_DAY_MS;
@@ -866,21 +874,28 @@ async function showNewShares(){
         if(idx === -1){
           const fallback = Math.max(0, cleaned.length - 260);
           subset = cleaned.slice(fallback);
+          anchorTime = subset[0]?.t ?? null;
         }else{
-          if(idx > 0) idx -= 1;
-          subset = cleaned.slice(Math.max(0, idx));
+          anchorTime = cleaned[idx]?.t ?? null;
+          const sliceIdx = idx > 0 ? idx - 1 : idx;
+          subset = cleaned.slice(Math.max(0, sliceIdx));
         }
       }
       if(!subset || subset.length < 2) return null;
-      let base = subset[0].p;
-      for(const pt of subset){
-        if(Number.isFinite(pt.p) && pt.p !== 0){
-          base = pt.p;
-          break;
-        }
+      let basePoint = null;
+      if(anchorTime != null){
+        basePoint = subset.find(pt => pt.t >= anchorTime && Number.isFinite(pt.p) && pt.p !== 0) || null;
       }
+      if(!basePoint){
+        basePoint = subset.find(pt => Number.isFinite(pt.p) && pt.p !== 0) || null;
+      }
+      if(!basePoint) return null;
+      const base = basePoint.p;
       if(!Number.isFinite(base) || base === 0) return null;
-      const percent = subset.map(pt => ((pt.p - base) / base) * 100);
+      const percent = subset.map(pt => ({
+        t: pt.t,
+        value: ((pt.p - base) / base) * 100,
+      }));
       return downsampleSeries(percent, cfg?.maxPoints ?? 80);
     }
 
@@ -916,8 +931,14 @@ async function showNewShares(){
       if(!points || !points.length) return '';
       const width = 110;
       const height = 36;
-      let min = Math.min(...points, 0);
-      let max = Math.max(...points, 0);
+      const valid = points.filter(pt => pt && Number.isFinite(pt.value));
+      if(!valid.length) return '';
+      let min = 0;
+      let max = 0;
+      for(const pt of valid){
+        if(pt.value < min) min = pt.value;
+        if(pt.value > max) max = pt.value;
+      }
       if(!Number.isFinite(min) || !Number.isFinite(max)) return '';
       if(Math.abs(max - min) < 0.001){
         const adjust = Math.max(1, Math.abs(max) || 1);
@@ -928,23 +949,39 @@ async function showNewShares(){
         const ratio = (value - min) / (max - min);
         return height - (ratio * height);
       };
-      const stepX = points.length > 1 ? width / (points.length - 1) : width;
-      let linePath = '';
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        linePath += (i===0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
-      }
+      const times = valid.map(pt => pt.t).filter(t => Number.isFinite(t));
+      if(!times.length) return '';
+      const minT = Math.min(...times);
+      const maxT = Math.max(...times);
+      const span = maxT - minT;
+      const coords = valid.map((pt, idx) => {
+        let x;
+        if(span > 0){
+          x = ((pt.t - minT) / span) * width;
+        }else if(valid.length > 1){
+          x = (width / (valid.length - 1)) * idx;
+        }else{
+          x = width;
+        }
+        const y = scaleY(pt.value);
+        return { x, y };
+      });
       const zeroY = scaleY(0);
-      let areaPath = `M0 ${zeroY.toFixed(2)} `;
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        areaPath += `L${x.toFixed(2)} ${y.toFixed(2)} `;
-      }
-      areaPath += `L${width.toFixed(2)} ${zeroY.toFixed(2)} Z`;
+      let linePath = '';
+      coords.forEach((pt, idx) => {
+        linePath += (idx === 0 ? 'M' : 'L') + pt.x.toFixed(2) + ' ' + pt.y.toFixed(2) + ' ';
+      });
+      const first = coords[0];
+      const last = coords[coords.length - 1];
+      let areaPath = `M${first.x.toFixed(2)} ${zeroY.toFixed(2)} `;
+      coords.forEach(pt => {
+        areaPath += `L${pt.x.toFixed(2)} ${pt.y.toFixed(2)} `;
+      });
+      areaPath += `L${last.x.toFixed(2)} ${zeroY.toFixed(2)} Z`;
+      const minX = coords.reduce((acc, pt) => Math.min(acc, pt.x), first.x);
+      const maxX = coords.reduce((acc, pt) => Math.max(acc, pt.x), first.x);
       const zeroLine = zeroY >=0 && zeroY <= height
-        ? `<line class="spark-zero" x1="0" y1="${zeroY.toFixed(2)}" x2="${width.toFixed(2)}" y2="${zeroY.toFixed(2)}"></line>`
+        ? `<line class="spark-zero" x1="${minX.toFixed(2)}" y1="${zeroY.toFixed(2)}" x2="${maxX.toFixed(2)}" y2="${zeroY.toFixed(2)}"></line>`
         : '';
       const markup = `
         <div class="spark" aria-hidden="true">
