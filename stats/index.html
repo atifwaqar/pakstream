@@ -830,15 +830,22 @@ async function showNewShares(){
 
     function downsampleSeries(series, maxPoints){
       if(!Array.isArray(series)) return [];
-      const pts = series.filter(n => Number.isFinite(n));
-      if(pts.length <= maxPoints) return pts.slice();
+      const pts = series
+        .filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.v))
+        .sort((a, b) => a.t - b.t);
+      if(pts.length === 0) return [];
+      if(pts.length <= maxPoints){
+        return pts.map(pt => ({ t: pt.t, v: pt.v }));
+      }
       const step = Math.ceil(pts.length / maxPoints);
       const out = [];
       for(let i=0;i<pts.length;i+=step){
-        out.push(pts[i]);
+        const pt = pts[i];
+        out.push({ t: pt.t, v: pt.v });
       }
-      if(out[out.length-1] !== pts[pts.length-1]){
-        out.push(pts[pts.length-1]);
+      const last = pts[pts.length-1];
+      if(!out.length || out[out.length-1].t !== last.t){
+        out.push({ t: last.t, v: last.v });
       }
       return out;
     }
@@ -880,8 +887,11 @@ async function showNewShares(){
         }
       }
       if(!Number.isFinite(base) || base === 0) return null;
-      const percent = subset.map(pt => ((pt.p - base) / base) * 100);
-      return downsampleSeries(percent, cfg?.maxPoints ?? 80);
+      const percentPoints = subset.map(pt => ({
+        t: pt.t,
+        v: ((pt.p - base) / base) * 100,
+      }));
+      return downsampleSeries(percentPoints, cfg?.maxPoints ?? 80);
     }
 
     function buildSparkSeriesMap(history){
@@ -912,12 +922,29 @@ async function showNewShares(){
       return null;
     }
 
+    function adjustSeriesToMatchValue(series, target){
+      if(!Array.isArray(series) || series.length === 0) return series;
+      if(!Number.isFinite(target)) return series;
+      const last = series[series.length - 1];
+      if(!last || !Number.isFinite(last.v)) return series;
+      const lastValue = last.v;
+      if(Math.abs(lastValue) < 1e-6) return series;
+      const scale = target / lastValue;
+      if(!Number.isFinite(scale) || Math.abs(scale - 1) < 1e-3) return series;
+      return series.map(pt => ({ t: pt.t, v: pt.v * scale }));
+    }
+
     function buildSparkSvg(points, gradientId){
-      if(!points || !points.length) return '';
+      if(!Array.isArray(points) || !points.length) return '';
+      const pts = points
+        .filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.v))
+        .sort((a, b) => a.t - b.t);
+      if(!pts.length) return '';
       const width = 110;
       const height = 36;
-      let min = Math.min(...points, 0);
-      let max = Math.max(...points, 0);
+      const values = pts.map(pt => pt.v);
+      let min = Math.min(...values, 0);
+      let max = Math.max(...values, 0);
       if(!Number.isFinite(min) || !Number.isFinite(max)) return '';
       if(Math.abs(max - min) < 0.001){
         const adjust = Math.max(1, Math.abs(max) || 1);
@@ -928,18 +955,29 @@ async function showNewShares(){
         const ratio = (value - min) / (max - min);
         return height - (ratio * height);
       };
-      const stepX = points.length > 1 ? width / (points.length - 1) : width;
+      const minT = pts[0].t;
+      const maxT = pts[pts.length - 1].t;
+      const timeSpan = maxT - minT;
+      const fallbackStepX = pts.length > 1 ? width / (pts.length - 1) : width;
+      const calcX = (pt, index) => {
+        if(timeSpan <= 0){
+          return pts.length === 1 ? width : fallbackStepX * index;
+        }
+        return ((pt.t - minT) / timeSpan) * width;
+      };
       let linePath = '';
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
+      for(let i=0;i<pts.length;i++){
+        const pt = pts[i];
+        const x = calcX(pt, i);
+        const y = scaleY(pt.v);
         linePath += (i===0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
       }
       const zeroY = scaleY(0);
       let areaPath = `M0 ${zeroY.toFixed(2)} `;
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
+      for(let i=0;i<pts.length;i++){
+        const pt = pts[i];
+        const x = calcX(pt, i);
+        const y = scaleY(pt.v);
         areaPath += `L${x.toFixed(2)} ${y.toFixed(2)} `;
       }
       areaPath += `L${width.toFixed(2)} ${zeroY.toFixed(2)} Z`;
@@ -978,7 +1016,8 @@ async function showNewShares(){
       const baseKey = row._key || row.isin || row.symbol || row.name || '';
       const gradientId = `spark-${hashSeed(String(baseKey)+'|'+field).toString(36)}`;
       const series = sparkSeriesForField(row, field);
-      const svg = series ? buildSparkSvg(series, gradientId) : '';
+      const scaled = series ? adjustSeriesToMatchValue(series, value) : null;
+      const svg = scaled ? buildSparkSvg(scaled, gradientId) : '';
       const tone = value>0 ? 'spark-pos' : value<0 ? 'spark-neg' : 'spark-neu';
       if(!svg){
         const noChartMarkup = `
