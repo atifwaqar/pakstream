@@ -10,7 +10,7 @@
 
   <style>
     :root{
-      --row-h: 44px;          /* desktop row height */
+      --row-h: 50px;          /* desktop row height */
       --border:#E6E6E7; --border-soft:#F0F1F3; --focus:#2563eb33;
 
       --pos:#1A7F37; --neg:#B42318; --neu:#6E6E73;
@@ -180,7 +180,7 @@
     /* Vertical scrolling lives here; no horizontal scroll here */
     .viewport{
       position:relative;
-      height:calc(100% - 44px); /* ≈ header height; keeps a single vertical scrollbar */
+      height:calc(100% - 50px); /* ≈ header height; keeps a single vertical scrollbar */
       overflow-y:auto;          /* vertical scroll */
       overflow-x:hidden;        /* prevent second horizontal scrollbar */
       min-width:max-content;    /* match header width so columns align */
@@ -270,7 +270,7 @@
     /* ---------- Small screens ---------- */
     @media (max-width: 768px){
       :root{
-        --row-h: 56px;  /* taller to allow up to 2 lines for name */
+        --row-h: 50px;  /* taller to allow up to 2 lines for name */
         --min-name: 10px;
         --min-ret: 90px;
       }
@@ -305,7 +305,7 @@
 
       @media (max-width: 480px){
         :root{
-          --row-h: 32px;  /* a bit taller on very small screens */
+          --row-h: 50px;  /* a bit taller on very small screens */
           --min-name: 10px;
           --min-ret: 90px;
         }
@@ -1157,7 +1157,7 @@ async function showNewShares(){
     function rowH(){
       const v = getComputedStyle(document.documentElement).getPropertyValue('--row-h').trim();
       const n = parseInt(v,10);
-      return Number.isFinite(n) ? n : 44;
+      return Number.isFinite(n) ? n : 50;
     }
 
     function matchesName(row, filter){
