@@ -1,130 +1,376 @@
 {
-  "rows": 12530,
+  "rows": 100,
   "total_hits": 12530,
   "results": [
     {
       "instrument_info": {
-        "instrument_id": 16081531,
-        "name": "Volvo, AB ser. B",
-        "long_name": "Volvo, AB ser. B",
-        "symbol": "VOLV B",
+        "instrument_id": 17385289,
+        "name": "Nordnet AB",
+        "long_name": "Nordnet AB",
+        "symbol": "SAVE",
         "instrument_group_type": "EQ",
         "instrument_type_hierarchy": "EQ/ESH",
         "instrument_type": "ESH",
-        "isin": "SE0000115446",
+        "isin": "SE0015192067",
         "currency": "SEK",
         "price_unit": "SEK",
         "clearing_place": "VPC",
         "is_tradable": true,
-        "instrument_pawn_percentage": 80,
-        "is_shortable": true,
-        "issuer_id": 249431,
-        "issuer_name": "Volvo, AB",
+        "instrument_pawn_percentage": 0,
+        "is_shortable": false,
+        "issuer_id": 249793,
+        "issuer_name": "Nordnet AB (publ)",
         "is_monthly_saveable": false,
         "mifid2_id": 0,
-        "instrument_icon_url": "https://cdn.prod.nntech.io/cms-proxy/6xe8ehctp75g/1KvLEC0f4dg5BT3TnYxe8W/83b5390d2eff7953fb196158b5fc8ee4/volvo.png"
+        "instrument_icon_url": "https://cdn.prod.nntech.io/cms-proxy/6xe8ehctp75g/12b1HRe4kxclpz8zlubY6A/60e2a7d7d793617c4c45b1a87846805c/Nordnet.png"
       },
       "status_info": {
         "trading_status": "TRADING",
         "translated_trading_status": "Öppen",
-        "tick_timestamp": 1760684582000
+        "tick_timestamp": 1760684402000
       },
       "market_info": {
         "market_id": 11,
         "market_sub_id": 4711,
-        "identifier": "366",
-        "tick_size_id": 14734
+        "identifier": "209451",
+        "tick_size_id": 14733
       },
       "price_info": {
         "last": {
-          "price": 247,
+          "price": 277.6,
           "decimals": 2
         },
         "open": {
-          "price": 250.8,
+          "price": 287,
           "decimals": 2
         },
         "close": {
-          "price": 268.2,
+          "price": 286,
           "decimals": 2
         },
-        "turnover": 1715968655.2,
-        "turnover_normalized": 1715968655.2,
-        "turnover_volume": 6856799,
+        "turnover": 9000050.1,
+        "turnover_normalized": 9000050.1,
+        "turnover_volume": 32171,
         "bid": {
-          "price": 246.9,
+          "price": 277.4,
           "decimals": 2
         },
         "ask": {
-          "price": 247,
+          "price": 278,
           "decimals": 2
         },
-        "bid_volume": 2027,
-        "ask_volume": 1628,
+        "bid_volume": 270,
+        "ask_volume": 190,
         "high": {
-          "price": 257.3,
+          "price": 287,
           "decimals": 2
         },
         "low": {
-          "price": 244.9,
+          "price": 277.2,
           "decimals": 2
         },
         "diff": {
-          "diff": -21.2,
+          "diff": -8.4,
           "decimals": 2
         },
-        "diff_pct": -7.9,
+        "diff_pct": -2.94,
         "spread": {
-          "price": 0.1,
+          "price": 0.6,
           "decimals": 4
         },
-        "spread_pct": 0.04,
-        "tick_timestamp": 1760695242000,
+        "spread_pct": 0.22,
+        "tick_timestamp": 1760695211000,
         "realtime": false
       },
       "exchange_info": {
         "exchange_country": "SE",
         "exchanges": [
-          "Nasdaq Stockholm Large Cap",
-          "OMXS30"
+          "Nasdaq Stockholm Large Cap"
         ]
       },
       "key_ratios_info": {
-        "pe": 14.33,
-        "ps": 1.09,
-        "eps": 24.78,
-        "pb": 3.33,
-        "dividend_per_share": 8,
-        "dividend_yield": 2.98
+        "pe": 25.45,
+        "ps": 10.72,
+        "eps": 10.86,
+        "pb": 11.13,
+        "dividend_per_share": 8.1,
+        "dividend_yield": 2.83
       },
       "historical_returns_info": {
-        "yield_1d": -7.9,
-        "yield_1w": -7.84,
-        "yield_1m": -10.02,
-        "yield_3m": -8.28,
-        "yield_ytd": -8.04,
-        "yield_1y": -7.66,
-        "yield_3y": 47.73,
-        "yield_5y": 35.16,
-        "yield_10y": 194.93,
-        "yield_max": 362.55,
+        "yield_1d": -2.94,
+        "yield_1w": -3.07,
+        "yield_1m": 2.59,
+        "yield_3m": 0.73,
+        "yield_ytd": 18.23,
+        "yield_1y": 24.26,
+        "yield_3y": 146.65,
+        "yield_max": 164.38,
+        "realtime": false
+      },
+      "company_info": {
+        "report_date": 1760997600000,
+        "report_type": "THIRD_QUARTER_EARNINGS_RESULTS",
+        "report_description": "Q3-rapport",
+        "market_cap": 70948802210
+      },
+      "statistical_info": {
+        "statistics_timestamp": 1760693451845,
+        "number_of_owners": 19136
+      },
+      "nnx_info": {
+        "nnx_instrument_id": "3403c5c5-e72b-43df-a2e0-e3f8c74cc588",
+        "trading_order_book_id": "daf2d8a6-18ca-4bbb-b69d-81c559010902",
+        "market_data_order_book_id": "daf2d8a6-18ca-4bbb-b69d-81c559010902",
+        "display_slug": "nordnet-save-xsto",
+        "instrument_class": "STOCK"
+      }
+    },
+    {
+      "instrument_info": {
+        "instrument_id": 16863190,
+        "name": "I-Tech AB",
+        "long_name": "I-Tech AB",
+        "symbol": "ITECH",
+        "instrument_group_type": "EQ",
+        "instrument_type_hierarchy": "EQ/ESHMTF",
+        "instrument_type": "ESHMTF",
+        "isin": "SE0011167725",
+        "currency": "SEK",
+        "price_unit": "SEK",
+        "clearing_place": "VPC",
+        "is_tradable": true,
+        "instrument_pawn_percentage": 40,
+        "is_shortable": false,
+        "issuer_id": 260277,
+        "issuer_name": "I-Tech AB",
+        "is_monthly_saveable": false,
+        "mifid2_id": 0,
+        "instrument_icon_url": "https://cdn.prod.nntech.io/cms-proxy/6xe8ehctp75g/2TstXrf28oS36ygsoFqSMM/576b72977e6958fc4090b94ec83d063f/image.png"
+      },
+      "status_info": {
+        "trading_status": "TRADING",
+        "translated_trading_status": "Öppen",
+        "tick_timestamp": 1760684403000
+      },
+      "market_info": {
+        "market_id": 11,
+        "market_sub_id": 4697,
+        "identifier": "155401",
+        "tick_size_id": 14731
+      },
+      "price_info": {
+        "last": {
+          "price": 81.4,
+          "decimals": 2
+        },
+        "open": {
+          "price": 91.4,
+          "decimals": 2
+        },
+        "close": {
+          "price": 96.2,
+          "decimals": 2
+        },
+        "turnover": 8806021.7,
+        "turnover_normalized": 8806021.7,
+        "turnover_volume": 105017,
+        "bid": {
+          "price": 81,
+          "decimals": 2
+        },
+        "ask": {
+          "price": 81.8,
+          "decimals": 2
+        },
+        "bid_volume": 300,
+        "ask_volume": 721,
+        "high": {
+          "price": 91.4,
+          "decimals": 2
+        },
+        "low": {
+          "price": 80.6,
+          "decimals": 2
+        },
+        "diff": {
+          "diff": -14.8,
+          "decimals": 2
+        },
+        "diff_pct": -15.38,
+        "spread": {
+          "price": 0.8,
+          "decimals": 3
+        },
+        "spread_pct": 0.98,
+        "tick_timestamp": 1760694987000,
+        "realtime": false
+      },
+      "exchange_info": {
+        "exchange_country": "SE",
+        "exchanges": [
+          "First North Stockholm"
+        ]
+      },
+      "key_ratios_info": {
+        "pe": 28.99,
+        "ps": 6.13,
+        "eps": 3.28,
+        "pb": 7.28,
+        "dividend_per_share": 1.75,
+        "dividend_yield": 1.82
+      },
+      "historical_returns_info": {
+        "yield_1d": -15.38,
+        "yield_1w": -16.08,
+        "yield_1m": -13.77,
+        "yield_3m": -24.98,
+        "yield_ytd": 40.34,
+        "yield_1y": 69.58,
+        "yield_3y": 119.41,
+        "yield_5y": 10,
+        "yield_max": 230.02,
         "realtime": false
       },
       "company_info": {
         "report_date": 1760652000000,
         "report_type": "THIRD_QUARTER_EARNINGS_RESULTS",
         "report_description": "Q3-rapport",
-        "market_cap": 545371021800
+        "market_cap": 1154188360
       },
       "statistical_info": {
-        "statistics_timestamp": 1760693450457,
-        "number_of_owners": 31632
+        "statistics_timestamp": 1760693450276,
+        "number_of_owners": 801
       },
       "nnx_info": {
-        "nnx_instrument_id": "8c760a5b-a8ed-4b91-a49a-40d81fc36425",
-        "trading_order_book_id": "c4d2a016-0923-4411-ae62-dee5d5c87d2f",
-        "market_data_order_book_id": "c4d2a016-0923-4411-ae62-dee5d5c87d2f",
-        "display_slug": "volvo-b-volv-b-xsto",
+        "nnx_instrument_id": "31303633-0a7c-44f2-87df-5b906005c446",
+        "trading_order_book_id": "1ae4bf48-82f9-40cb-93cd-ce47708948e1",
+        "market_data_order_book_id": "1ae4bf48-82f9-40cb-93cd-ce47708948e1",
+        "display_slug": "i-tech-itech-ssme",
+        "instrument_class": "STOCK"
+      }
+    },
+    {
+      "instrument_info": {
+        "instrument_id": 16457210,
+        "name": "Lagercrantz Group AB ser B",
+        "long_name": "Lagercrantz Group AB ser B",
+        "symbol": "LAGR B",
+        "instrument_group_type": "EQ",
+        "instrument_type_hierarchy": "EQ/ESH",
+        "instrument_type": "ESH",
+        "isin": "SE0014990966",
+        "currency": "SEK",
+        "price_unit": "SEK",
+        "clearing_place": "VPC",
+        "is_tradable": true,
+        "instrument_pawn_percentage": 80,
+        "is_shortable": true,
+        "issuer_id": 249900,
+        "issuer_name": "LAGERCRANTZ GROUP",
+        "is_monthly_saveable": false,
+        "mifid2_id": 0,
+        "instrument_icon_url": "https://cdn.prod.nntech.io/cms-proxy/6xe8ehctp75g/6kvcc1YIwfITJIvk9WBiFl/7bc00c6fb3b8dc761a3c9457dfe6d5a5/image.png"
+      },
+      "status_info": {
+        "trading_status": "TRADING",
+        "translated_trading_status": "Öppen",
+        "tick_timestamp": 1760684404000
+      },
+      "market_info": {
+        "market_id": 11,
+        "market_sub_id": 4711,
+        "identifier": "14335",
+        "tick_size_id": 14733
+      },
+      "price_info": {
+        "last": {
+          "price": 205.6,
+          "decimals": 2
+        },
+        "open": {
+          "price": 208,
+          "decimals": 2
+        },
+        "close": {
+          "price": 211,
+          "decimals": 2
+        },
+        "turnover": 8595458.1,
+        "turnover_normalized": 8595458.1,
+        "turnover_volume": 41678,
+        "bid": {
+          "price": 205.2,
+          "decimals": 2
+        },
+        "ask": {
+          "price": 205.8,
+          "decimals": 2
+        },
+        "bid_volume": 651,
+        "ask_volume": 256,
+        "high": {
+          "price": 209.4,
+          "decimals": 2
+        },
+        "low": {
+          "price": 204.6,
+          "decimals": 2
+        },
+        "diff": {
+          "diff": -5.4,
+          "decimals": 2
+        },
+        "diff_pct": -2.56,
+        "spread": {
+          "price": 0.6,
+          "decimals": 4
+        },
+        "spread_pct": 0.29,
+        "tick_timestamp": 1760695222000,
+        "realtime": false
+      },
+      "exchange_info": {
+        "exchange_country": "SE",
+        "exchanges": [
+          "Nasdaq Stockholm Large Cap"
+        ]
+      },
+      "key_ratios_info": {
+        "pe": 40.98,
+        "ps": 4.54,
+        "eps": 4.94,
+        "pb": 10.69,
+        "dividend_per_share": 2.2,
+        "dividend_yield": 1.04
+      },
+      "historical_returns_info": {
+        "yield_1d": -2.56,
+        "yield_1w": -4.28,
+        "yield_1m": -9.9,
+        "yield_3m": -13.47,
+        "yield_ytd": -0.96,
+        "yield_1y": 8.27,
+        "yield_3y": 158.78,
+        "yield_5y": 240.85,
+        "yield_10y": 831.02,
+        "yield_max": 10354.24,
+        "realtime": false
+      },
+      "company_info": {
+        "report_date": 1761256800000,
+        "report_type": "SECOND_QUARTER_EARNINGS_RESULTS",
+        "report_description": "Q2-rapport",
+        "market_cap": 43490111814
+      },
+      "statistical_info": {
+        "statistics_timestamp": 1760693452922,
+        "number_of_owners": 2513
+      },
+      "nnx_info": {
+        "nnx_instrument_id": "1063b285-a95f-46ab-9830-fa94b4a345f6",
+        "trading_order_book_id": "28673223-3ac7-4b35-ba9a-76a0d3b01cef",
+        "market_data_order_book_id": "28673223-3ac7-4b35-ba9a-76a0d3b01cef",
+        "display_slug": "lagercrantz-group-b-lagr-b-xsto",
         "instrument_class": "STOCK"
       }
     }
