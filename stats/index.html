@@ -20,7 +20,7 @@
       --min-price: 70px;
       --min-currency: 60px;
       --min-owners: 80px;
-      --min-ret:  110px;
+      --min-ret:  55px;
 
       /* growth ratios (desktop) */
       --name-fr: 1.8fr; --price-fr: .8fr; --currency-fr: .6fr; --owners-fr: .9fr; --ret-fr: .8fr;
@@ -244,35 +244,12 @@
     .neg-text{ color:var(--neg); }
     .neu-text{ color:var(--neu); }
 
-    .spark-wrap{
-      display:flex; align-items:center; justify-content:flex-end;
-      gap:8px; min-width:110px;
-    }
-    .spark-wrap.spark-pos{ color:var(--pos); }
-    .spark-wrap.spark-neg{ color:var(--neg); }
-    .spark-wrap.spark-neu{ color:var(--neu); }
-    .spark{
-      width:110px; height:36px; flex-shrink:0;
-    }
-    .spark svg{
-      display:block; width:100%; height:100%; pointer-events:none;
-    }
-    .spark-area{ stroke:none; }
-    .spark-line{ fill:none; stroke:currentColor; stroke-width:1.6; }
-    .spark-zero{ stroke:rgba(11,11,12,0.18); stroke-width:0.6; }
-    .spark-empty{
-      border-radius:6px;
-      background-image:linear-gradient(135deg, rgba(11,11,12,0.05) 25%, transparent 25%, transparent 50%, rgba(11,11,12,0.05) 50%, rgba(11,11,12,0.05) 75%, transparent 75%, transparent);
-      background-size:6px 6px;
-      border:1px dashed rgba(11,11,12,0.1);
-    }
-
     /* ---------- Small screens ---------- */
     @media (max-width: 768px){
       :root{
         --row-h: 56px;  /* taller to allow up to 2 lines for name */
         --min-name: 10px;
-        --min-ret: 90px;
+        --min-ret: 55px;
       }
       .controls{ padding:10px }
       .header-grid{ padding:6px 10px }
@@ -297,9 +274,6 @@
         font-size:13px;
       }
 
-      .spark-wrap{ min-width:90px; }
-      .spark{ width:90px; }
-
       .val, .cell{ font-size:12.5px }
     }
 
@@ -307,15 +281,12 @@
         :root{
           --row-h: 32px;  /* a bit taller on very small screens */
           --min-name: 10px;
-          --min-ret: 90px;
+          --min-ret: 55px;
         }
         .pill-btn{
           width:34px;
           height:34px;
         }
-
-        .spark-wrap{ min-width:84px; }
-        .spark{ width:84px; }
       }
 	
 	/* Force left align for the Name header cell */
@@ -607,460 +578,6 @@ async function showNewShares(){
     const DEBOUNCE_RULE = 200;
 
     const nval = n => Number.isFinite(n) ? n : null;
-
-    const RETURN_FIELDS = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
-
-    function returnClass(n){
-      if(n==null) return 'neu-text';
-      return n>0 ? 'pos-text' : 'neg-text';
-    }
-
-    function formatReturn(n){
-      if(n==null) return '—';
-      const v=Math.round(Math.abs(n));
-      return v.toLocaleString('en-US');
-    }
-
-    function hashSeed(str){
-      let h=1779033703 ^ str.length;
-      for(let i=0;i<str.length;i++){
-        h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
-        h = (h << 13) | (h >>> 19);
-      }
-      h = Math.imul(h ^ (h >>> 16), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909);
-      return (h ^ (h >>> 16)) >>> 0;
-    }
-
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-    const EXCHANGE_SUFFIX_MAP = {
-      xnas: '',
-      xnys: '',
-      xase: '',
-      xsto: '.ST',
-      xhel: '.HE',
-      xosl: '.OL',
-      xcse: '.CO',
-      xetr: '.DE',
-      xetra: '.DE',
-      xfse: '.F',
-      xfra: '.F',
-      xpar: '.PA',
-      xbru: '.BR',
-      xmad: '.MC',
-      xmil: '.MI',
-      xtse: '.TO',
-      xtsx: '.V',
-      xlon: '.L',
-      xams: '.AS',
-      xlis: '.LS',
-      xswx: '.SW',
-      xtks: '.T',
-      xtyo: '.T',
-      xhkg: '.HK',
-      xsgo: '.SN',
-      xbue: '.BA',
-      xmex: '.MX',
-      xjse: '.JO',
-      xidx: '.JK',
-      xtal: '.IS',
-      xcp: '.CO',
-      xwbo: '.VI',
-      xber: '.BE',
-      xmadx: '.MC',
-      xtse_x: '.TO',
-      xsto_x: '.ST',
-    };
-
-    const SPARK_FIELD_CONFIG = {
-      yield_1d: { days: 1, maxPoints: 40 },
-      yield_1w: { days: 7, maxPoints: 50 },
-      yield_1m: { days: 30, maxPoints: 60 },
-      yield_3m: { days: 90, maxPoints: 70 },
-      yield_ytd: { type: 'ytd', maxPoints: 80 },
-      yield_1y: { days: 365, maxPoints: 80 },
-      yield_3y: { days: 365 * 3, maxPoints: 80 },
-      yield_5y: { days: 365 * 5, maxPoints: 80 },
-      yield_10y: { days: 365 * 10, maxPoints: 80 },
-      yield_max: { type: 'max', maxPoints: 80 },
-    };
-
-    const yahooFetchQueue = [];
-    const yahooQueuedKeys = new Set();
-    const yahooHistoryCache = new Map();
-    const sparkSeriesCache = new Map();
-    const yahooSearchCache = new Map();
-    let yahooActiveRequests = 0;
-    const YAHOO_MAX_CONCURRENT = 2;
-    const YAHOO_RATE_LIMIT_DELAY_MS = 4500;
-
-    function cacheKeyForRow(row){
-      if(!row || typeof row !== 'object') return null;
-      return row._key || row.isin || row.symbol || row.name || null;
-    }
-
-    function normalizeSymbolCandidate(symbol){
-      return (symbol || '').trim().replace(/\s+/g, '').replace(/[^0-9A-Za-z\-\.]/g, '').toUpperCase();
-    }
-
-    function dashSymbolCandidate(symbol){
-      return (symbol || '').trim().replace(/\s+/g, '-').replace(/[^0-9A-Za-z\-\.]/g, '').toUpperCase();
-    }
-
-    function symbolCandidatesFromRow(row){
-      const out = new Set();
-      const rawSymbol = (row?.symbol || '').trim();
-      if(rawSymbol){
-        const compact = normalizeSymbolCandidate(rawSymbol);
-        if(compact) out.add(compact);
-        const dashed = dashSymbolCandidate(rawSymbol);
-        if(dashed) out.add(dashed);
-      }
-      const slug = (row?.display_slug || '').trim();
-      if(rawSymbol && slug){
-        const parts = slug.split('-');
-        const exchange = parts[parts.length - 1];
-        const suffix = EXCHANGE_SUFFIX_MAP[exchange?.toLowerCase?.() || exchange] ?? '';
-        if(suffix){
-          const compact = normalizeSymbolCandidate(rawSymbol);
-          if(compact) out.add(compact + suffix);
-          const dashed = dashSymbolCandidate(rawSymbol);
-          if(dashed) out.add(dashed + suffix);
-        }
-      }
-      return Array.from(out).filter(Boolean);
-    }
-
-    function searchQueriesForRow(row){
-      const out = new Set();
-      if(row?.isin) out.add(String(row.isin).trim());
-      if(row?.symbol) out.add(String(row.symbol).trim());
-      if(row?.name) out.add(String(row.name).trim());
-      return Array.from(out).filter(Boolean);
-    }
-
-    async function yahooSearch(query){
-      const normalized = (query || '').trim().toLowerCase();
-      if(!normalized) return [];
-      if(yahooSearchCache.has(normalized)){
-        return yahooSearchCache.get(normalized);
-      }
-      try{
-        const res = await fetch(`https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`);
-        if(!res.ok) throw new Error(`Search HTTP ${res.status}`);
-        const json = await res.json();
-        const quotes = Array.isArray(json?.quotes) ? json.quotes : [];
-        const symbols = quotes
-          .filter(item => {
-            if(!item || typeof item.symbol !== 'string') return false;
-            const type = (item.quoteType || item.typeDisp || '').toUpperCase();
-            return !type || type === 'EQUITY' || type === 'ETF' || type === 'MUTUALFUND' || type === 'FUND';
-          })
-          .map(item => item.symbol)
-          .slice(0, 6);
-        yahooSearchCache.set(normalized, symbols);
-        return symbols;
-      }catch(err){
-        console.warn('Yahoo search failed for query', query, err);
-        yahooSearchCache.set(normalized, []);
-        return [];
-      }
-    }
-
-    function rateLimitError(retryAfter){
-      const err = new Error('Yahoo Finance rate limit');
-      err.rateLimited = true;
-      err.retryAfter = Number.isFinite(retryAfter) ? Math.max(retryAfter * 1000, 1000) : null;
-      return err;
-    }
-
-    async function fetchYahooChart(symbol){
-      const cleaned = normalizeSymbolCandidate(symbol);
-      if(!cleaned) return null;
-      const originalSymbol = symbol;
-      const encoded = encodeURIComponent(cleaned);
-      const attempts = [
-        { range: '1y', interval: '1d' },
-        { range: '10y', interval: '1d' },
-        { range: 'max', interval: '1wk' },
-      ];
-      for(const attempt of attempts){
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encoded}?range=${attempt.range}&interval=${attempt.interval}&includePrePost=false&events=div%2Csplit&corsDomain=finance.yahoo.com`;
-        try{
-          const res = await fetch(url);
-          if(res && (res.status === 429 || res.status === 503)){
-            const retryAfterHeader = res.headers?.get?.('retry-after');
-            const retryAfter = retryAfterHeader ? parseFloat(retryAfterHeader) : null;
-            throw rateLimitError(retryAfter);
-          }
-          if(!res.ok) continue;
-          const json = await res.json();
-          const result = json?.chart?.result?.[0];
-          if(!result) continue;
-          const timestamps = Array.isArray(result.timestamp) ? result.timestamp : [];
-          const closes = result?.indicators?.quote?.[0]?.close || [];
-          const series = [];
-          for(let i=0;i<timestamps.length;i++){
-            const ts = timestamps[i];
-            const price = closes[i];
-            if(Number.isFinite(ts) && Number.isFinite(price)){
-              series.push({ t: ts * 1000, p: price });
-            }
-          }
-          if(series.length >= 2){
-            return { history: series, symbol: cleaned, original: originalSymbol, range: attempt.range, interval: attempt.interval };
-          }
-        }catch(err){
-          if(err?.rateLimited){
-            throw err;
-          }
-          console.warn('Yahoo chart fetch failed for', cleaned, attempt, err);
-        }
-      }
-      return null;
-    }
-
-    async function fetchYahooHistory(row){
-      const attempted = new Set();
-      const directCandidates = symbolCandidatesFromRow(row);
-      for(const candidate of directCandidates){
-        if(!candidate || attempted.has(candidate)) continue;
-        attempted.add(candidate);
-        const chart = await fetchYahooChart(candidate);
-        if(chart){
-          return chart;
-        }
-      }
-      const queries = searchQueriesForRow(row);
-      for(const query of queries){
-        const symbols = await yahooSearch(query);
-        for(const sym of symbols){
-          const normalized = normalizeSymbolCandidate(sym);
-          if(!normalized || attempted.has(normalized)) continue;
-          attempted.add(normalized);
-          const chart = await fetchYahooChart(sym);
-          if(chart){
-            return chart;
-          }
-        }
-      }
-      throw new Error('No Yahoo price series found');
-    }
-
-    function downsampleSeries(series, maxPoints){
-      if(!Array.isArray(series)) return [];
-      const pts = series.filter(n => Number.isFinite(n));
-      if(pts.length <= maxPoints) return pts.slice();
-      const step = Math.ceil(pts.length / maxPoints);
-      const out = [];
-      for(let i=0;i<pts.length;i+=step){
-        out.push(pts[i]);
-      }
-      if(out[out.length-1] !== pts[pts.length-1]){
-        out.push(pts[pts.length-1]);
-      }
-      return out;
-    }
-
-    function computePercentSeries(history, cfg){
-      if(!Array.isArray(history) || history.length < 2) return null;
-      const cleaned = history.filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.p));
-      if(cleaned.length < 2) return null;
-      let subset = cleaned;
-      if(cfg?.type === 'max'){
-        subset = cleaned;
-      }else if(cfg?.type === 'ytd'){
-        const start = new Date(new Date().getFullYear(), 0, 1).getTime();
-        let idx = cleaned.findIndex(pt => pt.t >= start);
-        if(idx === -1){
-          idx = Math.max(0, cleaned.length - 260);
-        }else if(idx > 0){
-          idx -= 1;
-        }
-        subset = cleaned.slice(Math.max(0, idx));
-      }else if(Number.isFinite(cfg?.days)){
-        const last = cleaned[cleaned.length - 1]?.t;
-        const windowStart = last - cfg.days * ONE_DAY_MS;
-        let idx = cleaned.findIndex(pt => pt.t >= windowStart);
-        if(idx === -1){
-          const fallback = Math.max(0, cleaned.length - 260);
-          subset = cleaned.slice(fallback);
-        }else{
-          if(idx > 0) idx -= 1;
-          subset = cleaned.slice(Math.max(0, idx));
-        }
-      }
-      if(!subset || subset.length < 2) return null;
-      let base = subset[0].p;
-      for(const pt of subset){
-        if(Number.isFinite(pt.p) && pt.p !== 0){
-          base = pt.p;
-          break;
-        }
-      }
-      if(!Number.isFinite(base) || base === 0) return null;
-      const percent = subset.map(pt => ((pt.p - base) / base) * 100);
-      return downsampleSeries(percent, cfg?.maxPoints ?? 80);
-    }
-
-    function buildSparkSeriesMap(history){
-      const out = {};
-      for(const [field, cfg] of Object.entries(SPARK_FIELD_CONFIG)){
-        const series = computePercentSeries(history, cfg);
-        if(series && series.length >= 2){
-          out[field] = series;
-        }
-      }
-      return out;
-    }
-
-    function scheduleYahooFetch(row){
-      const cacheKey = cacheKeyForRow(row);
-      if(!cacheKey) return;
-      if(yahooHistoryCache.has(cacheKey) || yahooQueuedKeys.has(cacheKey)) return;
-      yahooQueuedKeys.add(cacheKey);
-      yahooFetchQueue.push({ cacheKey, row });
-      processYahooQueue();
-    }
-
-    function processYahooQueue(){
-      if(yahooActiveRequests >= YAHOO_MAX_CONCURRENT) return;
-      const next = yahooFetchQueue.shift();
-      if(!next) return;
-      yahooActiveRequests++;
-      const { cacheKey, row } = next;
-      yahooHistoryCache.set(cacheKey, { status: 'pending' });
-      (async ()=>{
-        let retryDelay = null;
-        try{
-          const result = await fetchYahooHistory(row);
-          if(result && Array.isArray(result.history) && result.history.length >= 2){
-            yahooHistoryCache.set(cacheKey, { status: 'ready', symbol: result.symbol, range: result.range, interval: result.interval });
-            const map = buildSparkSeriesMap(result.history);
-            if(map && Object.keys(map).length){
-              sparkSeriesCache.set(cacheKey, map);
-              renderWindow();
-            }
-          }else{
-            yahooHistoryCache.set(cacheKey, { status: 'empty' });
-          }
-        }catch(err){
-          if(err?.rateLimited){
-            retryDelay = err.retryAfter ?? YAHOO_RATE_LIMIT_DELAY_MS;
-            yahooHistoryCache.delete(cacheKey);
-            console.warn('Yahoo rate limited, will retry for', row?.symbol || row?.isin || row?.name, 'in', retryDelay, 'ms');
-          }else{
-            yahooHistoryCache.set(cacheKey, { status: 'error', error: err });
-            console.warn('Could not load Yahoo data for', row?.symbol || row?.isin || row?.name, err);
-          }
-        }finally{
-          yahooActiveRequests--;
-          yahooQueuedKeys.delete(cacheKey);
-          if(yahooFetchQueue.length) processYahooQueue();
-          if(retryDelay!=null){
-            setTimeout(()=>{
-              scheduleYahooFetch(row);
-            }, retryDelay);
-          }
-        }
-      })();
-    }
-
-    function sparkSeriesForField(row, field){
-      const cacheKey = cacheKeyForRow(row);
-      if(cacheKey){
-        const cached = sparkSeriesCache.get(cacheKey);
-        if(cached && cached[field] && cached[field].length > 1){
-          return cached[field];
-        }
-        scheduleYahooFetch(row);
-      }
-      return null;
-    }
-
-    function buildSparkSvg(points, gradientId){
-      if(!points || !points.length) return '';
-      const width = 110;
-      const height = 36;
-      let min = Math.min(...points, 0);
-      let max = Math.max(...points, 0);
-      if(!Number.isFinite(min) || !Number.isFinite(max)) return '';
-      if(Math.abs(max - min) < 0.001){
-        const adjust = Math.max(1, Math.abs(max) || 1);
-        min -= adjust;
-        max += adjust;
-      }
-      const scaleY = value => {
-        const ratio = (value - min) / (max - min);
-        return height - (ratio * height);
-      };
-      const stepX = points.length > 1 ? width / (points.length - 1) : width;
-      let linePath = '';
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        linePath += (i===0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
-      }
-      const zeroY = scaleY(0);
-      let areaPath = `M0 ${zeroY.toFixed(2)} `;
-      for(let i=0;i<points.length;i++){
-        const x = points.length === 1 ? width : stepX * i;
-        const y = scaleY(points[i]);
-        areaPath += `L${x.toFixed(2)} ${y.toFixed(2)} `;
-      }
-      areaPath += `L${width.toFixed(2)} ${zeroY.toFixed(2)} Z`;
-      const zeroLine = zeroY >=0 && zeroY <= height
-        ? `<line class="spark-zero" x1="0" y1="${zeroY.toFixed(2)}" x2="${width.toFixed(2)}" y2="${zeroY.toFixed(2)}"></line>`
-        : '';
-      const markup = `
-        <div class="spark" aria-hidden="true">
-          <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="currentColor" stop-opacity="0.25"></stop>
-                <stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
-              </linearGradient>
-            </defs>
-            ${zeroLine}
-            <path class="spark-area" d="${areaPath.trim()}" fill="url(#${gradientId})"></path>
-            <path class="spark-line" d="${linePath.trim()}" vector-effect="non-scaling-stroke"></path>
-          </svg>
-        </div>
-      `;
-      return markup.trim();
-    }
-
-    function renderSpark(row, field){
-      const value = row[field];
-      if(value==null){
-        const emptyMarkup = `
-        <div class="spark-wrap spark-neu">
-          <span class="val neu-text">—</span>
-          <div class="spark spark-empty" aria-hidden="true"></div>
-        </div>
-        `;
-        return emptyMarkup.trim();
-      }
-      const baseKey = row._key || row.isin || row.symbol || row.name || '';
-      const gradientId = `spark-${hashSeed(String(baseKey)+'|'+field).toString(36)}`;
-      const series = sparkSeriesForField(row, field);
-      const svg = series ? buildSparkSvg(series, gradientId) : '';
-      const tone = value>0 ? 'spark-pos' : value<0 ? 'spark-neg' : 'spark-neu';
-      if(!svg){
-        const noChartMarkup = `
-        <div class="spark-wrap ${tone} no-spark">
-          <span class="val ${returnClass(value)}">${formatReturn(value)}</span>
-        </div>
-        `;
-        return noChartMarkup.trim();
-      }
-      const markup = `
-        <div class="spark-wrap ${tone}">
-          <span class="val ${returnClass(value)}">${formatReturn(value)}</span>
-          ${svg}
-        </div>
-      `;
-      return markup.trim();
-    }
     function resolveDisplayPrice(pi){
       if(!pi || typeof pi !== 'object'){
         return { price:null, decimals:null };
@@ -1109,7 +626,7 @@ async function showNewShares(){
     let all=[], base=[], view=[];
     let showPriceCurrency=false;
     let sortKey='yield_ytd', sortDir='desc';
-    const ruleFields = [...RETURN_FIELDS];
+    const ruleFields = ['yield_1d','yield_1w','yield_1m','yield_3m','yield_ytd','yield_1y','yield_3y','yield_5y','yield_10y','yield_max'];
 
     const columnFilters = { name:'', price:'', currency:'', owners:'10000' };
 
@@ -1338,6 +855,14 @@ async function showNewShares(){
 
         function buildRow(r){
           const url = r.display_slug ? `https://www.nordnet.se/aktier/kurser/${encodeURIComponent(r.display_slug)}` : '';
+          const cls = n => n==null ? 'neu-text' : n>0 ? 'pos-text' : 'neg-text';
+          const fmt = n => {
+            if (n == null) return '—';
+            const v = Math.round(Math.abs(n));
+            return v.toLocaleString('en-US'); // adds commas for thousands
+            // If you want European-style spacing, use 'sv-SE' instead (e.g., "3 178 900")
+          };
+
           const classes = ['row'];
           if (r._key && visitedKeys.has(r._key)) classes.push('row-visited');
           if (r._key && r._key === lastClickedKey) classes.push('row-active');
@@ -1352,16 +877,16 @@ async function showNewShares(){
                   <div class="right col-price"><span class="val">${formatPrice(r.price, r.price_decimals)}</span></div>
                   <div class="center col-currency"><span class="val">${r.currency ? esc(r.currency) : '—'}</span></div>
                   <div class="right col-owners"><span class="val">${r.number_of_owners!=null ? Number(r.number_of_owners).toLocaleString('en-US') : '—'}</span></div>
-                  <div class="right">${renderSpark(r,'yield_1d')}</div>
-                  <div class="right">${renderSpark(r,'yield_1w')}</div>
-                  <div class="right">${renderSpark(r,'yield_1m')}</div>
-                  <div class="right">${renderSpark(r,'yield_3m')}</div>
-                  <div class="right">${renderSpark(r,'yield_ytd')}</div>
-                  <div class="right">${renderSpark(r,'yield_1y')}</div>
-                  <div class="right">${renderSpark(r,'yield_3y')}</div>
-                  <div class="right">${renderSpark(r,'yield_5y')}</div>
-                  <div class="right">${renderSpark(r,'yield_10y')}</div>
-                  <div class="right">${renderSpark(r,'yield_max')}</div>
+                  <div class="right"><span class="val ${cls(r.yield_1d)}">${fmt(r.yield_1d)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1w)}">${fmt(r.yield_1w)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_1m)}">${fmt(r.yield_1m)}</span></div>
+                  <div class="right"><span class="val ${cls(r.yield_3m)}">${fmt(r.yield_3m)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_ytd)}">${fmt(r.yield_ytd)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_1y)}">${fmt(r.yield_1y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_3y)}">${fmt(r.yield_3y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_5y)}">${fmt(r.yield_5y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_10y)}">${fmt(r.yield_10y)}</span></div>
+		  <div class="right"><span class="val ${cls(r.yield_max)}">${fmt(r.yield_max)}</span></div>
                 </a>`;
         }
 
