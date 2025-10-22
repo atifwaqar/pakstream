@@ -852,17 +852,21 @@ async function showNewShares(){
       const cleaned = history.filter(pt => pt && Number.isFinite(pt.t) && Number.isFinite(pt.p));
       if(cleaned.length < 2) return null;
       let subset = cleaned;
+      let anchorTime = subset[0]?.t ?? null;
       if(cfg?.type === 'max'){
-        subset = cleaned;
+        anchorTime = subset[0]?.t ?? null;
       }else if(cfg?.type === 'ytd'){
         const start = new Date(new Date().getFullYear(), 0, 1).getTime();
         let idx = cleaned.findIndex(pt => pt.t >= start);
         if(idx === -1){
-          idx = Math.max(0, cleaned.length - 260);
-        }else if(idx > 0){
-          idx -= 1;
+          const fallback = Math.max(0, cleaned.length - 260);
+          subset = cleaned.slice(fallback);
+          anchorTime = subset[0]?.t ?? null;
+        }else{
+          anchorTime = cleaned[idx]?.t ?? null;
+          const sliceIdx = idx > 0 ? idx - 1 : idx;
+          subset = cleaned.slice(Math.max(0, sliceIdx));
         }
-        subset = cleaned.slice(Math.max(0, idx));
       }else if(Number.isFinite(cfg?.days)){
         const last = cleaned[cleaned.length - 1]?.t;
         const windowStart = last - cfg.days * ONE_DAY_MS;
@@ -870,19 +874,23 @@ async function showNewShares(){
         if(idx === -1){
           const fallback = Math.max(0, cleaned.length - 260);
           subset = cleaned.slice(fallback);
+          anchorTime = subset[0]?.t ?? null;
         }else{
-          if(idx > 0) idx -= 1;
-          subset = cleaned.slice(Math.max(0, idx));
+          anchorTime = cleaned[idx]?.t ?? null;
+          const sliceIdx = idx > 0 ? idx - 1 : idx;
+          subset = cleaned.slice(Math.max(0, sliceIdx));
         }
       }
       if(!subset || subset.length < 2) return null;
-      let base = subset[0].p;
-      for(const pt of subset){
-        if(Number.isFinite(pt.p) && pt.p !== 0){
-          base = pt.p;
-          break;
-        }
+      let basePoint = null;
+      if(anchorTime != null){
+        basePoint = subset.find(pt => pt.t >= anchorTime && Number.isFinite(pt.p) && pt.p !== 0) || null;
       }
+      if(!basePoint){
+        basePoint = subset.find(pt => Number.isFinite(pt.p) && pt.p !== 0) || null;
+      }
+      if(!basePoint) return null;
+      const base = basePoint.p;
       if(!Number.isFinite(base) || base === 0) return null;
       const percent = subset.map(pt => ({
         t: pt.t,
